@@ -347,11 +347,11 @@
 <span class="sourceLineNo">339</span>  }<a name="line.339"></a>
 <span class="sourceLineNo">340</span><a name="line.340"></a>
 <span class="sourceLineNo">341</span>  /** Copy files between FileSystems. */<a name="line.341"></a>
-<span class="sourceLineNo">342</span>  private static boolean copy(FileSystem srcFS, FileStatus srcStatus,<a name="line.342"></a>
-<span class="sourceLineNo">343</span>                              FileSystem dstFS, Path dst,<a name="line.343"></a>
-<span class="sourceLineNo">344</span>                              boolean deleteSource,<a name="line.344"></a>
-<span class="sourceLineNo">345</span>                              boolean overwrite,<a name="line.345"></a>
-<span class="sourceLineNo">346</span>                              Configuration conf) throws IOException {<a name="line.346"></a>
+<span class="sourceLineNo">342</span>  public static boolean copy(FileSystem srcFS, FileStatus srcStatus,<a name="line.342"></a>
+<span class="sourceLineNo">343</span>                             FileSystem dstFS, Path dst,<a name="line.343"></a>
+<span class="sourceLineNo">344</span>                             boolean deleteSource,<a name="line.344"></a>
+<span class="sourceLineNo">345</span>                             boolean overwrite,<a name="line.345"></a>
+<span class="sourceLineNo">346</span>                             Configuration conf) throws IOException {<a name="line.346"></a>
 <span class="sourceLineNo">347</span>    Path src = srcStatus.getPath();<a name="line.347"></a>
 <span class="sourceLineNo">348</span>    dst = checkDest(src.getName(), dstFS, dst, overwrite);<a name="line.348"></a>
 <span class="sourceLineNo">349</span>    if (srcStatus.isDirectory()) {<a name="line.349"></a>
