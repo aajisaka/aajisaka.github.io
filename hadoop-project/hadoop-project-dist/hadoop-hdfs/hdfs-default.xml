@@ -1338,7 +1338,8 @@
   <description>
     Whether or not actual block data that is read/written from/to HDFS should
     be encrypted on the wire. This only needs to be set on the NN and DNs,
-    clients will deduce this automatically.
+    clients will deduce this automatically. It is possible to override this setting 
+    per connection by specifying custom logic via dfs.trustedchannel.resolver.class. 
   </description>
 </property>
 
@@ -1350,6 +1351,20 @@
     the configured JCE default on the system is used (usually 3DES.) It is
     widely believed that 3DES is more cryptographically secure, but RC4 is
     substantially faster.
+  </description>
+</property>
+
+<property>
+  <name>dfs.trustedchannel.resolver.class</name>
+  <value></value>
+  <description>
+      TrustedChannelResolver is used to determine whether a channel 
+      is trusted for plain data transfer. The TrustedChannelResolver is
+      invoked on both client and server side. If the resolver indicates 
+      that the channel is trusted, then the data transfer will not be 
+      encrypted even if dfs.encrypt.data.transfer is set to true. The
+      default implementation returns false indicating that the channel 
+      is not trusted.
   </description>
 </property>
 
@@ -1838,6 +1853,21 @@
     over UNIX domain socket rather than over TCP socket
     on node-local data transfer.
     This is currently experimental and turned off by default.
+  </description>
+</property>
+
+<property>
+  <name>dfs.namenode.reject-unresolved-dn-topology-mapping</name>
+  <value>false</value>
+  <description>
+    If the value is set to true, then namenode will reject datanode 
+    registration if the topology mapping for a datanode is not resolved and 
+    NULL is returned (script defined by net.topology.script.file.name fails 
+    to execute). Otherwise, datanode will be registered and the default rack 
+    will be assigned as the topology path. Topology paths are important for 
+    data resiliency, since they define fault domains. Thus it may be unwanted 
+    behavior to allow datanode registration with the default rack if the 
+    resolving topology failed.
   </description>
 </property>
 

@@ -152,6 +152,21 @@
 </property>
 
 <property>
+  <name>mapreduce.shuffle.connection-keep-alive.enable</name>
+  <value>false</value>
+  <description>set to true to support keep-alive connections.</description>
+</property>
+
+<property>
+  <name>mapreduce.shuffle.connection-keep-alive.timeout</name>
+  <value>5</value>
+  <description>The number of seconds a shuffle client attempts to retain
+   http connection. Refer "Keep-Alive: timeout=" header in
+   Http specification
+  </description>
+</property>
+
+<property>
   <name>mapreduce.task.timeout</name>
   <value>600000</value>
   <description>The number of milliseconds before a task will be
@@ -328,6 +343,30 @@
 </property>
 
 <property>
+  <name>mapreduce.shuffle.transferTo.allowed</name>
+  <value></value>
+  <description>This option can enable/disable using nio transferTo method in 
+  the shuffle phase. NIO transferTo does not perform well on windows in the 
+  shuffle phase. Thus, with this configuration property it is possible to 
+  disable it, in which case custom transfer method will be used. Recommended 
+  value is false when running Hadoop on Windows. For Linux, it is recommended 
+  to set it to true. If nothing is set then the default value is false for 
+  Windows, and true for Linux.
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.shuffle.transfer.buffer.size</name>
+  <value>131072</value>
+  <description>This property is used only if 
+  mapreduce.shuffle.transferTo.allowed is set to false. In that case, 
+  this property defines the size of the buffer used in the buffer copy code
+  for the shuffle phase. The size of this buffer determines the size of the IO
+  requests.
+  </description>
+</property>
+
+<property>
   <name>mapreduce.reduce.markreset.buffer.percent</name>
   <value>0.0</value>
   <description>The percentage of memory -relative to the maximum heap size- to
@@ -429,6 +468,16 @@
   into.  Note that some file formats may have minimum split sizes that
   take priority over this setting.</description>
 </property>
+
+<property>
+  <name>mapreduce.input.fileinputformat.list-status.num-threads</name>
+  <value>1</value>
+  <description>The number of threads to use to list and fetch block locations
+  for the specified input paths. Note: multiple threads should not be used
+  if a custom non thread-safe path filter is used.
+  </description>
+</property>
+
 
 
 <property>

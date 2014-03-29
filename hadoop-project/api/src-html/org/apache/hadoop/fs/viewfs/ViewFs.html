@@ -25,7 +25,7 @@
 <span class="sourceLineNo">017</span> */<a name="line.17"></a>
 <span class="sourceLineNo">018</span>package org.apache.hadoop.fs.viewfs;<a name="line.18"></a>
 <span class="sourceLineNo">019</span><a name="line.19"></a>
-<span class="sourceLineNo">020</span>import static org.apache.hadoop.fs.viewfs.Constants.PERMISSION_RRR;<a name="line.20"></a>
+<span class="sourceLineNo">020</span>import static org.apache.hadoop.fs.viewfs.Constants.PERMISSION_555;<a name="line.20"></a>
 <span class="sourceLineNo">021</span><a name="line.21"></a>
 <span class="sourceLineNo">022</span>import java.io.FileNotFoundException;<a name="line.22"></a>
 <span class="sourceLineNo">023</span>import java.io.IOException;<a name="line.23"></a>
@@ -684,8 +684,8 @@
 <span class="sourceLineNo">676</span>    @Override<a name="line.676"></a>
 <span class="sourceLineNo">677</span>    public FileStatus getFileStatus(final Path f) throws IOException {<a name="line.677"></a>
 <span class="sourceLineNo">678</span>      checkPathIsSlash(f);<a name="line.678"></a>
-<span class="sourceLineNo">679</span>      return new FileStatus(0, true, 0, 0, creationTime, creationTime, <a name="line.679"></a>
-<span class="sourceLineNo">680</span>          PERMISSION_RRR, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.680"></a>
+<span class="sourceLineNo">679</span>      return new FileStatus(0, true, 0, 0, creationTime, creationTime,<a name="line.679"></a>
+<span class="sourceLineNo">680</span>          PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.680"></a>
 <span class="sourceLineNo">681</span>          new Path(theInternalDir.fullPath).makeQualified(<a name="line.681"></a>
 <span class="sourceLineNo">682</span>              myUri, null));<a name="line.682"></a>
 <span class="sourceLineNo">683</span>    }<a name="line.683"></a>
@@ -705,13 +705,13 @@
 <span class="sourceLineNo">697</span>        INodeLink&lt;AbstractFileSystem&gt; inodelink = <a name="line.697"></a>
 <span class="sourceLineNo">698</span>          (INodeLink&lt;AbstractFileSystem&gt;) inode;<a name="line.698"></a>
 <span class="sourceLineNo">699</span>        result = new FileStatus(0, false, 0, 0, creationTime, creationTime,<a name="line.699"></a>
-<span class="sourceLineNo">700</span>            PERMISSION_RRR, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.700"></a>
+<span class="sourceLineNo">700</span>            PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.700"></a>
 <span class="sourceLineNo">701</span>            inodelink.getTargetLink(),<a name="line.701"></a>
 <span class="sourceLineNo">702</span>            new Path(inode.fullPath).makeQualified(<a name="line.702"></a>
 <span class="sourceLineNo">703</span>                myUri, null));<a name="line.703"></a>
 <span class="sourceLineNo">704</span>      } else {<a name="line.704"></a>
 <span class="sourceLineNo">705</span>        result = new FileStatus(0, true, 0, 0, creationTime, creationTime,<a name="line.705"></a>
-<span class="sourceLineNo">706</span>          PERMISSION_RRR, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.706"></a>
+<span class="sourceLineNo">706</span>          PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.706"></a>
 <span class="sourceLineNo">707</span>          new Path(inode.fullPath).makeQualified(<a name="line.707"></a>
 <span class="sourceLineNo">708</span>              myUri, null));<a name="line.708"></a>
 <span class="sourceLineNo">709</span>      }<a name="line.709"></a>
@@ -750,14 +750,14 @@
 <span class="sourceLineNo">742</span><a name="line.742"></a>
 <span class="sourceLineNo">743</span>          result[i++] = new FileStatus(0, false, 0, 0,<a name="line.743"></a>
 <span class="sourceLineNo">744</span>            creationTime, creationTime,<a name="line.744"></a>
-<span class="sourceLineNo">745</span>            PERMISSION_RRR, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.745"></a>
+<span class="sourceLineNo">745</span>            PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.745"></a>
 <span class="sourceLineNo">746</span>            link.getTargetLink(),<a name="line.746"></a>
 <span class="sourceLineNo">747</span>            new Path(inode.fullPath).makeQualified(<a name="line.747"></a>
 <span class="sourceLineNo">748</span>                myUri, null));<a name="line.748"></a>
 <span class="sourceLineNo">749</span>        } else {<a name="line.749"></a>
 <span class="sourceLineNo">750</span>          result[i++] = new FileStatus(0, true, 0, 0,<a name="line.750"></a>
 <span class="sourceLineNo">751</span>            creationTime, creationTime,<a name="line.751"></a>
-<span class="sourceLineNo">752</span>            PERMISSION_RRR, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.752"></a>
+<span class="sourceLineNo">752</span>            PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.752"></a>
 <span class="sourceLineNo">753</span>            new Path(inode.fullPath).makeQualified(<a name="line.753"></a>
 <span class="sourceLineNo">754</span>                myUri, null));<a name="line.754"></a>
 <span class="sourceLineNo">755</span>        }<a name="line.755"></a>

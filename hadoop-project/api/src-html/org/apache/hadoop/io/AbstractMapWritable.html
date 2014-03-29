@@ -56,11 +56,11 @@
 <span class="sourceLineNo">048</span>  <a name="line.48"></a>
 <span class="sourceLineNo">049</span>  /* Class to id mappings */<a name="line.49"></a>
 <span class="sourceLineNo">050</span>  @VisibleForTesting<a name="line.50"></a>
-<span class="sourceLineNo">051</span>  Map&lt;Class, Byte&gt; classToIdMap = new ConcurrentHashMap&lt;Class, Byte&gt;();<a name="line.51"></a>
+<span class="sourceLineNo">051</span>  Map&lt;Class&lt;?&gt;, Byte&gt; classToIdMap = new ConcurrentHashMap&lt;Class&lt;?&gt;, Byte&gt;();<a name="line.51"></a>
 <span class="sourceLineNo">052</span>  <a name="line.52"></a>
 <span class="sourceLineNo">053</span>  /* Id to Class mappings */<a name="line.53"></a>
 <span class="sourceLineNo">054</span>  @VisibleForTesting<a name="line.54"></a>
-<span class="sourceLineNo">055</span>  Map&lt;Byte, Class&gt; idToClassMap = new ConcurrentHashMap&lt;Byte, Class&gt;();<a name="line.55"></a>
+<span class="sourceLineNo">055</span>  Map&lt;Byte, Class&lt;?&gt;&gt; idToClassMap = new ConcurrentHashMap&lt;Byte, Class&lt;?&gt;&gt;();<a name="line.55"></a>
 <span class="sourceLineNo">056</span>  <a name="line.56"></a>
 <span class="sourceLineNo">057</span>  /* The number of new classes (those not established by the constructor) */<a name="line.57"></a>
 <span class="sourceLineNo">058</span>  private volatile byte newClasses = 0;<a name="line.58"></a>
@@ -73,7 +73,7 @@
 <span class="sourceLineNo">065</span>  /**<a name="line.65"></a>
 <span class="sourceLineNo">066</span>   * Used to add "predefined" classes and by Writable to copy "new" classes.<a name="line.66"></a>
 <span class="sourceLineNo">067</span>   */<a name="line.67"></a>
-<span class="sourceLineNo">068</span>  private synchronized void addToMap(Class clazz, byte id) {<a name="line.68"></a>
+<span class="sourceLineNo">068</span>  private synchronized void addToMap(Class&lt;?&gt; clazz, byte id) {<a name="line.68"></a>
 <span class="sourceLineNo">069</span>    if (classToIdMap.containsKey(clazz)) {<a name="line.69"></a>
 <span class="sourceLineNo">070</span>      byte b = classToIdMap.get(clazz);<a name="line.70"></a>
 <span class="sourceLineNo">071</span>      if (b != id) {<a name="line.71"></a>
@@ -82,7 +82,7 @@
 <span class="sourceLineNo">074</span>      }<a name="line.74"></a>
 <span class="sourceLineNo">075</span>    }<a name="line.75"></a>
 <span class="sourceLineNo">076</span>    if (idToClassMap.containsKey(id)) {<a name="line.76"></a>
-<span class="sourceLineNo">077</span>      Class c = idToClassMap.get(id);<a name="line.77"></a>
+<span class="sourceLineNo">077</span>      Class&lt;?&gt; c = idToClassMap.get(id);<a name="line.77"></a>
 <span class="sourceLineNo">078</span>      if (!c.equals(clazz)) {<a name="line.78"></a>
 <span class="sourceLineNo">079</span>        throw new IllegalArgumentException("Id " + id + " exists but maps to " +<a name="line.79"></a>
 <span class="sourceLineNo">080</span>            c.getName() + " and not " + clazz.getName());<a name="line.80"></a>
@@ -93,7 +93,7 @@
 <span class="sourceLineNo">085</span>  }<a name="line.85"></a>
 <span class="sourceLineNo">086</span>  <a name="line.86"></a>
 <span class="sourceLineNo">087</span>  /** Add a Class to the maps if it is not already present. */ <a name="line.87"></a>
-<span class="sourceLineNo">088</span>  protected synchronized void addToMap(Class clazz) {<a name="line.88"></a>
+<span class="sourceLineNo">088</span>  protected synchronized void addToMap(Class&lt;?&gt; clazz) {<a name="line.88"></a>
 <span class="sourceLineNo">089</span>    if (classToIdMap.containsKey(clazz)) {<a name="line.89"></a>
 <span class="sourceLineNo">090</span>      return;<a name="line.90"></a>
 <span class="sourceLineNo">091</span>    }<a name="line.91"></a>
@@ -106,12 +106,12 @@
 <span class="sourceLineNo">098</span>  }<a name="line.98"></a>
 <span class="sourceLineNo">099</span><a name="line.99"></a>
 <span class="sourceLineNo">100</span>  /** @return the Class class for the specified id */<a name="line.100"></a>
-<span class="sourceLineNo">101</span>  protected Class getClass(byte id) {<a name="line.101"></a>
+<span class="sourceLineNo">101</span>  protected Class&lt;?&gt; getClass(byte id) {<a name="line.101"></a>
 <span class="sourceLineNo">102</span>    return idToClassMap.get(id);<a name="line.102"></a>
 <span class="sourceLineNo">103</span>  }<a name="line.103"></a>
 <span class="sourceLineNo">104</span><a name="line.104"></a>
 <span class="sourceLineNo">105</span>  /** @return the id for the specified Class */<a name="line.105"></a>
-<span class="sourceLineNo">106</span>  protected byte getId(Class clazz) {<a name="line.106"></a>
+<span class="sourceLineNo">106</span>  protected byte getId(Class&lt;?&gt; clazz) {<a name="line.106"></a>
 <span class="sourceLineNo">107</span>    return classToIdMap.containsKey(clazz) ? classToIdMap.get(clazz) : -1;<a name="line.107"></a>
 <span class="sourceLineNo">108</span>  }<a name="line.108"></a>
 <span class="sourceLineNo">109</span><a name="line.109"></a>

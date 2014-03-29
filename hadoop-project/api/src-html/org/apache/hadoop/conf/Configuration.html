@@ -2267,13 +2267,13 @@
 <span class="sourceLineNo">2259</span>        root = (Element)resource;<a name="line.2259"></a>
 <span class="sourceLineNo">2260</span>      }<a name="line.2260"></a>
 <span class="sourceLineNo">2261</span><a name="line.2261"></a>
-<span class="sourceLineNo">2262</span>      if (doc == null &amp;&amp; root == null) {<a name="line.2262"></a>
-<span class="sourceLineNo">2263</span>        if (quiet)<a name="line.2263"></a>
-<span class="sourceLineNo">2264</span>          return null;<a name="line.2264"></a>
-<span class="sourceLineNo">2265</span>        throw new RuntimeException(resource + " not found");<a name="line.2265"></a>
-<span class="sourceLineNo">2266</span>      }<a name="line.2266"></a>
-<span class="sourceLineNo">2267</span><a name="line.2267"></a>
-<span class="sourceLineNo">2268</span>      if (root == null) {<a name="line.2268"></a>
+<span class="sourceLineNo">2262</span>      if (root == null) {<a name="line.2262"></a>
+<span class="sourceLineNo">2263</span>        if (doc == null) {<a name="line.2263"></a>
+<span class="sourceLineNo">2264</span>          if (quiet) {<a name="line.2264"></a>
+<span class="sourceLineNo">2265</span>            return null;<a name="line.2265"></a>
+<span class="sourceLineNo">2266</span>          }<a name="line.2266"></a>
+<span class="sourceLineNo">2267</span>          throw new RuntimeException(resource + " not found");<a name="line.2267"></a>
+<span class="sourceLineNo">2268</span>        }<a name="line.2268"></a>
 <span class="sourceLineNo">2269</span>        root = doc.getDocumentElement();<a name="line.2269"></a>
 <span class="sourceLineNo">2270</span>      }<a name="line.2270"></a>
 <span class="sourceLineNo">2271</span>      Properties toAddTo = properties;<a name="line.2271"></a>
