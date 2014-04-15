@@ -476,12 +476,12 @@
 <span class="sourceLineNo">468</span>    // Copy the application master jar to the filesystem <a name="line.468"></a>
 <span class="sourceLineNo">469</span>    // Create a local resource to point to the destination jar path <a name="line.469"></a>
 <span class="sourceLineNo">470</span>    FileSystem fs = FileSystem.get(conf);<a name="line.470"></a>
-<span class="sourceLineNo">471</span>    addToLocalResources(fs, appMasterJar, appMasterJarPath, appId.getId(),<a name="line.471"></a>
+<span class="sourceLineNo">471</span>    addToLocalResources(fs, appMasterJar, appMasterJarPath, appId.toString(),<a name="line.471"></a>
 <span class="sourceLineNo">472</span>        localResources, null);<a name="line.472"></a>
 <span class="sourceLineNo">473</span><a name="line.473"></a>
 <span class="sourceLineNo">474</span>    // Set the log4j properties if needed <a name="line.474"></a>
 <span class="sourceLineNo">475</span>    if (!log4jPropFile.isEmpty()) {<a name="line.475"></a>
-<span class="sourceLineNo">476</span>      addToLocalResources(fs, log4jPropFile, log4jPath, appId.getId(),<a name="line.476"></a>
+<span class="sourceLineNo">476</span>      addToLocalResources(fs, log4jPropFile, log4jPath, appId.toString(),<a name="line.476"></a>
 <span class="sourceLineNo">477</span>          localResources, null);<a name="line.477"></a>
 <span class="sourceLineNo">478</span>    }                   <a name="line.478"></a>
 <span class="sourceLineNo">479</span><a name="line.479"></a>
@@ -497,7 +497,7 @@
 <span class="sourceLineNo">489</span>    if (!shellScriptPath.isEmpty()) {<a name="line.489"></a>
 <span class="sourceLineNo">490</span>      Path shellSrc = new Path(shellScriptPath);<a name="line.490"></a>
 <span class="sourceLineNo">491</span>      String shellPathSuffix =<a name="line.491"></a>
-<span class="sourceLineNo">492</span>          appName + "/" + appId.getId() + "/" + SCRIPT_PATH;<a name="line.492"></a>
+<span class="sourceLineNo">492</span>          appName + "/" + appId.toString() + "/" + SCRIPT_PATH;<a name="line.492"></a>
 <span class="sourceLineNo">493</span>      Path shellDst =<a name="line.493"></a>
 <span class="sourceLineNo">494</span>          new Path(fs.getHomeDirectory(), shellPathSuffix);<a name="line.494"></a>
 <span class="sourceLineNo">495</span>      fs.copyFromLocalFile(false, true, shellSrc, shellDst);<a name="line.495"></a>
@@ -508,12 +508,12 @@
 <span class="sourceLineNo">500</span>    }<a name="line.500"></a>
 <span class="sourceLineNo">501</span><a name="line.501"></a>
 <span class="sourceLineNo">502</span>    if (!shellCommand.isEmpty()) {<a name="line.502"></a>
-<span class="sourceLineNo">503</span>      addToLocalResources(fs, null, shellCommandPath, appId.getId(),<a name="line.503"></a>
+<span class="sourceLineNo">503</span>      addToLocalResources(fs, null, shellCommandPath, appId.toString(),<a name="line.503"></a>
 <span class="sourceLineNo">504</span>          localResources, shellCommand);<a name="line.504"></a>
 <span class="sourceLineNo">505</span>    }<a name="line.505"></a>
 <span class="sourceLineNo">506</span><a name="line.506"></a>
 <span class="sourceLineNo">507</span>    if (shellArgs.length &gt; 0) {<a name="line.507"></a>
-<span class="sourceLineNo">508</span>      addToLocalResources(fs, null, shellArgsPath, appId.getId(),<a name="line.508"></a>
+<span class="sourceLineNo">508</span>      addToLocalResources(fs, null, shellArgsPath, appId.toString(),<a name="line.508"></a>
 <span class="sourceLineNo">509</span>          localResources, StringUtils.join(shellArgs, " "));<a name="line.509"></a>
 <span class="sourceLineNo">510</span>    }<a name="line.510"></a>
 <span class="sourceLineNo">511</span>    // Set local resource info into app master container launch context<a name="line.511"></a>
@@ -745,7 +745,7 @@
 <span class="sourceLineNo">737</span>  }<a name="line.737"></a>
 <span class="sourceLineNo">738</span><a name="line.738"></a>
 <span class="sourceLineNo">739</span>  private void addToLocalResources(FileSystem fs, String fileSrcPath,<a name="line.739"></a>
-<span class="sourceLineNo">740</span>      String fileDstPath, int appId, Map&lt;String, LocalResource&gt; localResources,<a name="line.740"></a>
+<span class="sourceLineNo">740</span>      String fileDstPath, String appId, Map&lt;String, LocalResource&gt; localResources,<a name="line.740"></a>
 <span class="sourceLineNo">741</span>      String resources) throws IOException {<a name="line.741"></a>
 <span class="sourceLineNo">742</span>    String suffix =<a name="line.742"></a>
 <span class="sourceLineNo">743</span>        appName + "/" + appId + "/" + fileDstPath;<a name="line.743"></a>

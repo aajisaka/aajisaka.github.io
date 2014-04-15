@@ -114,10 +114,6 @@ org.apache.hadoop.oncrpc
 org.apache.hadoop.oncrpc.security
 org.apache.hadoop.portmap
 org.apache.hadoop.record
-org.apache.hadoop.record.compiler
-org.apache.hadoop.record.compiler.ant
-org.apache.hadoop.record.compiler.generated
-org.apache.hadoop.record.meta
 org.apache.hadoop.security
 org.apache.hadoop.security.authentication.client
 org.apache.hadoop.security.authentication.examples
