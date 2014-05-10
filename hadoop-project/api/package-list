@@ -4,6 +4,8 @@ org.apache.hadoop.conf
 org.apache.hadoop.contrib.bkjournal
 org.apache.hadoop.contrib.utils.join
 org.apache.hadoop.crypto.key
+org.apache.hadoop.crypto.key.kms
+org.apache.hadoop.crypto.key.kms.server
 org.apache.hadoop.examples
 org.apache.hadoop.examples.dancing
 org.apache.hadoop.examples.pi
