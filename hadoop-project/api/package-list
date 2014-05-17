@@ -60,6 +60,7 @@ org.apache.hadoop.mapred.lib
 org.apache.hadoop.mapred.lib.aggregate
 org.apache.hadoop.mapred.lib.db
 org.apache.hadoop.mapred.pipes
+org.apache.hadoop.mapred.proto
 org.apache.hadoop.mapred.tools
 org.apache.hadoop.mapreduce
 org.apache.hadoop.mapreduce.checkpoint
