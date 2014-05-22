@@ -2302,7 +2302,197 @@
 <span class="sourceLineNo">2294</span>      }<a name="line.2294"></a>
 <span class="sourceLineNo">2295</span>    }.resolve(this, absF);<a name="line.2295"></a>
 <span class="sourceLineNo">2296</span>  }<a name="line.2296"></a>
-<span class="sourceLineNo">2297</span>}<a name="line.2297"></a>
+<span class="sourceLineNo">2297</span><a name="line.2297"></a>
+<span class="sourceLineNo">2298</span>  /**<a name="line.2298"></a>
+<span class="sourceLineNo">2299</span>   * Set an xattr of a file or directory.<a name="line.2299"></a>
+<span class="sourceLineNo">2300</span>   * The name must be prefixed with user/trusted/security/system and<a name="line.2300"></a>
+<span class="sourceLineNo">2301</span>   * followed by ".". For example, "user.attr".<a name="line.2301"></a>
+<span class="sourceLineNo">2302</span>   * &lt;p/&gt;<a name="line.2302"></a>
+<span class="sourceLineNo">2303</span>   * A regular user can only set an xattr for the "user" namespace.<a name="line.2303"></a>
+<span class="sourceLineNo">2304</span>   * The super user can set an xattr of either the "user" or "trusted" namespaces.<a name="line.2304"></a>
+<span class="sourceLineNo">2305</span>   * The xattrs of the "security" and "system" namespaces are only used/exposed <a name="line.2305"></a>
+<span class="sourceLineNo">2306</span>   * internally by/to the FS impl.<a name="line.2306"></a>
+<span class="sourceLineNo">2307</span>   * &lt;p/&gt;<a name="line.2307"></a>
+<span class="sourceLineNo">2308</span>   * The access permissions of an xattr in the "user" namespace are<a name="line.2308"></a>
+<span class="sourceLineNo">2309</span>   * defined by the file and directory permission bits.<a name="line.2309"></a>
+<span class="sourceLineNo">2310</span>   * An xattr can only be set when the logged-in user has the correct permissions.<a name="line.2310"></a>
+<span class="sourceLineNo">2311</span>   * If the xattr exists, it will be replaced.<a name="line.2311"></a>
+<span class="sourceLineNo">2312</span>   * &lt;p/&gt;<a name="line.2312"></a>
+<span class="sourceLineNo">2313</span>   * @see &lt;a href="http://en.wikipedia.org/wiki/Extended_file_attributes"&gt;<a name="line.2313"></a>
+<span class="sourceLineNo">2314</span>   * http://en.wikipedia.org/wiki/Extended_file_attributes&lt;/a&gt;<a name="line.2314"></a>
+<span class="sourceLineNo">2315</span>   *<a name="line.2315"></a>
+<span class="sourceLineNo">2316</span>   * @param path Path to modify<a name="line.2316"></a>
+<span class="sourceLineNo">2317</span>   * @param name xattr name.<a name="line.2317"></a>
+<span class="sourceLineNo">2318</span>   * @param value xattr value.<a name="line.2318"></a>
+<span class="sourceLineNo">2319</span>   * @throws IOException<a name="line.2319"></a>
+<span class="sourceLineNo">2320</span>   */<a name="line.2320"></a>
+<span class="sourceLineNo">2321</span>  public void setXAttr(Path path, String name, byte[] value)<a name="line.2321"></a>
+<span class="sourceLineNo">2322</span>      throws IOException {<a name="line.2322"></a>
+<span class="sourceLineNo">2323</span>    setXAttr(path, name, value, EnumSet.of(XAttrSetFlag.CREATE,<a name="line.2323"></a>
+<span class="sourceLineNo">2324</span>        XAttrSetFlag.REPLACE));<a name="line.2324"></a>
+<span class="sourceLineNo">2325</span>  }<a name="line.2325"></a>
+<span class="sourceLineNo">2326</span><a name="line.2326"></a>
+<span class="sourceLineNo">2327</span>  /**<a name="line.2327"></a>
+<span class="sourceLineNo">2328</span>   * Set an xattr of a file or directory.<a name="line.2328"></a>
+<span class="sourceLineNo">2329</span>   * The name must be prefixed with user/trusted/security/system and<a name="line.2329"></a>
+<span class="sourceLineNo">2330</span>   * followed by ".". For example, "user.attr".<a name="line.2330"></a>
+<span class="sourceLineNo">2331</span>   * &lt;p/&gt;<a name="line.2331"></a>
+<span class="sourceLineNo">2332</span>   * A regular user can only set an xattr for the "user" namespace.<a name="line.2332"></a>
+<span class="sourceLineNo">2333</span>   * The super user can set an xattr of either the "user" or "trusted" namespaces.<a name="line.2333"></a>
+<span class="sourceLineNo">2334</span>   * The xattrs of the "security" and "system" namespaces are only used/exposed <a name="line.2334"></a>
+<span class="sourceLineNo">2335</span>   * internally by/to the FS impl.<a name="line.2335"></a>
+<span class="sourceLineNo">2336</span>   * &lt;p/&gt;<a name="line.2336"></a>
+<span class="sourceLineNo">2337</span>   * The access permissions of an xattr in the "user" namespace are<a name="line.2337"></a>
+<span class="sourceLineNo">2338</span>   * defined by the file and directory permission bits.<a name="line.2338"></a>
+<span class="sourceLineNo">2339</span>   * An xattr can only be set when the logged-in user has the correct permissions.<a name="line.2339"></a>
+<span class="sourceLineNo">2340</span>   * If the xattr exists, it will be replaced.<a name="line.2340"></a>
+<span class="sourceLineNo">2341</span>   * &lt;p/&gt;<a name="line.2341"></a>
+<span class="sourceLineNo">2342</span>   * @see &lt;a href="http://en.wikipedia.org/wiki/Extended_file_attributes"&gt;<a name="line.2342"></a>
+<span class="sourceLineNo">2343</span>   * http://en.wikipedia.org/wiki/Extended_file_attributes&lt;/a&gt;<a name="line.2343"></a>
+<span class="sourceLineNo">2344</span>   *<a name="line.2344"></a>
+<span class="sourceLineNo">2345</span>   * @param path Path to modify<a name="line.2345"></a>
+<span class="sourceLineNo">2346</span>   * @param name xattr name.<a name="line.2346"></a>
+<span class="sourceLineNo">2347</span>   * @param value xattr value.<a name="line.2347"></a>
+<span class="sourceLineNo">2348</span>   * @param flag xattr set flag<a name="line.2348"></a>
+<span class="sourceLineNo">2349</span>   * @throws IOException<a name="line.2349"></a>
+<span class="sourceLineNo">2350</span>   */<a name="line.2350"></a>
+<span class="sourceLineNo">2351</span>  public void setXAttr(Path path, final String name, final byte[] value,<a name="line.2351"></a>
+<span class="sourceLineNo">2352</span>      final EnumSet&lt;XAttrSetFlag&gt; flag) throws IOException {<a name="line.2352"></a>
+<span class="sourceLineNo">2353</span>    final Path absF = fixRelativePart(path);<a name="line.2353"></a>
+<span class="sourceLineNo">2354</span>    new FSLinkResolver&lt;Void&gt;() {<a name="line.2354"></a>
+<span class="sourceLineNo">2355</span>      @Override<a name="line.2355"></a>
+<span class="sourceLineNo">2356</span>      public Void next(final AbstractFileSystem fs, final Path p)<a name="line.2356"></a>
+<span class="sourceLineNo">2357</span>          throws IOException {<a name="line.2357"></a>
+<span class="sourceLineNo">2358</span>        fs.setXAttr(p, name, value, flag);<a name="line.2358"></a>
+<span class="sourceLineNo">2359</span>        return null;<a name="line.2359"></a>
+<span class="sourceLineNo">2360</span>      }<a name="line.2360"></a>
+<span class="sourceLineNo">2361</span>    }.resolve(this, absF);<a name="line.2361"></a>
+<span class="sourceLineNo">2362</span>  }<a name="line.2362"></a>
+<span class="sourceLineNo">2363</span><a name="line.2363"></a>
+<span class="sourceLineNo">2364</span>  /**<a name="line.2364"></a>
+<span class="sourceLineNo">2365</span>   * Get an xattr for a file or directory.<a name="line.2365"></a>
+<span class="sourceLineNo">2366</span>   * The name must be prefixed with user/trusted/security/system and<a name="line.2366"></a>
+<span class="sourceLineNo">2367</span>   * followed by ".". For example, "user.attr".<a name="line.2367"></a>
+<span class="sourceLineNo">2368</span>   * &lt;p/&gt;<a name="line.2368"></a>
+<span class="sourceLineNo">2369</span>   * <a name="line.2369"></a>
+<span class="sourceLineNo">2370</span>   * A regular user can only get an xattr for the "user" namespace.<a name="line.2370"></a>
+<span class="sourceLineNo">2371</span>   * The super user can get an xattr of either the "user" or "trusted" namespaces.<a name="line.2371"></a>
+<span class="sourceLineNo">2372</span>   * The xattrs of the "security" and "system" namespaces are only used/exposed <a name="line.2372"></a>
+<span class="sourceLineNo">2373</span>   * internally by/to the FS impl.<a name="line.2373"></a>
+<span class="sourceLineNo">2374</span>   * &lt;p/&gt;<a name="line.2374"></a>
+<span class="sourceLineNo">2375</span>   * An xattr will only be returned when the logged-in user has the correct permissions.<a name="line.2375"></a>
+<span class="sourceLineNo">2376</span>   * &lt;p/&gt;<a name="line.2376"></a>
+<span class="sourceLineNo">2377</span>   * @see &lt;a href="http://en.wikipedia.org/wiki/Extended_file_attributes"&gt;<a name="line.2377"></a>
+<span class="sourceLineNo">2378</span>   * http://en.wikipedia.org/wiki/Extended_file_attributes&lt;/a&gt;<a name="line.2378"></a>
+<span class="sourceLineNo">2379</span>   *<a name="line.2379"></a>
+<span class="sourceLineNo">2380</span>   * @param path Path to get extended attribute<a name="line.2380"></a>
+<span class="sourceLineNo">2381</span>   * @param name xattr name.<a name="line.2381"></a>
+<span class="sourceLineNo">2382</span>   * @return byte[] xattr value.<a name="line.2382"></a>
+<span class="sourceLineNo">2383</span>   * @throws IOException<a name="line.2383"></a>
+<span class="sourceLineNo">2384</span>   */<a name="line.2384"></a>
+<span class="sourceLineNo">2385</span>  public byte[] getXAttr(Path path, final String name) throws IOException {<a name="line.2385"></a>
+<span class="sourceLineNo">2386</span>    final Path absF = fixRelativePart(path);<a name="line.2386"></a>
+<span class="sourceLineNo">2387</span>    return new FSLinkResolver&lt;byte[]&gt;() {<a name="line.2387"></a>
+<span class="sourceLineNo">2388</span>      @Override<a name="line.2388"></a>
+<span class="sourceLineNo">2389</span>      public byte[] next(final AbstractFileSystem fs, final Path p)<a name="line.2389"></a>
+<span class="sourceLineNo">2390</span>          throws IOException {<a name="line.2390"></a>
+<span class="sourceLineNo">2391</span>        return fs.getXAttr(p, name);<a name="line.2391"></a>
+<span class="sourceLineNo">2392</span>      }<a name="line.2392"></a>
+<span class="sourceLineNo">2393</span>    }.resolve(this, absF);<a name="line.2393"></a>
+<span class="sourceLineNo">2394</span>  }<a name="line.2394"></a>
+<span class="sourceLineNo">2395</span><a name="line.2395"></a>
+<span class="sourceLineNo">2396</span>  /**<a name="line.2396"></a>
+<span class="sourceLineNo">2397</span>   * Get all of the xattrs for a file or directory.<a name="line.2397"></a>
+<span class="sourceLineNo">2398</span>   * Only those xattrs for which the logged-in user has permissions to view<a name="line.2398"></a>
+<span class="sourceLineNo">2399</span>   * are returned.<a name="line.2399"></a>
+<span class="sourceLineNo">2400</span>   * &lt;p/&gt;<a name="line.2400"></a>
+<span class="sourceLineNo">2401</span>   * A regular user can only get xattrs for the "user" namespace.<a name="line.2401"></a>
+<span class="sourceLineNo">2402</span>   * The super user can only get xattrs for "user" and "trusted" namespaces.<a name="line.2402"></a>
+<span class="sourceLineNo">2403</span>   * The xattr of "security" and "system" namespaces are only used/exposed <a name="line.2403"></a>
+<span class="sourceLineNo">2404</span>   * internally by/to the FS impl.<a name="line.2404"></a>
+<span class="sourceLineNo">2405</span>   * &lt;p/&gt;<a name="line.2405"></a>
+<span class="sourceLineNo">2406</span>   * @see &lt;a href="http://en.wikipedia.org/wiki/Extended_file_attributes"&gt;<a name="line.2406"></a>
+<span class="sourceLineNo">2407</span>   * http://en.wikipedia.org/wiki/Extended_file_attributes&lt;/a&gt;<a name="line.2407"></a>
+<span class="sourceLineNo">2408</span>   *<a name="line.2408"></a>
+<span class="sourceLineNo">2409</span>   * @param path Path to get extended attributes<a name="line.2409"></a>
+<span class="sourceLineNo">2410</span>   * @return Map&lt;String, byte[]&gt; describing the XAttrs of the file or directory<a name="line.2410"></a>
+<span class="sourceLineNo">2411</span>   * @throws IOException<a name="line.2411"></a>
+<span class="sourceLineNo">2412</span>   */<a name="line.2412"></a>
+<span class="sourceLineNo">2413</span>  public Map&lt;String, byte[]&gt; getXAttrs(Path path) throws IOException {<a name="line.2413"></a>
+<span class="sourceLineNo">2414</span>    final Path absF = fixRelativePart(path);<a name="line.2414"></a>
+<span class="sourceLineNo">2415</span>    return new FSLinkResolver&lt;Map&lt;String, byte[]&gt;&gt;() {<a name="line.2415"></a>
+<span class="sourceLineNo">2416</span>      @Override<a name="line.2416"></a>
+<span class="sourceLineNo">2417</span>      public Map&lt;String, byte[]&gt; next(final AbstractFileSystem fs, final Path p)<a name="line.2417"></a>
+<span class="sourceLineNo">2418</span>          throws IOException {<a name="line.2418"></a>
+<span class="sourceLineNo">2419</span>        return fs.getXAttrs(p);<a name="line.2419"></a>
+<span class="sourceLineNo">2420</span>      }<a name="line.2420"></a>
+<span class="sourceLineNo">2421</span>    }.resolve(this, absF);<a name="line.2421"></a>
+<span class="sourceLineNo">2422</span>  }<a name="line.2422"></a>
+<span class="sourceLineNo">2423</span><a name="line.2423"></a>
+<span class="sourceLineNo">2424</span>  /**<a name="line.2424"></a>
+<span class="sourceLineNo">2425</span>   * Get all of the xattrs for a file or directory.<a name="line.2425"></a>
+<span class="sourceLineNo">2426</span>   * Only those xattrs for which the logged-in user has permissions to view<a name="line.2426"></a>
+<span class="sourceLineNo">2427</span>   * are returned.<a name="line.2427"></a>
+<span class="sourceLineNo">2428</span>   * &lt;p/&gt;<a name="line.2428"></a>
+<span class="sourceLineNo">2429</span>   * A regular user can only get xattrs for the "user" namespace.<a name="line.2429"></a>
+<span class="sourceLineNo">2430</span>   * The super user can only get xattrs for "user" and "trusted" namespaces.<a name="line.2430"></a>
+<span class="sourceLineNo">2431</span>   * The xattr of "security" and "system" namespaces are only used/exposed <a name="line.2431"></a>
+<span class="sourceLineNo">2432</span>   * internally by/to the FS impl.<a name="line.2432"></a>
+<span class="sourceLineNo">2433</span>   * &lt;p/&gt;<a name="line.2433"></a>
+<span class="sourceLineNo">2434</span>   * @see &lt;a href="http://en.wikipedia.org/wiki/Extended_file_attributes"&gt;<a name="line.2434"></a>
+<span class="sourceLineNo">2435</span>   * http://en.wikipedia.org/wiki/Extended_file_attributes&lt;/a&gt;<a name="line.2435"></a>
+<span class="sourceLineNo">2436</span>   *<a name="line.2436"></a>
+<span class="sourceLineNo">2437</span>   * @param path Path to get extended attributes<a name="line.2437"></a>
+<span class="sourceLineNo">2438</span>   * @param names XAttr names.<a name="line.2438"></a>
+<span class="sourceLineNo">2439</span>   * @return Map&lt;String, byte[]&gt; describing the XAttrs of the file or directory<a name="line.2439"></a>
+<span class="sourceLineNo">2440</span>   * @throws IOException<a name="line.2440"></a>
+<span class="sourceLineNo">2441</span>   */<a name="line.2441"></a>
+<span class="sourceLineNo">2442</span>  public Map&lt;String, byte[]&gt; getXAttrs(Path path, final List&lt;String&gt; names)<a name="line.2442"></a>
+<span class="sourceLineNo">2443</span>      throws IOException {<a name="line.2443"></a>
+<span class="sourceLineNo">2444</span>    final Path absF = fixRelativePart(path);<a name="line.2444"></a>
+<span class="sourceLineNo">2445</span>    return new FSLinkResolver&lt;Map&lt;String, byte[]&gt;&gt;() {<a name="line.2445"></a>
+<span class="sourceLineNo">2446</span>      @Override<a name="line.2446"></a>
+<span class="sourceLineNo">2447</span>      public Map&lt;String, byte[]&gt; next(final AbstractFileSystem fs, final Path p)<a name="line.2447"></a>
+<span class="sourceLineNo">2448</span>          throws IOException {<a name="line.2448"></a>
+<span class="sourceLineNo">2449</span>        return fs.getXAttrs(p, names);<a name="line.2449"></a>
+<span class="sourceLineNo">2450</span>      }<a name="line.2450"></a>
+<span class="sourceLineNo">2451</span>    }.resolve(this, absF);<a name="line.2451"></a>
+<span class="sourceLineNo">2452</span>  }<a name="line.2452"></a>
+<span class="sourceLineNo">2453</span><a name="line.2453"></a>
+<span class="sourceLineNo">2454</span>  /**<a name="line.2454"></a>
+<span class="sourceLineNo">2455</span>   * Remove an xattr of a file or directory.<a name="line.2455"></a>
+<span class="sourceLineNo">2456</span>   * The name must be prefixed with user/trusted/security/system and<a name="line.2456"></a>
+<span class="sourceLineNo">2457</span>   * followed by ".". For example, "user.attr".<a name="line.2457"></a>
+<span class="sourceLineNo">2458</span>   * &lt;p/&gt;<a name="line.2458"></a>
+<span class="sourceLineNo">2459</span>   * A regular user can only remove an xattr for the "user" namespace.<a name="line.2459"></a>
+<span class="sourceLineNo">2460</span>   * The super user can remove an xattr of either the "user" or "trusted" namespaces.<a name="line.2460"></a>
+<span class="sourceLineNo">2461</span>   * The xattrs of the "security" and "system" namespaces are only used/exposed <a name="line.2461"></a>
+<span class="sourceLineNo">2462</span>   * internally by/to the FS impl.<a name="line.2462"></a>
+<span class="sourceLineNo">2463</span>   * &lt;p/&gt;<a name="line.2463"></a>
+<span class="sourceLineNo">2464</span>   * The access permissions of an xattr in the "user" namespace are<a name="line.2464"></a>
+<span class="sourceLineNo">2465</span>   * defined by the file and directory permission bits.<a name="line.2465"></a>
+<span class="sourceLineNo">2466</span>   * An xattr can only be set when the logged-in user has the correct permissions.<a name="line.2466"></a>
+<span class="sourceLineNo">2467</span>   * If the xattr exists, it will be replaced.<a name="line.2467"></a>
+<span class="sourceLineNo">2468</span>   * &lt;p/&gt;<a name="line.2468"></a>
+<span class="sourceLineNo">2469</span>   * @see &lt;a href="http://en.wikipedia.org/wiki/Extended_file_attributes"&gt;<a name="line.2469"></a>
+<span class="sourceLineNo">2470</span>   * http://en.wikipedia.org/wiki/Extended_file_attributes&lt;/a&gt;<a name="line.2470"></a>
+<span class="sourceLineNo">2471</span>   *<a name="line.2471"></a>
+<span class="sourceLineNo">2472</span>   * @param path Path to remove extended attribute<a name="line.2472"></a>
+<span class="sourceLineNo">2473</span>   * @param name xattr name<a name="line.2473"></a>
+<span class="sourceLineNo">2474</span>   * @throws IOException<a name="line.2474"></a>
+<span class="sourceLineNo">2475</span>   */<a name="line.2475"></a>
+<span class="sourceLineNo">2476</span>  public void removeXAttr(Path path, final String name) throws IOException {<a name="line.2476"></a>
+<span class="sourceLineNo">2477</span>    final Path absF = fixRelativePart(path);<a name="line.2477"></a>
+<span class="sourceLineNo">2478</span>    new FSLinkResolver&lt;Void&gt;() {<a name="line.2478"></a>
+<span class="sourceLineNo">2479</span>      @Override<a name="line.2479"></a>
+<span class="sourceLineNo">2480</span>      public Void next(final AbstractFileSystem fs, final Path p)<a name="line.2480"></a>
+<span class="sourceLineNo">2481</span>          throws IOException {<a name="line.2481"></a>
+<span class="sourceLineNo">2482</span>        fs.removeXAttr(p, name);<a name="line.2482"></a>
+<span class="sourceLineNo">2483</span>        return null;<a name="line.2483"></a>
+<span class="sourceLineNo">2484</span>      }<a name="line.2484"></a>
+<span class="sourceLineNo">2485</span>    }.resolve(this, absF);<a name="line.2485"></a>
+<span class="sourceLineNo">2486</span>  }<a name="line.2486"></a>
+<span class="sourceLineNo">2487</span>}<a name="line.2487"></a>
 
 
 
