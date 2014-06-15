@@ -13,6 +13,7 @@ org.apache.hadoop.examples.pi.math
 org.apache.hadoop.examples.terasort
 org.apache.hadoop.filecache
 org.apache.hadoop.fs
+org.apache.hadoop.fs.azure
 org.apache.hadoop.fs.ftp
 org.apache.hadoop.fs.http.client
 org.apache.hadoop.fs.http.server

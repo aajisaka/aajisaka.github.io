@@ -139,7 +139,7 @@
 <span class="sourceLineNo">131</span>  public void add(ComposableRecordReader&lt;K,? extends V&gt; rr) throws IOException {<a name="line.131"></a>
 <span class="sourceLineNo">132</span>    kids[rr.id()] = rr;<a name="line.132"></a>
 <span class="sourceLineNo">133</span>    if (null == q) {<a name="line.133"></a>
-<span class="sourceLineNo">134</span>      cmp = WritableComparator.get(rr.createKey().getClass());<a name="line.134"></a>
+<span class="sourceLineNo">134</span>      cmp = WritableComparator.get(rr.createKey().getClass(), conf);<a name="line.134"></a>
 <span class="sourceLineNo">135</span>      q = new PriorityQueue&lt;ComposableRecordReader&lt;K,?&gt;&gt;(3,<a name="line.135"></a>
 <span class="sourceLineNo">136</span>          new Comparator&lt;ComposableRecordReader&lt;K,?&gt;&gt;() {<a name="line.136"></a>
 <span class="sourceLineNo">137</span>            public int compare(ComposableRecordReader&lt;K,?&gt; o1,<a name="line.137"></a>

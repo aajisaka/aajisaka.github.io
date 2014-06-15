@@ -1177,45 +1177,69 @@
 <span class="sourceLineNo">1169</span>  }<a name="line.1169"></a>
 <span class="sourceLineNo">1170</span><a name="line.1170"></a>
 <span class="sourceLineNo">1171</span>  /**<a name="line.1171"></a>
-<span class="sourceLineNo">1172</span>   * Remove an xattr of a file or directory.<a name="line.1172"></a>
-<span class="sourceLineNo">1173</span>   * The name must be prefixed with user/trusted/security/system and<a name="line.1173"></a>
-<span class="sourceLineNo">1174</span>   * followed by ".". For example, "user.attr".<a name="line.1174"></a>
+<span class="sourceLineNo">1172</span>   * Get all of the xattr names for a file or directory.<a name="line.1172"></a>
+<span class="sourceLineNo">1173</span>   * Only the xattr names for which the logged-in user has permissions to view<a name="line.1173"></a>
+<span class="sourceLineNo">1174</span>   * are returned.<a name="line.1174"></a>
 <span class="sourceLineNo">1175</span>   * &lt;p/&gt;<a name="line.1175"></a>
-<span class="sourceLineNo">1176</span>   * A regular user can only remove an xattr for the "user" namespace.<a name="line.1176"></a>
-<span class="sourceLineNo">1177</span>   * The super user can remove an xattr of either the "user" or "trusted" namespaces.<a name="line.1177"></a>
-<span class="sourceLineNo">1178</span>   * The xattrs of the "security" and "system" namespaces are only used/exposed <a name="line.1178"></a>
-<span class="sourceLineNo">1179</span>   * internally by/to the FS impl.<a name="line.1179"></a>
-<span class="sourceLineNo">1180</span>   * &lt;p/&gt;<a name="line.1180"></a>
-<span class="sourceLineNo">1181</span>   * The access permissions of an xattr in the "user" namespace are<a name="line.1181"></a>
-<span class="sourceLineNo">1182</span>   * defined by the file and directory permission bits.<a name="line.1182"></a>
-<span class="sourceLineNo">1183</span>   * An xattr can only be set when the logged-in user has the correct permissions.<a name="line.1183"></a>
-<span class="sourceLineNo">1184</span>   * If the xattr exists, it will be replaced.<a name="line.1184"></a>
-<span class="sourceLineNo">1185</span>   * &lt;p/&gt;<a name="line.1185"></a>
-<span class="sourceLineNo">1186</span>   * @see &lt;a href="http://en.wikipedia.org/wiki/Extended_file_attributes"&gt;<a name="line.1186"></a>
-<span class="sourceLineNo">1187</span>   * http://en.wikipedia.org/wiki/Extended_file_attributes&lt;/a&gt;<a name="line.1187"></a>
-<span class="sourceLineNo">1188</span>   *<a name="line.1188"></a>
-<span class="sourceLineNo">1189</span>   * @param path Path to remove extended attribute<a name="line.1189"></a>
-<span class="sourceLineNo">1190</span>   * @param name xattr name<a name="line.1190"></a>
-<span class="sourceLineNo">1191</span>   * @throws IOException<a name="line.1191"></a>
-<span class="sourceLineNo">1192</span>   */<a name="line.1192"></a>
-<span class="sourceLineNo">1193</span>  public void removeXAttr(Path path, String name) throws IOException {<a name="line.1193"></a>
-<span class="sourceLineNo">1194</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1194"></a>
-<span class="sourceLineNo">1195</span>        + " doesn't support removeXAttr");<a name="line.1195"></a>
-<span class="sourceLineNo">1196</span>  }<a name="line.1196"></a>
-<span class="sourceLineNo">1197</span><a name="line.1197"></a>
-<span class="sourceLineNo">1198</span>  @Override //Object<a name="line.1198"></a>
-<span class="sourceLineNo">1199</span>  public int hashCode() {<a name="line.1199"></a>
-<span class="sourceLineNo">1200</span>    return myUri.hashCode();<a name="line.1200"></a>
-<span class="sourceLineNo">1201</span>  }<a name="line.1201"></a>
-<span class="sourceLineNo">1202</span>  <a name="line.1202"></a>
-<span class="sourceLineNo">1203</span>  @Override //Object<a name="line.1203"></a>
-<span class="sourceLineNo">1204</span>  public boolean equals(Object other) {<a name="line.1204"></a>
-<span class="sourceLineNo">1205</span>    if (other == null || !(other instanceof AbstractFileSystem)) {<a name="line.1205"></a>
-<span class="sourceLineNo">1206</span>      return false;<a name="line.1206"></a>
-<span class="sourceLineNo">1207</span>    }<a name="line.1207"></a>
-<span class="sourceLineNo">1208</span>    return myUri.equals(((AbstractFileSystem) other).myUri);<a name="line.1208"></a>
-<span class="sourceLineNo">1209</span>  }<a name="line.1209"></a>
-<span class="sourceLineNo">1210</span>}<a name="line.1210"></a>
+<span class="sourceLineNo">1176</span>   * A regular user can only get xattr names for the "user" namespace.<a name="line.1176"></a>
+<span class="sourceLineNo">1177</span>   * The super user can only get xattr names for the "user" and "trusted"<a name="line.1177"></a>
+<span class="sourceLineNo">1178</span>   * namespaces.<a name="line.1178"></a>
+<span class="sourceLineNo">1179</span>   * The xattr names in the "security" and "system" namespaces are only<a name="line.1179"></a>
+<span class="sourceLineNo">1180</span>   * used/exposed internally by/to the FS impl.<a name="line.1180"></a>
+<span class="sourceLineNo">1181</span>   * &lt;p/&gt;<a name="line.1181"></a>
+<span class="sourceLineNo">1182</span>   * @see &lt;a href="http://en.wikipedia.org/wiki/Extended_file_attributes"&gt;<a name="line.1182"></a>
+<span class="sourceLineNo">1183</span>   * http://en.wikipedia.org/wiki/Extended_file_attributes&lt;/a&gt;<a name="line.1183"></a>
+<span class="sourceLineNo">1184</span>   *<a name="line.1184"></a>
+<span class="sourceLineNo">1185</span>   * @param path Path to get extended attributes<a name="line.1185"></a>
+<span class="sourceLineNo">1186</span>   * @return Map&lt;String, byte[]&gt; describing the XAttrs of the file or directory<a name="line.1186"></a>
+<span class="sourceLineNo">1187</span>   * @throws IOException<a name="line.1187"></a>
+<span class="sourceLineNo">1188</span>   */<a name="line.1188"></a>
+<span class="sourceLineNo">1189</span>  public List&lt;String&gt; listXAttrs(Path path)<a name="line.1189"></a>
+<span class="sourceLineNo">1190</span>          throws IOException {<a name="line.1190"></a>
+<span class="sourceLineNo">1191</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1191"></a>
+<span class="sourceLineNo">1192</span>            + " doesn't support listXAttrs");<a name="line.1192"></a>
+<span class="sourceLineNo">1193</span>  }<a name="line.1193"></a>
+<span class="sourceLineNo">1194</span><a name="line.1194"></a>
+<span class="sourceLineNo">1195</span>  /**<a name="line.1195"></a>
+<span class="sourceLineNo">1196</span>   * Remove an xattr of a file or directory.<a name="line.1196"></a>
+<span class="sourceLineNo">1197</span>   * The name must be prefixed with user/trusted/security/system and<a name="line.1197"></a>
+<span class="sourceLineNo">1198</span>   * followed by ".". For example, "user.attr".<a name="line.1198"></a>
+<span class="sourceLineNo">1199</span>   * &lt;p/&gt;<a name="line.1199"></a>
+<span class="sourceLineNo">1200</span>   * A regular user can only remove an xattr for the "user" namespace.<a name="line.1200"></a>
+<span class="sourceLineNo">1201</span>   * The super user can remove an xattr of either the "user" or "trusted" namespaces.<a name="line.1201"></a>
+<span class="sourceLineNo">1202</span>   * The xattrs of the "security" and "system" namespaces are only used/exposed <a name="line.1202"></a>
+<span class="sourceLineNo">1203</span>   * internally by/to the FS impl.<a name="line.1203"></a>
+<span class="sourceLineNo">1204</span>   * &lt;p/&gt;<a name="line.1204"></a>
+<span class="sourceLineNo">1205</span>   * The access permissions of an xattr in the "user" namespace are<a name="line.1205"></a>
+<span class="sourceLineNo">1206</span>   * defined by the file and directory permission bits.<a name="line.1206"></a>
+<span class="sourceLineNo">1207</span>   * An xattr can only be set when the logged-in user has the correct permissions.<a name="line.1207"></a>
+<span class="sourceLineNo">1208</span>   * If the xattr exists, it will be replaced.<a name="line.1208"></a>
+<span class="sourceLineNo">1209</span>   * &lt;p/&gt;<a name="line.1209"></a>
+<span class="sourceLineNo">1210</span>   * @see &lt;a href="http://en.wikipedia.org/wiki/Extended_file_attributes"&gt;<a name="line.1210"></a>
+<span class="sourceLineNo">1211</span>   * http://en.wikipedia.org/wiki/Extended_file_attributes&lt;/a&gt;<a name="line.1211"></a>
+<span class="sourceLineNo">1212</span>   *<a name="line.1212"></a>
+<span class="sourceLineNo">1213</span>   * @param path Path to remove extended attribute<a name="line.1213"></a>
+<span class="sourceLineNo">1214</span>   * @param name xattr name<a name="line.1214"></a>
+<span class="sourceLineNo">1215</span>   * @throws IOException<a name="line.1215"></a>
+<span class="sourceLineNo">1216</span>   */<a name="line.1216"></a>
+<span class="sourceLineNo">1217</span>  public void removeXAttr(Path path, String name) throws IOException {<a name="line.1217"></a>
+<span class="sourceLineNo">1218</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1218"></a>
+<span class="sourceLineNo">1219</span>        + " doesn't support removeXAttr");<a name="line.1219"></a>
+<span class="sourceLineNo">1220</span>  }<a name="line.1220"></a>
+<span class="sourceLineNo">1221</span><a name="line.1221"></a>
+<span class="sourceLineNo">1222</span>  @Override //Object<a name="line.1222"></a>
+<span class="sourceLineNo">1223</span>  public int hashCode() {<a name="line.1223"></a>
+<span class="sourceLineNo">1224</span>    return myUri.hashCode();<a name="line.1224"></a>
+<span class="sourceLineNo">1225</span>  }<a name="line.1225"></a>
+<span class="sourceLineNo">1226</span>  <a name="line.1226"></a>
+<span class="sourceLineNo">1227</span>  @Override //Object<a name="line.1227"></a>
+<span class="sourceLineNo">1228</span>  public boolean equals(Object other) {<a name="line.1228"></a>
+<span class="sourceLineNo">1229</span>    if (other == null || !(other instanceof AbstractFileSystem)) {<a name="line.1229"></a>
+<span class="sourceLineNo">1230</span>      return false;<a name="line.1230"></a>
+<span class="sourceLineNo">1231</span>    }<a name="line.1231"></a>
+<span class="sourceLineNo">1232</span>    return myUri.equals(((AbstractFileSystem) other).myUri);<a name="line.1232"></a>
+<span class="sourceLineNo">1233</span>  }<a name="line.1233"></a>
+<span class="sourceLineNo">1234</span>}<a name="line.1234"></a>
 
 
 
