@@ -92,19 +92,20 @@
 <span class="sourceLineNo">084</span>    } catch (Exception e) {<a name="line.84"></a>
 <span class="sourceLineNo">085</span>      LOG.warn("Error unregistering "+ mbeanName, e);<a name="line.85"></a>
 <span class="sourceLineNo">086</span>    }<a name="line.86"></a>
-<span class="sourceLineNo">087</span>  }<a name="line.87"></a>
-<span class="sourceLineNo">088</span><a name="line.88"></a>
-<span class="sourceLineNo">089</span>  static private ObjectName getMBeanName(String serviceName, String nameName) {<a name="line.89"></a>
-<span class="sourceLineNo">090</span>    ObjectName name = null;<a name="line.90"></a>
-<span class="sourceLineNo">091</span>    String nameStr = "Hadoop:service="+ serviceName +",name="+ nameName;<a name="line.91"></a>
-<span class="sourceLineNo">092</span>    try {<a name="line.92"></a>
-<span class="sourceLineNo">093</span>      name = DefaultMetricsSystem.newMBeanName(nameStr);<a name="line.93"></a>
-<span class="sourceLineNo">094</span>    } catch (Exception e) {<a name="line.94"></a>
-<span class="sourceLineNo">095</span>      LOG.warn("Error creating MBean object name: "+ nameStr, e);<a name="line.95"></a>
-<span class="sourceLineNo">096</span>    }<a name="line.96"></a>
-<span class="sourceLineNo">097</span>    return name;<a name="line.97"></a>
-<span class="sourceLineNo">098</span>  }<a name="line.98"></a>
-<span class="sourceLineNo">099</span>}<a name="line.99"></a>
+<span class="sourceLineNo">087</span>    DefaultMetricsSystem.removeMBeanName(mbeanName);<a name="line.87"></a>
+<span class="sourceLineNo">088</span>  }<a name="line.88"></a>
+<span class="sourceLineNo">089</span><a name="line.89"></a>
+<span class="sourceLineNo">090</span>  static private ObjectName getMBeanName(String serviceName, String nameName) {<a name="line.90"></a>
+<span class="sourceLineNo">091</span>    ObjectName name = null;<a name="line.91"></a>
+<span class="sourceLineNo">092</span>    String nameStr = "Hadoop:service="+ serviceName +",name="+ nameName;<a name="line.92"></a>
+<span class="sourceLineNo">093</span>    try {<a name="line.93"></a>
+<span class="sourceLineNo">094</span>      name = DefaultMetricsSystem.newMBeanName(nameStr);<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    } catch (Exception e) {<a name="line.95"></a>
+<span class="sourceLineNo">096</span>      LOG.warn("Error creating MBean object name: "+ nameStr, e);<a name="line.96"></a>
+<span class="sourceLineNo">097</span>    }<a name="line.97"></a>
+<span class="sourceLineNo">098</span>    return name;<a name="line.98"></a>
+<span class="sourceLineNo">099</span>  }<a name="line.99"></a>
+<span class="sourceLineNo">100</span>}<a name="line.100"></a>
 
 
 

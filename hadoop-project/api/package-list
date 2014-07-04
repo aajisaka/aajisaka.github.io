@@ -14,6 +14,7 @@ org.apache.hadoop.examples.terasort
 org.apache.hadoop.filecache
 org.apache.hadoop.fs
 org.apache.hadoop.fs.azure
+org.apache.hadoop.fs.azure.metrics
 org.apache.hadoop.fs.ftp
 org.apache.hadoop.fs.http.client
 org.apache.hadoop.fs.http.server
@@ -119,6 +120,7 @@ org.apache.hadoop.oncrpc.security
 org.apache.hadoop.portmap
 org.apache.hadoop.record
 org.apache.hadoop.security
+org.apache.hadoop.security.alias
 org.apache.hadoop.security.authentication.client
 org.apache.hadoop.security.authentication.examples
 org.apache.hadoop.security.authentication.server
