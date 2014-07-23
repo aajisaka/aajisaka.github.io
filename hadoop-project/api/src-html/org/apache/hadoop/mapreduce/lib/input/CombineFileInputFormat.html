@@ -587,7 +587,7 @@
 <span class="sourceLineNo">579</span>        blocks = new OneBlockInfo[0];<a name="line.579"></a>
 <span class="sourceLineNo">580</span>      } else {<a name="line.580"></a>
 <span class="sourceLineNo">581</span><a name="line.581"></a>
-<span class="sourceLineNo">582</span>        if(locations.length == 0) {<a name="line.582"></a>
+<span class="sourceLineNo">582</span>        if(locations.length == 0 &amp;&amp; !stat.isDirectory()) {<a name="line.582"></a>
 <span class="sourceLineNo">583</span>          locations = new BlockLocation[] { new BlockLocation() };<a name="line.583"></a>
 <span class="sourceLineNo">584</span>        }<a name="line.584"></a>
 <span class="sourceLineNo">585</span><a name="line.585"></a>
