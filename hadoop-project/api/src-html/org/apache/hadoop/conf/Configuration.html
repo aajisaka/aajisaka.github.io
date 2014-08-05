@@ -1852,890 +1852,956 @@
 <span class="sourceLineNo">1844</span>  }<a name="line.1844"></a>
 <span class="sourceLineNo">1845</span><a name="line.1845"></a>
 <span class="sourceLineNo">1846</span>  /**<a name="line.1846"></a>
-<span class="sourceLineNo">1847</span>   * Get the socket address for &lt;code&gt;name&lt;/code&gt; property as a<a name="line.1847"></a>
-<span class="sourceLineNo">1848</span>   * &lt;code&gt;InetSocketAddress&lt;/code&gt;.<a name="line.1848"></a>
-<span class="sourceLineNo">1849</span>   * @param name property name.<a name="line.1849"></a>
-<span class="sourceLineNo">1850</span>   * @param defaultAddress the default value<a name="line.1850"></a>
-<span class="sourceLineNo">1851</span>   * @param defaultPort the default port<a name="line.1851"></a>
-<span class="sourceLineNo">1852</span>   * @return InetSocketAddress<a name="line.1852"></a>
-<span class="sourceLineNo">1853</span>   */<a name="line.1853"></a>
-<span class="sourceLineNo">1854</span>  public InetSocketAddress getSocketAddr(<a name="line.1854"></a>
-<span class="sourceLineNo">1855</span>      String name, String defaultAddress, int defaultPort) {<a name="line.1855"></a>
-<span class="sourceLineNo">1856</span>    final String address = get(name, defaultAddress);<a name="line.1856"></a>
-<span class="sourceLineNo">1857</span>    return NetUtils.createSocketAddr(address, defaultPort, name);<a name="line.1857"></a>
-<span class="sourceLineNo">1858</span>  }<a name="line.1858"></a>
-<span class="sourceLineNo">1859</span><a name="line.1859"></a>
-<span class="sourceLineNo">1860</span>  /**<a name="line.1860"></a>
-<span class="sourceLineNo">1861</span>   * Set the socket address for the &lt;code&gt;name&lt;/code&gt; property as<a name="line.1861"></a>
-<span class="sourceLineNo">1862</span>   * a &lt;code&gt;host:port&lt;/code&gt;.<a name="line.1862"></a>
-<span class="sourceLineNo">1863</span>   */<a name="line.1863"></a>
-<span class="sourceLineNo">1864</span>  public void setSocketAddr(String name, InetSocketAddress addr) {<a name="line.1864"></a>
-<span class="sourceLineNo">1865</span>    set(name, NetUtils.getHostPortString(addr));<a name="line.1865"></a>
-<span class="sourceLineNo">1866</span>  }<a name="line.1866"></a>
-<span class="sourceLineNo">1867</span>  <a name="line.1867"></a>
-<span class="sourceLineNo">1868</span>  /**<a name="line.1868"></a>
-<span class="sourceLineNo">1869</span>   * Set the socket address a client can use to connect for the<a name="line.1869"></a>
-<span class="sourceLineNo">1870</span>   * &lt;code&gt;name&lt;/code&gt; property as a &lt;code&gt;host:port&lt;/code&gt;.  The wildcard<a name="line.1870"></a>
-<span class="sourceLineNo">1871</span>   * address is replaced with the local host's address.<a name="line.1871"></a>
-<span class="sourceLineNo">1872</span>   * @param name property name.<a name="line.1872"></a>
-<span class="sourceLineNo">1873</span>   * @param addr InetSocketAddress of a listener to store in the given property<a name="line.1873"></a>
-<span class="sourceLineNo">1874</span>   * @return InetSocketAddress for clients to connect<a name="line.1874"></a>
-<span class="sourceLineNo">1875</span>   */<a name="line.1875"></a>
-<span class="sourceLineNo">1876</span>  public InetSocketAddress updateConnectAddr(String name,<a name="line.1876"></a>
-<span class="sourceLineNo">1877</span>                                             InetSocketAddress addr) {<a name="line.1877"></a>
-<span class="sourceLineNo">1878</span>    final InetSocketAddress connectAddr = NetUtils.getConnectAddress(addr);<a name="line.1878"></a>
-<span class="sourceLineNo">1879</span>    setSocketAddr(name, connectAddr);<a name="line.1879"></a>
-<span class="sourceLineNo">1880</span>    return connectAddr;<a name="line.1880"></a>
-<span class="sourceLineNo">1881</span>  }<a name="line.1881"></a>
-<span class="sourceLineNo">1882</span>  <a name="line.1882"></a>
-<span class="sourceLineNo">1883</span>  /**<a name="line.1883"></a>
-<span class="sourceLineNo">1884</span>   * Load a class by name.<a name="line.1884"></a>
-<span class="sourceLineNo">1885</span>   * <a name="line.1885"></a>
-<span class="sourceLineNo">1886</span>   * @param name the class name.<a name="line.1886"></a>
-<span class="sourceLineNo">1887</span>   * @return the class object.<a name="line.1887"></a>
-<span class="sourceLineNo">1888</span>   * @throws ClassNotFoundException if the class is not found.<a name="line.1888"></a>
-<span class="sourceLineNo">1889</span>   */<a name="line.1889"></a>
-<span class="sourceLineNo">1890</span>  public Class&lt;?&gt; getClassByName(String name) throws ClassNotFoundException {<a name="line.1890"></a>
-<span class="sourceLineNo">1891</span>    Class&lt;?&gt; ret = getClassByNameOrNull(name);<a name="line.1891"></a>
-<span class="sourceLineNo">1892</span>    if (ret == null) {<a name="line.1892"></a>
-<span class="sourceLineNo">1893</span>      throw new ClassNotFoundException("Class " + name + " not found");<a name="line.1893"></a>
-<span class="sourceLineNo">1894</span>    }<a name="line.1894"></a>
-<span class="sourceLineNo">1895</span>    return ret;<a name="line.1895"></a>
-<span class="sourceLineNo">1896</span>  }<a name="line.1896"></a>
-<span class="sourceLineNo">1897</span>  <a name="line.1897"></a>
-<span class="sourceLineNo">1898</span>  /**<a name="line.1898"></a>
-<span class="sourceLineNo">1899</span>   * Load a class by name, returning null rather than throwing an exception<a name="line.1899"></a>
-<span class="sourceLineNo">1900</span>   * if it couldn't be loaded. This is to avoid the overhead of creating<a name="line.1900"></a>
-<span class="sourceLineNo">1901</span>   * an exception.<a name="line.1901"></a>
-<span class="sourceLineNo">1902</span>   * <a name="line.1902"></a>
-<span class="sourceLineNo">1903</span>   * @param name the class name<a name="line.1903"></a>
-<span class="sourceLineNo">1904</span>   * @return the class object, or null if it could not be found.<a name="line.1904"></a>
-<span class="sourceLineNo">1905</span>   */<a name="line.1905"></a>
-<span class="sourceLineNo">1906</span>  public Class&lt;?&gt; getClassByNameOrNull(String name) {<a name="line.1906"></a>
-<span class="sourceLineNo">1907</span>    Map&lt;String, WeakReference&lt;Class&lt;?&gt;&gt;&gt; map;<a name="line.1907"></a>
-<span class="sourceLineNo">1908</span>    <a name="line.1908"></a>
-<span class="sourceLineNo">1909</span>    synchronized (CACHE_CLASSES) {<a name="line.1909"></a>
-<span class="sourceLineNo">1910</span>      map = CACHE_CLASSES.get(classLoader);<a name="line.1910"></a>
-<span class="sourceLineNo">1911</span>      if (map == null) {<a name="line.1911"></a>
-<span class="sourceLineNo">1912</span>        map = Collections.synchronizedMap(<a name="line.1912"></a>
-<span class="sourceLineNo">1913</span>          new WeakHashMap&lt;String, WeakReference&lt;Class&lt;?&gt;&gt;&gt;());<a name="line.1913"></a>
-<span class="sourceLineNo">1914</span>        CACHE_CLASSES.put(classLoader, map);<a name="line.1914"></a>
-<span class="sourceLineNo">1915</span>      }<a name="line.1915"></a>
-<span class="sourceLineNo">1916</span>    }<a name="line.1916"></a>
-<span class="sourceLineNo">1917</span><a name="line.1917"></a>
-<span class="sourceLineNo">1918</span>    Class&lt;?&gt; clazz = null;<a name="line.1918"></a>
-<span class="sourceLineNo">1919</span>    WeakReference&lt;Class&lt;?&gt;&gt; ref = map.get(name); <a name="line.1919"></a>
-<span class="sourceLineNo">1920</span>    if (ref != null) {<a name="line.1920"></a>
-<span class="sourceLineNo">1921</span>       clazz = ref.get();<a name="line.1921"></a>
-<span class="sourceLineNo">1922</span>    }<a name="line.1922"></a>
-<span class="sourceLineNo">1923</span>     <a name="line.1923"></a>
-<span class="sourceLineNo">1924</span>    if (clazz == null) {<a name="line.1924"></a>
-<span class="sourceLineNo">1925</span>      try {<a name="line.1925"></a>
-<span class="sourceLineNo">1926</span>        clazz = Class.forName(name, true, classLoader);<a name="line.1926"></a>
-<span class="sourceLineNo">1927</span>      } catch (ClassNotFoundException e) {<a name="line.1927"></a>
-<span class="sourceLineNo">1928</span>        // Leave a marker that the class isn't found<a name="line.1928"></a>
-<span class="sourceLineNo">1929</span>        map.put(name, new WeakReference&lt;Class&lt;?&gt;&gt;(NEGATIVE_CACHE_SENTINEL));<a name="line.1929"></a>
-<span class="sourceLineNo">1930</span>        return null;<a name="line.1930"></a>
-<span class="sourceLineNo">1931</span>      }<a name="line.1931"></a>
-<span class="sourceLineNo">1932</span>      // two putters can race here, but they'll put the same class<a name="line.1932"></a>
-<span class="sourceLineNo">1933</span>      map.put(name, new WeakReference&lt;Class&lt;?&gt;&gt;(clazz));<a name="line.1933"></a>
-<span class="sourceLineNo">1934</span>      return clazz;<a name="line.1934"></a>
-<span class="sourceLineNo">1935</span>    } else if (clazz == NEGATIVE_CACHE_SENTINEL) {<a name="line.1935"></a>
-<span class="sourceLineNo">1936</span>      return null; // not found<a name="line.1936"></a>
-<span class="sourceLineNo">1937</span>    } else {<a name="line.1937"></a>
-<span class="sourceLineNo">1938</span>      // cache hit<a name="line.1938"></a>
-<span class="sourceLineNo">1939</span>      return clazz;<a name="line.1939"></a>
-<span class="sourceLineNo">1940</span>    }<a name="line.1940"></a>
-<span class="sourceLineNo">1941</span>  }<a name="line.1941"></a>
-<span class="sourceLineNo">1942</span><a name="line.1942"></a>
-<span class="sourceLineNo">1943</span>  /** <a name="line.1943"></a>
-<span class="sourceLineNo">1944</span>   * Get the value of the &lt;code&gt;name&lt;/code&gt; property<a name="line.1944"></a>
-<span class="sourceLineNo">1945</span>   * as an array of &lt;code&gt;Class&lt;/code&gt;.<a name="line.1945"></a>
-<span class="sourceLineNo">1946</span>   * The value of the property specifies a list of comma separated class names.  <a name="line.1946"></a>
-<span class="sourceLineNo">1947</span>   * If no such property is specified, then &lt;code&gt;defaultValue&lt;/code&gt; is <a name="line.1947"></a>
-<span class="sourceLineNo">1948</span>   * returned.<a name="line.1948"></a>
-<span class="sourceLineNo">1949</span>   * <a name="line.1949"></a>
-<span class="sourceLineNo">1950</span>   * @param name the property name.<a name="line.1950"></a>
-<span class="sourceLineNo">1951</span>   * @param defaultValue default value.<a name="line.1951"></a>
-<span class="sourceLineNo">1952</span>   * @return property value as a &lt;code&gt;Class[]&lt;/code&gt;, <a name="line.1952"></a>
-<span class="sourceLineNo">1953</span>   *         or &lt;code&gt;defaultValue&lt;/code&gt;. <a name="line.1953"></a>
-<span class="sourceLineNo">1954</span>   */<a name="line.1954"></a>
-<span class="sourceLineNo">1955</span>  public Class&lt;?&gt;[] getClasses(String name, Class&lt;?&gt; ... defaultValue) {<a name="line.1955"></a>
-<span class="sourceLineNo">1956</span>    String valueString = getRaw(name);<a name="line.1956"></a>
-<span class="sourceLineNo">1957</span>    if (null == valueString) {<a name="line.1957"></a>
-<span class="sourceLineNo">1958</span>      return defaultValue;<a name="line.1958"></a>
-<span class="sourceLineNo">1959</span>    }<a name="line.1959"></a>
-<span class="sourceLineNo">1960</span>    String[] classnames = getTrimmedStrings(name);<a name="line.1960"></a>
-<span class="sourceLineNo">1961</span>    try {<a name="line.1961"></a>
-<span class="sourceLineNo">1962</span>      Class&lt;?&gt;[] classes = new Class&lt;?&gt;[classnames.length];<a name="line.1962"></a>
-<span class="sourceLineNo">1963</span>      for(int i = 0; i &lt; classnames.length; i++) {<a name="line.1963"></a>
-<span class="sourceLineNo">1964</span>        classes[i] = getClassByName(classnames[i]);<a name="line.1964"></a>
-<span class="sourceLineNo">1965</span>      }<a name="line.1965"></a>
-<span class="sourceLineNo">1966</span>      return classes;<a name="line.1966"></a>
-<span class="sourceLineNo">1967</span>    } catch (ClassNotFoundException e) {<a name="line.1967"></a>
-<span class="sourceLineNo">1968</span>      throw new RuntimeException(e);<a name="line.1968"></a>
-<span class="sourceLineNo">1969</span>    }<a name="line.1969"></a>
-<span class="sourceLineNo">1970</span>  }<a name="line.1970"></a>
-<span class="sourceLineNo">1971</span><a name="line.1971"></a>
-<span class="sourceLineNo">1972</span>  /** <a name="line.1972"></a>
-<span class="sourceLineNo">1973</span>   * Get the value of the &lt;code&gt;name&lt;/code&gt; property as a &lt;code&gt;Class&lt;/code&gt;.  <a name="line.1973"></a>
-<span class="sourceLineNo">1974</span>   * If no such property is specified, then &lt;code&gt;defaultValue&lt;/code&gt; is <a name="line.1974"></a>
-<span class="sourceLineNo">1975</span>   * returned.<a name="line.1975"></a>
-<span class="sourceLineNo">1976</span>   * <a name="line.1976"></a>
-<span class="sourceLineNo">1977</span>   * @param name the class name.<a name="line.1977"></a>
-<span class="sourceLineNo">1978</span>   * @param defaultValue default value.<a name="line.1978"></a>
-<span class="sourceLineNo">1979</span>   * @return property value as a &lt;code&gt;Class&lt;/code&gt;, <a name="line.1979"></a>
-<span class="sourceLineNo">1980</span>   *         or &lt;code&gt;defaultValue&lt;/code&gt;. <a name="line.1980"></a>
-<span class="sourceLineNo">1981</span>   */<a name="line.1981"></a>
-<span class="sourceLineNo">1982</span>  public Class&lt;?&gt; getClass(String name, Class&lt;?&gt; defaultValue) {<a name="line.1982"></a>
-<span class="sourceLineNo">1983</span>    String valueString = getTrimmed(name);<a name="line.1983"></a>
-<span class="sourceLineNo">1984</span>    if (valueString == null)<a name="line.1984"></a>
-<span class="sourceLineNo">1985</span>      return defaultValue;<a name="line.1985"></a>
-<span class="sourceLineNo">1986</span>    try {<a name="line.1986"></a>
-<span class="sourceLineNo">1987</span>      return getClassByName(valueString);<a name="line.1987"></a>
-<span class="sourceLineNo">1988</span>    } catch (ClassNotFoundException e) {<a name="line.1988"></a>
-<span class="sourceLineNo">1989</span>      throw new RuntimeException(e);<a name="line.1989"></a>
-<span class="sourceLineNo">1990</span>    }<a name="line.1990"></a>
-<span class="sourceLineNo">1991</span>  }<a name="line.1991"></a>
-<span class="sourceLineNo">1992</span><a name="line.1992"></a>
-<span class="sourceLineNo">1993</span>  /** <a name="line.1993"></a>
-<span class="sourceLineNo">1994</span>   * Get the value of the &lt;code&gt;name&lt;/code&gt; property as a &lt;code&gt;Class&lt;/code&gt;<a name="line.1994"></a>
-<span class="sourceLineNo">1995</span>   * implementing the interface specified by &lt;code&gt;xface&lt;/code&gt;.<a name="line.1995"></a>
-<span class="sourceLineNo">1996</span>   *   <a name="line.1996"></a>
-<span class="sourceLineNo">1997</span>   * If no such property is specified, then &lt;code&gt;defaultValue&lt;/code&gt; is <a name="line.1997"></a>
-<span class="sourceLineNo">1998</span>   * returned.<a name="line.1998"></a>
-<span class="sourceLineNo">1999</span>   * <a name="line.1999"></a>
-<span class="sourceLineNo">2000</span>   * An exception is thrown if the returned class does not implement the named<a name="line.2000"></a>
-<span class="sourceLineNo">2001</span>   * interface. <a name="line.2001"></a>
-<span class="sourceLineNo">2002</span>   * <a name="line.2002"></a>
-<span class="sourceLineNo">2003</span>   * @param name the class name.<a name="line.2003"></a>
-<span class="sourceLineNo">2004</span>   * @param defaultValue default value.<a name="line.2004"></a>
-<span class="sourceLineNo">2005</span>   * @param xface the interface implemented by the named class.<a name="line.2005"></a>
-<span class="sourceLineNo">2006</span>   * @return property value as a &lt;code&gt;Class&lt;/code&gt;, <a name="line.2006"></a>
-<span class="sourceLineNo">2007</span>   *         or &lt;code&gt;defaultValue&lt;/code&gt;.<a name="line.2007"></a>
-<span class="sourceLineNo">2008</span>   */<a name="line.2008"></a>
-<span class="sourceLineNo">2009</span>  public &lt;U&gt; Class&lt;? extends U&gt; getClass(String name, <a name="line.2009"></a>
-<span class="sourceLineNo">2010</span>                                         Class&lt;? extends U&gt; defaultValue, <a name="line.2010"></a>
-<span class="sourceLineNo">2011</span>                                         Class&lt;U&gt; xface) {<a name="line.2011"></a>
-<span class="sourceLineNo">2012</span>    try {<a name="line.2012"></a>
-<span class="sourceLineNo">2013</span>      Class&lt;?&gt; theClass = getClass(name, defaultValue);<a name="line.2013"></a>
-<span class="sourceLineNo">2014</span>      if (theClass != null &amp;&amp; !xface.isAssignableFrom(theClass))<a name="line.2014"></a>
-<span class="sourceLineNo">2015</span>        throw new RuntimeException(theClass+" not "+xface.getName());<a name="line.2015"></a>
-<span class="sourceLineNo">2016</span>      else if (theClass != null)<a name="line.2016"></a>
-<span class="sourceLineNo">2017</span>        return theClass.asSubclass(xface);<a name="line.2017"></a>
-<span class="sourceLineNo">2018</span>      else<a name="line.2018"></a>
-<span class="sourceLineNo">2019</span>        return null;<a name="line.2019"></a>
-<span class="sourceLineNo">2020</span>    } catch (Exception e) {<a name="line.2020"></a>
-<span class="sourceLineNo">2021</span>      throw new RuntimeException(e);<a name="line.2021"></a>
-<span class="sourceLineNo">2022</span>    }<a name="line.2022"></a>
-<span class="sourceLineNo">2023</span>  }<a name="line.2023"></a>
-<span class="sourceLineNo">2024</span><a name="line.2024"></a>
-<span class="sourceLineNo">2025</span>  /**<a name="line.2025"></a>
-<span class="sourceLineNo">2026</span>   * Get the value of the &lt;code&gt;name&lt;/code&gt; property as a &lt;code&gt;List&lt;/code&gt;<a name="line.2026"></a>
-<span class="sourceLineNo">2027</span>   * of objects implementing the interface specified by &lt;code&gt;xface&lt;/code&gt;.<a name="line.2027"></a>
-<span class="sourceLineNo">2028</span>   * <a name="line.2028"></a>
-<span class="sourceLineNo">2029</span>   * An exception is thrown if any of the classes does not exist, or if it does<a name="line.2029"></a>
-<span class="sourceLineNo">2030</span>   * not implement the named interface.<a name="line.2030"></a>
-<span class="sourceLineNo">2031</span>   * <a name="line.2031"></a>
-<span class="sourceLineNo">2032</span>   * @param name the property name.<a name="line.2032"></a>
-<span class="sourceLineNo">2033</span>   * @param xface the interface implemented by the classes named by<a name="line.2033"></a>
-<span class="sourceLineNo">2034</span>   *        &lt;code&gt;name&lt;/code&gt;.<a name="line.2034"></a>
-<span class="sourceLineNo">2035</span>   * @return a &lt;code&gt;List&lt;/code&gt; of objects implementing &lt;code&gt;xface&lt;/code&gt;.<a name="line.2035"></a>
-<span class="sourceLineNo">2036</span>   */<a name="line.2036"></a>
-<span class="sourceLineNo">2037</span>  @SuppressWarnings("unchecked")<a name="line.2037"></a>
-<span class="sourceLineNo">2038</span>  public &lt;U&gt; List&lt;U&gt; getInstances(String name, Class&lt;U&gt; xface) {<a name="line.2038"></a>
-<span class="sourceLineNo">2039</span>    List&lt;U&gt; ret = new ArrayList&lt;U&gt;();<a name="line.2039"></a>
-<span class="sourceLineNo">2040</span>    Class&lt;?&gt;[] classes = getClasses(name);<a name="line.2040"></a>
-<span class="sourceLineNo">2041</span>    for (Class&lt;?&gt; cl: classes) {<a name="line.2041"></a>
-<span class="sourceLineNo">2042</span>      if (!xface.isAssignableFrom(cl)) {<a name="line.2042"></a>
-<span class="sourceLineNo">2043</span>        throw new RuntimeException(cl + " does not implement " + xface);<a name="line.2043"></a>
-<span class="sourceLineNo">2044</span>      }<a name="line.2044"></a>
-<span class="sourceLineNo">2045</span>      ret.add((U)ReflectionUtils.newInstance(cl, this));<a name="line.2045"></a>
-<span class="sourceLineNo">2046</span>    }<a name="line.2046"></a>
-<span class="sourceLineNo">2047</span>    return ret;<a name="line.2047"></a>
-<span class="sourceLineNo">2048</span>  }<a name="line.2048"></a>
-<span class="sourceLineNo">2049</span><a name="line.2049"></a>
-<span class="sourceLineNo">2050</span>  /** <a name="line.2050"></a>
-<span class="sourceLineNo">2051</span>   * Set the value of the &lt;code&gt;name&lt;/code&gt; property to the name of a <a name="line.2051"></a>
-<span class="sourceLineNo">2052</span>   * &lt;code&gt;theClass&lt;/code&gt; implementing the given interface &lt;code&gt;xface&lt;/code&gt;.<a name="line.2052"></a>
-<span class="sourceLineNo">2053</span>   * <a name="line.2053"></a>
-<span class="sourceLineNo">2054</span>   * An exception is thrown if &lt;code&gt;theClass&lt;/code&gt; does not implement the <a name="line.2054"></a>
-<span class="sourceLineNo">2055</span>   * interface &lt;code&gt;xface&lt;/code&gt;. <a name="line.2055"></a>
-<span class="sourceLineNo">2056</span>   * <a name="line.2056"></a>
-<span class="sourceLineNo">2057</span>   * @param name property name.<a name="line.2057"></a>
-<span class="sourceLineNo">2058</span>   * @param theClass property value.<a name="line.2058"></a>
-<span class="sourceLineNo">2059</span>   * @param xface the interface implemented by the named class.<a name="line.2059"></a>
-<span class="sourceLineNo">2060</span>   */<a name="line.2060"></a>
-<span class="sourceLineNo">2061</span>  public void setClass(String name, Class&lt;?&gt; theClass, Class&lt;?&gt; xface) {<a name="line.2061"></a>
-<span class="sourceLineNo">2062</span>    if (!xface.isAssignableFrom(theClass))<a name="line.2062"></a>
-<span class="sourceLineNo">2063</span>      throw new RuntimeException(theClass+" not "+xface.getName());<a name="line.2063"></a>
-<span class="sourceLineNo">2064</span>    set(name, theClass.getName());<a name="line.2064"></a>
-<span class="sourceLineNo">2065</span>  }<a name="line.2065"></a>
-<span class="sourceLineNo">2066</span><a name="line.2066"></a>
-<span class="sourceLineNo">2067</span>  /** <a name="line.2067"></a>
-<span class="sourceLineNo">2068</span>   * Get a local file under a directory named by &lt;i&gt;dirsProp&lt;/i&gt; with<a name="line.2068"></a>
-<span class="sourceLineNo">2069</span>   * the given &lt;i&gt;path&lt;/i&gt;.  If &lt;i&gt;dirsProp&lt;/i&gt; contains multiple directories,<a name="line.2069"></a>
-<span class="sourceLineNo">2070</span>   * then one is chosen based on &lt;i&gt;path&lt;/i&gt;'s hash code.  If the selected<a name="line.2070"></a>
-<span class="sourceLineNo">2071</span>   * directory does not exist, an attempt is made to create it.<a name="line.2071"></a>
-<span class="sourceLineNo">2072</span>   * <a name="line.2072"></a>
-<span class="sourceLineNo">2073</span>   * @param dirsProp directory in which to locate the file.<a name="line.2073"></a>
-<span class="sourceLineNo">2074</span>   * @param path file-path.<a name="line.2074"></a>
-<span class="sourceLineNo">2075</span>   * @return local file under the directory with the given path.<a name="line.2075"></a>
-<span class="sourceLineNo">2076</span>   */<a name="line.2076"></a>
-<span class="sourceLineNo">2077</span>  public Path getLocalPath(String dirsProp, String path)<a name="line.2077"></a>
-<span class="sourceLineNo">2078</span>    throws IOException {<a name="line.2078"></a>
-<span class="sourceLineNo">2079</span>    String[] dirs = getTrimmedStrings(dirsProp);<a name="line.2079"></a>
-<span class="sourceLineNo">2080</span>    int hashCode = path.hashCode();<a name="line.2080"></a>
-<span class="sourceLineNo">2081</span>    FileSystem fs = FileSystem.getLocal(this);<a name="line.2081"></a>
-<span class="sourceLineNo">2082</span>    for (int i = 0; i &lt; dirs.length; i++) {  // try each local dir<a name="line.2082"></a>
-<span class="sourceLineNo">2083</span>      int index = (hashCode+i &amp; Integer.MAX_VALUE) % dirs.length;<a name="line.2083"></a>
-<span class="sourceLineNo">2084</span>      Path file = new Path(dirs[index], path);<a name="line.2084"></a>
-<span class="sourceLineNo">2085</span>      Path dir = file.getParent();<a name="line.2085"></a>
-<span class="sourceLineNo">2086</span>      if (fs.mkdirs(dir) || fs.exists(dir)) {<a name="line.2086"></a>
-<span class="sourceLineNo">2087</span>        return file;<a name="line.2087"></a>
-<span class="sourceLineNo">2088</span>      }<a name="line.2088"></a>
-<span class="sourceLineNo">2089</span>    }<a name="line.2089"></a>
-<span class="sourceLineNo">2090</span>    LOG.warn("Could not make " + path + <a name="line.2090"></a>
-<span class="sourceLineNo">2091</span>             " in local directories from " + dirsProp);<a name="line.2091"></a>
-<span class="sourceLineNo">2092</span>    for(int i=0; i &lt; dirs.length; i++) {<a name="line.2092"></a>
-<span class="sourceLineNo">2093</span>      int index = (hashCode+i &amp; Integer.MAX_VALUE) % dirs.length;<a name="line.2093"></a>
-<span class="sourceLineNo">2094</span>      LOG.warn(dirsProp + "[" + index + "]=" + dirs[index]);<a name="line.2094"></a>
-<span class="sourceLineNo">2095</span>    }<a name="line.2095"></a>
-<span class="sourceLineNo">2096</span>    throw new IOException("No valid local directories in property: "+dirsProp);<a name="line.2096"></a>
-<span class="sourceLineNo">2097</span>  }<a name="line.2097"></a>
-<span class="sourceLineNo">2098</span><a name="line.2098"></a>
-<span class="sourceLineNo">2099</span>  /** <a name="line.2099"></a>
-<span class="sourceLineNo">2100</span>   * Get a local file name under a directory named in &lt;i&gt;dirsProp&lt;/i&gt; with<a name="line.2100"></a>
-<span class="sourceLineNo">2101</span>   * the given &lt;i&gt;path&lt;/i&gt;.  If &lt;i&gt;dirsProp&lt;/i&gt; contains multiple directories,<a name="line.2101"></a>
-<span class="sourceLineNo">2102</span>   * then one is chosen based on &lt;i&gt;path&lt;/i&gt;'s hash code.  If the selected<a name="line.2102"></a>
-<span class="sourceLineNo">2103</span>   * directory does not exist, an attempt is made to create it.<a name="line.2103"></a>
-<span class="sourceLineNo">2104</span>   * <a name="line.2104"></a>
-<span class="sourceLineNo">2105</span>   * @param dirsProp directory in which to locate the file.<a name="line.2105"></a>
-<span class="sourceLineNo">2106</span>   * @param path file-path.<a name="line.2106"></a>
-<span class="sourceLineNo">2107</span>   * @return local file under the directory with the given path.<a name="line.2107"></a>
-<span class="sourceLineNo">2108</span>   */<a name="line.2108"></a>
-<span class="sourceLineNo">2109</span>  public File getFile(String dirsProp, String path)<a name="line.2109"></a>
-<span class="sourceLineNo">2110</span>    throws IOException {<a name="line.2110"></a>
-<span class="sourceLineNo">2111</span>    String[] dirs = getTrimmedStrings(dirsProp);<a name="line.2111"></a>
-<span class="sourceLineNo">2112</span>    int hashCode = path.hashCode();<a name="line.2112"></a>
-<span class="sourceLineNo">2113</span>    for (int i = 0; i &lt; dirs.length; i++) {  // try each local dir<a name="line.2113"></a>
-<span class="sourceLineNo">2114</span>      int index = (hashCode+i &amp; Integer.MAX_VALUE) % dirs.length;<a name="line.2114"></a>
-<span class="sourceLineNo">2115</span>      File file = new File(dirs[index], path);<a name="line.2115"></a>
-<span class="sourceLineNo">2116</span>      File dir = file.getParentFile();<a name="line.2116"></a>
-<span class="sourceLineNo">2117</span>      if (dir.exists() || dir.mkdirs()) {<a name="line.2117"></a>
-<span class="sourceLineNo">2118</span>        return file;<a name="line.2118"></a>
-<span class="sourceLineNo">2119</span>      }<a name="line.2119"></a>
-<span class="sourceLineNo">2120</span>    }<a name="line.2120"></a>
-<span class="sourceLineNo">2121</span>    throw new IOException("No valid local directories in property: "+dirsProp);<a name="line.2121"></a>
-<span class="sourceLineNo">2122</span>  }<a name="line.2122"></a>
-<span class="sourceLineNo">2123</span><a name="line.2123"></a>
-<span class="sourceLineNo">2124</span>  /** <a name="line.2124"></a>
-<span class="sourceLineNo">2125</span>   * Get the {@link URL} for the named resource.<a name="line.2125"></a>
-<span class="sourceLineNo">2126</span>   * <a name="line.2126"></a>
-<span class="sourceLineNo">2127</span>   * @param name resource name.<a name="line.2127"></a>
-<span class="sourceLineNo">2128</span>   * @return the url for the named resource.<a name="line.2128"></a>
-<span class="sourceLineNo">2129</span>   */<a name="line.2129"></a>
-<span class="sourceLineNo">2130</span>  public URL getResource(String name) {<a name="line.2130"></a>
-<span class="sourceLineNo">2131</span>    return classLoader.getResource(name);<a name="line.2131"></a>
-<span class="sourceLineNo">2132</span>  }<a name="line.2132"></a>
-<span class="sourceLineNo">2133</span>  <a name="line.2133"></a>
-<span class="sourceLineNo">2134</span>  /** <a name="line.2134"></a>
-<span class="sourceLineNo">2135</span>   * Get an input stream attached to the configuration resource with the<a name="line.2135"></a>
-<span class="sourceLineNo">2136</span>   * given &lt;code&gt;name&lt;/code&gt;.<a name="line.2136"></a>
-<span class="sourceLineNo">2137</span>   * <a name="line.2137"></a>
-<span class="sourceLineNo">2138</span>   * @param name configuration resource name.<a name="line.2138"></a>
-<span class="sourceLineNo">2139</span>   * @return an input stream attached to the resource.<a name="line.2139"></a>
-<span class="sourceLineNo">2140</span>   */<a name="line.2140"></a>
-<span class="sourceLineNo">2141</span>  public InputStream getConfResourceAsInputStream(String name) {<a name="line.2141"></a>
-<span class="sourceLineNo">2142</span>    try {<a name="line.2142"></a>
-<span class="sourceLineNo">2143</span>      URL url= getResource(name);<a name="line.2143"></a>
-<span class="sourceLineNo">2144</span><a name="line.2144"></a>
-<span class="sourceLineNo">2145</span>      if (url == null) {<a name="line.2145"></a>
-<span class="sourceLineNo">2146</span>        LOG.info(name + " not found");<a name="line.2146"></a>
-<span class="sourceLineNo">2147</span>        return null;<a name="line.2147"></a>
-<span class="sourceLineNo">2148</span>      } else {<a name="line.2148"></a>
-<span class="sourceLineNo">2149</span>        LOG.info("found resource " + name + " at " + url);<a name="line.2149"></a>
-<span class="sourceLineNo">2150</span>      }<a name="line.2150"></a>
-<span class="sourceLineNo">2151</span><a name="line.2151"></a>
-<span class="sourceLineNo">2152</span>      return url.openStream();<a name="line.2152"></a>
-<span class="sourceLineNo">2153</span>    } catch (Exception e) {<a name="line.2153"></a>
-<span class="sourceLineNo">2154</span>      return null;<a name="line.2154"></a>
+<span class="sourceLineNo">1847</span>   * Get the socket address for &lt;code&gt;hostProperty&lt;/code&gt; as a<a name="line.1847"></a>
+<span class="sourceLineNo">1848</span>   * &lt;code&gt;InetSocketAddress&lt;/code&gt;. If &lt;code&gt;hostProperty&lt;/code&gt; is<a name="line.1848"></a>
+<span class="sourceLineNo">1849</span>   * &lt;code&gt;null&lt;/code&gt;, &lt;code&gt;addressProperty&lt;/code&gt; will be used. This<a name="line.1849"></a>
+<span class="sourceLineNo">1850</span>   * is useful for cases where we want to differentiate between host<a name="line.1850"></a>
+<span class="sourceLineNo">1851</span>   * bind address and address clients should use to establish connection.<a name="line.1851"></a>
+<span class="sourceLineNo">1852</span>   *<a name="line.1852"></a>
+<span class="sourceLineNo">1853</span>   * @param hostProperty bind host property name.<a name="line.1853"></a>
+<span class="sourceLineNo">1854</span>   * @param addressProperty address property name.<a name="line.1854"></a>
+<span class="sourceLineNo">1855</span>   * @param defaultAddressValue the default value<a name="line.1855"></a>
+<span class="sourceLineNo">1856</span>   * @param defaultPort the default port<a name="line.1856"></a>
+<span class="sourceLineNo">1857</span>   * @return InetSocketAddress<a name="line.1857"></a>
+<span class="sourceLineNo">1858</span>   */<a name="line.1858"></a>
+<span class="sourceLineNo">1859</span>  public InetSocketAddress getSocketAddr(<a name="line.1859"></a>
+<span class="sourceLineNo">1860</span>      String hostProperty,<a name="line.1860"></a>
+<span class="sourceLineNo">1861</span>      String addressProperty,<a name="line.1861"></a>
+<span class="sourceLineNo">1862</span>      String defaultAddressValue,<a name="line.1862"></a>
+<span class="sourceLineNo">1863</span>      int defaultPort) {<a name="line.1863"></a>
+<span class="sourceLineNo">1864</span><a name="line.1864"></a>
+<span class="sourceLineNo">1865</span>    InetSocketAddress bindAddr = getSocketAddr(<a name="line.1865"></a>
+<span class="sourceLineNo">1866</span>      addressProperty, defaultAddressValue, defaultPort);<a name="line.1866"></a>
+<span class="sourceLineNo">1867</span><a name="line.1867"></a>
+<span class="sourceLineNo">1868</span>    final String host = get(hostProperty);<a name="line.1868"></a>
+<span class="sourceLineNo">1869</span><a name="line.1869"></a>
+<span class="sourceLineNo">1870</span>    if (host == null || host.isEmpty()) {<a name="line.1870"></a>
+<span class="sourceLineNo">1871</span>      return bindAddr;<a name="line.1871"></a>
+<span class="sourceLineNo">1872</span>    }<a name="line.1872"></a>
+<span class="sourceLineNo">1873</span><a name="line.1873"></a>
+<span class="sourceLineNo">1874</span>    return NetUtils.createSocketAddr(<a name="line.1874"></a>
+<span class="sourceLineNo">1875</span>        host, bindAddr.getPort(), hostProperty);<a name="line.1875"></a>
+<span class="sourceLineNo">1876</span>  }<a name="line.1876"></a>
+<span class="sourceLineNo">1877</span><a name="line.1877"></a>
+<span class="sourceLineNo">1878</span>  /**<a name="line.1878"></a>
+<span class="sourceLineNo">1879</span>   * Get the socket address for &lt;code&gt;name&lt;/code&gt; property as a<a name="line.1879"></a>
+<span class="sourceLineNo">1880</span>   * &lt;code&gt;InetSocketAddress&lt;/code&gt;.<a name="line.1880"></a>
+<span class="sourceLineNo">1881</span>   * @param name property name.<a name="line.1881"></a>
+<span class="sourceLineNo">1882</span>   * @param defaultAddress the default value<a name="line.1882"></a>
+<span class="sourceLineNo">1883</span>   * @param defaultPort the default port<a name="line.1883"></a>
+<span class="sourceLineNo">1884</span>   * @return InetSocketAddress<a name="line.1884"></a>
+<span class="sourceLineNo">1885</span>   */<a name="line.1885"></a>
+<span class="sourceLineNo">1886</span>  public InetSocketAddress getSocketAddr(<a name="line.1886"></a>
+<span class="sourceLineNo">1887</span>      String name, String defaultAddress, int defaultPort) {<a name="line.1887"></a>
+<span class="sourceLineNo">1888</span>    final String address = get(name, defaultAddress);<a name="line.1888"></a>
+<span class="sourceLineNo">1889</span>    return NetUtils.createSocketAddr(address, defaultPort, name);<a name="line.1889"></a>
+<span class="sourceLineNo">1890</span>  }<a name="line.1890"></a>
+<span class="sourceLineNo">1891</span><a name="line.1891"></a>
+<span class="sourceLineNo">1892</span>  /**<a name="line.1892"></a>
+<span class="sourceLineNo">1893</span>   * Set the socket address for the &lt;code&gt;name&lt;/code&gt; property as<a name="line.1893"></a>
+<span class="sourceLineNo">1894</span>   * a &lt;code&gt;host:port&lt;/code&gt;.<a name="line.1894"></a>
+<span class="sourceLineNo">1895</span>   */<a name="line.1895"></a>
+<span class="sourceLineNo">1896</span>  public void setSocketAddr(String name, InetSocketAddress addr) {<a name="line.1896"></a>
+<span class="sourceLineNo">1897</span>    set(name, NetUtils.getHostPortString(addr));<a name="line.1897"></a>
+<span class="sourceLineNo">1898</span>  }<a name="line.1898"></a>
+<span class="sourceLineNo">1899</span><a name="line.1899"></a>
+<span class="sourceLineNo">1900</span>  /**<a name="line.1900"></a>
+<span class="sourceLineNo">1901</span>   * Set the socket address a client can use to connect for the<a name="line.1901"></a>
+<span class="sourceLineNo">1902</span>   * &lt;code&gt;name&lt;/code&gt; property as a &lt;code&gt;host:port&lt;/code&gt;.  The wildcard<a name="line.1902"></a>
+<span class="sourceLineNo">1903</span>   * address is replaced with the local host's address. If the host and address<a name="line.1903"></a>
+<span class="sourceLineNo">1904</span>   * properties are configured the host component of the address will be combined<a name="line.1904"></a>
+<span class="sourceLineNo">1905</span>   * with the port component of the addr to generate the address.  This is to allow<a name="line.1905"></a>
+<span class="sourceLineNo">1906</span>   * optional control over which host name is used in multi-home bind-host<a name="line.1906"></a>
+<span class="sourceLineNo">1907</span>   * cases where a host can have multiple names<a name="line.1907"></a>
+<span class="sourceLineNo">1908</span>   * @param hostProperty the bind-host configuration name<a name="line.1908"></a>
+<span class="sourceLineNo">1909</span>   * @param addressProperty the service address configuration name<a name="line.1909"></a>
+<span class="sourceLineNo">1910</span>   * @param defaultAddressValue the service default address configuration value<a name="line.1910"></a>
+<span class="sourceLineNo">1911</span>   * @param addr InetSocketAddress of the service listener<a name="line.1911"></a>
+<span class="sourceLineNo">1912</span>   * @return InetSocketAddress for clients to connect<a name="line.1912"></a>
+<span class="sourceLineNo">1913</span>   */<a name="line.1913"></a>
+<span class="sourceLineNo">1914</span>  public InetSocketAddress updateConnectAddr(<a name="line.1914"></a>
+<span class="sourceLineNo">1915</span>      String hostProperty,<a name="line.1915"></a>
+<span class="sourceLineNo">1916</span>      String addressProperty,<a name="line.1916"></a>
+<span class="sourceLineNo">1917</span>      String defaultAddressValue,<a name="line.1917"></a>
+<span class="sourceLineNo">1918</span>      InetSocketAddress addr) {<a name="line.1918"></a>
+<span class="sourceLineNo">1919</span><a name="line.1919"></a>
+<span class="sourceLineNo">1920</span>    final String host = get(hostProperty);<a name="line.1920"></a>
+<span class="sourceLineNo">1921</span>    final String connectHostPort = getTrimmed(addressProperty, defaultAddressValue);<a name="line.1921"></a>
+<span class="sourceLineNo">1922</span><a name="line.1922"></a>
+<span class="sourceLineNo">1923</span>    if (host == null || host.isEmpty() || connectHostPort == null || connectHostPort.isEmpty()) {<a name="line.1923"></a>
+<span class="sourceLineNo">1924</span>      //not our case, fall back to original logic<a name="line.1924"></a>
+<span class="sourceLineNo">1925</span>      return updateConnectAddr(addressProperty, addr);<a name="line.1925"></a>
+<span class="sourceLineNo">1926</span>    }<a name="line.1926"></a>
+<span class="sourceLineNo">1927</span><a name="line.1927"></a>
+<span class="sourceLineNo">1928</span>    final String connectHost = connectHostPort.split(":")[0];<a name="line.1928"></a>
+<span class="sourceLineNo">1929</span>    // Create connect address using client address hostname and server port.<a name="line.1929"></a>
+<span class="sourceLineNo">1930</span>    return updateConnectAddr(addressProperty, NetUtils.createSocketAddrForHost(<a name="line.1930"></a>
+<span class="sourceLineNo">1931</span>        connectHost, addr.getPort()));<a name="line.1931"></a>
+<span class="sourceLineNo">1932</span>  }<a name="line.1932"></a>
+<span class="sourceLineNo">1933</span>  <a name="line.1933"></a>
+<span class="sourceLineNo">1934</span>  /**<a name="line.1934"></a>
+<span class="sourceLineNo">1935</span>   * Set the socket address a client can use to connect for the<a name="line.1935"></a>
+<span class="sourceLineNo">1936</span>   * &lt;code&gt;name&lt;/code&gt; property as a &lt;code&gt;host:port&lt;/code&gt;.  The wildcard<a name="line.1936"></a>
+<span class="sourceLineNo">1937</span>   * address is replaced with the local host's address.<a name="line.1937"></a>
+<span class="sourceLineNo">1938</span>   * @param name property name.<a name="line.1938"></a>
+<span class="sourceLineNo">1939</span>   * @param addr InetSocketAddress of a listener to store in the given property<a name="line.1939"></a>
+<span class="sourceLineNo">1940</span>   * @return InetSocketAddress for clients to connect<a name="line.1940"></a>
+<span class="sourceLineNo">1941</span>   */<a name="line.1941"></a>
+<span class="sourceLineNo">1942</span>  public InetSocketAddress updateConnectAddr(String name,<a name="line.1942"></a>
+<span class="sourceLineNo">1943</span>                                             InetSocketAddress addr) {<a name="line.1943"></a>
+<span class="sourceLineNo">1944</span>    final InetSocketAddress connectAddr = NetUtils.getConnectAddress(addr);<a name="line.1944"></a>
+<span class="sourceLineNo">1945</span>    setSocketAddr(name, connectAddr);<a name="line.1945"></a>
+<span class="sourceLineNo">1946</span>    return connectAddr;<a name="line.1946"></a>
+<span class="sourceLineNo">1947</span>  }<a name="line.1947"></a>
+<span class="sourceLineNo">1948</span>  <a name="line.1948"></a>
+<span class="sourceLineNo">1949</span>  /**<a name="line.1949"></a>
+<span class="sourceLineNo">1950</span>   * Load a class by name.<a name="line.1950"></a>
+<span class="sourceLineNo">1951</span>   * <a name="line.1951"></a>
+<span class="sourceLineNo">1952</span>   * @param name the class name.<a name="line.1952"></a>
+<span class="sourceLineNo">1953</span>   * @return the class object.<a name="line.1953"></a>
+<span class="sourceLineNo">1954</span>   * @throws ClassNotFoundException if the class is not found.<a name="line.1954"></a>
+<span class="sourceLineNo">1955</span>   */<a name="line.1955"></a>
+<span class="sourceLineNo">1956</span>  public Class&lt;?&gt; getClassByName(String name) throws ClassNotFoundException {<a name="line.1956"></a>
+<span class="sourceLineNo">1957</span>    Class&lt;?&gt; ret = getClassByNameOrNull(name);<a name="line.1957"></a>
+<span class="sourceLineNo">1958</span>    if (ret == null) {<a name="line.1958"></a>
+<span class="sourceLineNo">1959</span>      throw new ClassNotFoundException("Class " + name + " not found");<a name="line.1959"></a>
+<span class="sourceLineNo">1960</span>    }<a name="line.1960"></a>
+<span class="sourceLineNo">1961</span>    return ret;<a name="line.1961"></a>
+<span class="sourceLineNo">1962</span>  }<a name="line.1962"></a>
+<span class="sourceLineNo">1963</span>  <a name="line.1963"></a>
+<span class="sourceLineNo">1964</span>  /**<a name="line.1964"></a>
+<span class="sourceLineNo">1965</span>   * Load a class by name, returning null rather than throwing an exception<a name="line.1965"></a>
+<span class="sourceLineNo">1966</span>   * if it couldn't be loaded. This is to avoid the overhead of creating<a name="line.1966"></a>
+<span class="sourceLineNo">1967</span>   * an exception.<a name="line.1967"></a>
+<span class="sourceLineNo">1968</span>   * <a name="line.1968"></a>
+<span class="sourceLineNo">1969</span>   * @param name the class name<a name="line.1969"></a>
+<span class="sourceLineNo">1970</span>   * @return the class object, or null if it could not be found.<a name="line.1970"></a>
+<span class="sourceLineNo">1971</span>   */<a name="line.1971"></a>
+<span class="sourceLineNo">1972</span>  public Class&lt;?&gt; getClassByNameOrNull(String name) {<a name="line.1972"></a>
+<span class="sourceLineNo">1973</span>    Map&lt;String, WeakReference&lt;Class&lt;?&gt;&gt;&gt; map;<a name="line.1973"></a>
+<span class="sourceLineNo">1974</span>    <a name="line.1974"></a>
+<span class="sourceLineNo">1975</span>    synchronized (CACHE_CLASSES) {<a name="line.1975"></a>
+<span class="sourceLineNo">1976</span>      map = CACHE_CLASSES.get(classLoader);<a name="line.1976"></a>
+<span class="sourceLineNo">1977</span>      if (map == null) {<a name="line.1977"></a>
+<span class="sourceLineNo">1978</span>        map = Collections.synchronizedMap(<a name="line.1978"></a>
+<span class="sourceLineNo">1979</span>          new WeakHashMap&lt;String, WeakReference&lt;Class&lt;?&gt;&gt;&gt;());<a name="line.1979"></a>
+<span class="sourceLineNo">1980</span>        CACHE_CLASSES.put(classLoader, map);<a name="line.1980"></a>
+<span class="sourceLineNo">1981</span>      }<a name="line.1981"></a>
+<span class="sourceLineNo">1982</span>    }<a name="line.1982"></a>
+<span class="sourceLineNo">1983</span><a name="line.1983"></a>
+<span class="sourceLineNo">1984</span>    Class&lt;?&gt; clazz = null;<a name="line.1984"></a>
+<span class="sourceLineNo">1985</span>    WeakReference&lt;Class&lt;?&gt;&gt; ref = map.get(name); <a name="line.1985"></a>
+<span class="sourceLineNo">1986</span>    if (ref != null) {<a name="line.1986"></a>
+<span class="sourceLineNo">1987</span>       clazz = ref.get();<a name="line.1987"></a>
+<span class="sourceLineNo">1988</span>    }<a name="line.1988"></a>
+<span class="sourceLineNo">1989</span>     <a name="line.1989"></a>
+<span class="sourceLineNo">1990</span>    if (clazz == null) {<a name="line.1990"></a>
+<span class="sourceLineNo">1991</span>      try {<a name="line.1991"></a>
+<span class="sourceLineNo">1992</span>        clazz = Class.forName(name, true, classLoader);<a name="line.1992"></a>
+<span class="sourceLineNo">1993</span>      } catch (ClassNotFoundException e) {<a name="line.1993"></a>
+<span class="sourceLineNo">1994</span>        // Leave a marker that the class isn't found<a name="line.1994"></a>
+<span class="sourceLineNo">1995</span>        map.put(name, new WeakReference&lt;Class&lt;?&gt;&gt;(NEGATIVE_CACHE_SENTINEL));<a name="line.1995"></a>
+<span class="sourceLineNo">1996</span>        return null;<a name="line.1996"></a>
+<span class="sourceLineNo">1997</span>      }<a name="line.1997"></a>
+<span class="sourceLineNo">1998</span>      // two putters can race here, but they'll put the same class<a name="line.1998"></a>
+<span class="sourceLineNo">1999</span>      map.put(name, new WeakReference&lt;Class&lt;?&gt;&gt;(clazz));<a name="line.1999"></a>
+<span class="sourceLineNo">2000</span>      return clazz;<a name="line.2000"></a>
+<span class="sourceLineNo">2001</span>    } else if (clazz == NEGATIVE_CACHE_SENTINEL) {<a name="line.2001"></a>
+<span class="sourceLineNo">2002</span>      return null; // not found<a name="line.2002"></a>
+<span class="sourceLineNo">2003</span>    } else {<a name="line.2003"></a>
+<span class="sourceLineNo">2004</span>      // cache hit<a name="line.2004"></a>
+<span class="sourceLineNo">2005</span>      return clazz;<a name="line.2005"></a>
+<span class="sourceLineNo">2006</span>    }<a name="line.2006"></a>
+<span class="sourceLineNo">2007</span>  }<a name="line.2007"></a>
+<span class="sourceLineNo">2008</span><a name="line.2008"></a>
+<span class="sourceLineNo">2009</span>  /** <a name="line.2009"></a>
+<span class="sourceLineNo">2010</span>   * Get the value of the &lt;code&gt;name&lt;/code&gt; property<a name="line.2010"></a>
+<span class="sourceLineNo">2011</span>   * as an array of &lt;code&gt;Class&lt;/code&gt;.<a name="line.2011"></a>
+<span class="sourceLineNo">2012</span>   * The value of the property specifies a list of comma separated class names.  <a name="line.2012"></a>
+<span class="sourceLineNo">2013</span>   * If no such property is specified, then &lt;code&gt;defaultValue&lt;/code&gt; is <a name="line.2013"></a>
+<span class="sourceLineNo">2014</span>   * returned.<a name="line.2014"></a>
+<span class="sourceLineNo">2015</span>   * <a name="line.2015"></a>
+<span class="sourceLineNo">2016</span>   * @param name the property name.<a name="line.2016"></a>
+<span class="sourceLineNo">2017</span>   * @param defaultValue default value.<a name="line.2017"></a>
+<span class="sourceLineNo">2018</span>   * @return property value as a &lt;code&gt;Class[]&lt;/code&gt;, <a name="line.2018"></a>
+<span class="sourceLineNo">2019</span>   *         or &lt;code&gt;defaultValue&lt;/code&gt;. <a name="line.2019"></a>
+<span class="sourceLineNo">2020</span>   */<a name="line.2020"></a>
+<span class="sourceLineNo">2021</span>  public Class&lt;?&gt;[] getClasses(String name, Class&lt;?&gt; ... defaultValue) {<a name="line.2021"></a>
+<span class="sourceLineNo">2022</span>    String valueString = getRaw(name);<a name="line.2022"></a>
+<span class="sourceLineNo">2023</span>    if (null == valueString) {<a name="line.2023"></a>
+<span class="sourceLineNo">2024</span>      return defaultValue;<a name="line.2024"></a>
+<span class="sourceLineNo">2025</span>    }<a name="line.2025"></a>
+<span class="sourceLineNo">2026</span>    String[] classnames = getTrimmedStrings(name);<a name="line.2026"></a>
+<span class="sourceLineNo">2027</span>    try {<a name="line.2027"></a>
+<span class="sourceLineNo">2028</span>      Class&lt;?&gt;[] classes = new Class&lt;?&gt;[classnames.length];<a name="line.2028"></a>
+<span class="sourceLineNo">2029</span>      for(int i = 0; i &lt; classnames.length; i++) {<a name="line.2029"></a>
+<span class="sourceLineNo">2030</span>        classes[i] = getClassByName(classnames[i]);<a name="line.2030"></a>
+<span class="sourceLineNo">2031</span>      }<a name="line.2031"></a>
+<span class="sourceLineNo">2032</span>      return classes;<a name="line.2032"></a>
+<span class="sourceLineNo">2033</span>    } catch (ClassNotFoundException e) {<a name="line.2033"></a>
+<span class="sourceLineNo">2034</span>      throw new RuntimeException(e);<a name="line.2034"></a>
+<span class="sourceLineNo">2035</span>    }<a name="line.2035"></a>
+<span class="sourceLineNo">2036</span>  }<a name="line.2036"></a>
+<span class="sourceLineNo">2037</span><a name="line.2037"></a>
+<span class="sourceLineNo">2038</span>  /** <a name="line.2038"></a>
+<span class="sourceLineNo">2039</span>   * Get the value of the &lt;code&gt;name&lt;/code&gt; property as a &lt;code&gt;Class&lt;/code&gt;.  <a name="line.2039"></a>
+<span class="sourceLineNo">2040</span>   * If no such property is specified, then &lt;code&gt;defaultValue&lt;/code&gt; is <a name="line.2040"></a>
+<span class="sourceLineNo">2041</span>   * returned.<a name="line.2041"></a>
+<span class="sourceLineNo">2042</span>   * <a name="line.2042"></a>
+<span class="sourceLineNo">2043</span>   * @param name the class name.<a name="line.2043"></a>
+<span class="sourceLineNo">2044</span>   * @param defaultValue default value.<a name="line.2044"></a>
+<span class="sourceLineNo">2045</span>   * @return property value as a &lt;code&gt;Class&lt;/code&gt;, <a name="line.2045"></a>
+<span class="sourceLineNo">2046</span>   *         or &lt;code&gt;defaultValue&lt;/code&gt;. <a name="line.2046"></a>
+<span class="sourceLineNo">2047</span>   */<a name="line.2047"></a>
+<span class="sourceLineNo">2048</span>  public Class&lt;?&gt; getClass(String name, Class&lt;?&gt; defaultValue) {<a name="line.2048"></a>
+<span class="sourceLineNo">2049</span>    String valueString = getTrimmed(name);<a name="line.2049"></a>
+<span class="sourceLineNo">2050</span>    if (valueString == null)<a name="line.2050"></a>
+<span class="sourceLineNo">2051</span>      return defaultValue;<a name="line.2051"></a>
+<span class="sourceLineNo">2052</span>    try {<a name="line.2052"></a>
+<span class="sourceLineNo">2053</span>      return getClassByName(valueString);<a name="line.2053"></a>
+<span class="sourceLineNo">2054</span>    } catch (ClassNotFoundException e) {<a name="line.2054"></a>
+<span class="sourceLineNo">2055</span>      throw new RuntimeException(e);<a name="line.2055"></a>
+<span class="sourceLineNo">2056</span>    }<a name="line.2056"></a>
+<span class="sourceLineNo">2057</span>  }<a name="line.2057"></a>
+<span class="sourceLineNo">2058</span><a name="line.2058"></a>
+<span class="sourceLineNo">2059</span>  /** <a name="line.2059"></a>
+<span class="sourceLineNo">2060</span>   * Get the value of the &lt;code&gt;name&lt;/code&gt; property as a &lt;code&gt;Class&lt;/code&gt;<a name="line.2060"></a>
+<span class="sourceLineNo">2061</span>   * implementing the interface specified by &lt;code&gt;xface&lt;/code&gt;.<a name="line.2061"></a>
+<span class="sourceLineNo">2062</span>   *   <a name="line.2062"></a>
+<span class="sourceLineNo">2063</span>   * If no such property is specified, then &lt;code&gt;defaultValue&lt;/code&gt; is <a name="line.2063"></a>
+<span class="sourceLineNo">2064</span>   * returned.<a name="line.2064"></a>
+<span class="sourceLineNo">2065</span>   * <a name="line.2065"></a>
+<span class="sourceLineNo">2066</span>   * An exception is thrown if the returned class does not implement the named<a name="line.2066"></a>
+<span class="sourceLineNo">2067</span>   * interface. <a name="line.2067"></a>
+<span class="sourceLineNo">2068</span>   * <a name="line.2068"></a>
+<span class="sourceLineNo">2069</span>   * @param name the class name.<a name="line.2069"></a>
+<span class="sourceLineNo">2070</span>   * @param defaultValue default value.<a name="line.2070"></a>
+<span class="sourceLineNo">2071</span>   * @param xface the interface implemented by the named class.<a name="line.2071"></a>
+<span class="sourceLineNo">2072</span>   * @return property value as a &lt;code&gt;Class&lt;/code&gt;, <a name="line.2072"></a>
+<span class="sourceLineNo">2073</span>   *         or &lt;code&gt;defaultValue&lt;/code&gt;.<a name="line.2073"></a>
+<span class="sourceLineNo">2074</span>   */<a name="line.2074"></a>
+<span class="sourceLineNo">2075</span>  public &lt;U&gt; Class&lt;? extends U&gt; getClass(String name, <a name="line.2075"></a>
+<span class="sourceLineNo">2076</span>                                         Class&lt;? extends U&gt; defaultValue, <a name="line.2076"></a>
+<span class="sourceLineNo">2077</span>                                         Class&lt;U&gt; xface) {<a name="line.2077"></a>
+<span class="sourceLineNo">2078</span>    try {<a name="line.2078"></a>
+<span class="sourceLineNo">2079</span>      Class&lt;?&gt; theClass = getClass(name, defaultValue);<a name="line.2079"></a>
+<span class="sourceLineNo">2080</span>      if (theClass != null &amp;&amp; !xface.isAssignableFrom(theClass))<a name="line.2080"></a>
+<span class="sourceLineNo">2081</span>        throw new RuntimeException(theClass+" not "+xface.getName());<a name="line.2081"></a>
+<span class="sourceLineNo">2082</span>      else if (theClass != null)<a name="line.2082"></a>
+<span class="sourceLineNo">2083</span>        return theClass.asSubclass(xface);<a name="line.2083"></a>
+<span class="sourceLineNo">2084</span>      else<a name="line.2084"></a>
+<span class="sourceLineNo">2085</span>        return null;<a name="line.2085"></a>
+<span class="sourceLineNo">2086</span>    } catch (Exception e) {<a name="line.2086"></a>
+<span class="sourceLineNo">2087</span>      throw new RuntimeException(e);<a name="line.2087"></a>
+<span class="sourceLineNo">2088</span>    }<a name="line.2088"></a>
+<span class="sourceLineNo">2089</span>  }<a name="line.2089"></a>
+<span class="sourceLineNo">2090</span><a name="line.2090"></a>
+<span class="sourceLineNo">2091</span>  /**<a name="line.2091"></a>
+<span class="sourceLineNo">2092</span>   * Get the value of the &lt;code&gt;name&lt;/code&gt; property as a &lt;code&gt;List&lt;/code&gt;<a name="line.2092"></a>
+<span class="sourceLineNo">2093</span>   * of objects implementing the interface specified by &lt;code&gt;xface&lt;/code&gt;.<a name="line.2093"></a>
+<span class="sourceLineNo">2094</span>   * <a name="line.2094"></a>
+<span class="sourceLineNo">2095</span>   * An exception is thrown if any of the classes does not exist, or if it does<a name="line.2095"></a>
+<span class="sourceLineNo">2096</span>   * not implement the named interface.<a name="line.2096"></a>
+<span class="sourceLineNo">2097</span>   * <a name="line.2097"></a>
+<span class="sourceLineNo">2098</span>   * @param name the property name.<a name="line.2098"></a>
+<span class="sourceLineNo">2099</span>   * @param xface the interface implemented by the classes named by<a name="line.2099"></a>
+<span class="sourceLineNo">2100</span>   *        &lt;code&gt;name&lt;/code&gt;.<a name="line.2100"></a>
+<span class="sourceLineNo">2101</span>   * @return a &lt;code&gt;List&lt;/code&gt; of objects implementing &lt;code&gt;xface&lt;/code&gt;.<a name="line.2101"></a>
+<span class="sourceLineNo">2102</span>   */<a name="line.2102"></a>
+<span class="sourceLineNo">2103</span>  @SuppressWarnings("unchecked")<a name="line.2103"></a>
+<span class="sourceLineNo">2104</span>  public &lt;U&gt; List&lt;U&gt; getInstances(String name, Class&lt;U&gt; xface) {<a name="line.2104"></a>
+<span class="sourceLineNo">2105</span>    List&lt;U&gt; ret = new ArrayList&lt;U&gt;();<a name="line.2105"></a>
+<span class="sourceLineNo">2106</span>    Class&lt;?&gt;[] classes = getClasses(name);<a name="line.2106"></a>
+<span class="sourceLineNo">2107</span>    for (Class&lt;?&gt; cl: classes) {<a name="line.2107"></a>
+<span class="sourceLineNo">2108</span>      if (!xface.isAssignableFrom(cl)) {<a name="line.2108"></a>
+<span class="sourceLineNo">2109</span>        throw new RuntimeException(cl + " does not implement " + xface);<a name="line.2109"></a>
+<span class="sourceLineNo">2110</span>      }<a name="line.2110"></a>
+<span class="sourceLineNo">2111</span>      ret.add((U)ReflectionUtils.newInstance(cl, this));<a name="line.2111"></a>
+<span class="sourceLineNo">2112</span>    }<a name="line.2112"></a>
+<span class="sourceLineNo">2113</span>    return ret;<a name="line.2113"></a>
+<span class="sourceLineNo">2114</span>  }<a name="line.2114"></a>
+<span class="sourceLineNo">2115</span><a name="line.2115"></a>
+<span class="sourceLineNo">2116</span>  /** <a name="line.2116"></a>
+<span class="sourceLineNo">2117</span>   * Set the value of the &lt;code&gt;name&lt;/code&gt; property to the name of a <a name="line.2117"></a>
+<span class="sourceLineNo">2118</span>   * &lt;code&gt;theClass&lt;/code&gt; implementing the given interface &lt;code&gt;xface&lt;/code&gt;.<a name="line.2118"></a>
+<span class="sourceLineNo">2119</span>   * <a name="line.2119"></a>
+<span class="sourceLineNo">2120</span>   * An exception is thrown if &lt;code&gt;theClass&lt;/code&gt; does not implement the <a name="line.2120"></a>
+<span class="sourceLineNo">2121</span>   * interface &lt;code&gt;xface&lt;/code&gt;. <a name="line.2121"></a>
+<span class="sourceLineNo">2122</span>   * <a name="line.2122"></a>
+<span class="sourceLineNo">2123</span>   * @param name property name.<a name="line.2123"></a>
+<span class="sourceLineNo">2124</span>   * @param theClass property value.<a name="line.2124"></a>
+<span class="sourceLineNo">2125</span>   * @param xface the interface implemented by the named class.<a name="line.2125"></a>
+<span class="sourceLineNo">2126</span>   */<a name="line.2126"></a>
+<span class="sourceLineNo">2127</span>  public void setClass(String name, Class&lt;?&gt; theClass, Class&lt;?&gt; xface) {<a name="line.2127"></a>
+<span class="sourceLineNo">2128</span>    if (!xface.isAssignableFrom(theClass))<a name="line.2128"></a>
+<span class="sourceLineNo">2129</span>      throw new RuntimeException(theClass+" not "+xface.getName());<a name="line.2129"></a>
+<span class="sourceLineNo">2130</span>    set(name, theClass.getName());<a name="line.2130"></a>
+<span class="sourceLineNo">2131</span>  }<a name="line.2131"></a>
+<span class="sourceLineNo">2132</span><a name="line.2132"></a>
+<span class="sourceLineNo">2133</span>  /** <a name="line.2133"></a>
+<span class="sourceLineNo">2134</span>   * Get a local file under a directory named by &lt;i&gt;dirsProp&lt;/i&gt; with<a name="line.2134"></a>
+<span class="sourceLineNo">2135</span>   * the given &lt;i&gt;path&lt;/i&gt;.  If &lt;i&gt;dirsProp&lt;/i&gt; contains multiple directories,<a name="line.2135"></a>
+<span class="sourceLineNo">2136</span>   * then one is chosen based on &lt;i&gt;path&lt;/i&gt;'s hash code.  If the selected<a name="line.2136"></a>
+<span class="sourceLineNo">2137</span>   * directory does not exist, an attempt is made to create it.<a name="line.2137"></a>
+<span class="sourceLineNo">2138</span>   * <a name="line.2138"></a>
+<span class="sourceLineNo">2139</span>   * @param dirsProp directory in which to locate the file.<a name="line.2139"></a>
+<span class="sourceLineNo">2140</span>   * @param path file-path.<a name="line.2140"></a>
+<span class="sourceLineNo">2141</span>   * @return local file under the directory with the given path.<a name="line.2141"></a>
+<span class="sourceLineNo">2142</span>   */<a name="line.2142"></a>
+<span class="sourceLineNo">2143</span>  public Path getLocalPath(String dirsProp, String path)<a name="line.2143"></a>
+<span class="sourceLineNo">2144</span>    throws IOException {<a name="line.2144"></a>
+<span class="sourceLineNo">2145</span>    String[] dirs = getTrimmedStrings(dirsProp);<a name="line.2145"></a>
+<span class="sourceLineNo">2146</span>    int hashCode = path.hashCode();<a name="line.2146"></a>
+<span class="sourceLineNo">2147</span>    FileSystem fs = FileSystem.getLocal(this);<a name="line.2147"></a>
+<span class="sourceLineNo">2148</span>    for (int i = 0; i &lt; dirs.length; i++) {  // try each local dir<a name="line.2148"></a>
+<span class="sourceLineNo">2149</span>      int index = (hashCode+i &amp; Integer.MAX_VALUE) % dirs.length;<a name="line.2149"></a>
+<span class="sourceLineNo">2150</span>      Path file = new Path(dirs[index], path);<a name="line.2150"></a>
+<span class="sourceLineNo">2151</span>      Path dir = file.getParent();<a name="line.2151"></a>
+<span class="sourceLineNo">2152</span>      if (fs.mkdirs(dir) || fs.exists(dir)) {<a name="line.2152"></a>
+<span class="sourceLineNo">2153</span>        return file;<a name="line.2153"></a>
+<span class="sourceLineNo">2154</span>      }<a name="line.2154"></a>
 <span class="sourceLineNo">2155</span>    }<a name="line.2155"></a>
-<span class="sourceLineNo">2156</span>  }<a name="line.2156"></a>
-<span class="sourceLineNo">2157</span><a name="line.2157"></a>
-<span class="sourceLineNo">2158</span>  /** <a name="line.2158"></a>
-<span class="sourceLineNo">2159</span>   * Get a {@link Reader} attached to the configuration resource with the<a name="line.2159"></a>
-<span class="sourceLineNo">2160</span>   * given &lt;code&gt;name&lt;/code&gt;.<a name="line.2160"></a>
-<span class="sourceLineNo">2161</span>   * <a name="line.2161"></a>
-<span class="sourceLineNo">2162</span>   * @param name configuration resource name.<a name="line.2162"></a>
-<span class="sourceLineNo">2163</span>   * @return a reader attached to the resource.<a name="line.2163"></a>
-<span class="sourceLineNo">2164</span>   */<a name="line.2164"></a>
-<span class="sourceLineNo">2165</span>  public Reader getConfResourceAsReader(String name) {<a name="line.2165"></a>
-<span class="sourceLineNo">2166</span>    try {<a name="line.2166"></a>
-<span class="sourceLineNo">2167</span>      URL url= getResource(name);<a name="line.2167"></a>
-<span class="sourceLineNo">2168</span><a name="line.2168"></a>
-<span class="sourceLineNo">2169</span>      if (url == null) {<a name="line.2169"></a>
-<span class="sourceLineNo">2170</span>        LOG.info(name + " not found");<a name="line.2170"></a>
-<span class="sourceLineNo">2171</span>        return null;<a name="line.2171"></a>
-<span class="sourceLineNo">2172</span>      } else {<a name="line.2172"></a>
-<span class="sourceLineNo">2173</span>        LOG.info("found resource " + name + " at " + url);<a name="line.2173"></a>
-<span class="sourceLineNo">2174</span>      }<a name="line.2174"></a>
-<span class="sourceLineNo">2175</span><a name="line.2175"></a>
-<span class="sourceLineNo">2176</span>      return new InputStreamReader(url.openStream());<a name="line.2176"></a>
-<span class="sourceLineNo">2177</span>    } catch (Exception e) {<a name="line.2177"></a>
-<span class="sourceLineNo">2178</span>      return null;<a name="line.2178"></a>
-<span class="sourceLineNo">2179</span>    }<a name="line.2179"></a>
-<span class="sourceLineNo">2180</span>  }<a name="line.2180"></a>
-<span class="sourceLineNo">2181</span><a name="line.2181"></a>
-<span class="sourceLineNo">2182</span>  /**<a name="line.2182"></a>
-<span class="sourceLineNo">2183</span>   * Get the set of parameters marked final.<a name="line.2183"></a>
-<span class="sourceLineNo">2184</span>   *<a name="line.2184"></a>
-<span class="sourceLineNo">2185</span>   * @return final parameter set.<a name="line.2185"></a>
-<span class="sourceLineNo">2186</span>   */<a name="line.2186"></a>
-<span class="sourceLineNo">2187</span>  public Set&lt;String&gt; getFinalParameters() {<a name="line.2187"></a>
-<span class="sourceLineNo">2188</span>    return new HashSet&lt;String&gt;(finalParameters);<a name="line.2188"></a>
-<span class="sourceLineNo">2189</span>  }<a name="line.2189"></a>
-<span class="sourceLineNo">2190</span><a name="line.2190"></a>
-<span class="sourceLineNo">2191</span>  protected synchronized Properties getProps() {<a name="line.2191"></a>
-<span class="sourceLineNo">2192</span>    if (properties == null) {<a name="line.2192"></a>
-<span class="sourceLineNo">2193</span>      properties = new Properties();<a name="line.2193"></a>
-<span class="sourceLineNo">2194</span>      HashMap&lt;String, String[]&gt; backup = <a name="line.2194"></a>
-<span class="sourceLineNo">2195</span>        new HashMap&lt;String, String[]&gt;(updatingResource);<a name="line.2195"></a>
-<span class="sourceLineNo">2196</span>      loadResources(properties, resources, quietmode);<a name="line.2196"></a>
-<span class="sourceLineNo">2197</span>      if (overlay!= null) {<a name="line.2197"></a>
-<span class="sourceLineNo">2198</span>        properties.putAll(overlay);<a name="line.2198"></a>
-<span class="sourceLineNo">2199</span>        for (Map.Entry&lt;Object,Object&gt; item: overlay.entrySet()) {<a name="line.2199"></a>
-<span class="sourceLineNo">2200</span>          String key = (String)item.getKey();<a name="line.2200"></a>
-<span class="sourceLineNo">2201</span>          updatingResource.put(key, backup.get(key));<a name="line.2201"></a>
-<span class="sourceLineNo">2202</span>        }<a name="line.2202"></a>
-<span class="sourceLineNo">2203</span>      }<a name="line.2203"></a>
-<span class="sourceLineNo">2204</span>    }<a name="line.2204"></a>
-<span class="sourceLineNo">2205</span>    return properties;<a name="line.2205"></a>
-<span class="sourceLineNo">2206</span>  }<a name="line.2206"></a>
-<span class="sourceLineNo">2207</span><a name="line.2207"></a>
-<span class="sourceLineNo">2208</span>  /**<a name="line.2208"></a>
-<span class="sourceLineNo">2209</span>   * Return the number of keys in the configuration.<a name="line.2209"></a>
-<span class="sourceLineNo">2210</span>   *<a name="line.2210"></a>
-<span class="sourceLineNo">2211</span>   * @return number of keys in the configuration.<a name="line.2211"></a>
-<span class="sourceLineNo">2212</span>   */<a name="line.2212"></a>
-<span class="sourceLineNo">2213</span>  public int size() {<a name="line.2213"></a>
-<span class="sourceLineNo">2214</span>    return getProps().size();<a name="line.2214"></a>
-<span class="sourceLineNo">2215</span>  }<a name="line.2215"></a>
-<span class="sourceLineNo">2216</span><a name="line.2216"></a>
-<span class="sourceLineNo">2217</span>  /**<a name="line.2217"></a>
-<span class="sourceLineNo">2218</span>   * Clears all keys from the configuration.<a name="line.2218"></a>
-<span class="sourceLineNo">2219</span>   */<a name="line.2219"></a>
-<span class="sourceLineNo">2220</span>  public void clear() {<a name="line.2220"></a>
-<span class="sourceLineNo">2221</span>    getProps().clear();<a name="line.2221"></a>
-<span class="sourceLineNo">2222</span>    getOverlay().clear();<a name="line.2222"></a>
-<span class="sourceLineNo">2223</span>  }<a name="line.2223"></a>
-<span class="sourceLineNo">2224</span><a name="line.2224"></a>
-<span class="sourceLineNo">2225</span>  /**<a name="line.2225"></a>
-<span class="sourceLineNo">2226</span>   * Get an {@link Iterator} to go through the list of &lt;code&gt;String&lt;/code&gt; <a name="line.2226"></a>
-<span class="sourceLineNo">2227</span>   * key-value pairs in the configuration.<a name="line.2227"></a>
-<span class="sourceLineNo">2228</span>   * <a name="line.2228"></a>
-<span class="sourceLineNo">2229</span>   * @return an iterator over the entries.<a name="line.2229"></a>
+<span class="sourceLineNo">2156</span>    LOG.warn("Could not make " + path + <a name="line.2156"></a>
+<span class="sourceLineNo">2157</span>             " in local directories from " + dirsProp);<a name="line.2157"></a>
+<span class="sourceLineNo">2158</span>    for(int i=0; i &lt; dirs.length; i++) {<a name="line.2158"></a>
+<span class="sourceLineNo">2159</span>      int index = (hashCode+i &amp; Integer.MAX_VALUE) % dirs.length;<a name="line.2159"></a>
+<span class="sourceLineNo">2160</span>      LOG.warn(dirsProp + "[" + index + "]=" + dirs[index]);<a name="line.2160"></a>
+<span class="sourceLineNo">2161</span>    }<a name="line.2161"></a>
+<span class="sourceLineNo">2162</span>    throw new IOException("No valid local directories in property: "+dirsProp);<a name="line.2162"></a>
+<span class="sourceLineNo">2163</span>  }<a name="line.2163"></a>
+<span class="sourceLineNo">2164</span><a name="line.2164"></a>
+<span class="sourceLineNo">2165</span>  /** <a name="line.2165"></a>
+<span class="sourceLineNo">2166</span>   * Get a local file name under a directory named in &lt;i&gt;dirsProp&lt;/i&gt; with<a name="line.2166"></a>
+<span class="sourceLineNo">2167</span>   * the given &lt;i&gt;path&lt;/i&gt;.  If &lt;i&gt;dirsProp&lt;/i&gt; contains multiple directories,<a name="line.2167"></a>
+<span class="sourceLineNo">2168</span>   * then one is chosen based on &lt;i&gt;path&lt;/i&gt;'s hash code.  If the selected<a name="line.2168"></a>
+<span class="sourceLineNo">2169</span>   * directory does not exist, an attempt is made to create it.<a name="line.2169"></a>
+<span class="sourceLineNo">2170</span>   * <a name="line.2170"></a>
+<span class="sourceLineNo">2171</span>   * @param dirsProp directory in which to locate the file.<a name="line.2171"></a>
+<span class="sourceLineNo">2172</span>   * @param path file-path.<a name="line.2172"></a>
+<span class="sourceLineNo">2173</span>   * @return local file under the directory with the given path.<a name="line.2173"></a>
+<span class="sourceLineNo">2174</span>   */<a name="line.2174"></a>
+<span class="sourceLineNo">2175</span>  public File getFile(String dirsProp, String path)<a name="line.2175"></a>
+<span class="sourceLineNo">2176</span>    throws IOException {<a name="line.2176"></a>
+<span class="sourceLineNo">2177</span>    String[] dirs = getTrimmedStrings(dirsProp);<a name="line.2177"></a>
+<span class="sourceLineNo">2178</span>    int hashCode = path.hashCode();<a name="line.2178"></a>
+<span class="sourceLineNo">2179</span>    for (int i = 0; i &lt; dirs.length; i++) {  // try each local dir<a name="line.2179"></a>
+<span class="sourceLineNo">2180</span>      int index = (hashCode+i &amp; Integer.MAX_VALUE) % dirs.length;<a name="line.2180"></a>
+<span class="sourceLineNo">2181</span>      File file = new File(dirs[index], path);<a name="line.2181"></a>
+<span class="sourceLineNo">2182</span>      File dir = file.getParentFile();<a name="line.2182"></a>
+<span class="sourceLineNo">2183</span>      if (dir.exists() || dir.mkdirs()) {<a name="line.2183"></a>
+<span class="sourceLineNo">2184</span>        return file;<a name="line.2184"></a>
+<span class="sourceLineNo">2185</span>      }<a name="line.2185"></a>
+<span class="sourceLineNo">2186</span>    }<a name="line.2186"></a>
+<span class="sourceLineNo">2187</span>    throw new IOException("No valid local directories in property: "+dirsProp);<a name="line.2187"></a>
+<span class="sourceLineNo">2188</span>  }<a name="line.2188"></a>
+<span class="sourceLineNo">2189</span><a name="line.2189"></a>
+<span class="sourceLineNo">2190</span>  /** <a name="line.2190"></a>
+<span class="sourceLineNo">2191</span>   * Get the {@link URL} for the named resource.<a name="line.2191"></a>
+<span class="sourceLineNo">2192</span>   * <a name="line.2192"></a>
+<span class="sourceLineNo">2193</span>   * @param name resource name.<a name="line.2193"></a>
+<span class="sourceLineNo">2194</span>   * @return the url for the named resource.<a name="line.2194"></a>
+<span class="sourceLineNo">2195</span>   */<a name="line.2195"></a>
+<span class="sourceLineNo">2196</span>  public URL getResource(String name) {<a name="line.2196"></a>
+<span class="sourceLineNo">2197</span>    return classLoader.getResource(name);<a name="line.2197"></a>
+<span class="sourceLineNo">2198</span>  }<a name="line.2198"></a>
+<span class="sourceLineNo">2199</span>  <a name="line.2199"></a>
+<span class="sourceLineNo">2200</span>  /** <a name="line.2200"></a>
+<span class="sourceLineNo">2201</span>   * Get an input stream attached to the configuration resource with the<a name="line.2201"></a>
+<span class="sourceLineNo">2202</span>   * given &lt;code&gt;name&lt;/code&gt;.<a name="line.2202"></a>
+<span class="sourceLineNo">2203</span>   * <a name="line.2203"></a>
+<span class="sourceLineNo">2204</span>   * @param name configuration resource name.<a name="line.2204"></a>
+<span class="sourceLineNo">2205</span>   * @return an input stream attached to the resource.<a name="line.2205"></a>
+<span class="sourceLineNo">2206</span>   */<a name="line.2206"></a>
+<span class="sourceLineNo">2207</span>  public InputStream getConfResourceAsInputStream(String name) {<a name="line.2207"></a>
+<span class="sourceLineNo">2208</span>    try {<a name="line.2208"></a>
+<span class="sourceLineNo">2209</span>      URL url= getResource(name);<a name="line.2209"></a>
+<span class="sourceLineNo">2210</span><a name="line.2210"></a>
+<span class="sourceLineNo">2211</span>      if (url == null) {<a name="line.2211"></a>
+<span class="sourceLineNo">2212</span>        LOG.info(name + " not found");<a name="line.2212"></a>
+<span class="sourceLineNo">2213</span>        return null;<a name="line.2213"></a>
+<span class="sourceLineNo">2214</span>      } else {<a name="line.2214"></a>
+<span class="sourceLineNo">2215</span>        LOG.info("found resource " + name + " at " + url);<a name="line.2215"></a>
+<span class="sourceLineNo">2216</span>      }<a name="line.2216"></a>
+<span class="sourceLineNo">2217</span><a name="line.2217"></a>
+<span class="sourceLineNo">2218</span>      return url.openStream();<a name="line.2218"></a>
+<span class="sourceLineNo">2219</span>    } catch (Exception e) {<a name="line.2219"></a>
+<span class="sourceLineNo">2220</span>      return null;<a name="line.2220"></a>
+<span class="sourceLineNo">2221</span>    }<a name="line.2221"></a>
+<span class="sourceLineNo">2222</span>  }<a name="line.2222"></a>
+<span class="sourceLineNo">2223</span><a name="line.2223"></a>
+<span class="sourceLineNo">2224</span>  /** <a name="line.2224"></a>
+<span class="sourceLineNo">2225</span>   * Get a {@link Reader} attached to the configuration resource with the<a name="line.2225"></a>
+<span class="sourceLineNo">2226</span>   * given &lt;code&gt;name&lt;/code&gt;.<a name="line.2226"></a>
+<span class="sourceLineNo">2227</span>   * <a name="line.2227"></a>
+<span class="sourceLineNo">2228</span>   * @param name configuration resource name.<a name="line.2228"></a>
+<span class="sourceLineNo">2229</span>   * @return a reader attached to the resource.<a name="line.2229"></a>
 <span class="sourceLineNo">2230</span>   */<a name="line.2230"></a>
-<span class="sourceLineNo">2231</span>  @Override<a name="line.2231"></a>
-<span class="sourceLineNo">2232</span>  public Iterator&lt;Map.Entry&lt;String, String&gt;&gt; iterator() {<a name="line.2232"></a>
-<span class="sourceLineNo">2233</span>    // Get a copy of just the string to string pairs. After the old object<a name="line.2233"></a>
-<span class="sourceLineNo">2234</span>    // methods that allow non-strings to be put into configurations are removed,<a name="line.2234"></a>
-<span class="sourceLineNo">2235</span>    // we could replace properties with a Map&lt;String,String&gt; and get rid of this<a name="line.2235"></a>
-<span class="sourceLineNo">2236</span>    // code.<a name="line.2236"></a>
-<span class="sourceLineNo">2237</span>    Map&lt;String,String&gt; result = new HashMap&lt;String,String&gt;();<a name="line.2237"></a>
-<span class="sourceLineNo">2238</span>    for(Map.Entry&lt;Object,Object&gt; item: getProps().entrySet()) {<a name="line.2238"></a>
-<span class="sourceLineNo">2239</span>      if (item.getKey() instanceof String &amp;&amp; <a name="line.2239"></a>
-<span class="sourceLineNo">2240</span>          item.getValue() instanceof String) {<a name="line.2240"></a>
-<span class="sourceLineNo">2241</span>        result.put((String) item.getKey(), (String) item.getValue());<a name="line.2241"></a>
-<span class="sourceLineNo">2242</span>      }<a name="line.2242"></a>
-<span class="sourceLineNo">2243</span>    }<a name="line.2243"></a>
-<span class="sourceLineNo">2244</span>    return result.entrySet().iterator();<a name="line.2244"></a>
-<span class="sourceLineNo">2245</span>  }<a name="line.2245"></a>
-<span class="sourceLineNo">2246</span><a name="line.2246"></a>
-<span class="sourceLineNo">2247</span>  private Document parse(DocumentBuilder builder, URL url)<a name="line.2247"></a>
-<span class="sourceLineNo">2248</span>      throws IOException, SAXException {<a name="line.2248"></a>
-<span class="sourceLineNo">2249</span>    if (!quietmode) {<a name="line.2249"></a>
-<span class="sourceLineNo">2250</span>      LOG.debug("parsing URL " + url);<a name="line.2250"></a>
-<span class="sourceLineNo">2251</span>    }<a name="line.2251"></a>
-<span class="sourceLineNo">2252</span>    if (url == null) {<a name="line.2252"></a>
-<span class="sourceLineNo">2253</span>      return null;<a name="line.2253"></a>
-<span class="sourceLineNo">2254</span>    }<a name="line.2254"></a>
-<span class="sourceLineNo">2255</span>    return parse(builder, url.openStream(), url.toString());<a name="line.2255"></a>
-<span class="sourceLineNo">2256</span>  }<a name="line.2256"></a>
-<span class="sourceLineNo">2257</span><a name="line.2257"></a>
-<span class="sourceLineNo">2258</span>  private Document parse(DocumentBuilder builder, InputStream is,<a name="line.2258"></a>
-<span class="sourceLineNo">2259</span>      String systemId) throws IOException, SAXException {<a name="line.2259"></a>
-<span class="sourceLineNo">2260</span>    if (!quietmode) {<a name="line.2260"></a>
-<span class="sourceLineNo">2261</span>      LOG.debug("parsing input stream " + is);<a name="line.2261"></a>
-<span class="sourceLineNo">2262</span>    }<a name="line.2262"></a>
-<span class="sourceLineNo">2263</span>    if (is == null) {<a name="line.2263"></a>
-<span class="sourceLineNo">2264</span>      return null;<a name="line.2264"></a>
-<span class="sourceLineNo">2265</span>    }<a name="line.2265"></a>
-<span class="sourceLineNo">2266</span>    try {<a name="line.2266"></a>
-<span class="sourceLineNo">2267</span>      return (systemId == null) ? builder.parse(is) : builder.parse(is,<a name="line.2267"></a>
-<span class="sourceLineNo">2268</span>          systemId);<a name="line.2268"></a>
-<span class="sourceLineNo">2269</span>    } finally {<a name="line.2269"></a>
-<span class="sourceLineNo">2270</span>      is.close();<a name="line.2270"></a>
-<span class="sourceLineNo">2271</span>    }<a name="line.2271"></a>
+<span class="sourceLineNo">2231</span>  public Reader getConfResourceAsReader(String name) {<a name="line.2231"></a>
+<span class="sourceLineNo">2232</span>    try {<a name="line.2232"></a>
+<span class="sourceLineNo">2233</span>      URL url= getResource(name);<a name="line.2233"></a>
+<span class="sourceLineNo">2234</span><a name="line.2234"></a>
+<span class="sourceLineNo">2235</span>      if (url == null) {<a name="line.2235"></a>
+<span class="sourceLineNo">2236</span>        LOG.info(name + " not found");<a name="line.2236"></a>
+<span class="sourceLineNo">2237</span>        return null;<a name="line.2237"></a>
+<span class="sourceLineNo">2238</span>      } else {<a name="line.2238"></a>
+<span class="sourceLineNo">2239</span>        LOG.info("found resource " + name + " at " + url);<a name="line.2239"></a>
+<span class="sourceLineNo">2240</span>      }<a name="line.2240"></a>
+<span class="sourceLineNo">2241</span><a name="line.2241"></a>
+<span class="sourceLineNo">2242</span>      return new InputStreamReader(url.openStream());<a name="line.2242"></a>
+<span class="sourceLineNo">2243</span>    } catch (Exception e) {<a name="line.2243"></a>
+<span class="sourceLineNo">2244</span>      return null;<a name="line.2244"></a>
+<span class="sourceLineNo">2245</span>    }<a name="line.2245"></a>
+<span class="sourceLineNo">2246</span>  }<a name="line.2246"></a>
+<span class="sourceLineNo">2247</span><a name="line.2247"></a>
+<span class="sourceLineNo">2248</span>  /**<a name="line.2248"></a>
+<span class="sourceLineNo">2249</span>   * Get the set of parameters marked final.<a name="line.2249"></a>
+<span class="sourceLineNo">2250</span>   *<a name="line.2250"></a>
+<span class="sourceLineNo">2251</span>   * @return final parameter set.<a name="line.2251"></a>
+<span class="sourceLineNo">2252</span>   */<a name="line.2252"></a>
+<span class="sourceLineNo">2253</span>  public Set&lt;String&gt; getFinalParameters() {<a name="line.2253"></a>
+<span class="sourceLineNo">2254</span>    return new HashSet&lt;String&gt;(finalParameters);<a name="line.2254"></a>
+<span class="sourceLineNo">2255</span>  }<a name="line.2255"></a>
+<span class="sourceLineNo">2256</span><a name="line.2256"></a>
+<span class="sourceLineNo">2257</span>  protected synchronized Properties getProps() {<a name="line.2257"></a>
+<span class="sourceLineNo">2258</span>    if (properties == null) {<a name="line.2258"></a>
+<span class="sourceLineNo">2259</span>      properties = new Properties();<a name="line.2259"></a>
+<span class="sourceLineNo">2260</span>      HashMap&lt;String, String[]&gt; backup = <a name="line.2260"></a>
+<span class="sourceLineNo">2261</span>        new HashMap&lt;String, String[]&gt;(updatingResource);<a name="line.2261"></a>
+<span class="sourceLineNo">2262</span>      loadResources(properties, resources, quietmode);<a name="line.2262"></a>
+<span class="sourceLineNo">2263</span>      if (overlay!= null) {<a name="line.2263"></a>
+<span class="sourceLineNo">2264</span>        properties.putAll(overlay);<a name="line.2264"></a>
+<span class="sourceLineNo">2265</span>        for (Map.Entry&lt;Object,Object&gt; item: overlay.entrySet()) {<a name="line.2265"></a>
+<span class="sourceLineNo">2266</span>          String key = (String)item.getKey();<a name="line.2266"></a>
+<span class="sourceLineNo">2267</span>          updatingResource.put(key, backup.get(key));<a name="line.2267"></a>
+<span class="sourceLineNo">2268</span>        }<a name="line.2268"></a>
+<span class="sourceLineNo">2269</span>      }<a name="line.2269"></a>
+<span class="sourceLineNo">2270</span>    }<a name="line.2270"></a>
+<span class="sourceLineNo">2271</span>    return properties;<a name="line.2271"></a>
 <span class="sourceLineNo">2272</span>  }<a name="line.2272"></a>
 <span class="sourceLineNo">2273</span><a name="line.2273"></a>
-<span class="sourceLineNo">2274</span>  private void loadResources(Properties properties,<a name="line.2274"></a>
-<span class="sourceLineNo">2275</span>                             ArrayList&lt;Resource&gt; resources,<a name="line.2275"></a>
-<span class="sourceLineNo">2276</span>                             boolean quiet) {<a name="line.2276"></a>
-<span class="sourceLineNo">2277</span>    if(loadDefaults) {<a name="line.2277"></a>
-<span class="sourceLineNo">2278</span>      for (String resource : defaultResources) {<a name="line.2278"></a>
-<span class="sourceLineNo">2279</span>        loadResource(properties, new Resource(resource), quiet);<a name="line.2279"></a>
-<span class="sourceLineNo">2280</span>      }<a name="line.2280"></a>
-<span class="sourceLineNo">2281</span>    <a name="line.2281"></a>
-<span class="sourceLineNo">2282</span>      //support the hadoop-site.xml as a deprecated case<a name="line.2282"></a>
-<span class="sourceLineNo">2283</span>      if(getResource("hadoop-site.xml")!=null) {<a name="line.2283"></a>
-<span class="sourceLineNo">2284</span>        loadResource(properties, new Resource("hadoop-site.xml"), quiet);<a name="line.2284"></a>
-<span class="sourceLineNo">2285</span>      }<a name="line.2285"></a>
-<span class="sourceLineNo">2286</span>    }<a name="line.2286"></a>
-<span class="sourceLineNo">2287</span>    <a name="line.2287"></a>
-<span class="sourceLineNo">2288</span>    for (int i = 0; i &lt; resources.size(); i++) {<a name="line.2288"></a>
-<span class="sourceLineNo">2289</span>      Resource ret = loadResource(properties, resources.get(i), quiet);<a name="line.2289"></a>
-<span class="sourceLineNo">2290</span>      if (ret != null) {<a name="line.2290"></a>
-<span class="sourceLineNo">2291</span>        resources.set(i, ret);<a name="line.2291"></a>
-<span class="sourceLineNo">2292</span>      }<a name="line.2292"></a>
-<span class="sourceLineNo">2293</span>    }<a name="line.2293"></a>
-<span class="sourceLineNo">2294</span>  }<a name="line.2294"></a>
-<span class="sourceLineNo">2295</span>  <a name="line.2295"></a>
-<span class="sourceLineNo">2296</span>  private Resource loadResource(Properties properties, Resource wrapper, boolean quiet) {<a name="line.2296"></a>
-<span class="sourceLineNo">2297</span>    String name = UNKNOWN_RESOURCE;<a name="line.2297"></a>
-<span class="sourceLineNo">2298</span>    try {<a name="line.2298"></a>
-<span class="sourceLineNo">2299</span>      Object resource = wrapper.getResource();<a name="line.2299"></a>
-<span class="sourceLineNo">2300</span>      name = wrapper.getName();<a name="line.2300"></a>
-<span class="sourceLineNo">2301</span>      <a name="line.2301"></a>
-<span class="sourceLineNo">2302</span>      DocumentBuilderFactory docBuilderFactory <a name="line.2302"></a>
-<span class="sourceLineNo">2303</span>        = DocumentBuilderFactory.newInstance();<a name="line.2303"></a>
-<span class="sourceLineNo">2304</span>      //ignore all comments inside the xml file<a name="line.2304"></a>
-<span class="sourceLineNo">2305</span>      docBuilderFactory.setIgnoringComments(true);<a name="line.2305"></a>
-<span class="sourceLineNo">2306</span><a name="line.2306"></a>
-<span class="sourceLineNo">2307</span>      //allow includes in the xml file<a name="line.2307"></a>
-<span class="sourceLineNo">2308</span>      docBuilderFactory.setNamespaceAware(true);<a name="line.2308"></a>
-<span class="sourceLineNo">2309</span>      try {<a name="line.2309"></a>
-<span class="sourceLineNo">2310</span>          docBuilderFactory.setXIncludeAware(true);<a name="line.2310"></a>
-<span class="sourceLineNo">2311</span>      } catch (UnsupportedOperationException e) {<a name="line.2311"></a>
-<span class="sourceLineNo">2312</span>        LOG.error("Failed to set setXIncludeAware(true) for parser "<a name="line.2312"></a>
-<span class="sourceLineNo">2313</span>                + docBuilderFactory<a name="line.2313"></a>
-<span class="sourceLineNo">2314</span>                + ":" + e,<a name="line.2314"></a>
-<span class="sourceLineNo">2315</span>                e);<a name="line.2315"></a>
-<span class="sourceLineNo">2316</span>      }<a name="line.2316"></a>
-<span class="sourceLineNo">2317</span>      DocumentBuilder builder = docBuilderFactory.newDocumentBuilder();<a name="line.2317"></a>
-<span class="sourceLineNo">2318</span>      Document doc = null;<a name="line.2318"></a>
-<span class="sourceLineNo">2319</span>      Element root = null;<a name="line.2319"></a>
-<span class="sourceLineNo">2320</span>      boolean returnCachedProperties = false;<a name="line.2320"></a>
-<span class="sourceLineNo">2321</span>      <a name="line.2321"></a>
-<span class="sourceLineNo">2322</span>      if (resource instanceof URL) {                  // an URL resource<a name="line.2322"></a>
-<span class="sourceLineNo">2323</span>        doc = parse(builder, (URL)resource);<a name="line.2323"></a>
-<span class="sourceLineNo">2324</span>      } else if (resource instanceof String) {        // a CLASSPATH resource<a name="line.2324"></a>
-<span class="sourceLineNo">2325</span>        URL url = getResource((String)resource);<a name="line.2325"></a>
-<span class="sourceLineNo">2326</span>        doc = parse(builder, url);<a name="line.2326"></a>
-<span class="sourceLineNo">2327</span>      } else if (resource instanceof Path) {          // a file resource<a name="line.2327"></a>
-<span class="sourceLineNo">2328</span>        // Can't use FileSystem API or we get an infinite loop<a name="line.2328"></a>
-<span class="sourceLineNo">2329</span>        // since FileSystem uses Configuration API.  Use java.io.File instead.<a name="line.2329"></a>
-<span class="sourceLineNo">2330</span>        File file = new File(((Path)resource).toUri().getPath())<a name="line.2330"></a>
-<span class="sourceLineNo">2331</span>          .getAbsoluteFile();<a name="line.2331"></a>
-<span class="sourceLineNo">2332</span>        if (file.exists()) {<a name="line.2332"></a>
-<span class="sourceLineNo">2333</span>          if (!quiet) {<a name="line.2333"></a>
-<span class="sourceLineNo">2334</span>            LOG.debug("parsing File " + file);<a name="line.2334"></a>
-<span class="sourceLineNo">2335</span>          }<a name="line.2335"></a>
-<span class="sourceLineNo">2336</span>          doc = parse(builder, new BufferedInputStream(<a name="line.2336"></a>
-<span class="sourceLineNo">2337</span>              new FileInputStream(file)), ((Path)resource).toString());<a name="line.2337"></a>
-<span class="sourceLineNo">2338</span>        }<a name="line.2338"></a>
-<span class="sourceLineNo">2339</span>      } else if (resource instanceof InputStream) {<a name="line.2339"></a>
-<span class="sourceLineNo">2340</span>        doc = parse(builder, (InputStream) resource, null);<a name="line.2340"></a>
-<span class="sourceLineNo">2341</span>        returnCachedProperties = true;<a name="line.2341"></a>
-<span class="sourceLineNo">2342</span>      } else if (resource instanceof Properties) {<a name="line.2342"></a>
-<span class="sourceLineNo">2343</span>        overlay(properties, (Properties)resource);<a name="line.2343"></a>
-<span class="sourceLineNo">2344</span>      } else if (resource instanceof Element) {<a name="line.2344"></a>
-<span class="sourceLineNo">2345</span>        root = (Element)resource;<a name="line.2345"></a>
+<span class="sourceLineNo">2274</span>  /**<a name="line.2274"></a>
+<span class="sourceLineNo">2275</span>   * Return the number of keys in the configuration.<a name="line.2275"></a>
+<span class="sourceLineNo">2276</span>   *<a name="line.2276"></a>
+<span class="sourceLineNo">2277</span>   * @return number of keys in the configuration.<a name="line.2277"></a>
+<span class="sourceLineNo">2278</span>   */<a name="line.2278"></a>
+<span class="sourceLineNo">2279</span>  public int size() {<a name="line.2279"></a>
+<span class="sourceLineNo">2280</span>    return getProps().size();<a name="line.2280"></a>
+<span class="sourceLineNo">2281</span>  }<a name="line.2281"></a>
+<span class="sourceLineNo">2282</span><a name="line.2282"></a>
+<span class="sourceLineNo">2283</span>  /**<a name="line.2283"></a>
+<span class="sourceLineNo">2284</span>   * Clears all keys from the configuration.<a name="line.2284"></a>
+<span class="sourceLineNo">2285</span>   */<a name="line.2285"></a>
+<span class="sourceLineNo">2286</span>  public void clear() {<a name="line.2286"></a>
+<span class="sourceLineNo">2287</span>    getProps().clear();<a name="line.2287"></a>
+<span class="sourceLineNo">2288</span>    getOverlay().clear();<a name="line.2288"></a>
+<span class="sourceLineNo">2289</span>  }<a name="line.2289"></a>
+<span class="sourceLineNo">2290</span><a name="line.2290"></a>
+<span class="sourceLineNo">2291</span>  /**<a name="line.2291"></a>
+<span class="sourceLineNo">2292</span>   * Get an {@link Iterator} to go through the list of &lt;code&gt;String&lt;/code&gt; <a name="line.2292"></a>
+<span class="sourceLineNo">2293</span>   * key-value pairs in the configuration.<a name="line.2293"></a>
+<span class="sourceLineNo">2294</span>   * <a name="line.2294"></a>
+<span class="sourceLineNo">2295</span>   * @return an iterator over the entries.<a name="line.2295"></a>
+<span class="sourceLineNo">2296</span>   */<a name="line.2296"></a>
+<span class="sourceLineNo">2297</span>  @Override<a name="line.2297"></a>
+<span class="sourceLineNo">2298</span>  public Iterator&lt;Map.Entry&lt;String, String&gt;&gt; iterator() {<a name="line.2298"></a>
+<span class="sourceLineNo">2299</span>    // Get a copy of just the string to string pairs. After the old object<a name="line.2299"></a>
+<span class="sourceLineNo">2300</span>    // methods that allow non-strings to be put into configurations are removed,<a name="line.2300"></a>
+<span class="sourceLineNo">2301</span>    // we could replace properties with a Map&lt;String,String&gt; and get rid of this<a name="line.2301"></a>
+<span class="sourceLineNo">2302</span>    // code.<a name="line.2302"></a>
+<span class="sourceLineNo">2303</span>    Map&lt;String,String&gt; result = new HashMap&lt;String,String&gt;();<a name="line.2303"></a>
+<span class="sourceLineNo">2304</span>    for(Map.Entry&lt;Object,Object&gt; item: getProps().entrySet()) {<a name="line.2304"></a>
+<span class="sourceLineNo">2305</span>      if (item.getKey() instanceof String &amp;&amp; <a name="line.2305"></a>
+<span class="sourceLineNo">2306</span>          item.getValue() instanceof String) {<a name="line.2306"></a>
+<span class="sourceLineNo">2307</span>        result.put((String) item.getKey(), (String) item.getValue());<a name="line.2307"></a>
+<span class="sourceLineNo">2308</span>      }<a name="line.2308"></a>
+<span class="sourceLineNo">2309</span>    }<a name="line.2309"></a>
+<span class="sourceLineNo">2310</span>    return result.entrySet().iterator();<a name="line.2310"></a>
+<span class="sourceLineNo">2311</span>  }<a name="line.2311"></a>
+<span class="sourceLineNo">2312</span><a name="line.2312"></a>
+<span class="sourceLineNo">2313</span>  private Document parse(DocumentBuilder builder, URL url)<a name="line.2313"></a>
+<span class="sourceLineNo">2314</span>      throws IOException, SAXException {<a name="line.2314"></a>
+<span class="sourceLineNo">2315</span>    if (!quietmode) {<a name="line.2315"></a>
+<span class="sourceLineNo">2316</span>      LOG.debug("parsing URL " + url);<a name="line.2316"></a>
+<span class="sourceLineNo">2317</span>    }<a name="line.2317"></a>
+<span class="sourceLineNo">2318</span>    if (url == null) {<a name="line.2318"></a>
+<span class="sourceLineNo">2319</span>      return null;<a name="line.2319"></a>
+<span class="sourceLineNo">2320</span>    }<a name="line.2320"></a>
+<span class="sourceLineNo">2321</span>    return parse(builder, url.openStream(), url.toString());<a name="line.2321"></a>
+<span class="sourceLineNo">2322</span>  }<a name="line.2322"></a>
+<span class="sourceLineNo">2323</span><a name="line.2323"></a>
+<span class="sourceLineNo">2324</span>  private Document parse(DocumentBuilder builder, InputStream is,<a name="line.2324"></a>
+<span class="sourceLineNo">2325</span>      String systemId) throws IOException, SAXException {<a name="line.2325"></a>
+<span class="sourceLineNo">2326</span>    if (!quietmode) {<a name="line.2326"></a>
+<span class="sourceLineNo">2327</span>      LOG.debug("parsing input stream " + is);<a name="line.2327"></a>
+<span class="sourceLineNo">2328</span>    }<a name="line.2328"></a>
+<span class="sourceLineNo">2329</span>    if (is == null) {<a name="line.2329"></a>
+<span class="sourceLineNo">2330</span>      return null;<a name="line.2330"></a>
+<span class="sourceLineNo">2331</span>    }<a name="line.2331"></a>
+<span class="sourceLineNo">2332</span>    try {<a name="line.2332"></a>
+<span class="sourceLineNo">2333</span>      return (systemId == null) ? builder.parse(is) : builder.parse(is,<a name="line.2333"></a>
+<span class="sourceLineNo">2334</span>          systemId);<a name="line.2334"></a>
+<span class="sourceLineNo">2335</span>    } finally {<a name="line.2335"></a>
+<span class="sourceLineNo">2336</span>      is.close();<a name="line.2336"></a>
+<span class="sourceLineNo">2337</span>    }<a name="line.2337"></a>
+<span class="sourceLineNo">2338</span>  }<a name="line.2338"></a>
+<span class="sourceLineNo">2339</span><a name="line.2339"></a>
+<span class="sourceLineNo">2340</span>  private void loadResources(Properties properties,<a name="line.2340"></a>
+<span class="sourceLineNo">2341</span>                             ArrayList&lt;Resource&gt; resources,<a name="line.2341"></a>
+<span class="sourceLineNo">2342</span>                             boolean quiet) {<a name="line.2342"></a>
+<span class="sourceLineNo">2343</span>    if(loadDefaults) {<a name="line.2343"></a>
+<span class="sourceLineNo">2344</span>      for (String resource : defaultResources) {<a name="line.2344"></a>
+<span class="sourceLineNo">2345</span>        loadResource(properties, new Resource(resource), quiet);<a name="line.2345"></a>
 <span class="sourceLineNo">2346</span>      }<a name="line.2346"></a>
-<span class="sourceLineNo">2347</span><a name="line.2347"></a>
-<span class="sourceLineNo">2348</span>      if (root == null) {<a name="line.2348"></a>
-<span class="sourceLineNo">2349</span>        if (doc == null) {<a name="line.2349"></a>
-<span class="sourceLineNo">2350</span>          if (quiet) {<a name="line.2350"></a>
-<span class="sourceLineNo">2351</span>            return null;<a name="line.2351"></a>
-<span class="sourceLineNo">2352</span>          }<a name="line.2352"></a>
-<span class="sourceLineNo">2353</span>          throw new RuntimeException(resource + " not found");<a name="line.2353"></a>
-<span class="sourceLineNo">2354</span>        }<a name="line.2354"></a>
-<span class="sourceLineNo">2355</span>        root = doc.getDocumentElement();<a name="line.2355"></a>
-<span class="sourceLineNo">2356</span>      }<a name="line.2356"></a>
-<span class="sourceLineNo">2357</span>      Properties toAddTo = properties;<a name="line.2357"></a>
-<span class="sourceLineNo">2358</span>      if(returnCachedProperties) {<a name="line.2358"></a>
-<span class="sourceLineNo">2359</span>        toAddTo = new Properties();<a name="line.2359"></a>
-<span class="sourceLineNo">2360</span>      }<a name="line.2360"></a>
-<span class="sourceLineNo">2361</span>      if (!"configuration".equals(root.getTagName()))<a name="line.2361"></a>
-<span class="sourceLineNo">2362</span>        LOG.fatal("bad conf file: top-level element not &lt;configuration&gt;");<a name="line.2362"></a>
-<span class="sourceLineNo">2363</span>      NodeList props = root.getChildNodes();<a name="line.2363"></a>
-<span class="sourceLineNo">2364</span>      DeprecationContext deprecations = deprecationContext.get();<a name="line.2364"></a>
-<span class="sourceLineNo">2365</span>      for (int i = 0; i &lt; props.getLength(); i++) {<a name="line.2365"></a>
-<span class="sourceLineNo">2366</span>        Node propNode = props.item(i);<a name="line.2366"></a>
-<span class="sourceLineNo">2367</span>        if (!(propNode instanceof Element))<a name="line.2367"></a>
-<span class="sourceLineNo">2368</span>          continue;<a name="line.2368"></a>
-<span class="sourceLineNo">2369</span>        Element prop = (Element)propNode;<a name="line.2369"></a>
-<span class="sourceLineNo">2370</span>        if ("configuration".equals(prop.getTagName())) {<a name="line.2370"></a>
-<span class="sourceLineNo">2371</span>          loadResource(toAddTo, new Resource(prop, name), quiet);<a name="line.2371"></a>
-<span class="sourceLineNo">2372</span>          continue;<a name="line.2372"></a>
-<span class="sourceLineNo">2373</span>        }<a name="line.2373"></a>
-<span class="sourceLineNo">2374</span>        if (!"property".equals(prop.getTagName()))<a name="line.2374"></a>
-<span class="sourceLineNo">2375</span>          LOG.warn("bad conf file: element not &lt;property&gt;");<a name="line.2375"></a>
-<span class="sourceLineNo">2376</span>        NodeList fields = prop.getChildNodes();<a name="line.2376"></a>
-<span class="sourceLineNo">2377</span>        String attr = null;<a name="line.2377"></a>
-<span class="sourceLineNo">2378</span>        String value = null;<a name="line.2378"></a>
-<span class="sourceLineNo">2379</span>        boolean finalParameter = false;<a name="line.2379"></a>
-<span class="sourceLineNo">2380</span>        LinkedList&lt;String&gt; source = new LinkedList&lt;String&gt;();<a name="line.2380"></a>
-<span class="sourceLineNo">2381</span>        for (int j = 0; j &lt; fields.getLength(); j++) {<a name="line.2381"></a>
-<span class="sourceLineNo">2382</span>          Node fieldNode = fields.item(j);<a name="line.2382"></a>
-<span class="sourceLineNo">2383</span>          if (!(fieldNode instanceof Element))<a name="line.2383"></a>
-<span class="sourceLineNo">2384</span>            continue;<a name="line.2384"></a>
-<span class="sourceLineNo">2385</span>          Element field = (Element)fieldNode;<a name="line.2385"></a>
-<span class="sourceLineNo">2386</span>          if ("name".equals(field.getTagName()) &amp;&amp; field.hasChildNodes())<a name="line.2386"></a>
-<span class="sourceLineNo">2387</span>            attr = StringInterner.weakIntern(<a name="line.2387"></a>
-<span class="sourceLineNo">2388</span>                ((Text)field.getFirstChild()).getData().trim());<a name="line.2388"></a>
-<span class="sourceLineNo">2389</span>          if ("value".equals(field.getTagName()) &amp;&amp; field.hasChildNodes())<a name="line.2389"></a>
-<span class="sourceLineNo">2390</span>            value = StringInterner.weakIntern(<a name="line.2390"></a>
-<span class="sourceLineNo">2391</span>                ((Text)field.getFirstChild()).getData());<a name="line.2391"></a>
-<span class="sourceLineNo">2392</span>          if ("final".equals(field.getTagName()) &amp;&amp; field.hasChildNodes())<a name="line.2392"></a>
-<span class="sourceLineNo">2393</span>            finalParameter = "true".equals(((Text)field.getFirstChild()).getData());<a name="line.2393"></a>
-<span class="sourceLineNo">2394</span>          if ("source".equals(field.getTagName()) &amp;&amp; field.hasChildNodes())<a name="line.2394"></a>
-<span class="sourceLineNo">2395</span>            source.add(StringInterner.weakIntern(<a name="line.2395"></a>
-<span class="sourceLineNo">2396</span>                ((Text)field.getFirstChild()).getData()));<a name="line.2396"></a>
-<span class="sourceLineNo">2397</span>        }<a name="line.2397"></a>
-<span class="sourceLineNo">2398</span>        source.add(name);<a name="line.2398"></a>
-<span class="sourceLineNo">2399</span>        <a name="line.2399"></a>
-<span class="sourceLineNo">2400</span>        // Ignore this parameter if it has already been marked as 'final'<a name="line.2400"></a>
-<span class="sourceLineNo">2401</span>        if (attr != null) {<a name="line.2401"></a>
-<span class="sourceLineNo">2402</span>          if (deprecations.getDeprecatedKeyMap().containsKey(attr)) {<a name="line.2402"></a>
-<span class="sourceLineNo">2403</span>            DeprecatedKeyInfo keyInfo =<a name="line.2403"></a>
-<span class="sourceLineNo">2404</span>                deprecations.getDeprecatedKeyMap().get(attr);<a name="line.2404"></a>
-<span class="sourceLineNo">2405</span>            keyInfo.clearAccessed();<a name="line.2405"></a>
-<span class="sourceLineNo">2406</span>            for (String key:keyInfo.newKeys) {<a name="line.2406"></a>
-<span class="sourceLineNo">2407</span>              // update new keys with deprecated key's value <a name="line.2407"></a>
-<span class="sourceLineNo">2408</span>              loadProperty(toAddTo, name, key, value, finalParameter, <a name="line.2408"></a>
-<span class="sourceLineNo">2409</span>                  source.toArray(new String[source.size()]));<a name="line.2409"></a>
-<span class="sourceLineNo">2410</span>            }<a name="line.2410"></a>
-<span class="sourceLineNo">2411</span>          }<a name="line.2411"></a>
-<span class="sourceLineNo">2412</span>          else {<a name="line.2412"></a>
-<span class="sourceLineNo">2413</span>            loadProperty(toAddTo, name, attr, value, finalParameter, <a name="line.2413"></a>
-<span class="sourceLineNo">2414</span>                source.toArray(new String[source.size()]));<a name="line.2414"></a>
-<span class="sourceLineNo">2415</span>          }<a name="line.2415"></a>
-<span class="sourceLineNo">2416</span>        }<a name="line.2416"></a>
-<span class="sourceLineNo">2417</span>      }<a name="line.2417"></a>
-<span class="sourceLineNo">2418</span>      <a name="line.2418"></a>
-<span class="sourceLineNo">2419</span>      if (returnCachedProperties) {<a name="line.2419"></a>
-<span class="sourceLineNo">2420</span>        overlay(properties, toAddTo);<a name="line.2420"></a>
-<span class="sourceLineNo">2421</span>        return new Resource(toAddTo, name);<a name="line.2421"></a>
+<span class="sourceLineNo">2347</span>    <a name="line.2347"></a>
+<span class="sourceLineNo">2348</span>      //support the hadoop-site.xml as a deprecated case<a name="line.2348"></a>
+<span class="sourceLineNo">2349</span>      if(getResource("hadoop-site.xml")!=null) {<a name="line.2349"></a>
+<span class="sourceLineNo">2350</span>        loadResource(properties, new Resource("hadoop-site.xml"), quiet);<a name="line.2350"></a>
+<span class="sourceLineNo">2351</span>      }<a name="line.2351"></a>
+<span class="sourceLineNo">2352</span>    }<a name="line.2352"></a>
+<span class="sourceLineNo">2353</span>    <a name="line.2353"></a>
+<span class="sourceLineNo">2354</span>    for (int i = 0; i &lt; resources.size(); i++) {<a name="line.2354"></a>
+<span class="sourceLineNo">2355</span>      Resource ret = loadResource(properties, resources.get(i), quiet);<a name="line.2355"></a>
+<span class="sourceLineNo">2356</span>      if (ret != null) {<a name="line.2356"></a>
+<span class="sourceLineNo">2357</span>        resources.set(i, ret);<a name="line.2357"></a>
+<span class="sourceLineNo">2358</span>      }<a name="line.2358"></a>
+<span class="sourceLineNo">2359</span>    }<a name="line.2359"></a>
+<span class="sourceLineNo">2360</span>  }<a name="line.2360"></a>
+<span class="sourceLineNo">2361</span>  <a name="line.2361"></a>
+<span class="sourceLineNo">2362</span>  private Resource loadResource(Properties properties, Resource wrapper, boolean quiet) {<a name="line.2362"></a>
+<span class="sourceLineNo">2363</span>    String name = UNKNOWN_RESOURCE;<a name="line.2363"></a>
+<span class="sourceLineNo">2364</span>    try {<a name="line.2364"></a>
+<span class="sourceLineNo">2365</span>      Object resource = wrapper.getResource();<a name="line.2365"></a>
+<span class="sourceLineNo">2366</span>      name = wrapper.getName();<a name="line.2366"></a>
+<span class="sourceLineNo">2367</span>      <a name="line.2367"></a>
+<span class="sourceLineNo">2368</span>      DocumentBuilderFactory docBuilderFactory <a name="line.2368"></a>
+<span class="sourceLineNo">2369</span>        = DocumentBuilderFactory.newInstance();<a name="line.2369"></a>
+<span class="sourceLineNo">2370</span>      //ignore all comments inside the xml file<a name="line.2370"></a>
+<span class="sourceLineNo">2371</span>      docBuilderFactory.setIgnoringComments(true);<a name="line.2371"></a>
+<span class="sourceLineNo">2372</span><a name="line.2372"></a>
+<span class="sourceLineNo">2373</span>      //allow includes in the xml file<a name="line.2373"></a>
+<span class="sourceLineNo">2374</span>      docBuilderFactory.setNamespaceAware(true);<a name="line.2374"></a>
+<span class="sourceLineNo">2375</span>      try {<a name="line.2375"></a>
+<span class="sourceLineNo">2376</span>          docBuilderFactory.setXIncludeAware(true);<a name="line.2376"></a>
+<span class="sourceLineNo">2377</span>      } catch (UnsupportedOperationException e) {<a name="line.2377"></a>
+<span class="sourceLineNo">2378</span>        LOG.error("Failed to set setXIncludeAware(true) for parser "<a name="line.2378"></a>
+<span class="sourceLineNo">2379</span>                + docBuilderFactory<a name="line.2379"></a>
+<span class="sourceLineNo">2380</span>                + ":" + e,<a name="line.2380"></a>
+<span class="sourceLineNo">2381</span>                e);<a name="line.2381"></a>
+<span class="sourceLineNo">2382</span>      }<a name="line.2382"></a>
+<span class="sourceLineNo">2383</span>      DocumentBuilder builder = docBuilderFactory.newDocumentBuilder();<a name="line.2383"></a>
+<span class="sourceLineNo">2384</span>      Document doc = null;<a name="line.2384"></a>
+<span class="sourceLineNo">2385</span>      Element root = null;<a name="line.2385"></a>
+<span class="sourceLineNo">2386</span>      boolean returnCachedProperties = false;<a name="line.2386"></a>
+<span class="sourceLineNo">2387</span>      <a name="line.2387"></a>
+<span class="sourceLineNo">2388</span>      if (resource instanceof URL) {                  // an URL resource<a name="line.2388"></a>
+<span class="sourceLineNo">2389</span>        doc = parse(builder, (URL)resource);<a name="line.2389"></a>
+<span class="sourceLineNo">2390</span>      } else if (resource instanceof String) {        // a CLASSPATH resource<a name="line.2390"></a>
+<span class="sourceLineNo">2391</span>        URL url = getResource((String)resource);<a name="line.2391"></a>
+<span class="sourceLineNo">2392</span>        doc = parse(builder, url);<a name="line.2392"></a>
+<span class="sourceLineNo">2393</span>      } else if (resource instanceof Path) {          // a file resource<a name="line.2393"></a>
+<span class="sourceLineNo">2394</span>        // Can't use FileSystem API or we get an infinite loop<a name="line.2394"></a>
+<span class="sourceLineNo">2395</span>        // since FileSystem uses Configuration API.  Use java.io.File instead.<a name="line.2395"></a>
+<span class="sourceLineNo">2396</span>        File file = new File(((Path)resource).toUri().getPath())<a name="line.2396"></a>
+<span class="sourceLineNo">2397</span>          .getAbsoluteFile();<a name="line.2397"></a>
+<span class="sourceLineNo">2398</span>        if (file.exists()) {<a name="line.2398"></a>
+<span class="sourceLineNo">2399</span>          if (!quiet) {<a name="line.2399"></a>
+<span class="sourceLineNo">2400</span>            LOG.debug("parsing File " + file);<a name="line.2400"></a>
+<span class="sourceLineNo">2401</span>          }<a name="line.2401"></a>
+<span class="sourceLineNo">2402</span>          doc = parse(builder, new BufferedInputStream(<a name="line.2402"></a>
+<span class="sourceLineNo">2403</span>              new FileInputStream(file)), ((Path)resource).toString());<a name="line.2403"></a>
+<span class="sourceLineNo">2404</span>        }<a name="line.2404"></a>
+<span class="sourceLineNo">2405</span>      } else if (resource instanceof InputStream) {<a name="line.2405"></a>
+<span class="sourceLineNo">2406</span>        doc = parse(builder, (InputStream) resource, null);<a name="line.2406"></a>
+<span class="sourceLineNo">2407</span>        returnCachedProperties = true;<a name="line.2407"></a>
+<span class="sourceLineNo">2408</span>      } else if (resource instanceof Properties) {<a name="line.2408"></a>
+<span class="sourceLineNo">2409</span>        overlay(properties, (Properties)resource);<a name="line.2409"></a>
+<span class="sourceLineNo">2410</span>      } else if (resource instanceof Element) {<a name="line.2410"></a>
+<span class="sourceLineNo">2411</span>        root = (Element)resource;<a name="line.2411"></a>
+<span class="sourceLineNo">2412</span>      }<a name="line.2412"></a>
+<span class="sourceLineNo">2413</span><a name="line.2413"></a>
+<span class="sourceLineNo">2414</span>      if (root == null) {<a name="line.2414"></a>
+<span class="sourceLineNo">2415</span>        if (doc == null) {<a name="line.2415"></a>
+<span class="sourceLineNo">2416</span>          if (quiet) {<a name="line.2416"></a>
+<span class="sourceLineNo">2417</span>            return null;<a name="line.2417"></a>
+<span class="sourceLineNo">2418</span>          }<a name="line.2418"></a>
+<span class="sourceLineNo">2419</span>          throw new RuntimeException(resource + " not found");<a name="line.2419"></a>
+<span class="sourceLineNo">2420</span>        }<a name="line.2420"></a>
+<span class="sourceLineNo">2421</span>        root = doc.getDocumentElement();<a name="line.2421"></a>
 <span class="sourceLineNo">2422</span>      }<a name="line.2422"></a>
-<span class="sourceLineNo">2423</span>      return null;<a name="line.2423"></a>
-<span class="sourceLineNo">2424</span>    } catch (IOException e) {<a name="line.2424"></a>
-<span class="sourceLineNo">2425</span>      LOG.fatal("error parsing conf " + name, e);<a name="line.2425"></a>
-<span class="sourceLineNo">2426</span>      throw new RuntimeException(e);<a name="line.2426"></a>
-<span class="sourceLineNo">2427</span>    } catch (DOMException e) {<a name="line.2427"></a>
-<span class="sourceLineNo">2428</span>      LOG.fatal("error parsing conf " + name, e);<a name="line.2428"></a>
-<span class="sourceLineNo">2429</span>      throw new RuntimeException(e);<a name="line.2429"></a>
-<span class="sourceLineNo">2430</span>    } catch (SAXException e) {<a name="line.2430"></a>
-<span class="sourceLineNo">2431</span>      LOG.fatal("error parsing conf " + name, e);<a name="line.2431"></a>
-<span class="sourceLineNo">2432</span>      throw new RuntimeException(e);<a name="line.2432"></a>
-<span class="sourceLineNo">2433</span>    } catch (ParserConfigurationException e) {<a name="line.2433"></a>
-<span class="sourceLineNo">2434</span>      LOG.fatal("error parsing conf " + name , e);<a name="line.2434"></a>
-<span class="sourceLineNo">2435</span>      throw new RuntimeException(e);<a name="line.2435"></a>
-<span class="sourceLineNo">2436</span>    }<a name="line.2436"></a>
-<span class="sourceLineNo">2437</span>  }<a name="line.2437"></a>
-<span class="sourceLineNo">2438</span><a name="line.2438"></a>
-<span class="sourceLineNo">2439</span>  private void overlay(Properties to, Properties from) {<a name="line.2439"></a>
-<span class="sourceLineNo">2440</span>    for (Entry&lt;Object, Object&gt; entry: from.entrySet()) {<a name="line.2440"></a>
-<span class="sourceLineNo">2441</span>      to.put(entry.getKey(), entry.getValue());<a name="line.2441"></a>
-<span class="sourceLineNo">2442</span>    }<a name="line.2442"></a>
-<span class="sourceLineNo">2443</span>  }<a name="line.2443"></a>
-<span class="sourceLineNo">2444</span>  <a name="line.2444"></a>
-<span class="sourceLineNo">2445</span>  private void loadProperty(Properties properties, String name, String attr,<a name="line.2445"></a>
-<span class="sourceLineNo">2446</span>      String value, boolean finalParameter, String[] source) {<a name="line.2446"></a>
-<span class="sourceLineNo">2447</span>    if (value != null) {<a name="line.2447"></a>
-<span class="sourceLineNo">2448</span>      if (!finalParameters.contains(attr)) {<a name="line.2448"></a>
-<span class="sourceLineNo">2449</span>        properties.setProperty(attr, value);<a name="line.2449"></a>
-<span class="sourceLineNo">2450</span>        updatingResource.put(attr, source);<a name="line.2450"></a>
-<span class="sourceLineNo">2451</span>      } else if (!value.equals(properties.getProperty(attr))) {<a name="line.2451"></a>
-<span class="sourceLineNo">2452</span>        LOG.warn(name+":an attempt to override final parameter: "+attr<a name="line.2452"></a>
-<span class="sourceLineNo">2453</span>            +";  Ignoring.");<a name="line.2453"></a>
-<span class="sourceLineNo">2454</span>      }<a name="line.2454"></a>
-<span class="sourceLineNo">2455</span>    }<a name="line.2455"></a>
-<span class="sourceLineNo">2456</span>    if (finalParameter) {<a name="line.2456"></a>
-<span class="sourceLineNo">2457</span>      finalParameters.add(attr);<a name="line.2457"></a>
-<span class="sourceLineNo">2458</span>    }<a name="line.2458"></a>
-<span class="sourceLineNo">2459</span>  }<a name="line.2459"></a>
-<span class="sourceLineNo">2460</span><a name="line.2460"></a>
-<span class="sourceLineNo">2461</span>  /** <a name="line.2461"></a>
-<span class="sourceLineNo">2462</span>   * Write out the non-default properties in this configuration to the given<a name="line.2462"></a>
-<span class="sourceLineNo">2463</span>   * {@link OutputStream} using UTF-8 encoding.<a name="line.2463"></a>
-<span class="sourceLineNo">2464</span>   * <a name="line.2464"></a>
-<span class="sourceLineNo">2465</span>   * @param out the output stream to write to.<a name="line.2465"></a>
-<span class="sourceLineNo">2466</span>   */<a name="line.2466"></a>
-<span class="sourceLineNo">2467</span>  public void writeXml(OutputStream out) throws IOException {<a name="line.2467"></a>
-<span class="sourceLineNo">2468</span>    writeXml(new OutputStreamWriter(out, "UTF-8"));<a name="line.2468"></a>
-<span class="sourceLineNo">2469</span>  }<a name="line.2469"></a>
-<span class="sourceLineNo">2470</span><a name="line.2470"></a>
-<span class="sourceLineNo">2471</span>  /** <a name="line.2471"></a>
-<span class="sourceLineNo">2472</span>   * Write out the non-default properties in this configuration to the given<a name="line.2472"></a>
-<span class="sourceLineNo">2473</span>   * {@link Writer}.<a name="line.2473"></a>
-<span class="sourceLineNo">2474</span>   * <a name="line.2474"></a>
-<span class="sourceLineNo">2475</span>   * @param out the writer to write to.<a name="line.2475"></a>
-<span class="sourceLineNo">2476</span>   */<a name="line.2476"></a>
-<span class="sourceLineNo">2477</span>  public void writeXml(Writer out) throws IOException {<a name="line.2477"></a>
-<span class="sourceLineNo">2478</span>    Document doc = asXmlDocument();<a name="line.2478"></a>
-<span class="sourceLineNo">2479</span><a name="line.2479"></a>
-<span class="sourceLineNo">2480</span>    try {<a name="line.2480"></a>
-<span class="sourceLineNo">2481</span>      DOMSource source = new DOMSource(doc);<a name="line.2481"></a>
-<span class="sourceLineNo">2482</span>      StreamResult result = new StreamResult(out);<a name="line.2482"></a>
-<span class="sourceLineNo">2483</span>      TransformerFactory transFactory = TransformerFactory.newInstance();<a name="line.2483"></a>
-<span class="sourceLineNo">2484</span>      Transformer transformer = transFactory.newTransformer();<a name="line.2484"></a>
-<span class="sourceLineNo">2485</span><a name="line.2485"></a>
-<span class="sourceLineNo">2486</span>      // Important to not hold Configuration log while writing result, since<a name="line.2486"></a>
-<span class="sourceLineNo">2487</span>      // 'out' may be an HDFS stream which needs to lock this configuration<a name="line.2487"></a>
-<span class="sourceLineNo">2488</span>      // from another thread.<a name="line.2488"></a>
-<span class="sourceLineNo">2489</span>      transformer.transform(source, result);<a name="line.2489"></a>
-<span class="sourceLineNo">2490</span>    } catch (TransformerException te) {<a name="line.2490"></a>
-<span class="sourceLineNo">2491</span>      throw new IOException(te);<a name="line.2491"></a>
-<span class="sourceLineNo">2492</span>    }<a name="line.2492"></a>
-<span class="sourceLineNo">2493</span>  }<a name="line.2493"></a>
-<span class="sourceLineNo">2494</span><a name="line.2494"></a>
-<span class="sourceLineNo">2495</span>  /**<a name="line.2495"></a>
-<span class="sourceLineNo">2496</span>   * Return the XML DOM corresponding to this Configuration.<a name="line.2496"></a>
-<span class="sourceLineNo">2497</span>   */<a name="line.2497"></a>
-<span class="sourceLineNo">2498</span>  private synchronized Document asXmlDocument() throws IOException {<a name="line.2498"></a>
-<span class="sourceLineNo">2499</span>    Document doc;<a name="line.2499"></a>
-<span class="sourceLineNo">2500</span>    try {<a name="line.2500"></a>
-<span class="sourceLineNo">2501</span>      doc =<a name="line.2501"></a>
-<span class="sourceLineNo">2502</span>        DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();<a name="line.2502"></a>
-<span class="sourceLineNo">2503</span>    } catch (ParserConfigurationException pe) {<a name="line.2503"></a>
-<span class="sourceLineNo">2504</span>      throw new IOException(pe);<a name="line.2504"></a>
-<span class="sourceLineNo">2505</span>    }<a name="line.2505"></a>
-<span class="sourceLineNo">2506</span>    Element conf = doc.createElement("configuration");<a name="line.2506"></a>
-<span class="sourceLineNo">2507</span>    doc.appendChild(conf);<a name="line.2507"></a>
-<span class="sourceLineNo">2508</span>    conf.appendChild(doc.createTextNode("\n"));<a name="line.2508"></a>
-<span class="sourceLineNo">2509</span>    handleDeprecation(); //ensure properties is set and deprecation is handled<a name="line.2509"></a>
-<span class="sourceLineNo">2510</span>    for (Enumeration&lt;Object&gt; e = properties.keys(); e.hasMoreElements();) {<a name="line.2510"></a>
-<span class="sourceLineNo">2511</span>      String name = (String)e.nextElement();<a name="line.2511"></a>
-<span class="sourceLineNo">2512</span>      Object object = properties.get(name);<a name="line.2512"></a>
-<span class="sourceLineNo">2513</span>      String value = null;<a name="line.2513"></a>
-<span class="sourceLineNo">2514</span>      if (object instanceof String) {<a name="line.2514"></a>
-<span class="sourceLineNo">2515</span>        value = (String) object;<a name="line.2515"></a>
-<span class="sourceLineNo">2516</span>      }else {<a name="line.2516"></a>
-<span class="sourceLineNo">2517</span>        continue;<a name="line.2517"></a>
-<span class="sourceLineNo">2518</span>      }<a name="line.2518"></a>
-<span class="sourceLineNo">2519</span>      Element propNode = doc.createElement("property");<a name="line.2519"></a>
-<span class="sourceLineNo">2520</span>      conf.appendChild(propNode);<a name="line.2520"></a>
-<span class="sourceLineNo">2521</span><a name="line.2521"></a>
-<span class="sourceLineNo">2522</span>      Element nameNode = doc.createElement("name");<a name="line.2522"></a>
-<span class="sourceLineNo">2523</span>      nameNode.appendChild(doc.createTextNode(name));<a name="line.2523"></a>
-<span class="sourceLineNo">2524</span>      propNode.appendChild(nameNode);<a name="line.2524"></a>
-<span class="sourceLineNo">2525</span><a name="line.2525"></a>
-<span class="sourceLineNo">2526</span>      Element valueNode = doc.createElement("value");<a name="line.2526"></a>
-<span class="sourceLineNo">2527</span>      valueNode.appendChild(doc.createTextNode(value));<a name="line.2527"></a>
-<span class="sourceLineNo">2528</span>      propNode.appendChild(valueNode);<a name="line.2528"></a>
-<span class="sourceLineNo">2529</span><a name="line.2529"></a>
-<span class="sourceLineNo">2530</span>      if (updatingResource != null) {<a name="line.2530"></a>
-<span class="sourceLineNo">2531</span>        String[] sources = updatingResource.get(name);<a name="line.2531"></a>
-<span class="sourceLineNo">2532</span>        if(sources != null) {<a name="line.2532"></a>
-<span class="sourceLineNo">2533</span>          for(String s : sources) {<a name="line.2533"></a>
-<span class="sourceLineNo">2534</span>            Element sourceNode = doc.createElement("source");<a name="line.2534"></a>
-<span class="sourceLineNo">2535</span>            sourceNode.appendChild(doc.createTextNode(s));<a name="line.2535"></a>
-<span class="sourceLineNo">2536</span>            propNode.appendChild(sourceNode);<a name="line.2536"></a>
-<span class="sourceLineNo">2537</span>          }<a name="line.2537"></a>
-<span class="sourceLineNo">2538</span>        }<a name="line.2538"></a>
-<span class="sourceLineNo">2539</span>      }<a name="line.2539"></a>
-<span class="sourceLineNo">2540</span>      <a name="line.2540"></a>
-<span class="sourceLineNo">2541</span>      conf.appendChild(doc.createTextNode("\n"));<a name="line.2541"></a>
-<span class="sourceLineNo">2542</span>    }<a name="line.2542"></a>
-<span class="sourceLineNo">2543</span>    return doc;<a name="line.2543"></a>
-<span class="sourceLineNo">2544</span>  }<a name="line.2544"></a>
+<span class="sourceLineNo">2423</span>      Properties toAddTo = properties;<a name="line.2423"></a>
+<span class="sourceLineNo">2424</span>      if(returnCachedProperties) {<a name="line.2424"></a>
+<span class="sourceLineNo">2425</span>        toAddTo = new Properties();<a name="line.2425"></a>
+<span class="sourceLineNo">2426</span>      }<a name="line.2426"></a>
+<span class="sourceLineNo">2427</span>      if (!"configuration".equals(root.getTagName()))<a name="line.2427"></a>
+<span class="sourceLineNo">2428</span>        LOG.fatal("bad conf file: top-level element not &lt;configuration&gt;");<a name="line.2428"></a>
+<span class="sourceLineNo">2429</span>      NodeList props = root.getChildNodes();<a name="line.2429"></a>
+<span class="sourceLineNo">2430</span>      DeprecationContext deprecations = deprecationContext.get();<a name="line.2430"></a>
+<span class="sourceLineNo">2431</span>      for (int i = 0; i &lt; props.getLength(); i++) {<a name="line.2431"></a>
+<span class="sourceLineNo">2432</span>        Node propNode = props.item(i);<a name="line.2432"></a>
+<span class="sourceLineNo">2433</span>        if (!(propNode instanceof Element))<a name="line.2433"></a>
+<span class="sourceLineNo">2434</span>          continue;<a name="line.2434"></a>
+<span class="sourceLineNo">2435</span>        Element prop = (Element)propNode;<a name="line.2435"></a>
+<span class="sourceLineNo">2436</span>        if ("configuration".equals(prop.getTagName())) {<a name="line.2436"></a>
+<span class="sourceLineNo">2437</span>          loadResource(toAddTo, new Resource(prop, name), quiet);<a name="line.2437"></a>
+<span class="sourceLineNo">2438</span>          continue;<a name="line.2438"></a>
+<span class="sourceLineNo">2439</span>        }<a name="line.2439"></a>
+<span class="sourceLineNo">2440</span>        if (!"property".equals(prop.getTagName()))<a name="line.2440"></a>
+<span class="sourceLineNo">2441</span>          LOG.warn("bad conf file: element not &lt;property&gt;");<a name="line.2441"></a>
+<span class="sourceLineNo">2442</span>        NodeList fields = prop.getChildNodes();<a name="line.2442"></a>
+<span class="sourceLineNo">2443</span>        String attr = null;<a name="line.2443"></a>
+<span class="sourceLineNo">2444</span>        String value = null;<a name="line.2444"></a>
+<span class="sourceLineNo">2445</span>        boolean finalParameter = false;<a name="line.2445"></a>
+<span class="sourceLineNo">2446</span>        LinkedList&lt;String&gt; source = new LinkedList&lt;String&gt;();<a name="line.2446"></a>
+<span class="sourceLineNo">2447</span>        for (int j = 0; j &lt; fields.getLength(); j++) {<a name="line.2447"></a>
+<span class="sourceLineNo">2448</span>          Node fieldNode = fields.item(j);<a name="line.2448"></a>
+<span class="sourceLineNo">2449</span>          if (!(fieldNode instanceof Element))<a name="line.2449"></a>
+<span class="sourceLineNo">2450</span>            continue;<a name="line.2450"></a>
+<span class="sourceLineNo">2451</span>          Element field = (Element)fieldNode;<a name="line.2451"></a>
+<span class="sourceLineNo">2452</span>          if ("name".equals(field.getTagName()) &amp;&amp; field.hasChildNodes())<a name="line.2452"></a>
+<span class="sourceLineNo">2453</span>            attr = StringInterner.weakIntern(<a name="line.2453"></a>
+<span class="sourceLineNo">2454</span>                ((Text)field.getFirstChild()).getData().trim());<a name="line.2454"></a>
+<span class="sourceLineNo">2455</span>          if ("value".equals(field.getTagName()) &amp;&amp; field.hasChildNodes())<a name="line.2455"></a>
+<span class="sourceLineNo">2456</span>            value = StringInterner.weakIntern(<a name="line.2456"></a>
+<span class="sourceLineNo">2457</span>                ((Text)field.getFirstChild()).getData());<a name="line.2457"></a>
+<span class="sourceLineNo">2458</span>          if ("final".equals(field.getTagName()) &amp;&amp; field.hasChildNodes())<a name="line.2458"></a>
+<span class="sourceLineNo">2459</span>            finalParameter = "true".equals(((Text)field.getFirstChild()).getData());<a name="line.2459"></a>
+<span class="sourceLineNo">2460</span>          if ("source".equals(field.getTagName()) &amp;&amp; field.hasChildNodes())<a name="line.2460"></a>
+<span class="sourceLineNo">2461</span>            source.add(StringInterner.weakIntern(<a name="line.2461"></a>
+<span class="sourceLineNo">2462</span>                ((Text)field.getFirstChild()).getData()));<a name="line.2462"></a>
+<span class="sourceLineNo">2463</span>        }<a name="line.2463"></a>
+<span class="sourceLineNo">2464</span>        source.add(name);<a name="line.2464"></a>
+<span class="sourceLineNo">2465</span>        <a name="line.2465"></a>
+<span class="sourceLineNo">2466</span>        // Ignore this parameter if it has already been marked as 'final'<a name="line.2466"></a>
+<span class="sourceLineNo">2467</span>        if (attr != null) {<a name="line.2467"></a>
+<span class="sourceLineNo">2468</span>          if (deprecations.getDeprecatedKeyMap().containsKey(attr)) {<a name="line.2468"></a>
+<span class="sourceLineNo">2469</span>            DeprecatedKeyInfo keyInfo =<a name="line.2469"></a>
+<span class="sourceLineNo">2470</span>                deprecations.getDeprecatedKeyMap().get(attr);<a name="line.2470"></a>
+<span class="sourceLineNo">2471</span>            keyInfo.clearAccessed();<a name="line.2471"></a>
+<span class="sourceLineNo">2472</span>            for (String key:keyInfo.newKeys) {<a name="line.2472"></a>
+<span class="sourceLineNo">2473</span>              // update new keys with deprecated key's value <a name="line.2473"></a>
+<span class="sourceLineNo">2474</span>              loadProperty(toAddTo, name, key, value, finalParameter, <a name="line.2474"></a>
+<span class="sourceLineNo">2475</span>                  source.toArray(new String[source.size()]));<a name="line.2475"></a>
+<span class="sourceLineNo">2476</span>            }<a name="line.2476"></a>
+<span class="sourceLineNo">2477</span>          }<a name="line.2477"></a>
+<span class="sourceLineNo">2478</span>          else {<a name="line.2478"></a>
+<span class="sourceLineNo">2479</span>            loadProperty(toAddTo, name, attr, value, finalParameter, <a name="line.2479"></a>
+<span class="sourceLineNo">2480</span>                source.toArray(new String[source.size()]));<a name="line.2480"></a>
+<span class="sourceLineNo">2481</span>          }<a name="line.2481"></a>
+<span class="sourceLineNo">2482</span>        }<a name="line.2482"></a>
+<span class="sourceLineNo">2483</span>      }<a name="line.2483"></a>
+<span class="sourceLineNo">2484</span>      <a name="line.2484"></a>
+<span class="sourceLineNo">2485</span>      if (returnCachedProperties) {<a name="line.2485"></a>
+<span class="sourceLineNo">2486</span>        overlay(properties, toAddTo);<a name="line.2486"></a>
+<span class="sourceLineNo">2487</span>        return new Resource(toAddTo, name);<a name="line.2487"></a>
+<span class="sourceLineNo">2488</span>      }<a name="line.2488"></a>
+<span class="sourceLineNo">2489</span>      return null;<a name="line.2489"></a>
+<span class="sourceLineNo">2490</span>    } catch (IOException e) {<a name="line.2490"></a>
+<span class="sourceLineNo">2491</span>      LOG.fatal("error parsing conf " + name, e);<a name="line.2491"></a>
+<span class="sourceLineNo">2492</span>      throw new RuntimeException(e);<a name="line.2492"></a>
+<span class="sourceLineNo">2493</span>    } catch (DOMException e) {<a name="line.2493"></a>
+<span class="sourceLineNo">2494</span>      LOG.fatal("error parsing conf " + name, e);<a name="line.2494"></a>
+<span class="sourceLineNo">2495</span>      throw new RuntimeException(e);<a name="line.2495"></a>
+<span class="sourceLineNo">2496</span>    } catch (SAXException e) {<a name="line.2496"></a>
+<span class="sourceLineNo">2497</span>      LOG.fatal("error parsing conf " + name, e);<a name="line.2497"></a>
+<span class="sourceLineNo">2498</span>      throw new RuntimeException(e);<a name="line.2498"></a>
+<span class="sourceLineNo">2499</span>    } catch (ParserConfigurationException e) {<a name="line.2499"></a>
+<span class="sourceLineNo">2500</span>      LOG.fatal("error parsing conf " + name , e);<a name="line.2500"></a>
+<span class="sourceLineNo">2501</span>      throw new RuntimeException(e);<a name="line.2501"></a>
+<span class="sourceLineNo">2502</span>    }<a name="line.2502"></a>
+<span class="sourceLineNo">2503</span>  }<a name="line.2503"></a>
+<span class="sourceLineNo">2504</span><a name="line.2504"></a>
+<span class="sourceLineNo">2505</span>  private void overlay(Properties to, Properties from) {<a name="line.2505"></a>
+<span class="sourceLineNo">2506</span>    for (Entry&lt;Object, Object&gt; entry: from.entrySet()) {<a name="line.2506"></a>
+<span class="sourceLineNo">2507</span>      to.put(entry.getKey(), entry.getValue());<a name="line.2507"></a>
+<span class="sourceLineNo">2508</span>    }<a name="line.2508"></a>
+<span class="sourceLineNo">2509</span>  }<a name="line.2509"></a>
+<span class="sourceLineNo">2510</span>  <a name="line.2510"></a>
+<span class="sourceLineNo">2511</span>  private void loadProperty(Properties properties, String name, String attr,<a name="line.2511"></a>
+<span class="sourceLineNo">2512</span>      String value, boolean finalParameter, String[] source) {<a name="line.2512"></a>
+<span class="sourceLineNo">2513</span>    if (value != null) {<a name="line.2513"></a>
+<span class="sourceLineNo">2514</span>      if (!finalParameters.contains(attr)) {<a name="line.2514"></a>
+<span class="sourceLineNo">2515</span>        properties.setProperty(attr, value);<a name="line.2515"></a>
+<span class="sourceLineNo">2516</span>        updatingResource.put(attr, source);<a name="line.2516"></a>
+<span class="sourceLineNo">2517</span>      } else if (!value.equals(properties.getProperty(attr))) {<a name="line.2517"></a>
+<span class="sourceLineNo">2518</span>        LOG.warn(name+":an attempt to override final parameter: "+attr<a name="line.2518"></a>
+<span class="sourceLineNo">2519</span>            +";  Ignoring.");<a name="line.2519"></a>
+<span class="sourceLineNo">2520</span>      }<a name="line.2520"></a>
+<span class="sourceLineNo">2521</span>    }<a name="line.2521"></a>
+<span class="sourceLineNo">2522</span>    if (finalParameter) {<a name="line.2522"></a>
+<span class="sourceLineNo">2523</span>      finalParameters.add(attr);<a name="line.2523"></a>
+<span class="sourceLineNo">2524</span>    }<a name="line.2524"></a>
+<span class="sourceLineNo">2525</span>  }<a name="line.2525"></a>
+<span class="sourceLineNo">2526</span><a name="line.2526"></a>
+<span class="sourceLineNo">2527</span>  /** <a name="line.2527"></a>
+<span class="sourceLineNo">2528</span>   * Write out the non-default properties in this configuration to the given<a name="line.2528"></a>
+<span class="sourceLineNo">2529</span>   * {@link OutputStream} using UTF-8 encoding.<a name="line.2529"></a>
+<span class="sourceLineNo">2530</span>   * <a name="line.2530"></a>
+<span class="sourceLineNo">2531</span>   * @param out the output stream to write to.<a name="line.2531"></a>
+<span class="sourceLineNo">2532</span>   */<a name="line.2532"></a>
+<span class="sourceLineNo">2533</span>  public void writeXml(OutputStream out) throws IOException {<a name="line.2533"></a>
+<span class="sourceLineNo">2534</span>    writeXml(new OutputStreamWriter(out, "UTF-8"));<a name="line.2534"></a>
+<span class="sourceLineNo">2535</span>  }<a name="line.2535"></a>
+<span class="sourceLineNo">2536</span><a name="line.2536"></a>
+<span class="sourceLineNo">2537</span>  /** <a name="line.2537"></a>
+<span class="sourceLineNo">2538</span>   * Write out the non-default properties in this configuration to the given<a name="line.2538"></a>
+<span class="sourceLineNo">2539</span>   * {@link Writer}.<a name="line.2539"></a>
+<span class="sourceLineNo">2540</span>   * <a name="line.2540"></a>
+<span class="sourceLineNo">2541</span>   * @param out the writer to write to.<a name="line.2541"></a>
+<span class="sourceLineNo">2542</span>   */<a name="line.2542"></a>
+<span class="sourceLineNo">2543</span>  public void writeXml(Writer out) throws IOException {<a name="line.2543"></a>
+<span class="sourceLineNo">2544</span>    Document doc = asXmlDocument();<a name="line.2544"></a>
 <span class="sourceLineNo">2545</span><a name="line.2545"></a>
-<span class="sourceLineNo">2546</span>  /**<a name="line.2546"></a>
-<span class="sourceLineNo">2547</span>   *  Writes out all the parameters and their properties (final and resource) to<a name="line.2547"></a>
-<span class="sourceLineNo">2548</span>   *  the given {@link Writer}<a name="line.2548"></a>
-<span class="sourceLineNo">2549</span>   *  The format of the output would be <a name="line.2549"></a>
-<span class="sourceLineNo">2550</span>   *  { "properties" : [ {key1,value1,key1.isFinal,key1.resource}, {key2,value2,<a name="line.2550"></a>
-<span class="sourceLineNo">2551</span>   *  key2.isFinal,key2.resource}... ] } <a name="line.2551"></a>
-<span class="sourceLineNo">2552</span>   *  It does not output the parameters of the configuration object which is <a name="line.2552"></a>
-<span class="sourceLineNo">2553</span>   *  loaded from an input stream.<a name="line.2553"></a>
-<span class="sourceLineNo">2554</span>   * @param out the Writer to write to<a name="line.2554"></a>
-<span class="sourceLineNo">2555</span>   * @throws IOException<a name="line.2555"></a>
-<span class="sourceLineNo">2556</span>   */<a name="line.2556"></a>
-<span class="sourceLineNo">2557</span>  public static void dumpConfiguration(Configuration config,<a name="line.2557"></a>
-<span class="sourceLineNo">2558</span>      Writer out) throws IOException {<a name="line.2558"></a>
-<span class="sourceLineNo">2559</span>    JsonFactory dumpFactory = new JsonFactory();<a name="line.2559"></a>
-<span class="sourceLineNo">2560</span>    JsonGenerator dumpGenerator = dumpFactory.createJsonGenerator(out);<a name="line.2560"></a>
-<span class="sourceLineNo">2561</span>    dumpGenerator.writeStartObject();<a name="line.2561"></a>
-<span class="sourceLineNo">2562</span>    dumpGenerator.writeFieldName("properties");<a name="line.2562"></a>
-<span class="sourceLineNo">2563</span>    dumpGenerator.writeStartArray();<a name="line.2563"></a>
-<span class="sourceLineNo">2564</span>    dumpGenerator.flush();<a name="line.2564"></a>
-<span class="sourceLineNo">2565</span>    synchronized (config) {<a name="line.2565"></a>
-<span class="sourceLineNo">2566</span>      for (Map.Entry&lt;Object,Object&gt; item: config.getProps().entrySet()) {<a name="line.2566"></a>
-<span class="sourceLineNo">2567</span>        dumpGenerator.writeStartObject();<a name="line.2567"></a>
-<span class="sourceLineNo">2568</span>        dumpGenerator.writeStringField("key", (String) item.getKey());<a name="line.2568"></a>
-<span class="sourceLineNo">2569</span>        dumpGenerator.writeStringField("value", <a name="line.2569"></a>
-<span class="sourceLineNo">2570</span>                                       config.get((String) item.getKey()));<a name="line.2570"></a>
-<span class="sourceLineNo">2571</span>        dumpGenerator.writeBooleanField("isFinal",<a name="line.2571"></a>
-<span class="sourceLineNo">2572</span>                                        config.finalParameters.contains(item.getKey()));<a name="line.2572"></a>
-<span class="sourceLineNo">2573</span>        String[] resources = config.updatingResource.get(item.getKey());<a name="line.2573"></a>
-<span class="sourceLineNo">2574</span>        String resource = UNKNOWN_RESOURCE;<a name="line.2574"></a>
-<span class="sourceLineNo">2575</span>        if(resources != null &amp;&amp; resources.length &gt; 0) {<a name="line.2575"></a>
-<span class="sourceLineNo">2576</span>          resource = resources[0];<a name="line.2576"></a>
-<span class="sourceLineNo">2577</span>        }<a name="line.2577"></a>
-<span class="sourceLineNo">2578</span>        dumpGenerator.writeStringField("resource", resource);<a name="line.2578"></a>
-<span class="sourceLineNo">2579</span>        dumpGenerator.writeEndObject();<a name="line.2579"></a>
-<span class="sourceLineNo">2580</span>      }<a name="line.2580"></a>
-<span class="sourceLineNo">2581</span>    }<a name="line.2581"></a>
-<span class="sourceLineNo">2582</span>    dumpGenerator.writeEndArray();<a name="line.2582"></a>
-<span class="sourceLineNo">2583</span>    dumpGenerator.writeEndObject();<a name="line.2583"></a>
-<span class="sourceLineNo">2584</span>    dumpGenerator.flush();<a name="line.2584"></a>
-<span class="sourceLineNo">2585</span>  }<a name="line.2585"></a>
-<span class="sourceLineNo">2586</span>  <a name="line.2586"></a>
-<span class="sourceLineNo">2587</span>  /**<a name="line.2587"></a>
-<span class="sourceLineNo">2588</span>   * Get the {@link ClassLoader} for this job.<a name="line.2588"></a>
-<span class="sourceLineNo">2589</span>   * <a name="line.2589"></a>
-<span class="sourceLineNo">2590</span>   * @return the correct class loader.<a name="line.2590"></a>
-<span class="sourceLineNo">2591</span>   */<a name="line.2591"></a>
-<span class="sourceLineNo">2592</span>  public ClassLoader getClassLoader() {<a name="line.2592"></a>
-<span class="sourceLineNo">2593</span>    return classLoader;<a name="line.2593"></a>
-<span class="sourceLineNo">2594</span>  }<a name="line.2594"></a>
-<span class="sourceLineNo">2595</span>  <a name="line.2595"></a>
-<span class="sourceLineNo">2596</span>  /**<a name="line.2596"></a>
-<span class="sourceLineNo">2597</span>   * Set the class loader that will be used to load the various objects.<a name="line.2597"></a>
-<span class="sourceLineNo">2598</span>   * <a name="line.2598"></a>
-<span class="sourceLineNo">2599</span>   * @param classLoader the new class loader.<a name="line.2599"></a>
-<span class="sourceLineNo">2600</span>   */<a name="line.2600"></a>
-<span class="sourceLineNo">2601</span>  public void setClassLoader(ClassLoader classLoader) {<a name="line.2601"></a>
-<span class="sourceLineNo">2602</span>    this.classLoader = classLoader;<a name="line.2602"></a>
-<span class="sourceLineNo">2603</span>  }<a name="line.2603"></a>
-<span class="sourceLineNo">2604</span>  <a name="line.2604"></a>
-<span class="sourceLineNo">2605</span>  @Override<a name="line.2605"></a>
-<span class="sourceLineNo">2606</span>  public String toString() {<a name="line.2606"></a>
-<span class="sourceLineNo">2607</span>    StringBuilder sb = new StringBuilder();<a name="line.2607"></a>
-<span class="sourceLineNo">2608</span>    sb.append("Configuration: ");<a name="line.2608"></a>
-<span class="sourceLineNo">2609</span>    if(loadDefaults) {<a name="line.2609"></a>
-<span class="sourceLineNo">2610</span>      toString(defaultResources, sb);<a name="line.2610"></a>
-<span class="sourceLineNo">2611</span>      if(resources.size()&gt;0) {<a name="line.2611"></a>
-<span class="sourceLineNo">2612</span>        sb.append(", ");<a name="line.2612"></a>
-<span class="sourceLineNo">2613</span>      }<a name="line.2613"></a>
-<span class="sourceLineNo">2614</span>    }<a name="line.2614"></a>
-<span class="sourceLineNo">2615</span>    toString(resources, sb);<a name="line.2615"></a>
-<span class="sourceLineNo">2616</span>    return sb.toString();<a name="line.2616"></a>
-<span class="sourceLineNo">2617</span>  }<a name="line.2617"></a>
-<span class="sourceLineNo">2618</span>  <a name="line.2618"></a>
-<span class="sourceLineNo">2619</span>  private &lt;T&gt; void toString(List&lt;T&gt; resources, StringBuilder sb) {<a name="line.2619"></a>
-<span class="sourceLineNo">2620</span>    ListIterator&lt;T&gt; i = resources.listIterator();<a name="line.2620"></a>
-<span class="sourceLineNo">2621</span>    while (i.hasNext()) {<a name="line.2621"></a>
-<span class="sourceLineNo">2622</span>      if (i.nextIndex() != 0) {<a name="line.2622"></a>
-<span class="sourceLineNo">2623</span>        sb.append(", ");<a name="line.2623"></a>
-<span class="sourceLineNo">2624</span>      }<a name="line.2624"></a>
-<span class="sourceLineNo">2625</span>      sb.append(i.next());<a name="line.2625"></a>
-<span class="sourceLineNo">2626</span>    }<a name="line.2626"></a>
-<span class="sourceLineNo">2627</span>  }<a name="line.2627"></a>
-<span class="sourceLineNo">2628</span><a name="line.2628"></a>
-<span class="sourceLineNo">2629</span>  /** <a name="line.2629"></a>
-<span class="sourceLineNo">2630</span>   * Set the quietness-mode. <a name="line.2630"></a>
-<span class="sourceLineNo">2631</span>   * <a name="line.2631"></a>
-<span class="sourceLineNo">2632</span>   * In the quiet-mode, error and informational messages might not be logged.<a name="line.2632"></a>
-<span class="sourceLineNo">2633</span>   * <a name="line.2633"></a>
-<span class="sourceLineNo">2634</span>   * @param quietmode &lt;code&gt;true&lt;/code&gt; to set quiet-mode on, &lt;code&gt;false&lt;/code&gt;<a name="line.2634"></a>
-<span class="sourceLineNo">2635</span>   *              to turn it off.<a name="line.2635"></a>
-<span class="sourceLineNo">2636</span>   */<a name="line.2636"></a>
-<span class="sourceLineNo">2637</span>  public synchronized void setQuietMode(boolean quietmode) {<a name="line.2637"></a>
-<span class="sourceLineNo">2638</span>    this.quietmode = quietmode;<a name="line.2638"></a>
-<span class="sourceLineNo">2639</span>  }<a name="line.2639"></a>
-<span class="sourceLineNo">2640</span><a name="line.2640"></a>
-<span class="sourceLineNo">2641</span>  synchronized boolean getQuietMode() {<a name="line.2641"></a>
-<span class="sourceLineNo">2642</span>    return this.quietmode;<a name="line.2642"></a>
-<span class="sourceLineNo">2643</span>  }<a name="line.2643"></a>
-<span class="sourceLineNo">2644</span>  <a name="line.2644"></a>
-<span class="sourceLineNo">2645</span>  /** For debugging.  List non-default properties to the terminal and exit. */<a name="line.2645"></a>
-<span class="sourceLineNo">2646</span>  public static void main(String[] args) throws Exception {<a name="line.2646"></a>
-<span class="sourceLineNo">2647</span>    new Configuration().writeXml(System.out);<a name="line.2647"></a>
-<span class="sourceLineNo">2648</span>  }<a name="line.2648"></a>
-<span class="sourceLineNo">2649</span><a name="line.2649"></a>
-<span class="sourceLineNo">2650</span>  @Override<a name="line.2650"></a>
-<span class="sourceLineNo">2651</span>  public void readFields(DataInput in) throws IOException {<a name="line.2651"></a>
-<span class="sourceLineNo">2652</span>    clear();<a name="line.2652"></a>
-<span class="sourceLineNo">2653</span>    int size = WritableUtils.readVInt(in);<a name="line.2653"></a>
-<span class="sourceLineNo">2654</span>    for(int i=0; i &lt; size; ++i) {<a name="line.2654"></a>
-<span class="sourceLineNo">2655</span>      String key = org.apache.hadoop.io.Text.readString(in);<a name="line.2655"></a>
-<span class="sourceLineNo">2656</span>      String value = org.apache.hadoop.io.Text.readString(in);<a name="line.2656"></a>
-<span class="sourceLineNo">2657</span>      set(key, value); <a name="line.2657"></a>
-<span class="sourceLineNo">2658</span>      String sources[] = WritableUtils.readCompressedStringArray(in);<a name="line.2658"></a>
-<span class="sourceLineNo">2659</span>      updatingResource.put(key, sources);<a name="line.2659"></a>
-<span class="sourceLineNo">2660</span>    }<a name="line.2660"></a>
-<span class="sourceLineNo">2661</span>  }<a name="line.2661"></a>
-<span class="sourceLineNo">2662</span><a name="line.2662"></a>
-<span class="sourceLineNo">2663</span>  //@Override<a name="line.2663"></a>
-<span class="sourceLineNo">2664</span>  @Override<a name="line.2664"></a>
-<span class="sourceLineNo">2665</span>  public void write(DataOutput out) throws IOException {<a name="line.2665"></a>
-<span class="sourceLineNo">2666</span>    Properties props = getProps();<a name="line.2666"></a>
-<span class="sourceLineNo">2667</span>    WritableUtils.writeVInt(out, props.size());<a name="line.2667"></a>
-<span class="sourceLineNo">2668</span>    for(Map.Entry&lt;Object, Object&gt; item: props.entrySet()) {<a name="line.2668"></a>
-<span class="sourceLineNo">2669</span>      org.apache.hadoop.io.Text.writeString(out, (String) item.getKey());<a name="line.2669"></a>
-<span class="sourceLineNo">2670</span>      org.apache.hadoop.io.Text.writeString(out, (String) item.getValue());<a name="line.2670"></a>
-<span class="sourceLineNo">2671</span>      WritableUtils.writeCompressedStringArray(out, <a name="line.2671"></a>
-<span class="sourceLineNo">2672</span>          updatingResource.get(item.getKey()));<a name="line.2672"></a>
-<span class="sourceLineNo">2673</span>    }<a name="line.2673"></a>
-<span class="sourceLineNo">2674</span>  }<a name="line.2674"></a>
-<span class="sourceLineNo">2675</span>  <a name="line.2675"></a>
-<span class="sourceLineNo">2676</span>  /**<a name="line.2676"></a>
-<span class="sourceLineNo">2677</span>   * get keys matching the the regex <a name="line.2677"></a>
-<span class="sourceLineNo">2678</span>   * @param regex<a name="line.2678"></a>
-<span class="sourceLineNo">2679</span>   * @return Map&lt;String,String&gt; with matching keys<a name="line.2679"></a>
-<span class="sourceLineNo">2680</span>   */<a name="line.2680"></a>
-<span class="sourceLineNo">2681</span>  public Map&lt;String,String&gt; getValByRegex(String regex) {<a name="line.2681"></a>
-<span class="sourceLineNo">2682</span>    Pattern p = Pattern.compile(regex);<a name="line.2682"></a>
-<span class="sourceLineNo">2683</span><a name="line.2683"></a>
-<span class="sourceLineNo">2684</span>    Map&lt;String,String&gt; result = new HashMap&lt;String,String&gt;();<a name="line.2684"></a>
-<span class="sourceLineNo">2685</span>    Matcher m;<a name="line.2685"></a>
-<span class="sourceLineNo">2686</span><a name="line.2686"></a>
-<span class="sourceLineNo">2687</span>    for(Map.Entry&lt;Object,Object&gt; item: getProps().entrySet()) {<a name="line.2687"></a>
-<span class="sourceLineNo">2688</span>      if (item.getKey() instanceof String &amp;&amp; <a name="line.2688"></a>
-<span class="sourceLineNo">2689</span>          item.getValue() instanceof String) {<a name="line.2689"></a>
-<span class="sourceLineNo">2690</span>        m = p.matcher((String)item.getKey());<a name="line.2690"></a>
-<span class="sourceLineNo">2691</span>        if(m.find()) { // match<a name="line.2691"></a>
-<span class="sourceLineNo">2692</span>          result.put((String) item.getKey(), (String) item.getValue());<a name="line.2692"></a>
-<span class="sourceLineNo">2693</span>        }<a name="line.2693"></a>
-<span class="sourceLineNo">2694</span>      }<a name="line.2694"></a>
-<span class="sourceLineNo">2695</span>    }<a name="line.2695"></a>
-<span class="sourceLineNo">2696</span>    return result;<a name="line.2696"></a>
-<span class="sourceLineNo">2697</span>  }<a name="line.2697"></a>
-<span class="sourceLineNo">2698</span><a name="line.2698"></a>
-<span class="sourceLineNo">2699</span>  /**<a name="line.2699"></a>
-<span class="sourceLineNo">2700</span>   * A unique class which is used as a sentinel value in the caching<a name="line.2700"></a>
-<span class="sourceLineNo">2701</span>   * for getClassByName. {@link Configuration#getClassByNameOrNull(String)}<a name="line.2701"></a>
+<span class="sourceLineNo">2546</span>    try {<a name="line.2546"></a>
+<span class="sourceLineNo">2547</span>      DOMSource source = new DOMSource(doc);<a name="line.2547"></a>
+<span class="sourceLineNo">2548</span>      StreamResult result = new StreamResult(out);<a name="line.2548"></a>
+<span class="sourceLineNo">2549</span>      TransformerFactory transFactory = TransformerFactory.newInstance();<a name="line.2549"></a>
+<span class="sourceLineNo">2550</span>      Transformer transformer = transFactory.newTransformer();<a name="line.2550"></a>
+<span class="sourceLineNo">2551</span><a name="line.2551"></a>
+<span class="sourceLineNo">2552</span>      // Important to not hold Configuration log while writing result, since<a name="line.2552"></a>
+<span class="sourceLineNo">2553</span>      // 'out' may be an HDFS stream which needs to lock this configuration<a name="line.2553"></a>
+<span class="sourceLineNo">2554</span>      // from another thread.<a name="line.2554"></a>
+<span class="sourceLineNo">2555</span>      transformer.transform(source, result);<a name="line.2555"></a>
+<span class="sourceLineNo">2556</span>    } catch (TransformerException te) {<a name="line.2556"></a>
+<span class="sourceLineNo">2557</span>      throw new IOException(te);<a name="line.2557"></a>
+<span class="sourceLineNo">2558</span>    }<a name="line.2558"></a>
+<span class="sourceLineNo">2559</span>  }<a name="line.2559"></a>
+<span class="sourceLineNo">2560</span><a name="line.2560"></a>
+<span class="sourceLineNo">2561</span>  /**<a name="line.2561"></a>
+<span class="sourceLineNo">2562</span>   * Return the XML DOM corresponding to this Configuration.<a name="line.2562"></a>
+<span class="sourceLineNo">2563</span>   */<a name="line.2563"></a>
+<span class="sourceLineNo">2564</span>  private synchronized Document asXmlDocument() throws IOException {<a name="line.2564"></a>
+<span class="sourceLineNo">2565</span>    Document doc;<a name="line.2565"></a>
+<span class="sourceLineNo">2566</span>    try {<a name="line.2566"></a>
+<span class="sourceLineNo">2567</span>      doc =<a name="line.2567"></a>
+<span class="sourceLineNo">2568</span>        DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();<a name="line.2568"></a>
+<span class="sourceLineNo">2569</span>    } catch (ParserConfigurationException pe) {<a name="line.2569"></a>
+<span class="sourceLineNo">2570</span>      throw new IOException(pe);<a name="line.2570"></a>
+<span class="sourceLineNo">2571</span>    }<a name="line.2571"></a>
+<span class="sourceLineNo">2572</span>    Element conf = doc.createElement("configuration");<a name="line.2572"></a>
+<span class="sourceLineNo">2573</span>    doc.appendChild(conf);<a name="line.2573"></a>
+<span class="sourceLineNo">2574</span>    conf.appendChild(doc.createTextNode("\n"));<a name="line.2574"></a>
+<span class="sourceLineNo">2575</span>    handleDeprecation(); //ensure properties is set and deprecation is handled<a name="line.2575"></a>
+<span class="sourceLineNo">2576</span>    for (Enumeration&lt;Object&gt; e = properties.keys(); e.hasMoreElements();) {<a name="line.2576"></a>
+<span class="sourceLineNo">2577</span>      String name = (String)e.nextElement();<a name="line.2577"></a>
+<span class="sourceLineNo">2578</span>      Object object = properties.get(name);<a name="line.2578"></a>
+<span class="sourceLineNo">2579</span>      String value = null;<a name="line.2579"></a>
+<span class="sourceLineNo">2580</span>      if (object instanceof String) {<a name="line.2580"></a>
+<span class="sourceLineNo">2581</span>        value = (String) object;<a name="line.2581"></a>
+<span class="sourceLineNo">2582</span>      }else {<a name="line.2582"></a>
+<span class="sourceLineNo">2583</span>        continue;<a name="line.2583"></a>
+<span class="sourceLineNo">2584</span>      }<a name="line.2584"></a>
+<span class="sourceLineNo">2585</span>      Element propNode = doc.createElement("property");<a name="line.2585"></a>
+<span class="sourceLineNo">2586</span>      conf.appendChild(propNode);<a name="line.2586"></a>
+<span class="sourceLineNo">2587</span><a name="line.2587"></a>
+<span class="sourceLineNo">2588</span>      Element nameNode = doc.createElement("name");<a name="line.2588"></a>
+<span class="sourceLineNo">2589</span>      nameNode.appendChild(doc.createTextNode(name));<a name="line.2589"></a>
+<span class="sourceLineNo">2590</span>      propNode.appendChild(nameNode);<a name="line.2590"></a>
+<span class="sourceLineNo">2591</span><a name="line.2591"></a>
+<span class="sourceLineNo">2592</span>      Element valueNode = doc.createElement("value");<a name="line.2592"></a>
+<span class="sourceLineNo">2593</span>      valueNode.appendChild(doc.createTextNode(value));<a name="line.2593"></a>
+<span class="sourceLineNo">2594</span>      propNode.appendChild(valueNode);<a name="line.2594"></a>
+<span class="sourceLineNo">2595</span><a name="line.2595"></a>
+<span class="sourceLineNo">2596</span>      if (updatingResource != null) {<a name="line.2596"></a>
+<span class="sourceLineNo">2597</span>        String[] sources = updatingResource.get(name);<a name="line.2597"></a>
+<span class="sourceLineNo">2598</span>        if(sources != null) {<a name="line.2598"></a>
+<span class="sourceLineNo">2599</span>          for(String s : sources) {<a name="line.2599"></a>
+<span class="sourceLineNo">2600</span>            Element sourceNode = doc.createElement("source");<a name="line.2600"></a>
+<span class="sourceLineNo">2601</span>            sourceNode.appendChild(doc.createTextNode(s));<a name="line.2601"></a>
+<span class="sourceLineNo">2602</span>            propNode.appendChild(sourceNode);<a name="line.2602"></a>
+<span class="sourceLineNo">2603</span>          }<a name="line.2603"></a>
+<span class="sourceLineNo">2604</span>        }<a name="line.2604"></a>
+<span class="sourceLineNo">2605</span>      }<a name="line.2605"></a>
+<span class="sourceLineNo">2606</span>      <a name="line.2606"></a>
+<span class="sourceLineNo">2607</span>      conf.appendChild(doc.createTextNode("\n"));<a name="line.2607"></a>
+<span class="sourceLineNo">2608</span>    }<a name="line.2608"></a>
+<span class="sourceLineNo">2609</span>    return doc;<a name="line.2609"></a>
+<span class="sourceLineNo">2610</span>  }<a name="line.2610"></a>
+<span class="sourceLineNo">2611</span><a name="line.2611"></a>
+<span class="sourceLineNo">2612</span>  /**<a name="line.2612"></a>
+<span class="sourceLineNo">2613</span>   *  Writes out all the parameters and their properties (final and resource) to<a name="line.2613"></a>
+<span class="sourceLineNo">2614</span>   *  the given {@link Writer}<a name="line.2614"></a>
+<span class="sourceLineNo">2615</span>   *  The format of the output would be <a name="line.2615"></a>
+<span class="sourceLineNo">2616</span>   *  { "properties" : [ {key1,value1,key1.isFinal,key1.resource}, {key2,value2,<a name="line.2616"></a>
+<span class="sourceLineNo">2617</span>   *  key2.isFinal,key2.resource}... ] } <a name="line.2617"></a>
+<span class="sourceLineNo">2618</span>   *  It does not output the parameters of the configuration object which is <a name="line.2618"></a>
+<span class="sourceLineNo">2619</span>   *  loaded from an input stream.<a name="line.2619"></a>
+<span class="sourceLineNo">2620</span>   * @param out the Writer to write to<a name="line.2620"></a>
+<span class="sourceLineNo">2621</span>   * @throws IOException<a name="line.2621"></a>
+<span class="sourceLineNo">2622</span>   */<a name="line.2622"></a>
+<span class="sourceLineNo">2623</span>  public static void dumpConfiguration(Configuration config,<a name="line.2623"></a>
+<span class="sourceLineNo">2624</span>      Writer out) throws IOException {<a name="line.2624"></a>
+<span class="sourceLineNo">2625</span>    JsonFactory dumpFactory = new JsonFactory();<a name="line.2625"></a>
+<span class="sourceLineNo">2626</span>    JsonGenerator dumpGenerator = dumpFactory.createJsonGenerator(out);<a name="line.2626"></a>
+<span class="sourceLineNo">2627</span>    dumpGenerator.writeStartObject();<a name="line.2627"></a>
+<span class="sourceLineNo">2628</span>    dumpGenerator.writeFieldName("properties");<a name="line.2628"></a>
+<span class="sourceLineNo">2629</span>    dumpGenerator.writeStartArray();<a name="line.2629"></a>
+<span class="sourceLineNo">2630</span>    dumpGenerator.flush();<a name="line.2630"></a>
+<span class="sourceLineNo">2631</span>    synchronized (config) {<a name="line.2631"></a>
+<span class="sourceLineNo">2632</span>      for (Map.Entry&lt;Object,Object&gt; item: config.getProps().entrySet()) {<a name="line.2632"></a>
+<span class="sourceLineNo">2633</span>        dumpGenerator.writeStartObject();<a name="line.2633"></a>
+<span class="sourceLineNo">2634</span>        dumpGenerator.writeStringField("key", (String) item.getKey());<a name="line.2634"></a>
+<span class="sourceLineNo">2635</span>        dumpGenerator.writeStringField("value", <a name="line.2635"></a>
+<span class="sourceLineNo">2636</span>                                       config.get((String) item.getKey()));<a name="line.2636"></a>
+<span class="sourceLineNo">2637</span>        dumpGenerator.writeBooleanField("isFinal",<a name="line.2637"></a>
+<span class="sourceLineNo">2638</span>                                        config.finalParameters.contains(item.getKey()));<a name="line.2638"></a>
+<span class="sourceLineNo">2639</span>        String[] resources = config.updatingResource.get(item.getKey());<a name="line.2639"></a>
+<span class="sourceLineNo">2640</span>        String resource = UNKNOWN_RESOURCE;<a name="line.2640"></a>
+<span class="sourceLineNo">2641</span>        if(resources != null &amp;&amp; resources.length &gt; 0) {<a name="line.2641"></a>
+<span class="sourceLineNo">2642</span>          resource = resources[0];<a name="line.2642"></a>
+<span class="sourceLineNo">2643</span>        }<a name="line.2643"></a>
+<span class="sourceLineNo">2644</span>        dumpGenerator.writeStringField("resource", resource);<a name="line.2644"></a>
+<span class="sourceLineNo">2645</span>        dumpGenerator.writeEndObject();<a name="line.2645"></a>
+<span class="sourceLineNo">2646</span>      }<a name="line.2646"></a>
+<span class="sourceLineNo">2647</span>    }<a name="line.2647"></a>
+<span class="sourceLineNo">2648</span>    dumpGenerator.writeEndArray();<a name="line.2648"></a>
+<span class="sourceLineNo">2649</span>    dumpGenerator.writeEndObject();<a name="line.2649"></a>
+<span class="sourceLineNo">2650</span>    dumpGenerator.flush();<a name="line.2650"></a>
+<span class="sourceLineNo">2651</span>  }<a name="line.2651"></a>
+<span class="sourceLineNo">2652</span>  <a name="line.2652"></a>
+<span class="sourceLineNo">2653</span>  /**<a name="line.2653"></a>
+<span class="sourceLineNo">2654</span>   * Get the {@link ClassLoader} for this job.<a name="line.2654"></a>
+<span class="sourceLineNo">2655</span>   * <a name="line.2655"></a>
+<span class="sourceLineNo">2656</span>   * @return the correct class loader.<a name="line.2656"></a>
+<span class="sourceLineNo">2657</span>   */<a name="line.2657"></a>
+<span class="sourceLineNo">2658</span>  public ClassLoader getClassLoader() {<a name="line.2658"></a>
+<span class="sourceLineNo">2659</span>    return classLoader;<a name="line.2659"></a>
+<span class="sourceLineNo">2660</span>  }<a name="line.2660"></a>
+<span class="sourceLineNo">2661</span>  <a name="line.2661"></a>
+<span class="sourceLineNo">2662</span>  /**<a name="line.2662"></a>
+<span class="sourceLineNo">2663</span>   * Set the class loader that will be used to load the various objects.<a name="line.2663"></a>
+<span class="sourceLineNo">2664</span>   * <a name="line.2664"></a>
+<span class="sourceLineNo">2665</span>   * @param classLoader the new class loader.<a name="line.2665"></a>
+<span class="sourceLineNo">2666</span>   */<a name="line.2666"></a>
+<span class="sourceLineNo">2667</span>  public void setClassLoader(ClassLoader classLoader) {<a name="line.2667"></a>
+<span class="sourceLineNo">2668</span>    this.classLoader = classLoader;<a name="line.2668"></a>
+<span class="sourceLineNo">2669</span>  }<a name="line.2669"></a>
+<span class="sourceLineNo">2670</span>  <a name="line.2670"></a>
+<span class="sourceLineNo">2671</span>  @Override<a name="line.2671"></a>
+<span class="sourceLineNo">2672</span>  public String toString() {<a name="line.2672"></a>
+<span class="sourceLineNo">2673</span>    StringBuilder sb = new StringBuilder();<a name="line.2673"></a>
+<span class="sourceLineNo">2674</span>    sb.append("Configuration: ");<a name="line.2674"></a>
+<span class="sourceLineNo">2675</span>    if(loadDefaults) {<a name="line.2675"></a>
+<span class="sourceLineNo">2676</span>      toString(defaultResources, sb);<a name="line.2676"></a>
+<span class="sourceLineNo">2677</span>      if(resources.size()&gt;0) {<a name="line.2677"></a>
+<span class="sourceLineNo">2678</span>        sb.append(", ");<a name="line.2678"></a>
+<span class="sourceLineNo">2679</span>      }<a name="line.2679"></a>
+<span class="sourceLineNo">2680</span>    }<a name="line.2680"></a>
+<span class="sourceLineNo">2681</span>    toString(resources, sb);<a name="line.2681"></a>
+<span class="sourceLineNo">2682</span>    return sb.toString();<a name="line.2682"></a>
+<span class="sourceLineNo">2683</span>  }<a name="line.2683"></a>
+<span class="sourceLineNo">2684</span>  <a name="line.2684"></a>
+<span class="sourceLineNo">2685</span>  private &lt;T&gt; void toString(List&lt;T&gt; resources, StringBuilder sb) {<a name="line.2685"></a>
+<span class="sourceLineNo">2686</span>    ListIterator&lt;T&gt; i = resources.listIterator();<a name="line.2686"></a>
+<span class="sourceLineNo">2687</span>    while (i.hasNext()) {<a name="line.2687"></a>
+<span class="sourceLineNo">2688</span>      if (i.nextIndex() != 0) {<a name="line.2688"></a>
+<span class="sourceLineNo">2689</span>        sb.append(", ");<a name="line.2689"></a>
+<span class="sourceLineNo">2690</span>      }<a name="line.2690"></a>
+<span class="sourceLineNo">2691</span>      sb.append(i.next());<a name="line.2691"></a>
+<span class="sourceLineNo">2692</span>    }<a name="line.2692"></a>
+<span class="sourceLineNo">2693</span>  }<a name="line.2693"></a>
+<span class="sourceLineNo">2694</span><a name="line.2694"></a>
+<span class="sourceLineNo">2695</span>  /** <a name="line.2695"></a>
+<span class="sourceLineNo">2696</span>   * Set the quietness-mode. <a name="line.2696"></a>
+<span class="sourceLineNo">2697</span>   * <a name="line.2697"></a>
+<span class="sourceLineNo">2698</span>   * In the quiet-mode, error and informational messages might not be logged.<a name="line.2698"></a>
+<span class="sourceLineNo">2699</span>   * <a name="line.2699"></a>
+<span class="sourceLineNo">2700</span>   * @param quietmode &lt;code&gt;true&lt;/code&gt; to set quiet-mode on, &lt;code&gt;false&lt;/code&gt;<a name="line.2700"></a>
+<span class="sourceLineNo">2701</span>   *              to turn it off.<a name="line.2701"></a>
 <span class="sourceLineNo">2702</span>   */<a name="line.2702"></a>
-<span class="sourceLineNo">2703</span>  private static abstract class NegativeCacheSentinel {}<a name="line.2703"></a>
-<span class="sourceLineNo">2704</span><a name="line.2704"></a>
-<span class="sourceLineNo">2705</span>  public static void dumpDeprecatedKeys() {<a name="line.2705"></a>
-<span class="sourceLineNo">2706</span>    DeprecationContext deprecations = deprecationContext.get();<a name="line.2706"></a>
-<span class="sourceLineNo">2707</span>    for (Map.Entry&lt;String, DeprecatedKeyInfo&gt; entry :<a name="line.2707"></a>
-<span class="sourceLineNo">2708</span>        deprecations.getDeprecatedKeyMap().entrySet()) {<a name="line.2708"></a>
-<span class="sourceLineNo">2709</span>      StringBuilder newKeys = new StringBuilder();<a name="line.2709"></a>
-<span class="sourceLineNo">2710</span>      for (String newKey : entry.getValue().newKeys) {<a name="line.2710"></a>
-<span class="sourceLineNo">2711</span>        newKeys.append(newKey).append("\t");<a name="line.2711"></a>
-<span class="sourceLineNo">2712</span>      }<a name="line.2712"></a>
-<span class="sourceLineNo">2713</span>      System.out.println(entry.getKey() + "\t" + newKeys.toString());<a name="line.2713"></a>
-<span class="sourceLineNo">2714</span>    }<a name="line.2714"></a>
-<span class="sourceLineNo">2715</span>  }<a name="line.2715"></a>
-<span class="sourceLineNo">2716</span><a name="line.2716"></a>
-<span class="sourceLineNo">2717</span>  /**<a name="line.2717"></a>
-<span class="sourceLineNo">2718</span>   * Returns whether or not a deprecated name has been warned. If the name is not<a name="line.2718"></a>
-<span class="sourceLineNo">2719</span>   * deprecated then always return false<a name="line.2719"></a>
-<span class="sourceLineNo">2720</span>   */<a name="line.2720"></a>
-<span class="sourceLineNo">2721</span>  public static boolean hasWarnedDeprecation(String name) {<a name="line.2721"></a>
-<span class="sourceLineNo">2722</span>    DeprecationContext deprecations = deprecationContext.get();<a name="line.2722"></a>
-<span class="sourceLineNo">2723</span>    if(deprecations.getDeprecatedKeyMap().containsKey(name)) {<a name="line.2723"></a>
-<span class="sourceLineNo">2724</span>      if(deprecations.getDeprecatedKeyMap().get(name).accessed.get()) {<a name="line.2724"></a>
-<span class="sourceLineNo">2725</span>        return true;<a name="line.2725"></a>
-<span class="sourceLineNo">2726</span>      }<a name="line.2726"></a>
-<span class="sourceLineNo">2727</span>    }<a name="line.2727"></a>
-<span class="sourceLineNo">2728</span>    return false;<a name="line.2728"></a>
-<span class="sourceLineNo">2729</span>  }<a name="line.2729"></a>
-<span class="sourceLineNo">2730</span>}<a name="line.2730"></a>
+<span class="sourceLineNo">2703</span>  public synchronized void setQuietMode(boolean quietmode) {<a name="line.2703"></a>
+<span class="sourceLineNo">2704</span>    this.quietmode = quietmode;<a name="line.2704"></a>
+<span class="sourceLineNo">2705</span>  }<a name="line.2705"></a>
+<span class="sourceLineNo">2706</span><a name="line.2706"></a>
+<span class="sourceLineNo">2707</span>  synchronized boolean getQuietMode() {<a name="line.2707"></a>
+<span class="sourceLineNo">2708</span>    return this.quietmode;<a name="line.2708"></a>
+<span class="sourceLineNo">2709</span>  }<a name="line.2709"></a>
+<span class="sourceLineNo">2710</span>  <a name="line.2710"></a>
+<span class="sourceLineNo">2711</span>  /** For debugging.  List non-default properties to the terminal and exit. */<a name="line.2711"></a>
+<span class="sourceLineNo">2712</span>  public static void main(String[] args) throws Exception {<a name="line.2712"></a>
+<span class="sourceLineNo">2713</span>    new Configuration().writeXml(System.out);<a name="line.2713"></a>
+<span class="sourceLineNo">2714</span>  }<a name="line.2714"></a>
+<span class="sourceLineNo">2715</span><a name="line.2715"></a>
+<span class="sourceLineNo">2716</span>  @Override<a name="line.2716"></a>
+<span class="sourceLineNo">2717</span>  public void readFields(DataInput in) throws IOException {<a name="line.2717"></a>
+<span class="sourceLineNo">2718</span>    clear();<a name="line.2718"></a>
+<span class="sourceLineNo">2719</span>    int size = WritableUtils.readVInt(in);<a name="line.2719"></a>
+<span class="sourceLineNo">2720</span>    for(int i=0; i &lt; size; ++i) {<a name="line.2720"></a>
+<span class="sourceLineNo">2721</span>      String key = org.apache.hadoop.io.Text.readString(in);<a name="line.2721"></a>
+<span class="sourceLineNo">2722</span>      String value = org.apache.hadoop.io.Text.readString(in);<a name="line.2722"></a>
+<span class="sourceLineNo">2723</span>      set(key, value); <a name="line.2723"></a>
+<span class="sourceLineNo">2724</span>      String sources[] = WritableUtils.readCompressedStringArray(in);<a name="line.2724"></a>
+<span class="sourceLineNo">2725</span>      updatingResource.put(key, sources);<a name="line.2725"></a>
+<span class="sourceLineNo">2726</span>    }<a name="line.2726"></a>
+<span class="sourceLineNo">2727</span>  }<a name="line.2727"></a>
+<span class="sourceLineNo">2728</span><a name="line.2728"></a>
+<span class="sourceLineNo">2729</span>  //@Override<a name="line.2729"></a>
+<span class="sourceLineNo">2730</span>  @Override<a name="line.2730"></a>
+<span class="sourceLineNo">2731</span>  public void write(DataOutput out) throws IOException {<a name="line.2731"></a>
+<span class="sourceLineNo">2732</span>    Properties props = getProps();<a name="line.2732"></a>
+<span class="sourceLineNo">2733</span>    WritableUtils.writeVInt(out, props.size());<a name="line.2733"></a>
+<span class="sourceLineNo">2734</span>    for(Map.Entry&lt;Object, Object&gt; item: props.entrySet()) {<a name="line.2734"></a>
+<span class="sourceLineNo">2735</span>      org.apache.hadoop.io.Text.writeString(out, (String) item.getKey());<a name="line.2735"></a>
+<span class="sourceLineNo">2736</span>      org.apache.hadoop.io.Text.writeString(out, (String) item.getValue());<a name="line.2736"></a>
+<span class="sourceLineNo">2737</span>      WritableUtils.writeCompressedStringArray(out, <a name="line.2737"></a>
+<span class="sourceLineNo">2738</span>          updatingResource.get(item.getKey()));<a name="line.2738"></a>
+<span class="sourceLineNo">2739</span>    }<a name="line.2739"></a>
+<span class="sourceLineNo">2740</span>  }<a name="line.2740"></a>
+<span class="sourceLineNo">2741</span>  <a name="line.2741"></a>
+<span class="sourceLineNo">2742</span>  /**<a name="line.2742"></a>
+<span class="sourceLineNo">2743</span>   * get keys matching the the regex <a name="line.2743"></a>
+<span class="sourceLineNo">2744</span>   * @param regex<a name="line.2744"></a>
+<span class="sourceLineNo">2745</span>   * @return Map&lt;String,String&gt; with matching keys<a name="line.2745"></a>
+<span class="sourceLineNo">2746</span>   */<a name="line.2746"></a>
+<span class="sourceLineNo">2747</span>  public Map&lt;String,String&gt; getValByRegex(String regex) {<a name="line.2747"></a>
+<span class="sourceLineNo">2748</span>    Pattern p = Pattern.compile(regex);<a name="line.2748"></a>
+<span class="sourceLineNo">2749</span><a name="line.2749"></a>
+<span class="sourceLineNo">2750</span>    Map&lt;String,String&gt; result = new HashMap&lt;String,String&gt;();<a name="line.2750"></a>
+<span class="sourceLineNo">2751</span>    Matcher m;<a name="line.2751"></a>
+<span class="sourceLineNo">2752</span><a name="line.2752"></a>
+<span class="sourceLineNo">2753</span>    for(Map.Entry&lt;Object,Object&gt; item: getProps().entrySet()) {<a name="line.2753"></a>
+<span class="sourceLineNo">2754</span>      if (item.getKey() instanceof String &amp;&amp; <a name="line.2754"></a>
+<span class="sourceLineNo">2755</span>          item.getValue() instanceof String) {<a name="line.2755"></a>
+<span class="sourceLineNo">2756</span>        m = p.matcher((String)item.getKey());<a name="line.2756"></a>
+<span class="sourceLineNo">2757</span>        if(m.find()) { // match<a name="line.2757"></a>
+<span class="sourceLineNo">2758</span>          result.put((String) item.getKey(), (String) item.getValue());<a name="line.2758"></a>
+<span class="sourceLineNo">2759</span>        }<a name="line.2759"></a>
+<span class="sourceLineNo">2760</span>      }<a name="line.2760"></a>
+<span class="sourceLineNo">2761</span>    }<a name="line.2761"></a>
+<span class="sourceLineNo">2762</span>    return result;<a name="line.2762"></a>
+<span class="sourceLineNo">2763</span>  }<a name="line.2763"></a>
+<span class="sourceLineNo">2764</span><a name="line.2764"></a>
+<span class="sourceLineNo">2765</span>  /**<a name="line.2765"></a>
+<span class="sourceLineNo">2766</span>   * A unique class which is used as a sentinel value in the caching<a name="line.2766"></a>
+<span class="sourceLineNo">2767</span>   * for getClassByName. {@link Configuration#getClassByNameOrNull(String)}<a name="line.2767"></a>
+<span class="sourceLineNo">2768</span>   */<a name="line.2768"></a>
+<span class="sourceLineNo">2769</span>  private static abstract class NegativeCacheSentinel {}<a name="line.2769"></a>
+<span class="sourceLineNo">2770</span><a name="line.2770"></a>
+<span class="sourceLineNo">2771</span>  public static void dumpDeprecatedKeys() {<a name="line.2771"></a>
+<span class="sourceLineNo">2772</span>    DeprecationContext deprecations = deprecationContext.get();<a name="line.2772"></a>
+<span class="sourceLineNo">2773</span>    for (Map.Entry&lt;String, DeprecatedKeyInfo&gt; entry :<a name="line.2773"></a>
+<span class="sourceLineNo">2774</span>        deprecations.getDeprecatedKeyMap().entrySet()) {<a name="line.2774"></a>
+<span class="sourceLineNo">2775</span>      StringBuilder newKeys = new StringBuilder();<a name="line.2775"></a>
+<span class="sourceLineNo">2776</span>      for (String newKey : entry.getValue().newKeys) {<a name="line.2776"></a>
+<span class="sourceLineNo">2777</span>        newKeys.append(newKey).append("\t");<a name="line.2777"></a>
+<span class="sourceLineNo">2778</span>      }<a name="line.2778"></a>
+<span class="sourceLineNo">2779</span>      System.out.println(entry.getKey() + "\t" + newKeys.toString());<a name="line.2779"></a>
+<span class="sourceLineNo">2780</span>    }<a name="line.2780"></a>
+<span class="sourceLineNo">2781</span>  }<a name="line.2781"></a>
+<span class="sourceLineNo">2782</span><a name="line.2782"></a>
+<span class="sourceLineNo">2783</span>  /**<a name="line.2783"></a>
+<span class="sourceLineNo">2784</span>   * Returns whether or not a deprecated name has been warned. If the name is not<a name="line.2784"></a>
+<span class="sourceLineNo">2785</span>   * deprecated then always return false<a name="line.2785"></a>
+<span class="sourceLineNo">2786</span>   */<a name="line.2786"></a>
+<span class="sourceLineNo">2787</span>  public static boolean hasWarnedDeprecation(String name) {<a name="line.2787"></a>
+<span class="sourceLineNo">2788</span>    DeprecationContext deprecations = deprecationContext.get();<a name="line.2788"></a>
+<span class="sourceLineNo">2789</span>    if(deprecations.getDeprecatedKeyMap().containsKey(name)) {<a name="line.2789"></a>
+<span class="sourceLineNo">2790</span>      if(deprecations.getDeprecatedKeyMap().get(name).accessed.get()) {<a name="line.2790"></a>
+<span class="sourceLineNo">2791</span>        return true;<a name="line.2791"></a>
+<span class="sourceLineNo">2792</span>      }<a name="line.2792"></a>
+<span class="sourceLineNo">2793</span>    }<a name="line.2793"></a>
+<span class="sourceLineNo">2794</span>    return false;<a name="line.2794"></a>
+<span class="sourceLineNo">2795</span>  }<a name="line.2795"></a>
+<span class="sourceLineNo">2796</span>}<a name="line.2796"></a>
 
 
 
