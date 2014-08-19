@@ -1378,7 +1378,7 @@
 <span class="sourceLineNo">1370</span>  public static String getClusterId(Configuration conf) {<a name="line.1370"></a>
 <span class="sourceLineNo">1371</span>    String clusterId = conf.get(YarnConfiguration.RM_CLUSTER_ID);<a name="line.1371"></a>
 <span class="sourceLineNo">1372</span>    if (clusterId == null) {<a name="line.1372"></a>
-<span class="sourceLineNo">1373</span>      throw new HadoopIllegalArgumentException("Configuration doesn't specify" +<a name="line.1373"></a>
+<span class="sourceLineNo">1373</span>      throw new HadoopIllegalArgumentException("Configuration doesn't specify " +<a name="line.1373"></a>
 <span class="sourceLineNo">1374</span>          YarnConfiguration.RM_CLUSTER_ID);<a name="line.1374"></a>
 <span class="sourceLineNo">1375</span>    }<a name="line.1375"></a>
 <span class="sourceLineNo">1376</span>    return clusterId;<a name="line.1376"></a>

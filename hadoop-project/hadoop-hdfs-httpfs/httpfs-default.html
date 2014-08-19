@@ -16,8 +16,6 @@
       org.apache.hadoop.lib.service.instrumentation.InstrumentationService,
       org.apache.hadoop.lib.service.scheduler.SchedulerService,
       org.apache.hadoop.lib.service.security.GroupsService,
-      org.apache.hadoop.lib.service.security.ProxyUserService,
-      org.apache.hadoop.lib.service.security.DelegationTokenManagerService,
       org.apache.hadoop.lib.service.hadoop.FileSystemAccessService
     </td><td>
       Services used by the httpfs server.
@@ -77,34 +75,6 @@
     </td>
 </tr>
 <tr>
-<td><a name="httpfs.proxyuser.#USER#.hosts">httpfs.proxyuser.#USER#.hosts</a></td><td>*</td><td>
-      List of hosts the '#USER#' user is allowed to perform 'doAs'
-      operations.
-
-      The '#USER#' must be replaced with the username o the user who is
-      allowed to perform 'doAs' operations.
-
-      The value can be the '*' wildcard or a list of hostnames.
-
-      For multiple users copy this property and replace the user name
-      in the property name.
-    </td>
-</tr>
-<tr>
-<td><a name="httpfs.proxyuser.#USER#.groups">httpfs.proxyuser.#USER#.groups</a></td><td>*</td><td>
-      List of groups the '#USER#' user is allowed to impersonate users
-      from to perform 'doAs' operations.
-
-      The '#USER#' must be replaced with the username o the user who is
-      allowed to perform 'doAs' operations.
-
-      The value can be the '*' wildcard or a list of groups.
-
-      For multiple users copy this property and replace the user name
-      in the property name.
-    </td>
-</tr>
-<tr>
 <td><a name="httpfs.delegation.token.manager.update.interval">httpfs.delegation.token.manager.update.interval</a></td><td>86400</td><td>
       HttpFS delegation token update interval, default 1 day, in seconds.
     </td>
@@ -146,11 +116,6 @@
 <tr>
 <td><a name="httpfs.hadoop.filesystem.cache.purge.timeout">httpfs.hadoop.filesystem.cache.purge.timeout</a></td><td>60</td><td>
       Timeout, in seconds, for an idle filesystem to be purged.
-    </td>
-</tr>
-<tr>
-<td><a name="httpfs.user.provider.user.pattern">httpfs.user.provider.user.pattern</a></td><td>^[A-Za-z_][A-Za-z0-9._-]*[$]?$</td><td>
-      Valid pattern for user and group names, it must be a valid java regex.
     </td>
 </tr>
 </table>

@@ -1062,8 +1062,8 @@
 <span class="sourceLineNo">1054</span>    TimelineEntity entity = new TimelineEntity();<a name="line.1054"></a>
 <span class="sourceLineNo">1055</span>    entity.setEntityId(container.getId().toString());<a name="line.1055"></a>
 <span class="sourceLineNo">1056</span>    entity.setEntityType(DSEntity.DS_CONTAINER.toString());<a name="line.1056"></a>
-<span class="sourceLineNo">1057</span>    entity.addPrimaryFilter("user", UserGroupInformation.getCurrentUser()<a name="line.1057"></a>
-<span class="sourceLineNo">1058</span>        .toString());<a name="line.1058"></a>
+<span class="sourceLineNo">1057</span>    entity.addPrimaryFilter("user",<a name="line.1057"></a>
+<span class="sourceLineNo">1058</span>        UserGroupInformation.getCurrentUser().getShortUserName());<a name="line.1058"></a>
 <span class="sourceLineNo">1059</span>    TimelineEvent event = new TimelineEvent();<a name="line.1059"></a>
 <span class="sourceLineNo">1060</span>    event.setTimestamp(System.currentTimeMillis());<a name="line.1060"></a>
 <span class="sourceLineNo">1061</span>    event.setEventType(DSEvent.DS_CONTAINER_START.toString());<a name="line.1061"></a>
@@ -1079,8 +1079,8 @@
 <span class="sourceLineNo">1071</span>    TimelineEntity entity = new TimelineEntity();<a name="line.1071"></a>
 <span class="sourceLineNo">1072</span>    entity.setEntityId(container.getContainerId().toString());<a name="line.1072"></a>
 <span class="sourceLineNo">1073</span>    entity.setEntityType(DSEntity.DS_CONTAINER.toString());<a name="line.1073"></a>
-<span class="sourceLineNo">1074</span>    entity.addPrimaryFilter("user", UserGroupInformation.getCurrentUser()<a name="line.1074"></a>
-<span class="sourceLineNo">1075</span>        .toString());<a name="line.1075"></a>
+<span class="sourceLineNo">1074</span>    entity.addPrimaryFilter("user",<a name="line.1074"></a>
+<span class="sourceLineNo">1075</span>        UserGroupInformation.getCurrentUser().getShortUserName());<a name="line.1075"></a>
 <span class="sourceLineNo">1076</span>    TimelineEvent event = new TimelineEvent();<a name="line.1076"></a>
 <span class="sourceLineNo">1077</span>    event.setTimestamp(System.currentTimeMillis());<a name="line.1077"></a>
 <span class="sourceLineNo">1078</span>    event.setEventType(DSEvent.DS_CONTAINER_END.toString());<a name="line.1078"></a>
@@ -1097,8 +1097,8 @@
 <span class="sourceLineNo">1089</span>    TimelineEntity entity = new TimelineEntity();<a name="line.1089"></a>
 <span class="sourceLineNo">1090</span>    entity.setEntityId(appAttemptId);<a name="line.1090"></a>
 <span class="sourceLineNo">1091</span>    entity.setEntityType(DSEntity.DS_APP_ATTEMPT.toString());<a name="line.1091"></a>
-<span class="sourceLineNo">1092</span>    entity.addPrimaryFilter("user", UserGroupInformation.getCurrentUser()<a name="line.1092"></a>
-<span class="sourceLineNo">1093</span>        .toString());<a name="line.1093"></a>
+<span class="sourceLineNo">1092</span>    entity.addPrimaryFilter("user",<a name="line.1092"></a>
+<span class="sourceLineNo">1093</span>        UserGroupInformation.getCurrentUser().getShortUserName());<a name="line.1093"></a>
 <span class="sourceLineNo">1094</span>    TimelineEvent event = new TimelineEvent();<a name="line.1094"></a>
 <span class="sourceLineNo">1095</span>    event.setEventType(appEvent.toString());<a name="line.1095"></a>
 <span class="sourceLineNo">1096</span>    event.setTimestamp(System.currentTimeMillis());<a name="line.1096"></a>
