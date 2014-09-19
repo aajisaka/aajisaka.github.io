@@ -527,7 +527,7 @@
 <span class="sourceLineNo">519</span>      publishApplicationAttemptEvent(timelineClient, appAttemptID.toString(),<a name="line.519"></a>
 <span class="sourceLineNo">520</span>          DSEvent.DS_APP_ATTEMPT_START);<a name="line.520"></a>
 <span class="sourceLineNo">521</span>    } catch (Exception e) {<a name="line.521"></a>
-<span class="sourceLineNo">522</span>      LOG.error("App Attempt start event coud not be pulished for "<a name="line.522"></a>
+<span class="sourceLineNo">522</span>      LOG.error("App Attempt start event could not be published for "<a name="line.522"></a>
 <span class="sourceLineNo">523</span>          + appAttemptID.toString(), e);<a name="line.523"></a>
 <span class="sourceLineNo">524</span>    }<a name="line.524"></a>
 <span class="sourceLineNo">525</span><a name="line.525"></a>
@@ -624,7 +624,7 @@
 <span class="sourceLineNo">616</span>      publishApplicationAttemptEvent(timelineClient, appAttemptID.toString(),<a name="line.616"></a>
 <span class="sourceLineNo">617</span>          DSEvent.DS_APP_ATTEMPT_END);<a name="line.617"></a>
 <span class="sourceLineNo">618</span>    } catch (Exception e) {<a name="line.618"></a>
-<span class="sourceLineNo">619</span>      LOG.error("App Attempt start event coud not be pulished for "<a name="line.619"></a>
+<span class="sourceLineNo">619</span>      LOG.error("App Attempt start event could not be published for "<a name="line.619"></a>
 <span class="sourceLineNo">620</span>          + appAttemptID.toString(), e);<a name="line.620"></a>
 <span class="sourceLineNo">621</span>    }<a name="line.621"></a>
 <span class="sourceLineNo">622</span>  }<a name="line.622"></a>
@@ -734,7 +734,7 @@
 <span class="sourceLineNo">726</span>        try {<a name="line.726"></a>
 <span class="sourceLineNo">727</span>          publishContainerEndEvent(timelineClient, containerStatus);<a name="line.727"></a>
 <span class="sourceLineNo">728</span>        } catch (Exception e) {<a name="line.728"></a>
-<span class="sourceLineNo">729</span>          LOG.error("Container start event could not be pulished for "<a name="line.729"></a>
+<span class="sourceLineNo">729</span>          LOG.error("Container start event could not be published for "<a name="line.729"></a>
 <span class="sourceLineNo">730</span>              + containerStatus.getContainerId().toString(), e);<a name="line.730"></a>
 <span class="sourceLineNo">731</span>        }<a name="line.731"></a>
 <span class="sourceLineNo">732</span>      }<a name="line.732"></a>
@@ -855,7 +855,7 @@
 <span class="sourceLineNo">847</span>        ApplicationMaster.publishContainerStartEvent(<a name="line.847"></a>
 <span class="sourceLineNo">848</span>            applicationMaster.timelineClient, container);<a name="line.848"></a>
 <span class="sourceLineNo">849</span>      } catch (Exception e) {<a name="line.849"></a>
-<span class="sourceLineNo">850</span>        LOG.error("Container start event coud not be pulished for "<a name="line.850"></a>
+<span class="sourceLineNo">850</span>        LOG.error("Container start event could not be published for "<a name="line.850"></a>
 <span class="sourceLineNo">851</span>            + container.getId().toString(), e);<a name="line.851"></a>
 <span class="sourceLineNo">852</span>      }<a name="line.852"></a>
 <span class="sourceLineNo">853</span>    }<a name="line.853"></a>

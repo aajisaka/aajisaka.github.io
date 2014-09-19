@@ -3,9 +3,11 @@ org.apache.hadoop.classification
 org.apache.hadoop.conf
 org.apache.hadoop.contrib.bkjournal
 org.apache.hadoop.contrib.utils.join
+org.apache.hadoop.crypto
 org.apache.hadoop.crypto.key
 org.apache.hadoop.crypto.key.kms
 org.apache.hadoop.crypto.key.kms.server
+org.apache.hadoop.crypto.random
 org.apache.hadoop.examples
 org.apache.hadoop.examples.dancing
 org.apache.hadoop.examples.pi
@@ -15,11 +17,13 @@ org.apache.hadoop.filecache
 org.apache.hadoop.fs
 org.apache.hadoop.fs.azure
 org.apache.hadoop.fs.azure.metrics
+org.apache.hadoop.fs.crypto
 org.apache.hadoop.fs.ftp
 org.apache.hadoop.fs.http.client
 org.apache.hadoop.fs.http.server
 org.apache.hadoop.fs.permission
 org.apache.hadoop.fs.s3
+org.apache.hadoop.fs.s3a
 org.apache.hadoop.fs.s3native
 org.apache.hadoop.fs.swift.auth
 org.apache.hadoop.fs.swift.auth.entities
@@ -61,6 +65,11 @@ org.apache.hadoop.mapred.join
 org.apache.hadoop.mapred.lib
 org.apache.hadoop.mapred.lib.aggregate
 org.apache.hadoop.mapred.lib.db
+org.apache.hadoop.mapred.nativetask
+org.apache.hadoop.mapred.nativetask.buffer
+org.apache.hadoop.mapred.nativetask.handlers
+org.apache.hadoop.mapred.nativetask.serde
+org.apache.hadoop.mapred.nativetask.util
 org.apache.hadoop.mapred.pipes
 org.apache.hadoop.mapred.proto
 org.apache.hadoop.mapred.tools
@@ -144,6 +153,7 @@ org.apache.hadoop.tools.rumen.datatypes.util
 org.apache.hadoop.tools.rumen.serializers
 org.apache.hadoop.tools.rumen.state
 org.apache.hadoop.tools.util
+org.apache.hadoop.tracing
 org.apache.hadoop.typedbytes
 org.apache.hadoop.util
 org.apache.hadoop.util.bloom

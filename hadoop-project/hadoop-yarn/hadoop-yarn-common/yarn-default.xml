@@ -298,6 +298,16 @@
   </property>
 
   <property>
+    <description>Set the amount of time RM waits before allocating new
+    containers on work-preserving-recovery. Such wait period gives RM a chance
+    to settle down resyncing with NMs in the cluster on recovery, before assigning
+    new containers to applications.
+    </description>
+    <name>yarn.resourcemanager.work-preserving-recovery.scheduling-wait-ms</name>
+    <value>10000</value>
+  </property>
+
+  <property>
     <description>The class to use as the persistent store.
 
       If org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore
@@ -616,21 +626,29 @@
   </property>
 
   <property>
-    <description>Number of worker threads that write the history data.</description>
-    <name>yarn.resourcemanager.history-writer.multi-threaded-dispatcher.pool-size</name>
-    <value>10</value>
-  </property>
-
-  <property>
     <description>The class to use as the configuration provider.
     If org.apache.hadoop.yarn.LocalConfigurationProvider is used,
     the local configuration will be loaded.
     If org.apache.hadoop.yarn.FileSystemBasedConfigurationProvider is used,
     the configuration which will be loaded should be uploaded to remote File system first.
-    </description>>
+    </description>
     <name>yarn.resourcemanager.configuration.provider-class</name>
     <value>org.apache.hadoop.yarn.LocalConfigurationProvider</value>
     <!-- <value>org.apache.hadoop.yarn.FileSystemBasedConfigurationProvider</value> -->
+  </property>
+
+  <property>
+    <description>The setting that controls whether yarn system metrics is
+    published on the timeline server or not by RM.</description>
+    <name>yarn.resourcemanager.system-metrics-publisher.enabled</name>
+    <value>false</value>
+  </property>
+
+  <property>
+    <description>Number of worker threads that send the yarn system metrics
+    data.</description>
+    <name>yarn.resourcemanager.system-metrics-publisher.dispatcher.pool-size</name>
+    <value>10</value>
   </property>
 
   <!-- Node Manager Configs -->
@@ -757,7 +775,10 @@
   </property>
 
   <property>
-    <description>Target size of localizer cache in MB, per local directory.</description>
+    <description>Target size of localizer cache in MB, per nodemanager. It is
+      a target retention size that only includes resources with PUBLIC and 
+      PRIVATE visibility and excludes resources with APPLICATION visibility
+    </description>
     <name>yarn.nodemanager.localizer.cache.target-size-mb</name>
     <value>10240</value>
   </property>
@@ -868,10 +889,22 @@
   </property>
 
   <property>
-    <description>Number of CPU cores that can be allocated 
-    for containers.</description>
+    <description>Number of vcores that can be allocated
+    for containers. This is used by the RM scheduler when allocating
+    resources for containers. This is not used to limit the number of
+    physical cores used by YARN containers.</description>
     <name>yarn.nodemanager.resource.cpu-vcores</name>
     <value>8</value>
+  </property>
+
+  <property>
+    <description>Percentage of CPU that can be allocated
+    for containers. This setting allows users to limit the amount of
+    CPU that YARN containers use. Currently functional only
+    on Linux using cgroups. The default is to use 100% of CPU.
+    </description>
+    <name>yarn.nodemanager.resource.percentage-physical-cpu-limit</name>
+    <value>100</value>
   </property>
 
   <property>
@@ -988,8 +1021,22 @@
   </property>
 
   <property>
-    <description>The UNIX user that containers will run as when Linux-container-executor
-    is used in nonsecure mode (a use case for this is using cgroups).</description>
+    <description>This determines which of the two modes that LCE should use on
+      a non-secure cluster.  If this value is set to true, then all containers
+      will be launched as the user specified in
+      yarn.nodemanager.linux-container-executor.nonsecure-mode.local-user.  If
+      this value is set to false, then containers will run as the user who
+      submitted the application.</description>
+    <name>yarn.nodemanager.linux-container-executor.nonsecure-mode.limit-users</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <description>The UNIX user that containers will run as when
+      Linux-container-executor is used in nonsecure mode (a use case for this
+      is using cgroups) if the
+      yarn.nodemanager.linux-container-executor.nonsecure-mode.limit-users is
+      set to true.</description>
     <name>yarn.nodemanager.linux-container-executor.nonsecure-mode.local-user</name>
     <value>nobody</value>
   </property>
@@ -1000,6 +1047,16 @@
     is using cgroups). The default value is taken from /usr/sbin/adduser</description>
     <name>yarn.nodemanager.linux-container-executor.nonsecure-mode.user-pattern</name>
     <value>^[_.A-Za-z0-9][-@_.A-Za-z0-9]{0,255}?[$]?$</value>
+  </property>
+
+  <property>
+    <description>This flag determines whether apps should run with strict resource limits
+    or be allowed to consume spare resources if they need them. For example, turning the
+    flag on will restrict apps to use only their share of CPU, even if the node has spare
+    CPU cycles. The default value is false i.e. use available resources. Please note that
+    turning this flag on may reduce job throughput on the cluster.</description>
+    <name>yarn.nodemanager.linux-container-executor.cgroups.strict-resource-usage</name>
+    <value>false</value>
   </property>
 
   <property>
@@ -1288,38 +1345,6 @@
     <description>The Kerberos keytab for the timeline server.</description>
     <name>yarn.timeline-service.keytab</name>
     <value>/etc/krb5.keytab</value>
-  </property>
-
-  <property>
-    <description>Indicate to ResourceManager as well as clients whether
-    history-service is enabled or not. If enabled, ResourceManager starts
-    recording historical data that ApplicationHistory service can consume.
-    Similarly, clients can redirect to the history service when applications
-    finish if this is enabled.</description>
-    <name>yarn.timeline-service.generic-application-history.enabled</name>
-    <value>false</value>
-  </property>
-
-  <property>
-    <description>URI pointing to the location of the FileSystem path where
-    the history will be persisted. This must be supplied when using
-    org.apache.hadoop.yarn.server.applicationhistoryservice.FileSystemApplicationHistoryStore
-    as the value for yarn.timeline-service.generic-application-history.store-class</description>
-    <name>yarn.timeline-service.generic-application-history.fs-history-store.uri</name>
-    <value>${hadoop.tmp.dir}/yarn/timeline/generic-history</value>
-  </property>
-
-  <property>
-    <description>T-file compression types used to compress history data.</description>
-    <name>yarn.timeline-service.generic-application-history.fs-history-store.compression-type</name>
-    <value>none</value>
-  </property>
-  
-  <property>
-	<description>Store class name for history store, defaulting to file
-	system store </description>
-	<name>yarn.timeline-service.generic-application-history.store-class</name>
-	<value>org.apache.hadoop.yarn.server.applicationhistoryservice.FileSystemApplicationHistoryStore</value>
   </property>
 
   <!-- Other configuration -->

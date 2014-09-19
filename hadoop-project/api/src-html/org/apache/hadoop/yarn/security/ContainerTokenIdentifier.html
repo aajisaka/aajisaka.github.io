@@ -136,7 +136,7 @@
 <span class="sourceLineNo">128</span>    out.writeLong(applicationId.getClusterTimestamp());<a name="line.128"></a>
 <span class="sourceLineNo">129</span>    out.writeInt(applicationId.getId());<a name="line.129"></a>
 <span class="sourceLineNo">130</span>    out.writeInt(applicationAttemptId.getAttemptId());<a name="line.130"></a>
-<span class="sourceLineNo">131</span>    out.writeInt(this.containerId.getId());<a name="line.131"></a>
+<span class="sourceLineNo">131</span>    out.writeLong(this.containerId.getContainerId());<a name="line.131"></a>
 <span class="sourceLineNo">132</span>    out.writeUTF(this.nmHostAddr);<a name="line.132"></a>
 <span class="sourceLineNo">133</span>    out.writeUTF(this.appSubmitter);<a name="line.133"></a>
 <span class="sourceLineNo">134</span>    out.writeInt(this.resource.getMemory());<a name="line.134"></a>
@@ -155,7 +155,7 @@
 <span class="sourceLineNo">147</span>    ApplicationAttemptId applicationAttemptId =<a name="line.147"></a>
 <span class="sourceLineNo">148</span>        ApplicationAttemptId.newInstance(applicationId, in.readInt());<a name="line.148"></a>
 <span class="sourceLineNo">149</span>    this.containerId =<a name="line.149"></a>
-<span class="sourceLineNo">150</span>        ContainerId.newInstance(applicationAttemptId, in.readInt());<a name="line.150"></a>
+<span class="sourceLineNo">150</span>        ContainerId.newInstance(applicationAttemptId, in.readLong());<a name="line.150"></a>
 <span class="sourceLineNo">151</span>    this.nmHostAddr = in.readUTF();<a name="line.151"></a>
 <span class="sourceLineNo">152</span>    this.appSubmitter = in.readUTF();<a name="line.152"></a>
 <span class="sourceLineNo">153</span>    int memory = in.readInt();<a name="line.153"></a>

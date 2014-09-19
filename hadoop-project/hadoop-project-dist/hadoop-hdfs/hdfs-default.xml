@@ -22,7 +22,8 @@
 <!-- wish to modify from this file into hdfs-site.xml and change them -->
 <!-- there.  If hdfs-site.xml does not already exist, create it.      -->
 
-<configuration>
+<configuration xmlns:xi="http://www.w3.org/2001/XInclude"> 
+  <xi:include href="blockStoragePolicy-default.xml" />
 
 <property>
   <name>hadoop.hdfs.configuration.version</name>
@@ -520,6 +521,28 @@
       Add a new datanode only if r is greater than or equal to 3 and either
       (1) floor(r/2) is greater than or equal to n; or
       (2) r is greater than n and the block is hflushed/appended.
+  </description>
+</property>
+
+<property>
+  <name>dfs.client.block.write.replace-datanode-on-failure.best-effort</name>
+  <value>false</value>
+  <description>
+    This property is used only if the value of
+    dfs.client.block.write.replace-datanode-on-failure.enable is true.
+
+    Best effort means that the client will try to replace a failed datanode
+    in write pipeline (provided that the policy is satisfied), however, it 
+    continues the write operation in case that the datanode replacement also
+    fails.
+
+    Suppose the datanode replacement fails.
+    false: An exception should be thrown so that the write will fail.
+    true : The write should be resumed with the remaining datandoes.
+  
+    Note that setting this property to true allows writing to a pipeline
+    with a smaller number of datanodes.  As a result, it increases the
+    probability of data loss.
   </description>
 </property>
 
@@ -1094,6 +1117,16 @@
 </property>
 
 <property>
+  <name>dfs.internal.nameservices</name>
+  <value></value>
+  <description>
+    Comma-separated list of nameservices that belong to this cluster.
+    Datanode will report to all the nameservices in this list. By default
+    this is set to the value of dfs.nameservices.
+  </description>
+</property>
+
+<property>
   <name>dfs.ha.namenodes.EXAMPLENAMESERVICE</name>
   <value></value>
   <description>
@@ -1474,11 +1507,8 @@
   <value></value>
   <description>
     SaslPropertiesResolver used to resolve the QOP used for a connection to the
-    DataNode when reading or writing block data.  If not specified, the full set
-    of values specified in dfs.data.transfer.protection is used while
-    determining the QOP used for the connection. If a class is specified, then
-    the QOP values returned by the class will be used while determining the QOP
-    used for the connection.
+    DataNode when reading or writing block data. If not specified, the value of
+    hadoop.security.saslproperties.resolver.class is used as the default value.
   </description>
 </property>
 
@@ -2040,24 +2070,67 @@
 </property>
 
 <property>
-  <name>dfs.namenode.randomize-block-locations-per-block</name>
-  <value>false</value>
-  <description>When fetching replica locations of a block, the replicas
-   are sorted based on network distance. This configuration parameter
-   determines whether the replicas at the same network distance are randomly
-   shuffled. By default, this is false, such that repeated requests for a block's
-   replicas always result in the same order. This potentially improves page cache
-   behavior. However, for some network topologies, it is desirable to shuffle this
-   order for better load balancing.
-  </description>
-</property>
-
-<property>
   <name>dfs.datanode.block.id.layout.upgrade.threads</name>
   <value>12</value>
   <description>The number of threads to use when creating hard links from
     current to previous blocks during upgrade of a DataNode to block ID-based
     block layout (see HDFS-6482 for details on the layout).</description>
+</property>
+
+<property>
+  <name>dfs.namenode.list.encryption.zones.num.responses</name>
+  <value>100</value>
+  <description>When listing encryption zones, the maximum number of zones
+    that will be returned in a batch. Fetching the list incrementally in
+    batches improves namenode performance.
+  </description>
+</property>
+
+<property>
+  <name>dfs.namenode.inotify.max.events.per.rpc</name>
+  <value>1000</value>
+  <description>Maximum number of events that will be sent to an inotify client
+    in a single RPC response. The default value attempts to amortize away
+    the overhead for this RPC while avoiding huge memory requirements for the
+    client and NameNode (1000 events should consume no more than 1 MB.)
+  </description>
+</property>
+
+<property>
+  <name>dfs.user.home.dir.prefix</name>
+  <value>/user</value>
+  <description>The directory to prepend to user name to get the user's
+    home direcotry.
+  </description>
+</property>
+
+<property>
+  <name>dfs.datanode.cache.revocation.timeout.ms</name>
+  <value>900000</value>
+  <description>When the DFSClient reads from a block file which the DataNode is
+    caching, the DFSClient can skip verifying checksums.  The DataNode will
+    keep the block file in cache until the client is done.  If the client takes
+    an unusually long time, though, the DataNode may need to evict the block
+    file from the cache anyway.  This value controls how long the DataNode will
+    wait for the client to release a replica that it is reading without
+    checksums.
+  </description>
+</property>
+
+<property>
+  <name>dfs.datanode.cache.revocation.polling.ms</name>
+  <value>500</value>
+  <description>How often the DataNode should poll to see if the clients have
+    stopped using a replica that the DataNode wants to uncache.
+  </description>
+</property>
+
+<property>
+  <name>dfs.encryption.key.provider.uri</name>
+  <description>
+    The KeyProvider to use when interacting with encryption keys used
+    when reading and writing to an encryption zone.
+  </description>
 </property>
 
 </configuration>
