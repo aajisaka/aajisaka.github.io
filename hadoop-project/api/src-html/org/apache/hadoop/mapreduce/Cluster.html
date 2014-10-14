@@ -190,15 +190,15 @@
 <span class="sourceLineNo">182</span>  public Job getJob(JobID jobId) throws IOException, InterruptedException {<a name="line.182"></a>
 <span class="sourceLineNo">183</span>    JobStatus status = client.getJobStatus(jobId);<a name="line.183"></a>
 <span class="sourceLineNo">184</span>    if (status != null) {<a name="line.184"></a>
-<span class="sourceLineNo">185</span>      JobConf conf;<a name="line.185"></a>
-<span class="sourceLineNo">186</span>      try {<a name="line.186"></a>
-<span class="sourceLineNo">187</span>        conf = new JobConf(status.getJobFile());<a name="line.187"></a>
-<span class="sourceLineNo">188</span>      } catch (RuntimeException ex) {<a name="line.188"></a>
-<span class="sourceLineNo">189</span>        // If job file doesn't exist it means we can't find the job<a name="line.189"></a>
-<span class="sourceLineNo">190</span>        if (ex.getCause() instanceof FileNotFoundException) {<a name="line.190"></a>
-<span class="sourceLineNo">191</span>          return null;<a name="line.191"></a>
-<span class="sourceLineNo">192</span>        } else {<a name="line.192"></a>
-<span class="sourceLineNo">193</span>          throw ex;<a name="line.193"></a>
+<span class="sourceLineNo">185</span>      final JobConf conf = new JobConf();<a name="line.185"></a>
+<span class="sourceLineNo">186</span>      final Path jobPath = new Path(client.getFilesystemName(),<a name="line.186"></a>
+<span class="sourceLineNo">187</span>          status.getJobFile());<a name="line.187"></a>
+<span class="sourceLineNo">188</span>      final FileSystem fs = FileSystem.get(jobPath.toUri(), getConf());<a name="line.188"></a>
+<span class="sourceLineNo">189</span>      try {<a name="line.189"></a>
+<span class="sourceLineNo">190</span>        conf.addResource(fs.open(jobPath), jobPath.toString());<a name="line.190"></a>
+<span class="sourceLineNo">191</span>      } catch (FileNotFoundException fnf) {<a name="line.191"></a>
+<span class="sourceLineNo">192</span>        if (LOG.isWarnEnabled()) {<a name="line.192"></a>
+<span class="sourceLineNo">193</span>          LOG.warn("Job conf missing on cluster", fnf);<a name="line.193"></a>
 <span class="sourceLineNo">194</span>        }<a name="line.194"></a>
 <span class="sourceLineNo">195</span>      }<a name="line.195"></a>
 <span class="sourceLineNo">196</span>      return Job.getInstance(this, status, conf);<a name="line.196"></a>

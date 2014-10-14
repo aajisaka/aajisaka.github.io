@@ -49,11 +49,11 @@
 <span class="sourceLineNo">041</span>@InterfaceAudience.Public<a name="line.41"></a>
 <span class="sourceLineNo">042</span>@InterfaceStability.Evolving<a name="line.42"></a>
 <span class="sourceLineNo">043</span>public final class AzureFileSystemInstrumentation implements MetricsSource {<a name="line.43"></a>
-<span class="sourceLineNo">044</span>  <a name="line.44"></a>
+<span class="sourceLineNo">044</span><a name="line.44"></a>
 <span class="sourceLineNo">045</span>  public static final String METRIC_TAG_FILESYSTEM_ID = "wasbFileSystemId";<a name="line.45"></a>
 <span class="sourceLineNo">046</span>  public static final String METRIC_TAG_ACCOUNT_NAME = "accountName";<a name="line.46"></a>
 <span class="sourceLineNo">047</span>  public static final String METRIC_TAG_CONTAINTER_NAME = "containerName";<a name="line.47"></a>
-<span class="sourceLineNo">048</span>  <a name="line.48"></a>
+<span class="sourceLineNo">048</span><a name="line.48"></a>
 <span class="sourceLineNo">049</span>  public static final String WASB_WEB_RESPONSES = "wasb_web_responses";<a name="line.49"></a>
 <span class="sourceLineNo">050</span>  public static final String WASB_BYTES_WRITTEN =<a name="line.50"></a>
 <span class="sourceLineNo">051</span>      "wasb_bytes_written_last_second";<a name="line.51"></a>
@@ -389,18 +389,17 @@
 <span class="sourceLineNo">381</span>   */<a name="line.381"></a>
 <span class="sourceLineNo">382</span>  public long getCurrentMaximumDownloadBandwidth() {<a name="line.382"></a>
 <span class="sourceLineNo">383</span>    return currentMaximumDownloadBytesPerSecond;<a name="line.383"></a>
-<span class="sourceLineNo">384</span><a name="line.384"></a>
-<span class="sourceLineNo">385</span>  }<a name="line.385"></a>
-<span class="sourceLineNo">386</span><a name="line.386"></a>
-<span class="sourceLineNo">387</span>  @Override<a name="line.387"></a>
-<span class="sourceLineNo">388</span>  public void getMetrics(MetricsCollector builder, boolean all) {<a name="line.388"></a>
-<span class="sourceLineNo">389</span>    averageBlockDownloadLatencyMs.set(<a name="line.389"></a>
-<span class="sourceLineNo">390</span>        currentBlockDownloadLatency.getCurrentAverage());<a name="line.390"></a>
-<span class="sourceLineNo">391</span>    averageBlockUploadLatencyMs.set(<a name="line.391"></a>
-<span class="sourceLineNo">392</span>        currentBlockUploadLatency.getCurrentAverage());<a name="line.392"></a>
-<span class="sourceLineNo">393</span>    registry.snapshot(builder.addRecord(registry.info().name()), true);<a name="line.393"></a>
-<span class="sourceLineNo">394</span>  }<a name="line.394"></a>
-<span class="sourceLineNo">395</span>}<a name="line.395"></a>
+<span class="sourceLineNo">384</span>  }<a name="line.384"></a>
+<span class="sourceLineNo">385</span><a name="line.385"></a>
+<span class="sourceLineNo">386</span>  @Override<a name="line.386"></a>
+<span class="sourceLineNo">387</span>  public void getMetrics(MetricsCollector builder, boolean all) {<a name="line.387"></a>
+<span class="sourceLineNo">388</span>    averageBlockDownloadLatencyMs.set(<a name="line.388"></a>
+<span class="sourceLineNo">389</span>        currentBlockDownloadLatency.getCurrentAverage());<a name="line.389"></a>
+<span class="sourceLineNo">390</span>    averageBlockUploadLatencyMs.set(<a name="line.390"></a>
+<span class="sourceLineNo">391</span>        currentBlockUploadLatency.getCurrentAverage());<a name="line.391"></a>
+<span class="sourceLineNo">392</span>    registry.snapshot(builder.addRecord(registry.info().name()), true);<a name="line.392"></a>
+<span class="sourceLineNo">393</span>  }<a name="line.393"></a>
+<span class="sourceLineNo">394</span>}<a name="line.394"></a>
 
 
 

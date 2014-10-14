@@ -1,4 +1,6 @@
 org.apache.hadoop
+org.apache.hadoop.ant
+org.apache.hadoop.ant.condition
 org.apache.hadoop.classification
 org.apache.hadoop.conf
 org.apache.hadoop.contrib.bkjournal
@@ -128,6 +130,17 @@ org.apache.hadoop.oncrpc
 org.apache.hadoop.oncrpc.security
 org.apache.hadoop.portmap
 org.apache.hadoop.record
+org.apache.hadoop.registry.cli
+org.apache.hadoop.registry.client.api
+org.apache.hadoop.registry.client.binding
+org.apache.hadoop.registry.client.exceptions
+org.apache.hadoop.registry.client.impl
+org.apache.hadoop.registry.client.impl.zk
+org.apache.hadoop.registry.client.types
+org.apache.hadoop.registry.client.types.yarn
+org.apache.hadoop.registry.server
+org.apache.hadoop.registry.server.integration
+org.apache.hadoop.registry.server.services
 org.apache.hadoop.security
 org.apache.hadoop.security.alias
 org.apache.hadoop.security.authentication.client
@@ -175,6 +188,8 @@ org.apache.hadoop.yarn.conf
 org.apache.hadoop.yarn.event
 org.apache.hadoop.yarn.exceptions
 org.apache.hadoop.yarn.logaggregation
+org.apache.hadoop.yarn.nodelabels
+org.apache.hadoop.yarn.nodelabels.event
 org.apache.hadoop.yarn.security
 org.apache.hadoop.yarn.security.admin
 org.apache.hadoop.yarn.security.client

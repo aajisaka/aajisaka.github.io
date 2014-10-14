@@ -542,70 +542,78 @@
 <span class="sourceLineNo">534</span>                                            ) throws IOException;<a name="line.534"></a>
 <span class="sourceLineNo">535</span><a name="line.535"></a>
 <span class="sourceLineNo">536</span>  /**<a name="line.536"></a>
-<span class="sourceLineNo">537</span>   * Roll a new version of the given key generating the material for it.<a name="line.537"></a>
-<span class="sourceLineNo">538</span>   * &lt;p/&gt;<a name="line.538"></a>
-<span class="sourceLineNo">539</span>   * This implementation generates the key material and calls the<a name="line.539"></a>
-<span class="sourceLineNo">540</span>   * {@link #rollNewVersion(String, byte[])} method.<a name="line.540"></a>
-<span class="sourceLineNo">541</span>   *<a name="line.541"></a>
-<span class="sourceLineNo">542</span>   * @param name the basename of the key<a name="line.542"></a>
-<span class="sourceLineNo">543</span>   * @return the name of the new version of the key<a name="line.543"></a>
-<span class="sourceLineNo">544</span>   * @throws IOException<a name="line.544"></a>
-<span class="sourceLineNo">545</span>   */<a name="line.545"></a>
-<span class="sourceLineNo">546</span>  public KeyVersion rollNewVersion(String name) throws NoSuchAlgorithmException,<a name="line.546"></a>
-<span class="sourceLineNo">547</span>                                                       IOException {<a name="line.547"></a>
-<span class="sourceLineNo">548</span>    Metadata meta = getMetadata(name);<a name="line.548"></a>
-<span class="sourceLineNo">549</span>    byte[] material = generateKey(meta.getBitLength(), meta.getCipher());<a name="line.549"></a>
-<span class="sourceLineNo">550</span>    return rollNewVersion(name, material);<a name="line.550"></a>
-<span class="sourceLineNo">551</span>  }<a name="line.551"></a>
-<span class="sourceLineNo">552</span><a name="line.552"></a>
-<span class="sourceLineNo">553</span>  /**<a name="line.553"></a>
-<span class="sourceLineNo">554</span>   * Ensures that any changes to the keys are written to persistent store.<a name="line.554"></a>
-<span class="sourceLineNo">555</span>   * @throws IOException<a name="line.555"></a>
-<span class="sourceLineNo">556</span>   */<a name="line.556"></a>
-<span class="sourceLineNo">557</span>  public abstract void flush() throws IOException;<a name="line.557"></a>
-<span class="sourceLineNo">558</span><a name="line.558"></a>
-<span class="sourceLineNo">559</span>  /**<a name="line.559"></a>
-<span class="sourceLineNo">560</span>   * Split the versionName in to a base name. Converts "/aaa/bbb/3" to<a name="line.560"></a>
-<span class="sourceLineNo">561</span>   * "/aaa/bbb".<a name="line.561"></a>
-<span class="sourceLineNo">562</span>   * @param versionName the version name to split<a name="line.562"></a>
-<span class="sourceLineNo">563</span>   * @return the base name of the key<a name="line.563"></a>
-<span class="sourceLineNo">564</span>   * @throws IOException<a name="line.564"></a>
-<span class="sourceLineNo">565</span>   */<a name="line.565"></a>
-<span class="sourceLineNo">566</span>  public static String getBaseName(String versionName) throws IOException {<a name="line.566"></a>
-<span class="sourceLineNo">567</span>    int div = versionName.lastIndexOf('@');<a name="line.567"></a>
-<span class="sourceLineNo">568</span>    if (div == -1) {<a name="line.568"></a>
-<span class="sourceLineNo">569</span>      throw new IOException("No version in key path " + versionName);<a name="line.569"></a>
-<span class="sourceLineNo">570</span>    }<a name="line.570"></a>
-<span class="sourceLineNo">571</span>    return versionName.substring(0, div);<a name="line.571"></a>
-<span class="sourceLineNo">572</span>  }<a name="line.572"></a>
-<span class="sourceLineNo">573</span><a name="line.573"></a>
-<span class="sourceLineNo">574</span>  /**<a name="line.574"></a>
-<span class="sourceLineNo">575</span>   * Build a version string from a basename and version number. Converts<a name="line.575"></a>
-<span class="sourceLineNo">576</span>   * "/aaa/bbb" and 3 to "/aaa/bbb@3".<a name="line.576"></a>
-<span class="sourceLineNo">577</span>   * @param name the basename of the key<a name="line.577"></a>
-<span class="sourceLineNo">578</span>   * @param version the version of the key<a name="line.578"></a>
-<span class="sourceLineNo">579</span>   * @return the versionName of the key.<a name="line.579"></a>
-<span class="sourceLineNo">580</span>   */<a name="line.580"></a>
-<span class="sourceLineNo">581</span>  protected static String buildVersionName(String name, int version) {<a name="line.581"></a>
-<span class="sourceLineNo">582</span>    return name + "@" + version;<a name="line.582"></a>
-<span class="sourceLineNo">583</span>  }<a name="line.583"></a>
-<span class="sourceLineNo">584</span><a name="line.584"></a>
-<span class="sourceLineNo">585</span>  /**<a name="line.585"></a>
-<span class="sourceLineNo">586</span>   * Find the provider with the given key.<a name="line.586"></a>
-<span class="sourceLineNo">587</span>   * @param providerList the list of providers<a name="line.587"></a>
-<span class="sourceLineNo">588</span>   * @param keyName the key name we are looking for<a name="line.588"></a>
-<span class="sourceLineNo">589</span>   * @return the KeyProvider that has the key<a name="line.589"></a>
-<span class="sourceLineNo">590</span>   */<a name="line.590"></a>
-<span class="sourceLineNo">591</span>  public static KeyProvider findProvider(List&lt;KeyProvider&gt; providerList,<a name="line.591"></a>
-<span class="sourceLineNo">592</span>                                         String keyName) throws IOException {<a name="line.592"></a>
-<span class="sourceLineNo">593</span>    for(KeyProvider provider: providerList) {<a name="line.593"></a>
-<span class="sourceLineNo">594</span>      if (provider.getMetadata(keyName) != null) {<a name="line.594"></a>
-<span class="sourceLineNo">595</span>        return provider;<a name="line.595"></a>
-<span class="sourceLineNo">596</span>      }<a name="line.596"></a>
-<span class="sourceLineNo">597</span>    }<a name="line.597"></a>
-<span class="sourceLineNo">598</span>    throw new IOException("Can't find KeyProvider for key " + keyName);<a name="line.598"></a>
-<span class="sourceLineNo">599</span>  }<a name="line.599"></a>
-<span class="sourceLineNo">600</span>}<a name="line.600"></a>
+<span class="sourceLineNo">537</span>   * Can be used by implementing classes to close any resources<a name="line.537"></a>
+<span class="sourceLineNo">538</span>   * that require closing<a name="line.538"></a>
+<span class="sourceLineNo">539</span>   */<a name="line.539"></a>
+<span class="sourceLineNo">540</span>  public void close() throws IOException {<a name="line.540"></a>
+<span class="sourceLineNo">541</span>    // NOP<a name="line.541"></a>
+<span class="sourceLineNo">542</span>  }<a name="line.542"></a>
+<span class="sourceLineNo">543</span><a name="line.543"></a>
+<span class="sourceLineNo">544</span>  /**<a name="line.544"></a>
+<span class="sourceLineNo">545</span>   * Roll a new version of the given key generating the material for it.<a name="line.545"></a>
+<span class="sourceLineNo">546</span>   * &lt;p/&gt;<a name="line.546"></a>
+<span class="sourceLineNo">547</span>   * This implementation generates the key material and calls the<a name="line.547"></a>
+<span class="sourceLineNo">548</span>   * {@link #rollNewVersion(String, byte[])} method.<a name="line.548"></a>
+<span class="sourceLineNo">549</span>   *<a name="line.549"></a>
+<span class="sourceLineNo">550</span>   * @param name the basename of the key<a name="line.550"></a>
+<span class="sourceLineNo">551</span>   * @return the name of the new version of the key<a name="line.551"></a>
+<span class="sourceLineNo">552</span>   * @throws IOException<a name="line.552"></a>
+<span class="sourceLineNo">553</span>   */<a name="line.553"></a>
+<span class="sourceLineNo">554</span>  public KeyVersion rollNewVersion(String name) throws NoSuchAlgorithmException,<a name="line.554"></a>
+<span class="sourceLineNo">555</span>                                                       IOException {<a name="line.555"></a>
+<span class="sourceLineNo">556</span>    Metadata meta = getMetadata(name);<a name="line.556"></a>
+<span class="sourceLineNo">557</span>    byte[] material = generateKey(meta.getBitLength(), meta.getCipher());<a name="line.557"></a>
+<span class="sourceLineNo">558</span>    return rollNewVersion(name, material);<a name="line.558"></a>
+<span class="sourceLineNo">559</span>  }<a name="line.559"></a>
+<span class="sourceLineNo">560</span><a name="line.560"></a>
+<span class="sourceLineNo">561</span>  /**<a name="line.561"></a>
+<span class="sourceLineNo">562</span>   * Ensures that any changes to the keys are written to persistent store.<a name="line.562"></a>
+<span class="sourceLineNo">563</span>   * @throws IOException<a name="line.563"></a>
+<span class="sourceLineNo">564</span>   */<a name="line.564"></a>
+<span class="sourceLineNo">565</span>  public abstract void flush() throws IOException;<a name="line.565"></a>
+<span class="sourceLineNo">566</span><a name="line.566"></a>
+<span class="sourceLineNo">567</span>  /**<a name="line.567"></a>
+<span class="sourceLineNo">568</span>   * Split the versionName in to a base name. Converts "/aaa/bbb/3" to<a name="line.568"></a>
+<span class="sourceLineNo">569</span>   * "/aaa/bbb".<a name="line.569"></a>
+<span class="sourceLineNo">570</span>   * @param versionName the version name to split<a name="line.570"></a>
+<span class="sourceLineNo">571</span>   * @return the base name of the key<a name="line.571"></a>
+<span class="sourceLineNo">572</span>   * @throws IOException<a name="line.572"></a>
+<span class="sourceLineNo">573</span>   */<a name="line.573"></a>
+<span class="sourceLineNo">574</span>  public static String getBaseName(String versionName) throws IOException {<a name="line.574"></a>
+<span class="sourceLineNo">575</span>    int div = versionName.lastIndexOf('@');<a name="line.575"></a>
+<span class="sourceLineNo">576</span>    if (div == -1) {<a name="line.576"></a>
+<span class="sourceLineNo">577</span>      throw new IOException("No version in key path " + versionName);<a name="line.577"></a>
+<span class="sourceLineNo">578</span>    }<a name="line.578"></a>
+<span class="sourceLineNo">579</span>    return versionName.substring(0, div);<a name="line.579"></a>
+<span class="sourceLineNo">580</span>  }<a name="line.580"></a>
+<span class="sourceLineNo">581</span><a name="line.581"></a>
+<span class="sourceLineNo">582</span>  /**<a name="line.582"></a>
+<span class="sourceLineNo">583</span>   * Build a version string from a basename and version number. Converts<a name="line.583"></a>
+<span class="sourceLineNo">584</span>   * "/aaa/bbb" and 3 to "/aaa/bbb@3".<a name="line.584"></a>
+<span class="sourceLineNo">585</span>   * @param name the basename of the key<a name="line.585"></a>
+<span class="sourceLineNo">586</span>   * @param version the version of the key<a name="line.586"></a>
+<span class="sourceLineNo">587</span>   * @return the versionName of the key.<a name="line.587"></a>
+<span class="sourceLineNo">588</span>   */<a name="line.588"></a>
+<span class="sourceLineNo">589</span>  protected static String buildVersionName(String name, int version) {<a name="line.589"></a>
+<span class="sourceLineNo">590</span>    return name + "@" + version;<a name="line.590"></a>
+<span class="sourceLineNo">591</span>  }<a name="line.591"></a>
+<span class="sourceLineNo">592</span><a name="line.592"></a>
+<span class="sourceLineNo">593</span>  /**<a name="line.593"></a>
+<span class="sourceLineNo">594</span>   * Find the provider with the given key.<a name="line.594"></a>
+<span class="sourceLineNo">595</span>   * @param providerList the list of providers<a name="line.595"></a>
+<span class="sourceLineNo">596</span>   * @param keyName the key name we are looking for<a name="line.596"></a>
+<span class="sourceLineNo">597</span>   * @return the KeyProvider that has the key<a name="line.597"></a>
+<span class="sourceLineNo">598</span>   */<a name="line.598"></a>
+<span class="sourceLineNo">599</span>  public static KeyProvider findProvider(List&lt;KeyProvider&gt; providerList,<a name="line.599"></a>
+<span class="sourceLineNo">600</span>                                         String keyName) throws IOException {<a name="line.600"></a>
+<span class="sourceLineNo">601</span>    for(KeyProvider provider: providerList) {<a name="line.601"></a>
+<span class="sourceLineNo">602</span>      if (provider.getMetadata(keyName) != null) {<a name="line.602"></a>
+<span class="sourceLineNo">603</span>        return provider;<a name="line.603"></a>
+<span class="sourceLineNo">604</span>      }<a name="line.604"></a>
+<span class="sourceLineNo">605</span>    }<a name="line.605"></a>
+<span class="sourceLineNo">606</span>    throw new IOException("Can't find KeyProvider for key " + keyName);<a name="line.606"></a>
+<span class="sourceLineNo">607</span>  }<a name="line.607"></a>
+<span class="sourceLineNo">608</span>}<a name="line.608"></a>
 
 
 
