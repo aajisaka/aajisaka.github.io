@@ -97,8 +97,8 @@
 <span class="sourceLineNo">089</span>            }<a name="line.89"></a>
 <span class="sourceLineNo">090</span>        }<a name="line.90"></a>
 <span class="sourceLineNo">091</span><a name="line.91"></a>
-<span class="sourceLineNo">092</span>        // Round the timestamp to second as Graphite accepts it in such format.<a name="line.92"></a>
-<span class="sourceLineNo">093</span>        int timestamp = Math.round(record.timestamp() / 1000.0f);<a name="line.93"></a>
+<span class="sourceLineNo">092</span>        // The record timestamp is in milliseconds while Graphite expects an epoc time in seconds.<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        long timestamp = record.timestamp() / 1000L;<a name="line.93"></a>
 <span class="sourceLineNo">094</span><a name="line.94"></a>
 <span class="sourceLineNo">095</span>        // Collect datapoints.<a name="line.95"></a>
 <span class="sourceLineNo">096</span>        for (AbstractMetric metric : record.metrics()) {<a name="line.96"></a>

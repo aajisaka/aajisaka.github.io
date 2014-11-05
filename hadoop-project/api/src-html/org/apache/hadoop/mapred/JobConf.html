@@ -1651,390 +1651,389 @@
 <span class="sourceLineNo">1643</span>   */<a name="line.1643"></a>
 <span class="sourceLineNo">1644</span>  public String getProfileParams() {<a name="line.1644"></a>
 <span class="sourceLineNo">1645</span>    return get(JobContext.TASK_PROFILE_PARAMS,<a name="line.1645"></a>
-<span class="sourceLineNo">1646</span>               "-agentlib:hprof=cpu=samples,heap=sites,force=n,thread=y," +<a name="line.1646"></a>
-<span class="sourceLineNo">1647</span>                 "verbose=n,file=%s");<a name="line.1647"></a>
-<span class="sourceLineNo">1648</span>  }<a name="line.1648"></a>
-<span class="sourceLineNo">1649</span><a name="line.1649"></a>
-<span class="sourceLineNo">1650</span>  /**<a name="line.1650"></a>
-<span class="sourceLineNo">1651</span>   * Set the profiler configuration arguments. If the string contains a '%s' it<a name="line.1651"></a>
-<span class="sourceLineNo">1652</span>   * will be replaced with the name of the profiling output file when the task<a name="line.1652"></a>
-<span class="sourceLineNo">1653</span>   * runs.<a name="line.1653"></a>
-<span class="sourceLineNo">1654</span>   *<a name="line.1654"></a>
-<span class="sourceLineNo">1655</span>   * This value is passed to the task child JVM on the command line.<a name="line.1655"></a>
-<span class="sourceLineNo">1656</span>   *<a name="line.1656"></a>
-<span class="sourceLineNo">1657</span>   * @param value the configuration string<a name="line.1657"></a>
-<span class="sourceLineNo">1658</span>   */<a name="line.1658"></a>
-<span class="sourceLineNo">1659</span>  public void setProfileParams(String value) {<a name="line.1659"></a>
-<span class="sourceLineNo">1660</span>    set(JobContext.TASK_PROFILE_PARAMS, value);<a name="line.1660"></a>
-<span class="sourceLineNo">1661</span>  }<a name="line.1661"></a>
-<span class="sourceLineNo">1662</span><a name="line.1662"></a>
-<span class="sourceLineNo">1663</span>  /**<a name="line.1663"></a>
-<span class="sourceLineNo">1664</span>   * Get the range of maps or reduces to profile.<a name="line.1664"></a>
-<span class="sourceLineNo">1665</span>   * @param isMap is the task a map?<a name="line.1665"></a>
-<span class="sourceLineNo">1666</span>   * @return the task ranges<a name="line.1666"></a>
-<span class="sourceLineNo">1667</span>   */<a name="line.1667"></a>
-<span class="sourceLineNo">1668</span>  public IntegerRanges getProfileTaskRange(boolean isMap) {<a name="line.1668"></a>
-<span class="sourceLineNo">1669</span>    return getRange((isMap ? JobContext.NUM_MAP_PROFILES : <a name="line.1669"></a>
-<span class="sourceLineNo">1670</span>                       JobContext.NUM_REDUCE_PROFILES), "0-2");<a name="line.1670"></a>
-<span class="sourceLineNo">1671</span>  }<a name="line.1671"></a>
-<span class="sourceLineNo">1672</span><a name="line.1672"></a>
-<span class="sourceLineNo">1673</span>  /**<a name="line.1673"></a>
-<span class="sourceLineNo">1674</span>   * Set the ranges of maps or reduces to profile. setProfileEnabled(true) <a name="line.1674"></a>
-<span class="sourceLineNo">1675</span>   * must also be called.<a name="line.1675"></a>
-<span class="sourceLineNo">1676</span>   * @param newValue a set of integer ranges of the map ids<a name="line.1676"></a>
-<span class="sourceLineNo">1677</span>   */<a name="line.1677"></a>
-<span class="sourceLineNo">1678</span>  public void setProfileTaskRange(boolean isMap, String newValue) {<a name="line.1678"></a>
-<span class="sourceLineNo">1679</span>    // parse the value to make sure it is legal<a name="line.1679"></a>
-<span class="sourceLineNo">1680</span>      new Configuration.IntegerRanges(newValue);<a name="line.1680"></a>
-<span class="sourceLineNo">1681</span>    set((isMap ? JobContext.NUM_MAP_PROFILES : JobContext.NUM_REDUCE_PROFILES), <a name="line.1681"></a>
-<span class="sourceLineNo">1682</span>          newValue);<a name="line.1682"></a>
-<span class="sourceLineNo">1683</span>  }<a name="line.1683"></a>
-<span class="sourceLineNo">1684</span><a name="line.1684"></a>
-<span class="sourceLineNo">1685</span>  /**<a name="line.1685"></a>
-<span class="sourceLineNo">1686</span>   * Set the debug script to run when the map tasks fail.<a name="line.1686"></a>
-<span class="sourceLineNo">1687</span>   * <a name="line.1687"></a>
-<span class="sourceLineNo">1688</span>   * &lt;p&gt;The debug script can aid debugging of failed map tasks. The script is <a name="line.1688"></a>
-<span class="sourceLineNo">1689</span>   * given task's stdout, stderr, syslog, jobconf files as arguments.&lt;/p&gt;<a name="line.1689"></a>
-<span class="sourceLineNo">1690</span>   * <a name="line.1690"></a>
-<span class="sourceLineNo">1691</span>   * &lt;p&gt;The debug command, run on the node where the map failed, is:&lt;/p&gt;<a name="line.1691"></a>
-<span class="sourceLineNo">1692</span>   * &lt;p&gt;&lt;pre&gt;&lt;blockquote&gt; <a name="line.1692"></a>
-<span class="sourceLineNo">1693</span>   * $script $stdout $stderr $syslog $jobconf.<a name="line.1693"></a>
-<span class="sourceLineNo">1694</span>   * &lt;/blockquote&gt;&lt;/pre&gt;&lt;/p&gt;<a name="line.1694"></a>
-<span class="sourceLineNo">1695</span>   * <a name="line.1695"></a>
-<span class="sourceLineNo">1696</span>   * &lt;p&gt; The script file is distributed through {@link DistributedCache} <a name="line.1696"></a>
-<span class="sourceLineNo">1697</span>   * APIs. The script needs to be symlinked. &lt;/p&gt;<a name="line.1697"></a>
-<span class="sourceLineNo">1698</span>   * <a name="line.1698"></a>
-<span class="sourceLineNo">1699</span>   * &lt;p&gt;Here is an example on how to submit a script <a name="line.1699"></a>
-<span class="sourceLineNo">1700</span>   * &lt;p&gt;&lt;blockquote&gt;&lt;pre&gt;<a name="line.1700"></a>
-<span class="sourceLineNo">1701</span>   * job.setMapDebugScript("./myscript");<a name="line.1701"></a>
-<span class="sourceLineNo">1702</span>   * DistributedCache.createSymlink(job);<a name="line.1702"></a>
-<span class="sourceLineNo">1703</span>   * DistributedCache.addCacheFile("/debug/scripts/myscript#myscript");<a name="line.1703"></a>
-<span class="sourceLineNo">1704</span>   * &lt;/pre&gt;&lt;/blockquote&gt;&lt;/p&gt;<a name="line.1704"></a>
-<span class="sourceLineNo">1705</span>   * <a name="line.1705"></a>
-<span class="sourceLineNo">1706</span>   * @param mDbgScript the script name<a name="line.1706"></a>
-<span class="sourceLineNo">1707</span>   */<a name="line.1707"></a>
-<span class="sourceLineNo">1708</span>  public void  setMapDebugScript(String mDbgScript) {<a name="line.1708"></a>
-<span class="sourceLineNo">1709</span>    set(JobContext.MAP_DEBUG_SCRIPT, mDbgScript);<a name="line.1709"></a>
-<span class="sourceLineNo">1710</span>  }<a name="line.1710"></a>
-<span class="sourceLineNo">1711</span>  <a name="line.1711"></a>
-<span class="sourceLineNo">1712</span>  /**<a name="line.1712"></a>
-<span class="sourceLineNo">1713</span>   * Get the map task's debug script.<a name="line.1713"></a>
-<span class="sourceLineNo">1714</span>   * <a name="line.1714"></a>
-<span class="sourceLineNo">1715</span>   * @return the debug Script for the mapred job for failed map tasks.<a name="line.1715"></a>
-<span class="sourceLineNo">1716</span>   * @see #setMapDebugScript(String)<a name="line.1716"></a>
-<span class="sourceLineNo">1717</span>   */<a name="line.1717"></a>
-<span class="sourceLineNo">1718</span>  public String getMapDebugScript() {<a name="line.1718"></a>
-<span class="sourceLineNo">1719</span>    return get(JobContext.MAP_DEBUG_SCRIPT);<a name="line.1719"></a>
-<span class="sourceLineNo">1720</span>  }<a name="line.1720"></a>
-<span class="sourceLineNo">1721</span>  <a name="line.1721"></a>
-<span class="sourceLineNo">1722</span>  /**<a name="line.1722"></a>
-<span class="sourceLineNo">1723</span>   * Set the debug script to run when the reduce tasks fail.<a name="line.1723"></a>
-<span class="sourceLineNo">1724</span>   * <a name="line.1724"></a>
-<span class="sourceLineNo">1725</span>   * &lt;p&gt;The debug script can aid debugging of failed reduce tasks. The script<a name="line.1725"></a>
-<span class="sourceLineNo">1726</span>   * is given task's stdout, stderr, syslog, jobconf files as arguments.&lt;/p&gt;<a name="line.1726"></a>
-<span class="sourceLineNo">1727</span>   * <a name="line.1727"></a>
-<span class="sourceLineNo">1728</span>   * &lt;p&gt;The debug command, run on the node where the map failed, is:&lt;/p&gt;<a name="line.1728"></a>
-<span class="sourceLineNo">1729</span>   * &lt;p&gt;&lt;pre&gt;&lt;blockquote&gt; <a name="line.1729"></a>
-<span class="sourceLineNo">1730</span>   * $script $stdout $stderr $syslog $jobconf.<a name="line.1730"></a>
-<span class="sourceLineNo">1731</span>   * &lt;/blockquote&gt;&lt;/pre&gt;&lt;/p&gt;<a name="line.1731"></a>
-<span class="sourceLineNo">1732</span>   * <a name="line.1732"></a>
-<span class="sourceLineNo">1733</span>   * &lt;p&gt; The script file is distributed through {@link DistributedCache} <a name="line.1733"></a>
-<span class="sourceLineNo">1734</span>   * APIs. The script file needs to be symlinked &lt;/p&gt;<a name="line.1734"></a>
-<span class="sourceLineNo">1735</span>   * <a name="line.1735"></a>
-<span class="sourceLineNo">1736</span>   * &lt;p&gt;Here is an example on how to submit a script <a name="line.1736"></a>
-<span class="sourceLineNo">1737</span>   * &lt;p&gt;&lt;blockquote&gt;&lt;pre&gt;<a name="line.1737"></a>
-<span class="sourceLineNo">1738</span>   * job.setReduceDebugScript("./myscript");<a name="line.1738"></a>
-<span class="sourceLineNo">1739</span>   * DistributedCache.createSymlink(job);<a name="line.1739"></a>
-<span class="sourceLineNo">1740</span>   * DistributedCache.addCacheFile("/debug/scripts/myscript#myscript");<a name="line.1740"></a>
-<span class="sourceLineNo">1741</span>   * &lt;/pre&gt;&lt;/blockquote&gt;&lt;/p&gt;<a name="line.1741"></a>
-<span class="sourceLineNo">1742</span>   * <a name="line.1742"></a>
-<span class="sourceLineNo">1743</span>   * @param rDbgScript the script name<a name="line.1743"></a>
-<span class="sourceLineNo">1744</span>   */<a name="line.1744"></a>
-<span class="sourceLineNo">1745</span>  public void  setReduceDebugScript(String rDbgScript) {<a name="line.1745"></a>
-<span class="sourceLineNo">1746</span>    set(JobContext.REDUCE_DEBUG_SCRIPT, rDbgScript);<a name="line.1746"></a>
-<span class="sourceLineNo">1747</span>  }<a name="line.1747"></a>
-<span class="sourceLineNo">1748</span>  <a name="line.1748"></a>
-<span class="sourceLineNo">1749</span>  /**<a name="line.1749"></a>
-<span class="sourceLineNo">1750</span>   * Get the reduce task's debug Script<a name="line.1750"></a>
-<span class="sourceLineNo">1751</span>   * <a name="line.1751"></a>
-<span class="sourceLineNo">1752</span>   * @return the debug script for the mapred job for failed reduce tasks.<a name="line.1752"></a>
-<span class="sourceLineNo">1753</span>   * @see #setReduceDebugScript(String)<a name="line.1753"></a>
-<span class="sourceLineNo">1754</span>   */<a name="line.1754"></a>
-<span class="sourceLineNo">1755</span>  public String getReduceDebugScript() {<a name="line.1755"></a>
-<span class="sourceLineNo">1756</span>    return get(JobContext.REDUCE_DEBUG_SCRIPT);<a name="line.1756"></a>
-<span class="sourceLineNo">1757</span>  }<a name="line.1757"></a>
-<span class="sourceLineNo">1758</span><a name="line.1758"></a>
-<span class="sourceLineNo">1759</span>  /**<a name="line.1759"></a>
-<span class="sourceLineNo">1760</span>   * Get the uri to be invoked in-order to send a notification after the job <a name="line.1760"></a>
-<span class="sourceLineNo">1761</span>   * has completed (success/failure). <a name="line.1761"></a>
-<span class="sourceLineNo">1762</span>   * <a name="line.1762"></a>
-<span class="sourceLineNo">1763</span>   * @return the job end notification uri, &lt;code&gt;null&lt;/code&gt; if it hasn't<a name="line.1763"></a>
-<span class="sourceLineNo">1764</span>   *         been set.<a name="line.1764"></a>
-<span class="sourceLineNo">1765</span>   * @see #setJobEndNotificationURI(String)<a name="line.1765"></a>
-<span class="sourceLineNo">1766</span>   */<a name="line.1766"></a>
-<span class="sourceLineNo">1767</span>  public String getJobEndNotificationURI() {<a name="line.1767"></a>
-<span class="sourceLineNo">1768</span>    return get(JobContext.MR_JOB_END_NOTIFICATION_URL);<a name="line.1768"></a>
-<span class="sourceLineNo">1769</span>  }<a name="line.1769"></a>
-<span class="sourceLineNo">1770</span><a name="line.1770"></a>
-<span class="sourceLineNo">1771</span>  /**<a name="line.1771"></a>
-<span class="sourceLineNo">1772</span>   * Set the uri to be invoked in-order to send a notification after the job<a name="line.1772"></a>
-<span class="sourceLineNo">1773</span>   * has completed (success/failure).<a name="line.1773"></a>
-<span class="sourceLineNo">1774</span>   * <a name="line.1774"></a>
-<span class="sourceLineNo">1775</span>   * &lt;p&gt;The uri can contain 2 special parameters: &lt;tt&gt;$jobId&lt;/tt&gt; and <a name="line.1775"></a>
-<span class="sourceLineNo">1776</span>   * &lt;tt&gt;$jobStatus&lt;/tt&gt;. Those, if present, are replaced by the job's <a name="line.1776"></a>
-<span class="sourceLineNo">1777</span>   * identifier and completion-status respectively.&lt;/p&gt;<a name="line.1777"></a>
-<span class="sourceLineNo">1778</span>   * <a name="line.1778"></a>
-<span class="sourceLineNo">1779</span>   * &lt;p&gt;This is typically used by application-writers to implement chaining of <a name="line.1779"></a>
-<span class="sourceLineNo">1780</span>   * Map-Reduce jobs in an &lt;i&gt;asynchronous manner&lt;/i&gt;.&lt;/p&gt;<a name="line.1780"></a>
-<span class="sourceLineNo">1781</span>   * <a name="line.1781"></a>
-<span class="sourceLineNo">1782</span>   * @param uri the job end notification uri<a name="line.1782"></a>
-<span class="sourceLineNo">1783</span>   * @see JobStatus<a name="line.1783"></a>
-<span class="sourceLineNo">1784</span>   * @see &lt;a href="{@docRoot}/org/apache/hadoop/mapred/JobClient.html#<a name="line.1784"></a>
-<span class="sourceLineNo">1785</span>   *       JobCompletionAndChaining"&gt;Job Completion and Chaining&lt;/a&gt;<a name="line.1785"></a>
-<span class="sourceLineNo">1786</span>   */<a name="line.1786"></a>
-<span class="sourceLineNo">1787</span>  public void setJobEndNotificationURI(String uri) {<a name="line.1787"></a>
-<span class="sourceLineNo">1788</span>    set(JobContext.MR_JOB_END_NOTIFICATION_URL, uri);<a name="line.1788"></a>
-<span class="sourceLineNo">1789</span>  }<a name="line.1789"></a>
-<span class="sourceLineNo">1790</span><a name="line.1790"></a>
-<span class="sourceLineNo">1791</span>  /**<a name="line.1791"></a>
-<span class="sourceLineNo">1792</span>   * Get job-specific shared directory for use as scratch space<a name="line.1792"></a>
-<span class="sourceLineNo">1793</span>   * <a name="line.1793"></a>
-<span class="sourceLineNo">1794</span>   * &lt;p&gt;<a name="line.1794"></a>
-<span class="sourceLineNo">1795</span>   * When a job starts, a shared directory is created at location<a name="line.1795"></a>
-<span class="sourceLineNo">1796</span>   * &lt;code&gt;<a name="line.1796"></a>
-<span class="sourceLineNo">1797</span>   * ${mapreduce.cluster.local.dir}/taskTracker/$user/jobcache/$jobid/work/ &lt;/code&gt;.<a name="line.1797"></a>
-<span class="sourceLineNo">1798</span>   * This directory is exposed to the users through <a name="line.1798"></a>
-<span class="sourceLineNo">1799</span>   * &lt;code&gt;mapreduce.job.local.dir &lt;/code&gt;.<a name="line.1799"></a>
-<span class="sourceLineNo">1800</span>   * So, the tasks can use this space <a name="line.1800"></a>
-<span class="sourceLineNo">1801</span>   * as scratch space and share files among them. &lt;/p&gt;<a name="line.1801"></a>
-<span class="sourceLineNo">1802</span>   * This value is available as System property also.<a name="line.1802"></a>
-<span class="sourceLineNo">1803</span>   * <a name="line.1803"></a>
-<span class="sourceLineNo">1804</span>   * @return The localized job specific shared directory<a name="line.1804"></a>
-<span class="sourceLineNo">1805</span>   */<a name="line.1805"></a>
-<span class="sourceLineNo">1806</span>  public String getJobLocalDir() {<a name="line.1806"></a>
-<span class="sourceLineNo">1807</span>    return get(JobContext.JOB_LOCAL_DIR);<a name="line.1807"></a>
-<span class="sourceLineNo">1808</span>  }<a name="line.1808"></a>
-<span class="sourceLineNo">1809</span><a name="line.1809"></a>
-<span class="sourceLineNo">1810</span>  /**<a name="line.1810"></a>
-<span class="sourceLineNo">1811</span>   * Get memory required to run a map task of the job, in MB.<a name="line.1811"></a>
-<span class="sourceLineNo">1812</span>   * <a name="line.1812"></a>
-<span class="sourceLineNo">1813</span>   * If a value is specified in the configuration, it is returned.<a name="line.1813"></a>
-<span class="sourceLineNo">1814</span>   * Else, it returns {@link JobContext#DEFAULT_MAP_MEMORY_MB}.<a name="line.1814"></a>
-<span class="sourceLineNo">1815</span>   * &lt;p/&gt;<a name="line.1815"></a>
-<span class="sourceLineNo">1816</span>   * For backward compatibility, if the job configuration sets the<a name="line.1816"></a>
-<span class="sourceLineNo">1817</span>   * key {@link #MAPRED_TASK_MAXVMEM_PROPERTY} to a value different<a name="line.1817"></a>
-<span class="sourceLineNo">1818</span>   * from {@link #DISABLED_MEMORY_LIMIT}, that value will be used<a name="line.1818"></a>
-<span class="sourceLineNo">1819</span>   * after converting it from bytes to MB.<a name="line.1819"></a>
-<span class="sourceLineNo">1820</span>   * @return memory required to run a map task of the job, in MB,<a name="line.1820"></a>
-<span class="sourceLineNo">1821</span>   */<a name="line.1821"></a>
-<span class="sourceLineNo">1822</span>  public long getMemoryForMapTask() {<a name="line.1822"></a>
-<span class="sourceLineNo">1823</span>    long value = getDeprecatedMemoryValue();<a name="line.1823"></a>
-<span class="sourceLineNo">1824</span>    if (value &lt; 0) {<a name="line.1824"></a>
-<span class="sourceLineNo">1825</span>      return getLong(JobConf.MAPRED_JOB_MAP_MEMORY_MB_PROPERTY,<a name="line.1825"></a>
-<span class="sourceLineNo">1826</span>          JobContext.DEFAULT_MAP_MEMORY_MB);<a name="line.1826"></a>
-<span class="sourceLineNo">1827</span>    }<a name="line.1827"></a>
-<span class="sourceLineNo">1828</span>    return value;<a name="line.1828"></a>
-<span class="sourceLineNo">1829</span>  }<a name="line.1829"></a>
-<span class="sourceLineNo">1830</span><a name="line.1830"></a>
-<span class="sourceLineNo">1831</span>  public void setMemoryForMapTask(long mem) {<a name="line.1831"></a>
-<span class="sourceLineNo">1832</span>    setLong(JobConf.MAPREDUCE_JOB_MAP_MEMORY_MB_PROPERTY, mem);<a name="line.1832"></a>
-<span class="sourceLineNo">1833</span>    // In case that M/R 1.x applications use the old property name<a name="line.1833"></a>
-<span class="sourceLineNo">1834</span>    setLong(JobConf.MAPRED_JOB_MAP_MEMORY_MB_PROPERTY, mem);<a name="line.1834"></a>
-<span class="sourceLineNo">1835</span>  }<a name="line.1835"></a>
-<span class="sourceLineNo">1836</span><a name="line.1836"></a>
-<span class="sourceLineNo">1837</span>  /**<a name="line.1837"></a>
-<span class="sourceLineNo">1838</span>   * Get memory required to run a reduce task of the job, in MB.<a name="line.1838"></a>
-<span class="sourceLineNo">1839</span>   * <a name="line.1839"></a>
-<span class="sourceLineNo">1840</span>   * If a value is specified in the configuration, it is returned.<a name="line.1840"></a>
-<span class="sourceLineNo">1841</span>   * Else, it returns {@link JobContext#DEFAULT_REDUCE_MEMORY_MB}.<a name="line.1841"></a>
-<span class="sourceLineNo">1842</span>   * &lt;p/&gt;<a name="line.1842"></a>
-<span class="sourceLineNo">1843</span>   * For backward compatibility, if the job configuration sets the<a name="line.1843"></a>
-<span class="sourceLineNo">1844</span>   * key {@link #MAPRED_TASK_MAXVMEM_PROPERTY} to a value different<a name="line.1844"></a>
-<span class="sourceLineNo">1845</span>   * from {@link #DISABLED_MEMORY_LIMIT}, that value will be used<a name="line.1845"></a>
-<span class="sourceLineNo">1846</span>   * after converting it from bytes to MB.<a name="line.1846"></a>
-<span class="sourceLineNo">1847</span>   * @return memory required to run a reduce task of the job, in MB.<a name="line.1847"></a>
-<span class="sourceLineNo">1848</span>   */<a name="line.1848"></a>
-<span class="sourceLineNo">1849</span>  public long getMemoryForReduceTask() {<a name="line.1849"></a>
-<span class="sourceLineNo">1850</span>    long value = getDeprecatedMemoryValue();<a name="line.1850"></a>
-<span class="sourceLineNo">1851</span>    if (value &lt; 0) {<a name="line.1851"></a>
-<span class="sourceLineNo">1852</span>      return getLong(JobConf.MAPRED_JOB_REDUCE_MEMORY_MB_PROPERTY,<a name="line.1852"></a>
-<span class="sourceLineNo">1853</span>          JobContext.DEFAULT_REDUCE_MEMORY_MB);<a name="line.1853"></a>
-<span class="sourceLineNo">1854</span>    }<a name="line.1854"></a>
-<span class="sourceLineNo">1855</span>    return value;<a name="line.1855"></a>
-<span class="sourceLineNo">1856</span>  }<a name="line.1856"></a>
-<span class="sourceLineNo">1857</span>  <a name="line.1857"></a>
-<span class="sourceLineNo">1858</span>  // Return the value set to the key MAPRED_TASK_MAXVMEM_PROPERTY,<a name="line.1858"></a>
-<span class="sourceLineNo">1859</span>  // converted into MBs.<a name="line.1859"></a>
-<span class="sourceLineNo">1860</span>  // Returns DISABLED_MEMORY_LIMIT if unset, or set to a negative<a name="line.1860"></a>
-<span class="sourceLineNo">1861</span>  // value.<a name="line.1861"></a>
-<span class="sourceLineNo">1862</span>  private long getDeprecatedMemoryValue() {<a name="line.1862"></a>
-<span class="sourceLineNo">1863</span>    long oldValue = getLong(MAPRED_TASK_MAXVMEM_PROPERTY, <a name="line.1863"></a>
-<span class="sourceLineNo">1864</span>        DISABLED_MEMORY_LIMIT);<a name="line.1864"></a>
-<span class="sourceLineNo">1865</span>    if (oldValue &gt; 0) {<a name="line.1865"></a>
-<span class="sourceLineNo">1866</span>      oldValue /= (1024*1024);<a name="line.1866"></a>
-<span class="sourceLineNo">1867</span>    }<a name="line.1867"></a>
-<span class="sourceLineNo">1868</span>    return oldValue;<a name="line.1868"></a>
-<span class="sourceLineNo">1869</span>  }<a name="line.1869"></a>
-<span class="sourceLineNo">1870</span><a name="line.1870"></a>
-<span class="sourceLineNo">1871</span>  public void setMemoryForReduceTask(long mem) {<a name="line.1871"></a>
-<span class="sourceLineNo">1872</span>    setLong(JobConf.MAPREDUCE_JOB_REDUCE_MEMORY_MB_PROPERTY, mem);<a name="line.1872"></a>
-<span class="sourceLineNo">1873</span>    // In case that M/R 1.x applications use the old property name<a name="line.1873"></a>
-<span class="sourceLineNo">1874</span>    setLong(JobConf.MAPRED_JOB_REDUCE_MEMORY_MB_PROPERTY, mem);<a name="line.1874"></a>
-<span class="sourceLineNo">1875</span>  }<a name="line.1875"></a>
-<span class="sourceLineNo">1876</span><a name="line.1876"></a>
-<span class="sourceLineNo">1877</span>  /**<a name="line.1877"></a>
-<span class="sourceLineNo">1878</span>   * Return the name of the queue to which this job is submitted.<a name="line.1878"></a>
-<span class="sourceLineNo">1879</span>   * Defaults to 'default'.<a name="line.1879"></a>
-<span class="sourceLineNo">1880</span>   * <a name="line.1880"></a>
-<span class="sourceLineNo">1881</span>   * @return name of the queue<a name="line.1881"></a>
-<span class="sourceLineNo">1882</span>   */<a name="line.1882"></a>
-<span class="sourceLineNo">1883</span>  public String getQueueName() {<a name="line.1883"></a>
-<span class="sourceLineNo">1884</span>    return get(JobContext.QUEUE_NAME, DEFAULT_QUEUE_NAME);<a name="line.1884"></a>
-<span class="sourceLineNo">1885</span>  }<a name="line.1885"></a>
-<span class="sourceLineNo">1886</span>  <a name="line.1886"></a>
-<span class="sourceLineNo">1887</span>  /**<a name="line.1887"></a>
-<span class="sourceLineNo">1888</span>   * Set the name of the queue to which this job should be submitted.<a name="line.1888"></a>
-<span class="sourceLineNo">1889</span>   * <a name="line.1889"></a>
-<span class="sourceLineNo">1890</span>   * @param queueName Name of the queue<a name="line.1890"></a>
-<span class="sourceLineNo">1891</span>   */<a name="line.1891"></a>
-<span class="sourceLineNo">1892</span>  public void setQueueName(String queueName) {<a name="line.1892"></a>
-<span class="sourceLineNo">1893</span>    set(JobContext.QUEUE_NAME, queueName);<a name="line.1893"></a>
-<span class="sourceLineNo">1894</span>  }<a name="line.1894"></a>
-<span class="sourceLineNo">1895</span>  <a name="line.1895"></a>
-<span class="sourceLineNo">1896</span>  /**<a name="line.1896"></a>
-<span class="sourceLineNo">1897</span>   * Normalize the negative values in configuration<a name="line.1897"></a>
-<span class="sourceLineNo">1898</span>   * <a name="line.1898"></a>
-<span class="sourceLineNo">1899</span>   * @param val<a name="line.1899"></a>
-<span class="sourceLineNo">1900</span>   * @return normalized value<a name="line.1900"></a>
-<span class="sourceLineNo">1901</span>   */<a name="line.1901"></a>
-<span class="sourceLineNo">1902</span>  public static long normalizeMemoryConfigValue(long val) {<a name="line.1902"></a>
-<span class="sourceLineNo">1903</span>    if (val &lt; 0) {<a name="line.1903"></a>
-<span class="sourceLineNo">1904</span>      val = DISABLED_MEMORY_LIMIT;<a name="line.1904"></a>
-<span class="sourceLineNo">1905</span>    }<a name="line.1905"></a>
-<span class="sourceLineNo">1906</span>    return val;<a name="line.1906"></a>
-<span class="sourceLineNo">1907</span>  }<a name="line.1907"></a>
-<span class="sourceLineNo">1908</span><a name="line.1908"></a>
-<span class="sourceLineNo">1909</span>  /** <a name="line.1909"></a>
-<span class="sourceLineNo">1910</span>   * Find a jar that contains a class of the same name, if any.<a name="line.1910"></a>
-<span class="sourceLineNo">1911</span>   * It will return a jar file, even if that is not the first thing<a name="line.1911"></a>
-<span class="sourceLineNo">1912</span>   * on the class path that has a class with the same name.<a name="line.1912"></a>
-<span class="sourceLineNo">1913</span>   * <a name="line.1913"></a>
-<span class="sourceLineNo">1914</span>   * @param my_class the class to find.<a name="line.1914"></a>
-<span class="sourceLineNo">1915</span>   * @return a jar file that contains the class, or null.<a name="line.1915"></a>
-<span class="sourceLineNo">1916</span>   * @throws IOException<a name="line.1916"></a>
-<span class="sourceLineNo">1917</span>   */<a name="line.1917"></a>
-<span class="sourceLineNo">1918</span>  public static String findContainingJar(Class my_class) {<a name="line.1918"></a>
-<span class="sourceLineNo">1919</span>    return ClassUtil.findContainingJar(my_class);<a name="line.1919"></a>
-<span class="sourceLineNo">1920</span>  }<a name="line.1920"></a>
-<span class="sourceLineNo">1921</span><a name="line.1921"></a>
-<span class="sourceLineNo">1922</span>  /**<a name="line.1922"></a>
-<span class="sourceLineNo">1923</span>   * Get the memory required to run a task of this job, in bytes. See<a name="line.1923"></a>
-<span class="sourceLineNo">1924</span>   * {@link #MAPRED_TASK_MAXVMEM_PROPERTY}<a name="line.1924"></a>
-<span class="sourceLineNo">1925</span>   * &lt;p/&gt;<a name="line.1925"></a>
-<span class="sourceLineNo">1926</span>   * This method is deprecated. Now, different memory limits can be<a name="line.1926"></a>
-<span class="sourceLineNo">1927</span>   * set for map and reduce tasks of a job, in MB. <a name="line.1927"></a>
-<span class="sourceLineNo">1928</span>   * &lt;p/&gt;<a name="line.1928"></a>
-<span class="sourceLineNo">1929</span>   * For backward compatibility, if the job configuration sets the<a name="line.1929"></a>
-<span class="sourceLineNo">1930</span>   * key {@link #MAPRED_TASK_MAXVMEM_PROPERTY}, that value is returned. <a name="line.1930"></a>
-<span class="sourceLineNo">1931</span>   * Otherwise, this method will return the larger of the values returned by <a name="line.1931"></a>
-<span class="sourceLineNo">1932</span>   * {@link #getMemoryForMapTask()} and {@link #getMemoryForReduceTask()}<a name="line.1932"></a>
-<span class="sourceLineNo">1933</span>   * after converting them into bytes.<a name="line.1933"></a>
-<span class="sourceLineNo">1934</span>   *<a name="line.1934"></a>
-<span class="sourceLineNo">1935</span>   * @return Memory required to run a task of this job, in bytes.<a name="line.1935"></a>
-<span class="sourceLineNo">1936</span>   * @see #setMaxVirtualMemoryForTask(long)<a name="line.1936"></a>
-<span class="sourceLineNo">1937</span>   * @deprecated Use {@link #getMemoryForMapTask()} and<a name="line.1937"></a>
-<span class="sourceLineNo">1938</span>   *             {@link #getMemoryForReduceTask()}<a name="line.1938"></a>
-<span class="sourceLineNo">1939</span>   */<a name="line.1939"></a>
-<span class="sourceLineNo">1940</span>  @Deprecated<a name="line.1940"></a>
-<span class="sourceLineNo">1941</span>  public long getMaxVirtualMemoryForTask() {<a name="line.1941"></a>
-<span class="sourceLineNo">1942</span>    LOG.warn(<a name="line.1942"></a>
-<span class="sourceLineNo">1943</span>      "getMaxVirtualMemoryForTask() is deprecated. " +<a name="line.1943"></a>
-<span class="sourceLineNo">1944</span>      "Instead use getMemoryForMapTask() and getMemoryForReduceTask()");<a name="line.1944"></a>
-<span class="sourceLineNo">1945</span><a name="line.1945"></a>
-<span class="sourceLineNo">1946</span>    long value = getLong(MAPRED_TASK_MAXVMEM_PROPERTY,<a name="line.1946"></a>
-<span class="sourceLineNo">1947</span>        Math.max(getMemoryForMapTask(), getMemoryForReduceTask()) * 1024 * 1024);<a name="line.1947"></a>
-<span class="sourceLineNo">1948</span>    return value;<a name="line.1948"></a>
-<span class="sourceLineNo">1949</span>  }<a name="line.1949"></a>
-<span class="sourceLineNo">1950</span><a name="line.1950"></a>
-<span class="sourceLineNo">1951</span>  /**<a name="line.1951"></a>
-<span class="sourceLineNo">1952</span>   * Set the maximum amount of memory any task of this job can use. See<a name="line.1952"></a>
-<span class="sourceLineNo">1953</span>   * {@link #MAPRED_TASK_MAXVMEM_PROPERTY}<a name="line.1953"></a>
-<span class="sourceLineNo">1954</span>   * &lt;p/&gt;<a name="line.1954"></a>
-<span class="sourceLineNo">1955</span>   * mapred.task.maxvmem is split into<a name="line.1955"></a>
-<span class="sourceLineNo">1956</span>   * mapreduce.map.memory.mb<a name="line.1956"></a>
-<span class="sourceLineNo">1957</span>   * and mapreduce.map.memory.mb,mapred<a name="line.1957"></a>
-<span class="sourceLineNo">1958</span>   * each of the new key are set<a name="line.1958"></a>
-<span class="sourceLineNo">1959</span>   * as mapred.task.maxvmem / 1024<a name="line.1959"></a>
-<span class="sourceLineNo">1960</span>   * as new values are in MB<a name="line.1960"></a>
-<span class="sourceLineNo">1961</span>   *<a name="line.1961"></a>
-<span class="sourceLineNo">1962</span>   * @param vmem Maximum amount of virtual memory in bytes any task of this job<a name="line.1962"></a>
-<span class="sourceLineNo">1963</span>   *             can use.<a name="line.1963"></a>
-<span class="sourceLineNo">1964</span>   * @see #getMaxVirtualMemoryForTask()<a name="line.1964"></a>
-<span class="sourceLineNo">1965</span>   * @deprecated<a name="line.1965"></a>
-<span class="sourceLineNo">1966</span>   *  Use {@link #setMemoryForMapTask(long mem)}  and<a name="line.1966"></a>
-<span class="sourceLineNo">1967</span>   *  Use {@link #setMemoryForReduceTask(long mem)}<a name="line.1967"></a>
-<span class="sourceLineNo">1968</span>   */<a name="line.1968"></a>
-<span class="sourceLineNo">1969</span>  @Deprecated<a name="line.1969"></a>
-<span class="sourceLineNo">1970</span>  public void setMaxVirtualMemoryForTask(long vmem) {<a name="line.1970"></a>
-<span class="sourceLineNo">1971</span>    LOG.warn("setMaxVirtualMemoryForTask() is deprecated."+<a name="line.1971"></a>
-<span class="sourceLineNo">1972</span>      "Instead use setMemoryForMapTask() and setMemoryForReduceTask()");<a name="line.1972"></a>
-<span class="sourceLineNo">1973</span>    if (vmem &lt; 0) {<a name="line.1973"></a>
-<span class="sourceLineNo">1974</span>      throw new IllegalArgumentException("Task memory allocation may not be &lt; 0");<a name="line.1974"></a>
-<span class="sourceLineNo">1975</span>    }<a name="line.1975"></a>
-<span class="sourceLineNo">1976</span><a name="line.1976"></a>
-<span class="sourceLineNo">1977</span>    if(get(JobConf.MAPRED_TASK_MAXVMEM_PROPERTY) == null) {<a name="line.1977"></a>
-<span class="sourceLineNo">1978</span>      setMemoryForMapTask(vmem / (1024 * 1024)); //Changing bytes to mb<a name="line.1978"></a>
-<span class="sourceLineNo">1979</span>      setMemoryForReduceTask(vmem / (1024 * 1024));//Changing bytes to mb<a name="line.1979"></a>
-<span class="sourceLineNo">1980</span>    }else{<a name="line.1980"></a>
-<span class="sourceLineNo">1981</span>      this.setLong(JobConf.MAPRED_TASK_MAXVMEM_PROPERTY,vmem);<a name="line.1981"></a>
-<span class="sourceLineNo">1982</span>    }<a name="line.1982"></a>
-<span class="sourceLineNo">1983</span>  }<a name="line.1983"></a>
-<span class="sourceLineNo">1984</span><a name="line.1984"></a>
-<span class="sourceLineNo">1985</span>  /**<a name="line.1985"></a>
-<span class="sourceLineNo">1986</span>   * @deprecated this variable is deprecated and nolonger in use.<a name="line.1986"></a>
-<span class="sourceLineNo">1987</span>   */<a name="line.1987"></a>
-<span class="sourceLineNo">1988</span>  @Deprecated<a name="line.1988"></a>
-<span class="sourceLineNo">1989</span>  public long getMaxPhysicalMemoryForTask() {<a name="line.1989"></a>
-<span class="sourceLineNo">1990</span>    LOG.warn("The API getMaxPhysicalMemoryForTask() is deprecated."<a name="line.1990"></a>
-<span class="sourceLineNo">1991</span>              + " Refer to the APIs getMemoryForMapTask() and"<a name="line.1991"></a>
-<span class="sourceLineNo">1992</span>              + " getMemoryForReduceTask() for details.");<a name="line.1992"></a>
-<span class="sourceLineNo">1993</span>    return -1;<a name="line.1993"></a>
-<span class="sourceLineNo">1994</span>  }<a name="line.1994"></a>
-<span class="sourceLineNo">1995</span><a name="line.1995"></a>
-<span class="sourceLineNo">1996</span>  /*<a name="line.1996"></a>
-<span class="sourceLineNo">1997</span>   * @deprecated this<a name="line.1997"></a>
-<span class="sourceLineNo">1998</span>   */<a name="line.1998"></a>
-<span class="sourceLineNo">1999</span>  @Deprecated<a name="line.1999"></a>
-<span class="sourceLineNo">2000</span>  public void setMaxPhysicalMemoryForTask(long mem) {<a name="line.2000"></a>
-<span class="sourceLineNo">2001</span>    LOG.warn("The API setMaxPhysicalMemoryForTask() is deprecated."<a name="line.2001"></a>
-<span class="sourceLineNo">2002</span>        + " The value set is ignored. Refer to "<a name="line.2002"></a>
-<span class="sourceLineNo">2003</span>        + " setMemoryForMapTask() and setMemoryForReduceTask() for details.");<a name="line.2003"></a>
-<span class="sourceLineNo">2004</span>  }<a name="line.2004"></a>
-<span class="sourceLineNo">2005</span><a name="line.2005"></a>
-<span class="sourceLineNo">2006</span>  static String deprecatedString(String key) {<a name="line.2006"></a>
-<span class="sourceLineNo">2007</span>    return "The variable " + key + " is no longer used.";<a name="line.2007"></a>
-<span class="sourceLineNo">2008</span>  }<a name="line.2008"></a>
-<span class="sourceLineNo">2009</span><a name="line.2009"></a>
-<span class="sourceLineNo">2010</span>  private void checkAndWarnDeprecation() {<a name="line.2010"></a>
-<span class="sourceLineNo">2011</span>    if(get(JobConf.MAPRED_TASK_MAXVMEM_PROPERTY) != null) {<a name="line.2011"></a>
-<span class="sourceLineNo">2012</span>      LOG.warn(JobConf.deprecatedString(JobConf.MAPRED_TASK_MAXVMEM_PROPERTY)<a name="line.2012"></a>
-<span class="sourceLineNo">2013</span>                + " Instead use " + JobConf.MAPREDUCE_JOB_MAP_MEMORY_MB_PROPERTY<a name="line.2013"></a>
-<span class="sourceLineNo">2014</span>                + " and " + JobConf.MAPREDUCE_JOB_REDUCE_MEMORY_MB_PROPERTY);<a name="line.2014"></a>
-<span class="sourceLineNo">2015</span>    }<a name="line.2015"></a>
-<span class="sourceLineNo">2016</span>    if(get(JobConf.MAPRED_TASK_ULIMIT) != null ) {<a name="line.2016"></a>
-<span class="sourceLineNo">2017</span>      LOG.warn(JobConf.deprecatedString(JobConf.MAPRED_TASK_ULIMIT));<a name="line.2017"></a>
-<span class="sourceLineNo">2018</span>    }<a name="line.2018"></a>
-<span class="sourceLineNo">2019</span>    if(get(JobConf.MAPRED_MAP_TASK_ULIMIT) != null ) {<a name="line.2019"></a>
-<span class="sourceLineNo">2020</span>      LOG.warn(JobConf.deprecatedString(JobConf.MAPRED_MAP_TASK_ULIMIT));<a name="line.2020"></a>
-<span class="sourceLineNo">2021</span>    }<a name="line.2021"></a>
-<span class="sourceLineNo">2022</span>    if(get(JobConf.MAPRED_REDUCE_TASK_ULIMIT) != null ) {<a name="line.2022"></a>
-<span class="sourceLineNo">2023</span>      LOG.warn(JobConf.deprecatedString(JobConf.MAPRED_REDUCE_TASK_ULIMIT));<a name="line.2023"></a>
-<span class="sourceLineNo">2024</span>    }<a name="line.2024"></a>
-<span class="sourceLineNo">2025</span>  }<a name="line.2025"></a>
-<span class="sourceLineNo">2026</span>  <a name="line.2026"></a>
-<span class="sourceLineNo">2027</span><a name="line.2027"></a>
-<span class="sourceLineNo">2028</span>}<a name="line.2028"></a>
-<span class="sourceLineNo">2029</span><a name="line.2029"></a>
+<span class="sourceLineNo">1646</span>        MRJobConfig.DEFAULT_TASK_PROFILE_PARAMS);<a name="line.1646"></a>
+<span class="sourceLineNo">1647</span>  }<a name="line.1647"></a>
+<span class="sourceLineNo">1648</span><a name="line.1648"></a>
+<span class="sourceLineNo">1649</span>  /**<a name="line.1649"></a>
+<span class="sourceLineNo">1650</span>   * Set the profiler configuration arguments. If the string contains a '%s' it<a name="line.1650"></a>
+<span class="sourceLineNo">1651</span>   * will be replaced with the name of the profiling output file when the task<a name="line.1651"></a>
+<span class="sourceLineNo">1652</span>   * runs.<a name="line.1652"></a>
+<span class="sourceLineNo">1653</span>   *<a name="line.1653"></a>
+<span class="sourceLineNo">1654</span>   * This value is passed to the task child JVM on the command line.<a name="line.1654"></a>
+<span class="sourceLineNo">1655</span>   *<a name="line.1655"></a>
+<span class="sourceLineNo">1656</span>   * @param value the configuration string<a name="line.1656"></a>
+<span class="sourceLineNo">1657</span>   */<a name="line.1657"></a>
+<span class="sourceLineNo">1658</span>  public void setProfileParams(String value) {<a name="line.1658"></a>
+<span class="sourceLineNo">1659</span>    set(JobContext.TASK_PROFILE_PARAMS, value);<a name="line.1659"></a>
+<span class="sourceLineNo">1660</span>  }<a name="line.1660"></a>
+<span class="sourceLineNo">1661</span><a name="line.1661"></a>
+<span class="sourceLineNo">1662</span>  /**<a name="line.1662"></a>
+<span class="sourceLineNo">1663</span>   * Get the range of maps or reduces to profile.<a name="line.1663"></a>
+<span class="sourceLineNo">1664</span>   * @param isMap is the task a map?<a name="line.1664"></a>
+<span class="sourceLineNo">1665</span>   * @return the task ranges<a name="line.1665"></a>
+<span class="sourceLineNo">1666</span>   */<a name="line.1666"></a>
+<span class="sourceLineNo">1667</span>  public IntegerRanges getProfileTaskRange(boolean isMap) {<a name="line.1667"></a>
+<span class="sourceLineNo">1668</span>    return getRange((isMap ? JobContext.NUM_MAP_PROFILES : <a name="line.1668"></a>
+<span class="sourceLineNo">1669</span>                       JobContext.NUM_REDUCE_PROFILES), "0-2");<a name="line.1669"></a>
+<span class="sourceLineNo">1670</span>  }<a name="line.1670"></a>
+<span class="sourceLineNo">1671</span><a name="line.1671"></a>
+<span class="sourceLineNo">1672</span>  /**<a name="line.1672"></a>
+<span class="sourceLineNo">1673</span>   * Set the ranges of maps or reduces to profile. setProfileEnabled(true) <a name="line.1673"></a>
+<span class="sourceLineNo">1674</span>   * must also be called.<a name="line.1674"></a>
+<span class="sourceLineNo">1675</span>   * @param newValue a set of integer ranges of the map ids<a name="line.1675"></a>
+<span class="sourceLineNo">1676</span>   */<a name="line.1676"></a>
+<span class="sourceLineNo">1677</span>  public void setProfileTaskRange(boolean isMap, String newValue) {<a name="line.1677"></a>
+<span class="sourceLineNo">1678</span>    // parse the value to make sure it is legal<a name="line.1678"></a>
+<span class="sourceLineNo">1679</span>      new Configuration.IntegerRanges(newValue);<a name="line.1679"></a>
+<span class="sourceLineNo">1680</span>    set((isMap ? JobContext.NUM_MAP_PROFILES : JobContext.NUM_REDUCE_PROFILES), <a name="line.1680"></a>
+<span class="sourceLineNo">1681</span>          newValue);<a name="line.1681"></a>
+<span class="sourceLineNo">1682</span>  }<a name="line.1682"></a>
+<span class="sourceLineNo">1683</span><a name="line.1683"></a>
+<span class="sourceLineNo">1684</span>  /**<a name="line.1684"></a>
+<span class="sourceLineNo">1685</span>   * Set the debug script to run when the map tasks fail.<a name="line.1685"></a>
+<span class="sourceLineNo">1686</span>   * <a name="line.1686"></a>
+<span class="sourceLineNo">1687</span>   * &lt;p&gt;The debug script can aid debugging of failed map tasks. The script is <a name="line.1687"></a>
+<span class="sourceLineNo">1688</span>   * given task's stdout, stderr, syslog, jobconf files as arguments.&lt;/p&gt;<a name="line.1688"></a>
+<span class="sourceLineNo">1689</span>   * <a name="line.1689"></a>
+<span class="sourceLineNo">1690</span>   * &lt;p&gt;The debug command, run on the node where the map failed, is:&lt;/p&gt;<a name="line.1690"></a>
+<span class="sourceLineNo">1691</span>   * &lt;p&gt;&lt;pre&gt;&lt;blockquote&gt; <a name="line.1691"></a>
+<span class="sourceLineNo">1692</span>   * $script $stdout $stderr $syslog $jobconf.<a name="line.1692"></a>
+<span class="sourceLineNo">1693</span>   * &lt;/blockquote&gt;&lt;/pre&gt;&lt;/p&gt;<a name="line.1693"></a>
+<span class="sourceLineNo">1694</span>   * <a name="line.1694"></a>
+<span class="sourceLineNo">1695</span>   * &lt;p&gt; The script file is distributed through {@link DistributedCache} <a name="line.1695"></a>
+<span class="sourceLineNo">1696</span>   * APIs. The script needs to be symlinked. &lt;/p&gt;<a name="line.1696"></a>
+<span class="sourceLineNo">1697</span>   * <a name="line.1697"></a>
+<span class="sourceLineNo">1698</span>   * &lt;p&gt;Here is an example on how to submit a script <a name="line.1698"></a>
+<span class="sourceLineNo">1699</span>   * &lt;p&gt;&lt;blockquote&gt;&lt;pre&gt;<a name="line.1699"></a>
+<span class="sourceLineNo">1700</span>   * job.setMapDebugScript("./myscript");<a name="line.1700"></a>
+<span class="sourceLineNo">1701</span>   * DistributedCache.createSymlink(job);<a name="line.1701"></a>
+<span class="sourceLineNo">1702</span>   * DistributedCache.addCacheFile("/debug/scripts/myscript#myscript");<a name="line.1702"></a>
+<span class="sourceLineNo">1703</span>   * &lt;/pre&gt;&lt;/blockquote&gt;&lt;/p&gt;<a name="line.1703"></a>
+<span class="sourceLineNo">1704</span>   * <a name="line.1704"></a>
+<span class="sourceLineNo">1705</span>   * @param mDbgScript the script name<a name="line.1705"></a>
+<span class="sourceLineNo">1706</span>   */<a name="line.1706"></a>
+<span class="sourceLineNo">1707</span>  public void  setMapDebugScript(String mDbgScript) {<a name="line.1707"></a>
+<span class="sourceLineNo">1708</span>    set(JobContext.MAP_DEBUG_SCRIPT, mDbgScript);<a name="line.1708"></a>
+<span class="sourceLineNo">1709</span>  }<a name="line.1709"></a>
+<span class="sourceLineNo">1710</span>  <a name="line.1710"></a>
+<span class="sourceLineNo">1711</span>  /**<a name="line.1711"></a>
+<span class="sourceLineNo">1712</span>   * Get the map task's debug script.<a name="line.1712"></a>
+<span class="sourceLineNo">1713</span>   * <a name="line.1713"></a>
+<span class="sourceLineNo">1714</span>   * @return the debug Script for the mapred job for failed map tasks.<a name="line.1714"></a>
+<span class="sourceLineNo">1715</span>   * @see #setMapDebugScript(String)<a name="line.1715"></a>
+<span class="sourceLineNo">1716</span>   */<a name="line.1716"></a>
+<span class="sourceLineNo">1717</span>  public String getMapDebugScript() {<a name="line.1717"></a>
+<span class="sourceLineNo">1718</span>    return get(JobContext.MAP_DEBUG_SCRIPT);<a name="line.1718"></a>
+<span class="sourceLineNo">1719</span>  }<a name="line.1719"></a>
+<span class="sourceLineNo">1720</span>  <a name="line.1720"></a>
+<span class="sourceLineNo">1721</span>  /**<a name="line.1721"></a>
+<span class="sourceLineNo">1722</span>   * Set the debug script to run when the reduce tasks fail.<a name="line.1722"></a>
+<span class="sourceLineNo">1723</span>   * <a name="line.1723"></a>
+<span class="sourceLineNo">1724</span>   * &lt;p&gt;The debug script can aid debugging of failed reduce tasks. The script<a name="line.1724"></a>
+<span class="sourceLineNo">1725</span>   * is given task's stdout, stderr, syslog, jobconf files as arguments.&lt;/p&gt;<a name="line.1725"></a>
+<span class="sourceLineNo">1726</span>   * <a name="line.1726"></a>
+<span class="sourceLineNo">1727</span>   * &lt;p&gt;The debug command, run on the node where the map failed, is:&lt;/p&gt;<a name="line.1727"></a>
+<span class="sourceLineNo">1728</span>   * &lt;p&gt;&lt;pre&gt;&lt;blockquote&gt; <a name="line.1728"></a>
+<span class="sourceLineNo">1729</span>   * $script $stdout $stderr $syslog $jobconf.<a name="line.1729"></a>
+<span class="sourceLineNo">1730</span>   * &lt;/blockquote&gt;&lt;/pre&gt;&lt;/p&gt;<a name="line.1730"></a>
+<span class="sourceLineNo">1731</span>   * <a name="line.1731"></a>
+<span class="sourceLineNo">1732</span>   * &lt;p&gt; The script file is distributed through {@link DistributedCache} <a name="line.1732"></a>
+<span class="sourceLineNo">1733</span>   * APIs. The script file needs to be symlinked &lt;/p&gt;<a name="line.1733"></a>
+<span class="sourceLineNo">1734</span>   * <a name="line.1734"></a>
+<span class="sourceLineNo">1735</span>   * &lt;p&gt;Here is an example on how to submit a script <a name="line.1735"></a>
+<span class="sourceLineNo">1736</span>   * &lt;p&gt;&lt;blockquote&gt;&lt;pre&gt;<a name="line.1736"></a>
+<span class="sourceLineNo">1737</span>   * job.setReduceDebugScript("./myscript");<a name="line.1737"></a>
+<span class="sourceLineNo">1738</span>   * DistributedCache.createSymlink(job);<a name="line.1738"></a>
+<span class="sourceLineNo">1739</span>   * DistributedCache.addCacheFile("/debug/scripts/myscript#myscript");<a name="line.1739"></a>
+<span class="sourceLineNo">1740</span>   * &lt;/pre&gt;&lt;/blockquote&gt;&lt;/p&gt;<a name="line.1740"></a>
+<span class="sourceLineNo">1741</span>   * <a name="line.1741"></a>
+<span class="sourceLineNo">1742</span>   * @param rDbgScript the script name<a name="line.1742"></a>
+<span class="sourceLineNo">1743</span>   */<a name="line.1743"></a>
+<span class="sourceLineNo">1744</span>  public void  setReduceDebugScript(String rDbgScript) {<a name="line.1744"></a>
+<span class="sourceLineNo">1745</span>    set(JobContext.REDUCE_DEBUG_SCRIPT, rDbgScript);<a name="line.1745"></a>
+<span class="sourceLineNo">1746</span>  }<a name="line.1746"></a>
+<span class="sourceLineNo">1747</span>  <a name="line.1747"></a>
+<span class="sourceLineNo">1748</span>  /**<a name="line.1748"></a>
+<span class="sourceLineNo">1749</span>   * Get the reduce task's debug Script<a name="line.1749"></a>
+<span class="sourceLineNo">1750</span>   * <a name="line.1750"></a>
+<span class="sourceLineNo">1751</span>   * @return the debug script for the mapred job for failed reduce tasks.<a name="line.1751"></a>
+<span class="sourceLineNo">1752</span>   * @see #setReduceDebugScript(String)<a name="line.1752"></a>
+<span class="sourceLineNo">1753</span>   */<a name="line.1753"></a>
+<span class="sourceLineNo">1754</span>  public String getReduceDebugScript() {<a name="line.1754"></a>
+<span class="sourceLineNo">1755</span>    return get(JobContext.REDUCE_DEBUG_SCRIPT);<a name="line.1755"></a>
+<span class="sourceLineNo">1756</span>  }<a name="line.1756"></a>
+<span class="sourceLineNo">1757</span><a name="line.1757"></a>
+<span class="sourceLineNo">1758</span>  /**<a name="line.1758"></a>
+<span class="sourceLineNo">1759</span>   * Get the uri to be invoked in-order to send a notification after the job <a name="line.1759"></a>
+<span class="sourceLineNo">1760</span>   * has completed (success/failure). <a name="line.1760"></a>
+<span class="sourceLineNo">1761</span>   * <a name="line.1761"></a>
+<span class="sourceLineNo">1762</span>   * @return the job end notification uri, &lt;code&gt;null&lt;/code&gt; if it hasn't<a name="line.1762"></a>
+<span class="sourceLineNo">1763</span>   *         been set.<a name="line.1763"></a>
+<span class="sourceLineNo">1764</span>   * @see #setJobEndNotificationURI(String)<a name="line.1764"></a>
+<span class="sourceLineNo">1765</span>   */<a name="line.1765"></a>
+<span class="sourceLineNo">1766</span>  public String getJobEndNotificationURI() {<a name="line.1766"></a>
+<span class="sourceLineNo">1767</span>    return get(JobContext.MR_JOB_END_NOTIFICATION_URL);<a name="line.1767"></a>
+<span class="sourceLineNo">1768</span>  }<a name="line.1768"></a>
+<span class="sourceLineNo">1769</span><a name="line.1769"></a>
+<span class="sourceLineNo">1770</span>  /**<a name="line.1770"></a>
+<span class="sourceLineNo">1771</span>   * Set the uri to be invoked in-order to send a notification after the job<a name="line.1771"></a>
+<span class="sourceLineNo">1772</span>   * has completed (success/failure).<a name="line.1772"></a>
+<span class="sourceLineNo">1773</span>   * <a name="line.1773"></a>
+<span class="sourceLineNo">1774</span>   * &lt;p&gt;The uri can contain 2 special parameters: &lt;tt&gt;$jobId&lt;/tt&gt; and <a name="line.1774"></a>
+<span class="sourceLineNo">1775</span>   * &lt;tt&gt;$jobStatus&lt;/tt&gt;. Those, if present, are replaced by the job's <a name="line.1775"></a>
+<span class="sourceLineNo">1776</span>   * identifier and completion-status respectively.&lt;/p&gt;<a name="line.1776"></a>
+<span class="sourceLineNo">1777</span>   * <a name="line.1777"></a>
+<span class="sourceLineNo">1778</span>   * &lt;p&gt;This is typically used by application-writers to implement chaining of <a name="line.1778"></a>
+<span class="sourceLineNo">1779</span>   * Map-Reduce jobs in an &lt;i&gt;asynchronous manner&lt;/i&gt;.&lt;/p&gt;<a name="line.1779"></a>
+<span class="sourceLineNo">1780</span>   * <a name="line.1780"></a>
+<span class="sourceLineNo">1781</span>   * @param uri the job end notification uri<a name="line.1781"></a>
+<span class="sourceLineNo">1782</span>   * @see JobStatus<a name="line.1782"></a>
+<span class="sourceLineNo">1783</span>   * @see &lt;a href="{@docRoot}/org/apache/hadoop/mapred/JobClient.html#<a name="line.1783"></a>
+<span class="sourceLineNo">1784</span>   *       JobCompletionAndChaining"&gt;Job Completion and Chaining&lt;/a&gt;<a name="line.1784"></a>
+<span class="sourceLineNo">1785</span>   */<a name="line.1785"></a>
+<span class="sourceLineNo">1786</span>  public void setJobEndNotificationURI(String uri) {<a name="line.1786"></a>
+<span class="sourceLineNo">1787</span>    set(JobContext.MR_JOB_END_NOTIFICATION_URL, uri);<a name="line.1787"></a>
+<span class="sourceLineNo">1788</span>  }<a name="line.1788"></a>
+<span class="sourceLineNo">1789</span><a name="line.1789"></a>
+<span class="sourceLineNo">1790</span>  /**<a name="line.1790"></a>
+<span class="sourceLineNo">1791</span>   * Get job-specific shared directory for use as scratch space<a name="line.1791"></a>
+<span class="sourceLineNo">1792</span>   * <a name="line.1792"></a>
+<span class="sourceLineNo">1793</span>   * &lt;p&gt;<a name="line.1793"></a>
+<span class="sourceLineNo">1794</span>   * When a job starts, a shared directory is created at location<a name="line.1794"></a>
+<span class="sourceLineNo">1795</span>   * &lt;code&gt;<a name="line.1795"></a>
+<span class="sourceLineNo">1796</span>   * ${mapreduce.cluster.local.dir}/taskTracker/$user/jobcache/$jobid/work/ &lt;/code&gt;.<a name="line.1796"></a>
+<span class="sourceLineNo">1797</span>   * This directory is exposed to the users through <a name="line.1797"></a>
+<span class="sourceLineNo">1798</span>   * &lt;code&gt;mapreduce.job.local.dir &lt;/code&gt;.<a name="line.1798"></a>
+<span class="sourceLineNo">1799</span>   * So, the tasks can use this space <a name="line.1799"></a>
+<span class="sourceLineNo">1800</span>   * as scratch space and share files among them. &lt;/p&gt;<a name="line.1800"></a>
+<span class="sourceLineNo">1801</span>   * This value is available as System property also.<a name="line.1801"></a>
+<span class="sourceLineNo">1802</span>   * <a name="line.1802"></a>
+<span class="sourceLineNo">1803</span>   * @return The localized job specific shared directory<a name="line.1803"></a>
+<span class="sourceLineNo">1804</span>   */<a name="line.1804"></a>
+<span class="sourceLineNo">1805</span>  public String getJobLocalDir() {<a name="line.1805"></a>
+<span class="sourceLineNo">1806</span>    return get(JobContext.JOB_LOCAL_DIR);<a name="line.1806"></a>
+<span class="sourceLineNo">1807</span>  }<a name="line.1807"></a>
+<span class="sourceLineNo">1808</span><a name="line.1808"></a>
+<span class="sourceLineNo">1809</span>  /**<a name="line.1809"></a>
+<span class="sourceLineNo">1810</span>   * Get memory required to run a map task of the job, in MB.<a name="line.1810"></a>
+<span class="sourceLineNo">1811</span>   * <a name="line.1811"></a>
+<span class="sourceLineNo">1812</span>   * If a value is specified in the configuration, it is returned.<a name="line.1812"></a>
+<span class="sourceLineNo">1813</span>   * Else, it returns {@link JobContext#DEFAULT_MAP_MEMORY_MB}.<a name="line.1813"></a>
+<span class="sourceLineNo">1814</span>   * &lt;p/&gt;<a name="line.1814"></a>
+<span class="sourceLineNo">1815</span>   * For backward compatibility, if the job configuration sets the<a name="line.1815"></a>
+<span class="sourceLineNo">1816</span>   * key {@link #MAPRED_TASK_MAXVMEM_PROPERTY} to a value different<a name="line.1816"></a>
+<span class="sourceLineNo">1817</span>   * from {@link #DISABLED_MEMORY_LIMIT}, that value will be used<a name="line.1817"></a>
+<span class="sourceLineNo">1818</span>   * after converting it from bytes to MB.<a name="line.1818"></a>
+<span class="sourceLineNo">1819</span>   * @return memory required to run a map task of the job, in MB,<a name="line.1819"></a>
+<span class="sourceLineNo">1820</span>   */<a name="line.1820"></a>
+<span class="sourceLineNo">1821</span>  public long getMemoryForMapTask() {<a name="line.1821"></a>
+<span class="sourceLineNo">1822</span>    long value = getDeprecatedMemoryValue();<a name="line.1822"></a>
+<span class="sourceLineNo">1823</span>    if (value &lt; 0) {<a name="line.1823"></a>
+<span class="sourceLineNo">1824</span>      return getLong(JobConf.MAPRED_JOB_MAP_MEMORY_MB_PROPERTY,<a name="line.1824"></a>
+<span class="sourceLineNo">1825</span>          JobContext.DEFAULT_MAP_MEMORY_MB);<a name="line.1825"></a>
+<span class="sourceLineNo">1826</span>    }<a name="line.1826"></a>
+<span class="sourceLineNo">1827</span>    return value;<a name="line.1827"></a>
+<span class="sourceLineNo">1828</span>  }<a name="line.1828"></a>
+<span class="sourceLineNo">1829</span><a name="line.1829"></a>
+<span class="sourceLineNo">1830</span>  public void setMemoryForMapTask(long mem) {<a name="line.1830"></a>
+<span class="sourceLineNo">1831</span>    setLong(JobConf.MAPREDUCE_JOB_MAP_MEMORY_MB_PROPERTY, mem);<a name="line.1831"></a>
+<span class="sourceLineNo">1832</span>    // In case that M/R 1.x applications use the old property name<a name="line.1832"></a>
+<span class="sourceLineNo">1833</span>    setLong(JobConf.MAPRED_JOB_MAP_MEMORY_MB_PROPERTY, mem);<a name="line.1833"></a>
+<span class="sourceLineNo">1834</span>  }<a name="line.1834"></a>
+<span class="sourceLineNo">1835</span><a name="line.1835"></a>
+<span class="sourceLineNo">1836</span>  /**<a name="line.1836"></a>
+<span class="sourceLineNo">1837</span>   * Get memory required to run a reduce task of the job, in MB.<a name="line.1837"></a>
+<span class="sourceLineNo">1838</span>   * <a name="line.1838"></a>
+<span class="sourceLineNo">1839</span>   * If a value is specified in the configuration, it is returned.<a name="line.1839"></a>
+<span class="sourceLineNo">1840</span>   * Else, it returns {@link JobContext#DEFAULT_REDUCE_MEMORY_MB}.<a name="line.1840"></a>
+<span class="sourceLineNo">1841</span>   * &lt;p/&gt;<a name="line.1841"></a>
+<span class="sourceLineNo">1842</span>   * For backward compatibility, if the job configuration sets the<a name="line.1842"></a>
+<span class="sourceLineNo">1843</span>   * key {@link #MAPRED_TASK_MAXVMEM_PROPERTY} to a value different<a name="line.1843"></a>
+<span class="sourceLineNo">1844</span>   * from {@link #DISABLED_MEMORY_LIMIT}, that value will be used<a name="line.1844"></a>
+<span class="sourceLineNo">1845</span>   * after converting it from bytes to MB.<a name="line.1845"></a>
+<span class="sourceLineNo">1846</span>   * @return memory required to run a reduce task of the job, in MB.<a name="line.1846"></a>
+<span class="sourceLineNo">1847</span>   */<a name="line.1847"></a>
+<span class="sourceLineNo">1848</span>  public long getMemoryForReduceTask() {<a name="line.1848"></a>
+<span class="sourceLineNo">1849</span>    long value = getDeprecatedMemoryValue();<a name="line.1849"></a>
+<span class="sourceLineNo">1850</span>    if (value &lt; 0) {<a name="line.1850"></a>
+<span class="sourceLineNo">1851</span>      return getLong(JobConf.MAPRED_JOB_REDUCE_MEMORY_MB_PROPERTY,<a name="line.1851"></a>
+<span class="sourceLineNo">1852</span>          JobContext.DEFAULT_REDUCE_MEMORY_MB);<a name="line.1852"></a>
+<span class="sourceLineNo">1853</span>    }<a name="line.1853"></a>
+<span class="sourceLineNo">1854</span>    return value;<a name="line.1854"></a>
+<span class="sourceLineNo">1855</span>  }<a name="line.1855"></a>
+<span class="sourceLineNo">1856</span>  <a name="line.1856"></a>
+<span class="sourceLineNo">1857</span>  // Return the value set to the key MAPRED_TASK_MAXVMEM_PROPERTY,<a name="line.1857"></a>
+<span class="sourceLineNo">1858</span>  // converted into MBs.<a name="line.1858"></a>
+<span class="sourceLineNo">1859</span>  // Returns DISABLED_MEMORY_LIMIT if unset, or set to a negative<a name="line.1859"></a>
+<span class="sourceLineNo">1860</span>  // value.<a name="line.1860"></a>
+<span class="sourceLineNo">1861</span>  private long getDeprecatedMemoryValue() {<a name="line.1861"></a>
+<span class="sourceLineNo">1862</span>    long oldValue = getLong(MAPRED_TASK_MAXVMEM_PROPERTY, <a name="line.1862"></a>
+<span class="sourceLineNo">1863</span>        DISABLED_MEMORY_LIMIT);<a name="line.1863"></a>
+<span class="sourceLineNo">1864</span>    if (oldValue &gt; 0) {<a name="line.1864"></a>
+<span class="sourceLineNo">1865</span>      oldValue /= (1024*1024);<a name="line.1865"></a>
+<span class="sourceLineNo">1866</span>    }<a name="line.1866"></a>
+<span class="sourceLineNo">1867</span>    return oldValue;<a name="line.1867"></a>
+<span class="sourceLineNo">1868</span>  }<a name="line.1868"></a>
+<span class="sourceLineNo">1869</span><a name="line.1869"></a>
+<span class="sourceLineNo">1870</span>  public void setMemoryForReduceTask(long mem) {<a name="line.1870"></a>
+<span class="sourceLineNo">1871</span>    setLong(JobConf.MAPREDUCE_JOB_REDUCE_MEMORY_MB_PROPERTY, mem);<a name="line.1871"></a>
+<span class="sourceLineNo">1872</span>    // In case that M/R 1.x applications use the old property name<a name="line.1872"></a>
+<span class="sourceLineNo">1873</span>    setLong(JobConf.MAPRED_JOB_REDUCE_MEMORY_MB_PROPERTY, mem);<a name="line.1873"></a>
+<span class="sourceLineNo">1874</span>  }<a name="line.1874"></a>
+<span class="sourceLineNo">1875</span><a name="line.1875"></a>
+<span class="sourceLineNo">1876</span>  /**<a name="line.1876"></a>
+<span class="sourceLineNo">1877</span>   * Return the name of the queue to which this job is submitted.<a name="line.1877"></a>
+<span class="sourceLineNo">1878</span>   * Defaults to 'default'.<a name="line.1878"></a>
+<span class="sourceLineNo">1879</span>   * <a name="line.1879"></a>
+<span class="sourceLineNo">1880</span>   * @return name of the queue<a name="line.1880"></a>
+<span class="sourceLineNo">1881</span>   */<a name="line.1881"></a>
+<span class="sourceLineNo">1882</span>  public String getQueueName() {<a name="line.1882"></a>
+<span class="sourceLineNo">1883</span>    return get(JobContext.QUEUE_NAME, DEFAULT_QUEUE_NAME);<a name="line.1883"></a>
+<span class="sourceLineNo">1884</span>  }<a name="line.1884"></a>
+<span class="sourceLineNo">1885</span>  <a name="line.1885"></a>
+<span class="sourceLineNo">1886</span>  /**<a name="line.1886"></a>
+<span class="sourceLineNo">1887</span>   * Set the name of the queue to which this job should be submitted.<a name="line.1887"></a>
+<span class="sourceLineNo">1888</span>   * <a name="line.1888"></a>
+<span class="sourceLineNo">1889</span>   * @param queueName Name of the queue<a name="line.1889"></a>
+<span class="sourceLineNo">1890</span>   */<a name="line.1890"></a>
+<span class="sourceLineNo">1891</span>  public void setQueueName(String queueName) {<a name="line.1891"></a>
+<span class="sourceLineNo">1892</span>    set(JobContext.QUEUE_NAME, queueName);<a name="line.1892"></a>
+<span class="sourceLineNo">1893</span>  }<a name="line.1893"></a>
+<span class="sourceLineNo">1894</span>  <a name="line.1894"></a>
+<span class="sourceLineNo">1895</span>  /**<a name="line.1895"></a>
+<span class="sourceLineNo">1896</span>   * Normalize the negative values in configuration<a name="line.1896"></a>
+<span class="sourceLineNo">1897</span>   * <a name="line.1897"></a>
+<span class="sourceLineNo">1898</span>   * @param val<a name="line.1898"></a>
+<span class="sourceLineNo">1899</span>   * @return normalized value<a name="line.1899"></a>
+<span class="sourceLineNo">1900</span>   */<a name="line.1900"></a>
+<span class="sourceLineNo">1901</span>  public static long normalizeMemoryConfigValue(long val) {<a name="line.1901"></a>
+<span class="sourceLineNo">1902</span>    if (val &lt; 0) {<a name="line.1902"></a>
+<span class="sourceLineNo">1903</span>      val = DISABLED_MEMORY_LIMIT;<a name="line.1903"></a>
+<span class="sourceLineNo">1904</span>    }<a name="line.1904"></a>
+<span class="sourceLineNo">1905</span>    return val;<a name="line.1905"></a>
+<span class="sourceLineNo">1906</span>  }<a name="line.1906"></a>
+<span class="sourceLineNo">1907</span><a name="line.1907"></a>
+<span class="sourceLineNo">1908</span>  /** <a name="line.1908"></a>
+<span class="sourceLineNo">1909</span>   * Find a jar that contains a class of the same name, if any.<a name="line.1909"></a>
+<span class="sourceLineNo">1910</span>   * It will return a jar file, even if that is not the first thing<a name="line.1910"></a>
+<span class="sourceLineNo">1911</span>   * on the class path that has a class with the same name.<a name="line.1911"></a>
+<span class="sourceLineNo">1912</span>   * <a name="line.1912"></a>
+<span class="sourceLineNo">1913</span>   * @param my_class the class to find.<a name="line.1913"></a>
+<span class="sourceLineNo">1914</span>   * @return a jar file that contains the class, or null.<a name="line.1914"></a>
+<span class="sourceLineNo">1915</span>   * @throws IOException<a name="line.1915"></a>
+<span class="sourceLineNo">1916</span>   */<a name="line.1916"></a>
+<span class="sourceLineNo">1917</span>  public static String findContainingJar(Class my_class) {<a name="line.1917"></a>
+<span class="sourceLineNo">1918</span>    return ClassUtil.findContainingJar(my_class);<a name="line.1918"></a>
+<span class="sourceLineNo">1919</span>  }<a name="line.1919"></a>
+<span class="sourceLineNo">1920</span><a name="line.1920"></a>
+<span class="sourceLineNo">1921</span>  /**<a name="line.1921"></a>
+<span class="sourceLineNo">1922</span>   * Get the memory required to run a task of this job, in bytes. See<a name="line.1922"></a>
+<span class="sourceLineNo">1923</span>   * {@link #MAPRED_TASK_MAXVMEM_PROPERTY}<a name="line.1923"></a>
+<span class="sourceLineNo">1924</span>   * &lt;p/&gt;<a name="line.1924"></a>
+<span class="sourceLineNo">1925</span>   * This method is deprecated. Now, different memory limits can be<a name="line.1925"></a>
+<span class="sourceLineNo">1926</span>   * set for map and reduce tasks of a job, in MB. <a name="line.1926"></a>
+<span class="sourceLineNo">1927</span>   * &lt;p/&gt;<a name="line.1927"></a>
+<span class="sourceLineNo">1928</span>   * For backward compatibility, if the job configuration sets the<a name="line.1928"></a>
+<span class="sourceLineNo">1929</span>   * key {@link #MAPRED_TASK_MAXVMEM_PROPERTY}, that value is returned. <a name="line.1929"></a>
+<span class="sourceLineNo">1930</span>   * Otherwise, this method will return the larger of the values returned by <a name="line.1930"></a>
+<span class="sourceLineNo">1931</span>   * {@link #getMemoryForMapTask()} and {@link #getMemoryForReduceTask()}<a name="line.1931"></a>
+<span class="sourceLineNo">1932</span>   * after converting them into bytes.<a name="line.1932"></a>
+<span class="sourceLineNo">1933</span>   *<a name="line.1933"></a>
+<span class="sourceLineNo">1934</span>   * @return Memory required to run a task of this job, in bytes.<a name="line.1934"></a>
+<span class="sourceLineNo">1935</span>   * @see #setMaxVirtualMemoryForTask(long)<a name="line.1935"></a>
+<span class="sourceLineNo">1936</span>   * @deprecated Use {@link #getMemoryForMapTask()} and<a name="line.1936"></a>
+<span class="sourceLineNo">1937</span>   *             {@link #getMemoryForReduceTask()}<a name="line.1937"></a>
+<span class="sourceLineNo">1938</span>   */<a name="line.1938"></a>
+<span class="sourceLineNo">1939</span>  @Deprecated<a name="line.1939"></a>
+<span class="sourceLineNo">1940</span>  public long getMaxVirtualMemoryForTask() {<a name="line.1940"></a>
+<span class="sourceLineNo">1941</span>    LOG.warn(<a name="line.1941"></a>
+<span class="sourceLineNo">1942</span>      "getMaxVirtualMemoryForTask() is deprecated. " +<a name="line.1942"></a>
+<span class="sourceLineNo">1943</span>      "Instead use getMemoryForMapTask() and getMemoryForReduceTask()");<a name="line.1943"></a>
+<span class="sourceLineNo">1944</span><a name="line.1944"></a>
+<span class="sourceLineNo">1945</span>    long value = getLong(MAPRED_TASK_MAXVMEM_PROPERTY,<a name="line.1945"></a>
+<span class="sourceLineNo">1946</span>        Math.max(getMemoryForMapTask(), getMemoryForReduceTask()) * 1024 * 1024);<a name="line.1946"></a>
+<span class="sourceLineNo">1947</span>    return value;<a name="line.1947"></a>
+<span class="sourceLineNo">1948</span>  }<a name="line.1948"></a>
+<span class="sourceLineNo">1949</span><a name="line.1949"></a>
+<span class="sourceLineNo">1950</span>  /**<a name="line.1950"></a>
+<span class="sourceLineNo">1951</span>   * Set the maximum amount of memory any task of this job can use. See<a name="line.1951"></a>
+<span class="sourceLineNo">1952</span>   * {@link #MAPRED_TASK_MAXVMEM_PROPERTY}<a name="line.1952"></a>
+<span class="sourceLineNo">1953</span>   * &lt;p/&gt;<a name="line.1953"></a>
+<span class="sourceLineNo">1954</span>   * mapred.task.maxvmem is split into<a name="line.1954"></a>
+<span class="sourceLineNo">1955</span>   * mapreduce.map.memory.mb<a name="line.1955"></a>
+<span class="sourceLineNo">1956</span>   * and mapreduce.map.memory.mb,mapred<a name="line.1956"></a>
+<span class="sourceLineNo">1957</span>   * each of the new key are set<a name="line.1957"></a>
+<span class="sourceLineNo">1958</span>   * as mapred.task.maxvmem / 1024<a name="line.1958"></a>
+<span class="sourceLineNo">1959</span>   * as new values are in MB<a name="line.1959"></a>
+<span class="sourceLineNo">1960</span>   *<a name="line.1960"></a>
+<span class="sourceLineNo">1961</span>   * @param vmem Maximum amount of virtual memory in bytes any task of this job<a name="line.1961"></a>
+<span class="sourceLineNo">1962</span>   *             can use.<a name="line.1962"></a>
+<span class="sourceLineNo">1963</span>   * @see #getMaxVirtualMemoryForTask()<a name="line.1963"></a>
+<span class="sourceLineNo">1964</span>   * @deprecated<a name="line.1964"></a>
+<span class="sourceLineNo">1965</span>   *  Use {@link #setMemoryForMapTask(long mem)}  and<a name="line.1965"></a>
+<span class="sourceLineNo">1966</span>   *  Use {@link #setMemoryForReduceTask(long mem)}<a name="line.1966"></a>
+<span class="sourceLineNo">1967</span>   */<a name="line.1967"></a>
+<span class="sourceLineNo">1968</span>  @Deprecated<a name="line.1968"></a>
+<span class="sourceLineNo">1969</span>  public void setMaxVirtualMemoryForTask(long vmem) {<a name="line.1969"></a>
+<span class="sourceLineNo">1970</span>    LOG.warn("setMaxVirtualMemoryForTask() is deprecated."+<a name="line.1970"></a>
+<span class="sourceLineNo">1971</span>      "Instead use setMemoryForMapTask() and setMemoryForReduceTask()");<a name="line.1971"></a>
+<span class="sourceLineNo">1972</span>    if (vmem &lt; 0) {<a name="line.1972"></a>
+<span class="sourceLineNo">1973</span>      throw new IllegalArgumentException("Task memory allocation may not be &lt; 0");<a name="line.1973"></a>
+<span class="sourceLineNo">1974</span>    }<a name="line.1974"></a>
+<span class="sourceLineNo">1975</span><a name="line.1975"></a>
+<span class="sourceLineNo">1976</span>    if(get(JobConf.MAPRED_TASK_MAXVMEM_PROPERTY) == null) {<a name="line.1976"></a>
+<span class="sourceLineNo">1977</span>      setMemoryForMapTask(vmem / (1024 * 1024)); //Changing bytes to mb<a name="line.1977"></a>
+<span class="sourceLineNo">1978</span>      setMemoryForReduceTask(vmem / (1024 * 1024));//Changing bytes to mb<a name="line.1978"></a>
+<span class="sourceLineNo">1979</span>    }else{<a name="line.1979"></a>
+<span class="sourceLineNo">1980</span>      this.setLong(JobConf.MAPRED_TASK_MAXVMEM_PROPERTY,vmem);<a name="line.1980"></a>
+<span class="sourceLineNo">1981</span>    }<a name="line.1981"></a>
+<span class="sourceLineNo">1982</span>  }<a name="line.1982"></a>
+<span class="sourceLineNo">1983</span><a name="line.1983"></a>
+<span class="sourceLineNo">1984</span>  /**<a name="line.1984"></a>
+<span class="sourceLineNo">1985</span>   * @deprecated this variable is deprecated and nolonger in use.<a name="line.1985"></a>
+<span class="sourceLineNo">1986</span>   */<a name="line.1986"></a>
+<span class="sourceLineNo">1987</span>  @Deprecated<a name="line.1987"></a>
+<span class="sourceLineNo">1988</span>  public long getMaxPhysicalMemoryForTask() {<a name="line.1988"></a>
+<span class="sourceLineNo">1989</span>    LOG.warn("The API getMaxPhysicalMemoryForTask() is deprecated."<a name="line.1989"></a>
+<span class="sourceLineNo">1990</span>              + " Refer to the APIs getMemoryForMapTask() and"<a name="line.1990"></a>
+<span class="sourceLineNo">1991</span>              + " getMemoryForReduceTask() for details.");<a name="line.1991"></a>
+<span class="sourceLineNo">1992</span>    return -1;<a name="line.1992"></a>
+<span class="sourceLineNo">1993</span>  }<a name="line.1993"></a>
+<span class="sourceLineNo">1994</span><a name="line.1994"></a>
+<span class="sourceLineNo">1995</span>  /*<a name="line.1995"></a>
+<span class="sourceLineNo">1996</span>   * @deprecated this<a name="line.1996"></a>
+<span class="sourceLineNo">1997</span>   */<a name="line.1997"></a>
+<span class="sourceLineNo">1998</span>  @Deprecated<a name="line.1998"></a>
+<span class="sourceLineNo">1999</span>  public void setMaxPhysicalMemoryForTask(long mem) {<a name="line.1999"></a>
+<span class="sourceLineNo">2000</span>    LOG.warn("The API setMaxPhysicalMemoryForTask() is deprecated."<a name="line.2000"></a>
+<span class="sourceLineNo">2001</span>        + " The value set is ignored. Refer to "<a name="line.2001"></a>
+<span class="sourceLineNo">2002</span>        + " setMemoryForMapTask() and setMemoryForReduceTask() for details.");<a name="line.2002"></a>
+<span class="sourceLineNo">2003</span>  }<a name="line.2003"></a>
+<span class="sourceLineNo">2004</span><a name="line.2004"></a>
+<span class="sourceLineNo">2005</span>  static String deprecatedString(String key) {<a name="line.2005"></a>
+<span class="sourceLineNo">2006</span>    return "The variable " + key + " is no longer used.";<a name="line.2006"></a>
+<span class="sourceLineNo">2007</span>  }<a name="line.2007"></a>
+<span class="sourceLineNo">2008</span><a name="line.2008"></a>
+<span class="sourceLineNo">2009</span>  private void checkAndWarnDeprecation() {<a name="line.2009"></a>
+<span class="sourceLineNo">2010</span>    if(get(JobConf.MAPRED_TASK_MAXVMEM_PROPERTY) != null) {<a name="line.2010"></a>
+<span class="sourceLineNo">2011</span>      LOG.warn(JobConf.deprecatedString(JobConf.MAPRED_TASK_MAXVMEM_PROPERTY)<a name="line.2011"></a>
+<span class="sourceLineNo">2012</span>                + " Instead use " + JobConf.MAPREDUCE_JOB_MAP_MEMORY_MB_PROPERTY<a name="line.2012"></a>
+<span class="sourceLineNo">2013</span>                + " and " + JobConf.MAPREDUCE_JOB_REDUCE_MEMORY_MB_PROPERTY);<a name="line.2013"></a>
+<span class="sourceLineNo">2014</span>    }<a name="line.2014"></a>
+<span class="sourceLineNo">2015</span>    if(get(JobConf.MAPRED_TASK_ULIMIT) != null ) {<a name="line.2015"></a>
+<span class="sourceLineNo">2016</span>      LOG.warn(JobConf.deprecatedString(JobConf.MAPRED_TASK_ULIMIT));<a name="line.2016"></a>
+<span class="sourceLineNo">2017</span>    }<a name="line.2017"></a>
+<span class="sourceLineNo">2018</span>    if(get(JobConf.MAPRED_MAP_TASK_ULIMIT) != null ) {<a name="line.2018"></a>
+<span class="sourceLineNo">2019</span>      LOG.warn(JobConf.deprecatedString(JobConf.MAPRED_MAP_TASK_ULIMIT));<a name="line.2019"></a>
+<span class="sourceLineNo">2020</span>    }<a name="line.2020"></a>
+<span class="sourceLineNo">2021</span>    if(get(JobConf.MAPRED_REDUCE_TASK_ULIMIT) != null ) {<a name="line.2021"></a>
+<span class="sourceLineNo">2022</span>      LOG.warn(JobConf.deprecatedString(JobConf.MAPRED_REDUCE_TASK_ULIMIT));<a name="line.2022"></a>
+<span class="sourceLineNo">2023</span>    }<a name="line.2023"></a>
+<span class="sourceLineNo">2024</span>  }<a name="line.2024"></a>
+<span class="sourceLineNo">2025</span>  <a name="line.2025"></a>
+<span class="sourceLineNo">2026</span><a name="line.2026"></a>
+<span class="sourceLineNo">2027</span>}<a name="line.2027"></a>
+<span class="sourceLineNo">2028</span><a name="line.2028"></a>
 
 
 

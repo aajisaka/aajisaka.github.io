@@ -242,93 +242,97 @@
 <span class="sourceLineNo">234</span>   * This is used in FileSystem and FileContext to specify checksum options.<a name="line.234"></a>
 <span class="sourceLineNo">235</span>   */<a name="line.235"></a>
 <span class="sourceLineNo">236</span>  public static class ChecksumOpt {<a name="line.236"></a>
-<span class="sourceLineNo">237</span>    private final int crcBlockSize;<a name="line.237"></a>
-<span class="sourceLineNo">238</span>    private final DataChecksum.Type crcType;<a name="line.238"></a>
+<span class="sourceLineNo">237</span>    private final DataChecksum.Type checksumType;<a name="line.237"></a>
+<span class="sourceLineNo">238</span>    private final int bytesPerChecksum;<a name="line.238"></a>
 <span class="sourceLineNo">239</span><a name="line.239"></a>
 <span class="sourceLineNo">240</span>    /**<a name="line.240"></a>
 <span class="sourceLineNo">241</span>     * Create a uninitialized one<a name="line.241"></a>
 <span class="sourceLineNo">242</span>     */<a name="line.242"></a>
 <span class="sourceLineNo">243</span>    public ChecksumOpt() {<a name="line.243"></a>
-<span class="sourceLineNo">244</span>      crcBlockSize = -1;<a name="line.244"></a>
-<span class="sourceLineNo">245</span>      crcType = DataChecksum.Type.DEFAULT;<a name="line.245"></a>
-<span class="sourceLineNo">246</span>    }<a name="line.246"></a>
-<span class="sourceLineNo">247</span><a name="line.247"></a>
-<span class="sourceLineNo">248</span>    /**<a name="line.248"></a>
-<span class="sourceLineNo">249</span>     * Normal ctor<a name="line.249"></a>
-<span class="sourceLineNo">250</span>     * @param type checksum type<a name="line.250"></a>
-<span class="sourceLineNo">251</span>     * @param size bytes per checksum<a name="line.251"></a>
-<span class="sourceLineNo">252</span>     */<a name="line.252"></a>
-<span class="sourceLineNo">253</span>    public ChecksumOpt(DataChecksum.Type type, int size) {<a name="line.253"></a>
-<span class="sourceLineNo">254</span>      crcBlockSize = size;<a name="line.254"></a>
-<span class="sourceLineNo">255</span>      crcType = type;<a name="line.255"></a>
-<span class="sourceLineNo">256</span>    }<a name="line.256"></a>
-<span class="sourceLineNo">257</span><a name="line.257"></a>
-<span class="sourceLineNo">258</span>    public int getBytesPerChecksum() {<a name="line.258"></a>
-<span class="sourceLineNo">259</span>      return crcBlockSize;<a name="line.259"></a>
-<span class="sourceLineNo">260</span>    }<a name="line.260"></a>
-<span class="sourceLineNo">261</span><a name="line.261"></a>
-<span class="sourceLineNo">262</span>    public DataChecksum.Type getChecksumType() {<a name="line.262"></a>
-<span class="sourceLineNo">263</span>      return crcType;<a name="line.263"></a>
-<span class="sourceLineNo">264</span>    }<a name="line.264"></a>
-<span class="sourceLineNo">265</span><a name="line.265"></a>
-<span class="sourceLineNo">266</span>    /**<a name="line.266"></a>
-<span class="sourceLineNo">267</span>     * Create a ChecksumOpts that disables checksum<a name="line.267"></a>
-<span class="sourceLineNo">268</span>     */<a name="line.268"></a>
-<span class="sourceLineNo">269</span>    public static ChecksumOpt createDisabled() {<a name="line.269"></a>
-<span class="sourceLineNo">270</span>      return new ChecksumOpt(DataChecksum.Type.NULL, -1);<a name="line.270"></a>
-<span class="sourceLineNo">271</span>    }<a name="line.271"></a>
-<span class="sourceLineNo">272</span><a name="line.272"></a>
-<span class="sourceLineNo">273</span>    /**<a name="line.273"></a>
-<span class="sourceLineNo">274</span>     * A helper method for processing user input and default value to <a name="line.274"></a>
-<span class="sourceLineNo">275</span>     * create a combined checksum option. This is a bit complicated because<a name="line.275"></a>
-<span class="sourceLineNo">276</span>     * bytesPerChecksum is kept for backward compatibility.<a name="line.276"></a>
-<span class="sourceLineNo">277</span>     *<a name="line.277"></a>
-<span class="sourceLineNo">278</span>     * @param defaultOpt Default checksum option<a name="line.278"></a>
-<span class="sourceLineNo">279</span>     * @param userOpt User-specified checksum option. Ignored if null.<a name="line.279"></a>
-<span class="sourceLineNo">280</span>     * @param userBytesPerChecksum User-specified bytesPerChecksum<a name="line.280"></a>
-<span class="sourceLineNo">281</span>     *                Ignored if &lt; 0.<a name="line.281"></a>
-<span class="sourceLineNo">282</span>     */<a name="line.282"></a>
-<span class="sourceLineNo">283</span>    public static ChecksumOpt processChecksumOpt(ChecksumOpt defaultOpt, <a name="line.283"></a>
-<span class="sourceLineNo">284</span>        ChecksumOpt userOpt, int userBytesPerChecksum) {<a name="line.284"></a>
-<span class="sourceLineNo">285</span>      final boolean useDefaultType;<a name="line.285"></a>
-<span class="sourceLineNo">286</span>      final DataChecksum.Type type;<a name="line.286"></a>
-<span class="sourceLineNo">287</span>      if (userOpt != null <a name="line.287"></a>
-<span class="sourceLineNo">288</span>          &amp;&amp; userOpt.getChecksumType() != DataChecksum.Type.DEFAULT) {<a name="line.288"></a>
-<span class="sourceLineNo">289</span>        useDefaultType = false;<a name="line.289"></a>
-<span class="sourceLineNo">290</span>        type = userOpt.getChecksumType();<a name="line.290"></a>
-<span class="sourceLineNo">291</span>      } else {<a name="line.291"></a>
-<span class="sourceLineNo">292</span>        useDefaultType = true;<a name="line.292"></a>
-<span class="sourceLineNo">293</span>        type = defaultOpt.getChecksumType();<a name="line.293"></a>
-<span class="sourceLineNo">294</span>      }<a name="line.294"></a>
-<span class="sourceLineNo">295</span><a name="line.295"></a>
-<span class="sourceLineNo">296</span>      //  bytesPerChecksum - order of preference<a name="line.296"></a>
-<span class="sourceLineNo">297</span>      //    user specified value in bytesPerChecksum<a name="line.297"></a>
-<span class="sourceLineNo">298</span>      //    user specified value in checksumOpt<a name="line.298"></a>
-<span class="sourceLineNo">299</span>      //    default.<a name="line.299"></a>
-<span class="sourceLineNo">300</span>      if (userBytesPerChecksum &gt; 0) {<a name="line.300"></a>
-<span class="sourceLineNo">301</span>        return new ChecksumOpt(type, userBytesPerChecksum);<a name="line.301"></a>
-<span class="sourceLineNo">302</span>      } else if (userOpt != null &amp;&amp; userOpt.getBytesPerChecksum() &gt; 0) {<a name="line.302"></a>
-<span class="sourceLineNo">303</span>        return !useDefaultType? userOpt<a name="line.303"></a>
-<span class="sourceLineNo">304</span>            : new ChecksumOpt(type, userOpt.getBytesPerChecksum());<a name="line.304"></a>
-<span class="sourceLineNo">305</span>      } else {<a name="line.305"></a>
-<span class="sourceLineNo">306</span>        return useDefaultType? defaultOpt<a name="line.306"></a>
-<span class="sourceLineNo">307</span>            : new ChecksumOpt(type, defaultOpt.getBytesPerChecksum());<a name="line.307"></a>
-<span class="sourceLineNo">308</span>      }<a name="line.308"></a>
-<span class="sourceLineNo">309</span>    }<a name="line.309"></a>
-<span class="sourceLineNo">310</span><a name="line.310"></a>
-<span class="sourceLineNo">311</span>    /**<a name="line.311"></a>
-<span class="sourceLineNo">312</span>     * A helper method for processing user input and default value to <a name="line.312"></a>
-<span class="sourceLineNo">313</span>     * create a combined checksum option. <a name="line.313"></a>
-<span class="sourceLineNo">314</span>     *<a name="line.314"></a>
-<span class="sourceLineNo">315</span>     * @param defaultOpt Default checksum option<a name="line.315"></a>
-<span class="sourceLineNo">316</span>     * @param userOpt User-specified checksum option<a name="line.316"></a>
-<span class="sourceLineNo">317</span>     */<a name="line.317"></a>
-<span class="sourceLineNo">318</span>    public static ChecksumOpt processChecksumOpt(ChecksumOpt defaultOpt,<a name="line.318"></a>
-<span class="sourceLineNo">319</span>        ChecksumOpt userOpt) {<a name="line.319"></a>
-<span class="sourceLineNo">320</span>      return processChecksumOpt(defaultOpt, userOpt, -1);<a name="line.320"></a>
-<span class="sourceLineNo">321</span>    }<a name="line.321"></a>
-<span class="sourceLineNo">322</span>  }<a name="line.322"></a>
-<span class="sourceLineNo">323</span>}<a name="line.323"></a>
+<span class="sourceLineNo">244</span>      this(DataChecksum.Type.DEFAULT, -1);<a name="line.244"></a>
+<span class="sourceLineNo">245</span>    }<a name="line.245"></a>
+<span class="sourceLineNo">246</span><a name="line.246"></a>
+<span class="sourceLineNo">247</span>    /**<a name="line.247"></a>
+<span class="sourceLineNo">248</span>     * Normal ctor<a name="line.248"></a>
+<span class="sourceLineNo">249</span>     * @param type checksum type<a name="line.249"></a>
+<span class="sourceLineNo">250</span>     * @param size bytes per checksum<a name="line.250"></a>
+<span class="sourceLineNo">251</span>     */<a name="line.251"></a>
+<span class="sourceLineNo">252</span>    public ChecksumOpt(DataChecksum.Type type, int size) {<a name="line.252"></a>
+<span class="sourceLineNo">253</span>      checksumType = type;<a name="line.253"></a>
+<span class="sourceLineNo">254</span>      bytesPerChecksum = size;<a name="line.254"></a>
+<span class="sourceLineNo">255</span>    }<a name="line.255"></a>
+<span class="sourceLineNo">256</span><a name="line.256"></a>
+<span class="sourceLineNo">257</span>    public int getBytesPerChecksum() {<a name="line.257"></a>
+<span class="sourceLineNo">258</span>      return bytesPerChecksum;<a name="line.258"></a>
+<span class="sourceLineNo">259</span>    }<a name="line.259"></a>
+<span class="sourceLineNo">260</span><a name="line.260"></a>
+<span class="sourceLineNo">261</span>    public DataChecksum.Type getChecksumType() {<a name="line.261"></a>
+<span class="sourceLineNo">262</span>      return checksumType;<a name="line.262"></a>
+<span class="sourceLineNo">263</span>    }<a name="line.263"></a>
+<span class="sourceLineNo">264</span>    <a name="line.264"></a>
+<span class="sourceLineNo">265</span>    @Override<a name="line.265"></a>
+<span class="sourceLineNo">266</span>    public String toString() {<a name="line.266"></a>
+<span class="sourceLineNo">267</span>      return checksumType + ":" + bytesPerChecksum;<a name="line.267"></a>
+<span class="sourceLineNo">268</span>    }<a name="line.268"></a>
+<span class="sourceLineNo">269</span><a name="line.269"></a>
+<span class="sourceLineNo">270</span>    /**<a name="line.270"></a>
+<span class="sourceLineNo">271</span>     * Create a ChecksumOpts that disables checksum<a name="line.271"></a>
+<span class="sourceLineNo">272</span>     */<a name="line.272"></a>
+<span class="sourceLineNo">273</span>    public static ChecksumOpt createDisabled() {<a name="line.273"></a>
+<span class="sourceLineNo">274</span>      return new ChecksumOpt(DataChecksum.Type.NULL, -1);<a name="line.274"></a>
+<span class="sourceLineNo">275</span>    }<a name="line.275"></a>
+<span class="sourceLineNo">276</span><a name="line.276"></a>
+<span class="sourceLineNo">277</span>    /**<a name="line.277"></a>
+<span class="sourceLineNo">278</span>     * A helper method for processing user input and default value to <a name="line.278"></a>
+<span class="sourceLineNo">279</span>     * create a combined checksum option. This is a bit complicated because<a name="line.279"></a>
+<span class="sourceLineNo">280</span>     * bytesPerChecksum is kept for backward compatibility.<a name="line.280"></a>
+<span class="sourceLineNo">281</span>     *<a name="line.281"></a>
+<span class="sourceLineNo">282</span>     * @param defaultOpt Default checksum option<a name="line.282"></a>
+<span class="sourceLineNo">283</span>     * @param userOpt User-specified checksum option. Ignored if null.<a name="line.283"></a>
+<span class="sourceLineNo">284</span>     * @param userBytesPerChecksum User-specified bytesPerChecksum<a name="line.284"></a>
+<span class="sourceLineNo">285</span>     *                Ignored if &lt; 0.<a name="line.285"></a>
+<span class="sourceLineNo">286</span>     */<a name="line.286"></a>
+<span class="sourceLineNo">287</span>    public static ChecksumOpt processChecksumOpt(ChecksumOpt defaultOpt, <a name="line.287"></a>
+<span class="sourceLineNo">288</span>        ChecksumOpt userOpt, int userBytesPerChecksum) {<a name="line.288"></a>
+<span class="sourceLineNo">289</span>      final boolean useDefaultType;<a name="line.289"></a>
+<span class="sourceLineNo">290</span>      final DataChecksum.Type type;<a name="line.290"></a>
+<span class="sourceLineNo">291</span>      if (userOpt != null <a name="line.291"></a>
+<span class="sourceLineNo">292</span>          &amp;&amp; userOpt.getChecksumType() != DataChecksum.Type.DEFAULT) {<a name="line.292"></a>
+<span class="sourceLineNo">293</span>        useDefaultType = false;<a name="line.293"></a>
+<span class="sourceLineNo">294</span>        type = userOpt.getChecksumType();<a name="line.294"></a>
+<span class="sourceLineNo">295</span>      } else {<a name="line.295"></a>
+<span class="sourceLineNo">296</span>        useDefaultType = true;<a name="line.296"></a>
+<span class="sourceLineNo">297</span>        type = defaultOpt.getChecksumType();<a name="line.297"></a>
+<span class="sourceLineNo">298</span>      }<a name="line.298"></a>
+<span class="sourceLineNo">299</span><a name="line.299"></a>
+<span class="sourceLineNo">300</span>      //  bytesPerChecksum - order of preference<a name="line.300"></a>
+<span class="sourceLineNo">301</span>      //    user specified value in bytesPerChecksum<a name="line.301"></a>
+<span class="sourceLineNo">302</span>      //    user specified value in checksumOpt<a name="line.302"></a>
+<span class="sourceLineNo">303</span>      //    default.<a name="line.303"></a>
+<span class="sourceLineNo">304</span>      if (userBytesPerChecksum &gt; 0) {<a name="line.304"></a>
+<span class="sourceLineNo">305</span>        return new ChecksumOpt(type, userBytesPerChecksum);<a name="line.305"></a>
+<span class="sourceLineNo">306</span>      } else if (userOpt != null &amp;&amp; userOpt.getBytesPerChecksum() &gt; 0) {<a name="line.306"></a>
+<span class="sourceLineNo">307</span>        return !useDefaultType? userOpt<a name="line.307"></a>
+<span class="sourceLineNo">308</span>            : new ChecksumOpt(type, userOpt.getBytesPerChecksum());<a name="line.308"></a>
+<span class="sourceLineNo">309</span>      } else {<a name="line.309"></a>
+<span class="sourceLineNo">310</span>        return useDefaultType? defaultOpt<a name="line.310"></a>
+<span class="sourceLineNo">311</span>            : new ChecksumOpt(type, defaultOpt.getBytesPerChecksum());<a name="line.311"></a>
+<span class="sourceLineNo">312</span>      }<a name="line.312"></a>
+<span class="sourceLineNo">313</span>    }<a name="line.313"></a>
+<span class="sourceLineNo">314</span><a name="line.314"></a>
+<span class="sourceLineNo">315</span>    /**<a name="line.315"></a>
+<span class="sourceLineNo">316</span>     * A helper method for processing user input and default value to <a name="line.316"></a>
+<span class="sourceLineNo">317</span>     * create a combined checksum option. <a name="line.317"></a>
+<span class="sourceLineNo">318</span>     *<a name="line.318"></a>
+<span class="sourceLineNo">319</span>     * @param defaultOpt Default checksum option<a name="line.319"></a>
+<span class="sourceLineNo">320</span>     * @param userOpt User-specified checksum option<a name="line.320"></a>
+<span class="sourceLineNo">321</span>     */<a name="line.321"></a>
+<span class="sourceLineNo">322</span>    public static ChecksumOpt processChecksumOpt(ChecksumOpt defaultOpt,<a name="line.322"></a>
+<span class="sourceLineNo">323</span>        ChecksumOpt userOpt) {<a name="line.323"></a>
+<span class="sourceLineNo">324</span>      return processChecksumOpt(defaultOpt, userOpt, -1);<a name="line.324"></a>
+<span class="sourceLineNo">325</span>    }<a name="line.325"></a>
+<span class="sourceLineNo">326</span>  }<a name="line.326"></a>
+<span class="sourceLineNo">327</span>}<a name="line.327"></a>
 
 
 
