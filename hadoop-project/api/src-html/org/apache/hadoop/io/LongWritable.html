@@ -107,11 +107,11 @@
 <span class="sourceLineNo">099</span>    <a name="line.99"></a>
 <span class="sourceLineNo">100</span>    @Override<a name="line.100"></a>
 <span class="sourceLineNo">101</span>    public int compare(WritableComparable a, WritableComparable b) {<a name="line.101"></a>
-<span class="sourceLineNo">102</span>      return -super.compare(a, b);<a name="line.102"></a>
+<span class="sourceLineNo">102</span>      return super.compare(b, a);<a name="line.102"></a>
 <span class="sourceLineNo">103</span>    }<a name="line.103"></a>
 <span class="sourceLineNo">104</span>    @Override<a name="line.104"></a>
 <span class="sourceLineNo">105</span>    public int compare(byte[] b1, int s1, int l1, byte[] b2, int s2, int l2) {<a name="line.105"></a>
-<span class="sourceLineNo">106</span>      return -super.compare(b1, s1, l1, b2, s2, l2);<a name="line.106"></a>
+<span class="sourceLineNo">106</span>      return super.compare(b2, s2, l2, b1, s1, l1);<a name="line.106"></a>
 <span class="sourceLineNo">107</span>    }<a name="line.107"></a>
 <span class="sourceLineNo">108</span>  }<a name="line.108"></a>
 <span class="sourceLineNo">109</span><a name="line.109"></a>

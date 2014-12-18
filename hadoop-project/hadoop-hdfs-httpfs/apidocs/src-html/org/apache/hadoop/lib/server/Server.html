@@ -50,299 +50,299 @@
 <span class="sourceLineNo">042</span>/**<a name="line.42"></a>
 <span class="sourceLineNo">043</span> * A Server class provides standard configuration, logging and {@link Service}<a name="line.43"></a>
 <span class="sourceLineNo">044</span> * lifecyle management.<a name="line.44"></a>
-<span class="sourceLineNo">045</span> * &lt;p/&gt;<a name="line.45"></a>
+<span class="sourceLineNo">045</span> * &lt;p&gt;<a name="line.45"></a>
 <span class="sourceLineNo">046</span> * A Server normally has a home directory, a configuration directory, a temp<a name="line.46"></a>
 <span class="sourceLineNo">047</span> * directory and logs directory.<a name="line.47"></a>
-<span class="sourceLineNo">048</span> * &lt;p/&gt;<a name="line.48"></a>
+<span class="sourceLineNo">048</span> * &lt;p&gt;<a name="line.48"></a>
 <span class="sourceLineNo">049</span> * The Server configuration is loaded from 2 overlapped files,<a name="line.49"></a>
 <span class="sourceLineNo">050</span> * &lt;code&gt;#SERVER#-default.xml&lt;/code&gt; and &lt;code&gt;#SERVER#-site.xml&lt;/code&gt;. The<a name="line.50"></a>
 <span class="sourceLineNo">051</span> * default file is loaded from the classpath, the site file is laoded from the<a name="line.51"></a>
 <span class="sourceLineNo">052</span> * configuration directory.<a name="line.52"></a>
-<span class="sourceLineNo">053</span> * &lt;p/&gt;<a name="line.53"></a>
+<span class="sourceLineNo">053</span> * &lt;p&gt;<a name="line.53"></a>
 <span class="sourceLineNo">054</span> * The Server collects all configuration properties prefixed with<a name="line.54"></a>
 <span class="sourceLineNo">055</span> * &lt;code&gt;#SERVER#&lt;/code&gt;. The property names are then trimmed from the<a name="line.55"></a>
 <span class="sourceLineNo">056</span> * &lt;code&gt;#SERVER#&lt;/code&gt; prefix.<a name="line.56"></a>
-<span class="sourceLineNo">057</span> * &lt;p/&gt;<a name="line.57"></a>
+<span class="sourceLineNo">057</span> * &lt;p&gt;<a name="line.57"></a>
 <span class="sourceLineNo">058</span> * The Server log configuration is loaded from the<a name="line.58"></a>
 <span class="sourceLineNo">059</span> * &lt;code&gt;#SERVICE#-log4j.properties&lt;/code&gt; file in the configuration directory.<a name="line.59"></a>
-<span class="sourceLineNo">060</span> * &lt;p/&gt;<a name="line.60"></a>
+<span class="sourceLineNo">060</span> * &lt;p&gt;<a name="line.60"></a>
 <span class="sourceLineNo">061</span> * The lifecycle of server is defined in by {@link Server.Status} enum.<a name="line.61"></a>
 <span class="sourceLineNo">062</span> * When a server is create, its status is UNDEF, when being initialized it is<a name="line.62"></a>
 <span class="sourceLineNo">063</span> * BOOTING, once initialization is complete by default transitions to NORMAL.<a name="line.63"></a>
 <span class="sourceLineNo">064</span> * The &lt;code&gt;#SERVER#.startup.status&lt;/code&gt; configuration property can be used<a name="line.64"></a>
 <span class="sourceLineNo">065</span> * to specify a different startup status (NORMAL, ADMIN or HALTED).<a name="line.65"></a>
-<span class="sourceLineNo">066</span> * &lt;p/&gt;<a name="line.66"></a>
+<span class="sourceLineNo">066</span> * &lt;p&gt;<a name="line.66"></a>
 <span class="sourceLineNo">067</span> * Services classes are defined in the &lt;code&gt;#SERVER#.services&lt;/code&gt; and<a name="line.67"></a>
 <span class="sourceLineNo">068</span> * &lt;code&gt;#SERVER#.services.ext&lt;/code&gt; properties. They are loaded in order<a name="line.68"></a>
 <span class="sourceLineNo">069</span> * (services first, then services.ext).<a name="line.69"></a>
-<span class="sourceLineNo">070</span> * &lt;p/&gt;<a name="line.70"></a>
+<span class="sourceLineNo">070</span> * &lt;p&gt;<a name="line.70"></a>
 <span class="sourceLineNo">071</span> * Before initializing the services, they are traversed and duplicate service<a name="line.71"></a>
 <span class="sourceLineNo">072</span> * interface are removed from the service list. The last service using a given<a name="line.72"></a>
 <span class="sourceLineNo">073</span> * interface wins (this enables a simple override mechanism).<a name="line.73"></a>
-<span class="sourceLineNo">074</span> * &lt;p/&gt;<a name="line.74"></a>
+<span class="sourceLineNo">074</span> * &lt;p&gt;<a name="line.74"></a>
 <span class="sourceLineNo">075</span> * After the services have been resoloved by interface de-duplication they are<a name="line.75"></a>
 <span class="sourceLineNo">076</span> * initialized in order. Once all services are initialized they are<a name="line.76"></a>
 <span class="sourceLineNo">077</span> * post-initialized (this enables late/conditional service bindings).<a name="line.77"></a>
-<span class="sourceLineNo">078</span> * &lt;p/&gt;<a name="line.78"></a>
-<span class="sourceLineNo">079</span> */<a name="line.79"></a>
-<span class="sourceLineNo">080</span>@InterfaceAudience.Private<a name="line.80"></a>
-<span class="sourceLineNo">081</span>public class Server {<a name="line.81"></a>
-<span class="sourceLineNo">082</span>  private Logger log;<a name="line.82"></a>
-<span class="sourceLineNo">083</span><a name="line.83"></a>
-<span class="sourceLineNo">084</span>  /**<a name="line.84"></a>
-<span class="sourceLineNo">085</span>   * Server property name that defines the service classes.<a name="line.85"></a>
-<span class="sourceLineNo">086</span>   */<a name="line.86"></a>
-<span class="sourceLineNo">087</span>  public static final String CONF_SERVICES = "services";<a name="line.87"></a>
-<span class="sourceLineNo">088</span><a name="line.88"></a>
-<span class="sourceLineNo">089</span>  /**<a name="line.89"></a>
-<span class="sourceLineNo">090</span>   * Server property name that defines the service extension classes.<a name="line.90"></a>
-<span class="sourceLineNo">091</span>   */<a name="line.91"></a>
-<span class="sourceLineNo">092</span>  public static final String CONF_SERVICES_EXT = "services.ext";<a name="line.92"></a>
-<span class="sourceLineNo">093</span><a name="line.93"></a>
-<span class="sourceLineNo">094</span>  /**<a name="line.94"></a>
-<span class="sourceLineNo">095</span>   * Server property name that defines server startup status.<a name="line.95"></a>
-<span class="sourceLineNo">096</span>   */<a name="line.96"></a>
-<span class="sourceLineNo">097</span>  public static final String CONF_STARTUP_STATUS = "startup.status";<a name="line.97"></a>
-<span class="sourceLineNo">098</span><a name="line.98"></a>
-<span class="sourceLineNo">099</span>  /**<a name="line.99"></a>
-<span class="sourceLineNo">100</span>   * Enumeration that defines the server status.<a name="line.100"></a>
-<span class="sourceLineNo">101</span>   */<a name="line.101"></a>
-<span class="sourceLineNo">102</span>  @InterfaceAudience.Private<a name="line.102"></a>
-<span class="sourceLineNo">103</span>  public static enum Status {<a name="line.103"></a>
-<span class="sourceLineNo">104</span>    UNDEF(false, false),<a name="line.104"></a>
-<span class="sourceLineNo">105</span>    BOOTING(false, true),<a name="line.105"></a>
-<span class="sourceLineNo">106</span>    HALTED(true, true),<a name="line.106"></a>
-<span class="sourceLineNo">107</span>    ADMIN(true, true),<a name="line.107"></a>
-<span class="sourceLineNo">108</span>    NORMAL(true, true),<a name="line.108"></a>
-<span class="sourceLineNo">109</span>    SHUTTING_DOWN(false, true),<a name="line.109"></a>
-<span class="sourceLineNo">110</span>    SHUTDOWN(false, false);<a name="line.110"></a>
-<span class="sourceLineNo">111</span><a name="line.111"></a>
-<span class="sourceLineNo">112</span>    private boolean settable;<a name="line.112"></a>
-<span class="sourceLineNo">113</span>    private boolean operational;<a name="line.113"></a>
-<span class="sourceLineNo">114</span><a name="line.114"></a>
-<span class="sourceLineNo">115</span>    /**<a name="line.115"></a>
-<span class="sourceLineNo">116</span>     * Status constructor.<a name="line.116"></a>
-<span class="sourceLineNo">117</span>     *<a name="line.117"></a>
-<span class="sourceLineNo">118</span>     * @param settable indicates if the status is settable.<a name="line.118"></a>
-<span class="sourceLineNo">119</span>     * @param operational indicates if the server is operational<a name="line.119"></a>
-<span class="sourceLineNo">120</span>     * when in this status.<a name="line.120"></a>
-<span class="sourceLineNo">121</span>     */<a name="line.121"></a>
-<span class="sourceLineNo">122</span>    private Status(boolean settable, boolean operational) {<a name="line.122"></a>
-<span class="sourceLineNo">123</span>      this.settable = settable;<a name="line.123"></a>
-<span class="sourceLineNo">124</span>      this.operational = operational;<a name="line.124"></a>
-<span class="sourceLineNo">125</span>    }<a name="line.125"></a>
-<span class="sourceLineNo">126</span><a name="line.126"></a>
-<span class="sourceLineNo">127</span>    /**<a name="line.127"></a>
-<span class="sourceLineNo">128</span>     * Returns if this server status is operational.<a name="line.128"></a>
-<span class="sourceLineNo">129</span>     *<a name="line.129"></a>
-<span class="sourceLineNo">130</span>     * @return if this server status is operational.<a name="line.130"></a>
-<span class="sourceLineNo">131</span>     */<a name="line.131"></a>
-<span class="sourceLineNo">132</span>    public boolean isOperational() {<a name="line.132"></a>
-<span class="sourceLineNo">133</span>      return operational;<a name="line.133"></a>
-<span class="sourceLineNo">134</span>    }<a name="line.134"></a>
-<span class="sourceLineNo">135</span>  }<a name="line.135"></a>
-<span class="sourceLineNo">136</span><a name="line.136"></a>
-<span class="sourceLineNo">137</span>  /**<a name="line.137"></a>
-<span class="sourceLineNo">138</span>   * Name of the log4j configuration file the Server will load from the<a name="line.138"></a>
-<span class="sourceLineNo">139</span>   * classpath if the &lt;code&gt;#SERVER#-log4j.properties&lt;/code&gt; is not defined<a name="line.139"></a>
-<span class="sourceLineNo">140</span>   * in the server configuration directory.<a name="line.140"></a>
-<span class="sourceLineNo">141</span>   */<a name="line.141"></a>
-<span class="sourceLineNo">142</span>  public static final String DEFAULT_LOG4J_PROPERTIES = "default-log4j.properties";<a name="line.142"></a>
-<span class="sourceLineNo">143</span><a name="line.143"></a>
-<span class="sourceLineNo">144</span>  private Status status;<a name="line.144"></a>
-<span class="sourceLineNo">145</span>  private String name;<a name="line.145"></a>
-<span class="sourceLineNo">146</span>  private String homeDir;<a name="line.146"></a>
-<span class="sourceLineNo">147</span>  private String configDir;<a name="line.147"></a>
-<span class="sourceLineNo">148</span>  private String logDir;<a name="line.148"></a>
-<span class="sourceLineNo">149</span>  private String tempDir;<a name="line.149"></a>
-<span class="sourceLineNo">150</span>  private Configuration config;<a name="line.150"></a>
-<span class="sourceLineNo">151</span>  private Map&lt;Class, Service&gt; services = new LinkedHashMap&lt;Class, Service&gt;();<a name="line.151"></a>
-<span class="sourceLineNo">152</span><a name="line.152"></a>
-<span class="sourceLineNo">153</span>  /**<a name="line.153"></a>
-<span class="sourceLineNo">154</span>   * Creates a server instance.<a name="line.154"></a>
-<span class="sourceLineNo">155</span>   * &lt;p/&gt;<a name="line.155"></a>
-<span class="sourceLineNo">156</span>   * The config, log and temp directories are all under the specified home directory.<a name="line.156"></a>
-<span class="sourceLineNo">157</span>   *<a name="line.157"></a>
-<span class="sourceLineNo">158</span>   * @param name server name.<a name="line.158"></a>
-<span class="sourceLineNo">159</span>   * @param homeDir server home directory.<a name="line.159"></a>
-<span class="sourceLineNo">160</span>   */<a name="line.160"></a>
-<span class="sourceLineNo">161</span>  public Server(String name, String homeDir) {<a name="line.161"></a>
-<span class="sourceLineNo">162</span>    this(name, homeDir, null);<a name="line.162"></a>
-<span class="sourceLineNo">163</span>  }<a name="line.163"></a>
-<span class="sourceLineNo">164</span><a name="line.164"></a>
-<span class="sourceLineNo">165</span>  /**<a name="line.165"></a>
-<span class="sourceLineNo">166</span>   * Creates a server instance.<a name="line.166"></a>
-<span class="sourceLineNo">167</span>   *<a name="line.167"></a>
-<span class="sourceLineNo">168</span>   * @param name server name.<a name="line.168"></a>
-<span class="sourceLineNo">169</span>   * @param homeDir server home directory.<a name="line.169"></a>
-<span class="sourceLineNo">170</span>   * @param configDir config directory.<a name="line.170"></a>
-<span class="sourceLineNo">171</span>   * @param logDir log directory.<a name="line.171"></a>
-<span class="sourceLineNo">172</span>   * @param tempDir temp directory.<a name="line.172"></a>
-<span class="sourceLineNo">173</span>   */<a name="line.173"></a>
-<span class="sourceLineNo">174</span>  public Server(String name, String homeDir, String configDir, String logDir, String tempDir) {<a name="line.174"></a>
-<span class="sourceLineNo">175</span>    this(name, homeDir, configDir, logDir, tempDir, null);<a name="line.175"></a>
-<span class="sourceLineNo">176</span>  }<a name="line.176"></a>
-<span class="sourceLineNo">177</span><a name="line.177"></a>
-<span class="sourceLineNo">178</span>  /**<a name="line.178"></a>
-<span class="sourceLineNo">179</span>   * Creates a server instance.<a name="line.179"></a>
-<span class="sourceLineNo">180</span>   * &lt;p/&gt;<a name="line.180"></a>
-<span class="sourceLineNo">181</span>   * The config, log and temp directories are all under the specified home directory.<a name="line.181"></a>
-<span class="sourceLineNo">182</span>   * &lt;p/&gt;<a name="line.182"></a>
-<span class="sourceLineNo">183</span>   * It uses the provided configuration instead loading it from the config dir.<a name="line.183"></a>
-<span class="sourceLineNo">184</span>   *<a name="line.184"></a>
-<span class="sourceLineNo">185</span>   * @param name server name.<a name="line.185"></a>
-<span class="sourceLineNo">186</span>   * @param homeDir server home directory.<a name="line.186"></a>
-<span class="sourceLineNo">187</span>   * @param config server configuration.<a name="line.187"></a>
-<span class="sourceLineNo">188</span>   */<a name="line.188"></a>
-<span class="sourceLineNo">189</span>  public Server(String name, String homeDir, Configuration config) {<a name="line.189"></a>
-<span class="sourceLineNo">190</span>    this(name, homeDir, homeDir + "/conf", homeDir + "/log", homeDir + "/temp", config);<a name="line.190"></a>
-<span class="sourceLineNo">191</span>  }<a name="line.191"></a>
-<span class="sourceLineNo">192</span><a name="line.192"></a>
-<span class="sourceLineNo">193</span>  /**<a name="line.193"></a>
-<span class="sourceLineNo">194</span>   * Creates a server instance.<a name="line.194"></a>
-<span class="sourceLineNo">195</span>   * &lt;p/&gt;<a name="line.195"></a>
-<span class="sourceLineNo">196</span>   * It uses the provided configuration instead loading it from the config dir.<a name="line.196"></a>
-<span class="sourceLineNo">197</span>   *<a name="line.197"></a>
-<span class="sourceLineNo">198</span>   * @param name server name.<a name="line.198"></a>
-<span class="sourceLineNo">199</span>   * @param homeDir server home directory.<a name="line.199"></a>
-<span class="sourceLineNo">200</span>   * @param configDir config directory.<a name="line.200"></a>
-<span class="sourceLineNo">201</span>   * @param logDir log directory.<a name="line.201"></a>
-<span class="sourceLineNo">202</span>   * @param tempDir temp directory.<a name="line.202"></a>
-<span class="sourceLineNo">203</span>   * @param config server configuration.<a name="line.203"></a>
-<span class="sourceLineNo">204</span>   */<a name="line.204"></a>
-<span class="sourceLineNo">205</span>  public Server(String name, String homeDir, String configDir, String logDir, String tempDir, Configuration config) {<a name="line.205"></a>
-<span class="sourceLineNo">206</span>    this.name = Check.notEmpty(name, "name").trim().toLowerCase();<a name="line.206"></a>
-<span class="sourceLineNo">207</span>    this.homeDir = Check.notEmpty(homeDir, "homeDir");<a name="line.207"></a>
-<span class="sourceLineNo">208</span>    this.configDir = Check.notEmpty(configDir, "configDir");<a name="line.208"></a>
-<span class="sourceLineNo">209</span>    this.logDir = Check.notEmpty(logDir, "logDir");<a name="line.209"></a>
-<span class="sourceLineNo">210</span>    this.tempDir = Check.notEmpty(tempDir, "tempDir");<a name="line.210"></a>
-<span class="sourceLineNo">211</span>    checkAbsolutePath(homeDir, "homeDir");<a name="line.211"></a>
-<span class="sourceLineNo">212</span>    checkAbsolutePath(configDir, "configDir");<a name="line.212"></a>
-<span class="sourceLineNo">213</span>    checkAbsolutePath(logDir, "logDir");<a name="line.213"></a>
-<span class="sourceLineNo">214</span>    checkAbsolutePath(tempDir, "tempDir");<a name="line.214"></a>
-<span class="sourceLineNo">215</span>    if (config != null) {<a name="line.215"></a>
-<span class="sourceLineNo">216</span>      this.config = new Configuration(false);<a name="line.216"></a>
-<span class="sourceLineNo">217</span>      ConfigurationUtils.copy(config, this.config);<a name="line.217"></a>
-<span class="sourceLineNo">218</span>    }<a name="line.218"></a>
-<span class="sourceLineNo">219</span>    status = Status.UNDEF;<a name="line.219"></a>
-<span class="sourceLineNo">220</span>  }<a name="line.220"></a>
-<span class="sourceLineNo">221</span><a name="line.221"></a>
-<span class="sourceLineNo">222</span>  /**<a name="line.222"></a>
-<span class="sourceLineNo">223</span>   * Validates that the specified value is an absolute path (starts with '/').<a name="line.223"></a>
-<span class="sourceLineNo">224</span>   *<a name="line.224"></a>
-<span class="sourceLineNo">225</span>   * @param value value to verify it is an absolute path.<a name="line.225"></a>
-<span class="sourceLineNo">226</span>   * @param name name to use in the exception if the value is not an absolute<a name="line.226"></a>
-<span class="sourceLineNo">227</span>   * path.<a name="line.227"></a>
-<span class="sourceLineNo">228</span>   *<a name="line.228"></a>
-<span class="sourceLineNo">229</span>   * @return the value.<a name="line.229"></a>
-<span class="sourceLineNo">230</span>   *<a name="line.230"></a>
-<span class="sourceLineNo">231</span>   * @throws IllegalArgumentException thrown if the value is not an absolute<a name="line.231"></a>
-<span class="sourceLineNo">232</span>   * path.<a name="line.232"></a>
-<span class="sourceLineNo">233</span>   */<a name="line.233"></a>
-<span class="sourceLineNo">234</span>  private String checkAbsolutePath(String value, String name) {<a name="line.234"></a>
-<span class="sourceLineNo">235</span>    if (!new File(value).isAbsolute()) {<a name="line.235"></a>
-<span class="sourceLineNo">236</span>      throw new IllegalArgumentException(<a name="line.236"></a>
-<span class="sourceLineNo">237</span>        MessageFormat.format("[{0}] must be an absolute path [{1}]", name, value));<a name="line.237"></a>
-<span class="sourceLineNo">238</span>    }<a name="line.238"></a>
-<span class="sourceLineNo">239</span>    return value;<a name="line.239"></a>
-<span class="sourceLineNo">240</span>  }<a name="line.240"></a>
-<span class="sourceLineNo">241</span><a name="line.241"></a>
-<span class="sourceLineNo">242</span>  /**<a name="line.242"></a>
-<span class="sourceLineNo">243</span>   * Returns the current server status.<a name="line.243"></a>
-<span class="sourceLineNo">244</span>   *<a name="line.244"></a>
-<span class="sourceLineNo">245</span>   * @return the current server status.<a name="line.245"></a>
-<span class="sourceLineNo">246</span>   */<a name="line.246"></a>
-<span class="sourceLineNo">247</span>  public Status getStatus() {<a name="line.247"></a>
-<span class="sourceLineNo">248</span>    return status;<a name="line.248"></a>
-<span class="sourceLineNo">249</span>  }<a name="line.249"></a>
-<span class="sourceLineNo">250</span><a name="line.250"></a>
-<span class="sourceLineNo">251</span>  /**<a name="line.251"></a>
-<span class="sourceLineNo">252</span>   * Sets a new server status.<a name="line.252"></a>
-<span class="sourceLineNo">253</span>   * &lt;p/&gt;<a name="line.253"></a>
-<span class="sourceLineNo">254</span>   * The status must be settable.<a name="line.254"></a>
-<span class="sourceLineNo">255</span>   * &lt;p/&gt;<a name="line.255"></a>
-<span class="sourceLineNo">256</span>   * All services will be notified o the status change via the<a name="line.256"></a>
-<span class="sourceLineNo">257</span>   * {@link Service#serverStatusChange(Server.Status, Server.Status)} method. If a service<a name="line.257"></a>
-<span class="sourceLineNo">258</span>   * throws an exception during the notification, the server will be destroyed.<a name="line.258"></a>
-<span class="sourceLineNo">259</span>   *<a name="line.259"></a>
-<span class="sourceLineNo">260</span>   * @param status status to set.<a name="line.260"></a>
-<span class="sourceLineNo">261</span>   *<a name="line.261"></a>
-<span class="sourceLineNo">262</span>   * @throws ServerException thrown if the service has been destroy because of<a name="line.262"></a>
-<span class="sourceLineNo">263</span>   * a failed notification to a service.<a name="line.263"></a>
-<span class="sourceLineNo">264</span>   */<a name="line.264"></a>
-<span class="sourceLineNo">265</span>  public void setStatus(Status status) throws ServerException {<a name="line.265"></a>
-<span class="sourceLineNo">266</span>    Check.notNull(status, "status");<a name="line.266"></a>
-<span class="sourceLineNo">267</span>    if (status.settable) {<a name="line.267"></a>
-<span class="sourceLineNo">268</span>      if (status != this.status) {<a name="line.268"></a>
-<span class="sourceLineNo">269</span>        Status oldStatus = this.status;<a name="line.269"></a>
-<span class="sourceLineNo">270</span>        this.status = status;<a name="line.270"></a>
-<span class="sourceLineNo">271</span>        for (Service service : services.values()) {<a name="line.271"></a>
-<span class="sourceLineNo">272</span>          try {<a name="line.272"></a>
-<span class="sourceLineNo">273</span>            service.serverStatusChange(oldStatus, status);<a name="line.273"></a>
-<span class="sourceLineNo">274</span>          } catch (Exception ex) {<a name="line.274"></a>
-<span class="sourceLineNo">275</span>            log.error("Service [{}] exception during status change to [{}] -server shutting down-,  {}",<a name="line.275"></a>
-<span class="sourceLineNo">276</span>                      new Object[]{service.getInterface().getSimpleName(), status, ex.getMessage(), ex});<a name="line.276"></a>
-<span class="sourceLineNo">277</span>            destroy();<a name="line.277"></a>
-<span class="sourceLineNo">278</span>            throw new ServerException(ServerException.ERROR.S11, service.getInterface().getSimpleName(),<a name="line.278"></a>
-<span class="sourceLineNo">279</span>                                      status, ex.getMessage(), ex);<a name="line.279"></a>
-<span class="sourceLineNo">280</span>          }<a name="line.280"></a>
-<span class="sourceLineNo">281</span>        }<a name="line.281"></a>
-<span class="sourceLineNo">282</span>      }<a name="line.282"></a>
-<span class="sourceLineNo">283</span>    } else {<a name="line.283"></a>
-<span class="sourceLineNo">284</span>      throw new IllegalArgumentException("Status [" + status + " is not settable");<a name="line.284"></a>
-<span class="sourceLineNo">285</span>    }<a name="line.285"></a>
-<span class="sourceLineNo">286</span>  }<a name="line.286"></a>
-<span class="sourceLineNo">287</span><a name="line.287"></a>
-<span class="sourceLineNo">288</span>  /**<a name="line.288"></a>
-<span class="sourceLineNo">289</span>   * Verifies the server is operational.<a name="line.289"></a>
-<span class="sourceLineNo">290</span>   *<a name="line.290"></a>
-<span class="sourceLineNo">291</span>   * @throws IllegalStateException thrown if the server is not operational.<a name="line.291"></a>
-<span class="sourceLineNo">292</span>   */<a name="line.292"></a>
-<span class="sourceLineNo">293</span>  protected void ensureOperational() {<a name="line.293"></a>
-<span class="sourceLineNo">294</span>    if (!getStatus().isOperational()) {<a name="line.294"></a>
-<span class="sourceLineNo">295</span>      throw new IllegalStateException("Server is not running");<a name="line.295"></a>
-<span class="sourceLineNo">296</span>    }<a name="line.296"></a>
-<span class="sourceLineNo">297</span>  }<a name="line.297"></a>
-<span class="sourceLineNo">298</span><a name="line.298"></a>
-<span class="sourceLineNo">299</span>  /**<a name="line.299"></a>
-<span class="sourceLineNo">300</span>   * Convenience method that returns a resource as inputstream from the<a name="line.300"></a>
-<span class="sourceLineNo">301</span>   * classpath.<a name="line.301"></a>
-<span class="sourceLineNo">302</span>   * &lt;p/&gt;<a name="line.302"></a>
-<span class="sourceLineNo">303</span>   * It first attempts to use the Thread's context classloader and if not<a name="line.303"></a>
-<span class="sourceLineNo">304</span>   * set it uses the &lt;code&gt;ClassUtils&lt;/code&gt; classloader.<a name="line.304"></a>
-<span class="sourceLineNo">305</span>   *<a name="line.305"></a>
-<span class="sourceLineNo">306</span>   * @param name resource to retrieve.<a name="line.306"></a>
-<span class="sourceLineNo">307</span>   *<a name="line.307"></a>
-<span class="sourceLineNo">308</span>   * @return inputstream with the resource, NULL if the resource does not<a name="line.308"></a>
-<span class="sourceLineNo">309</span>   *         exist.<a name="line.309"></a>
-<span class="sourceLineNo">310</span>   */<a name="line.310"></a>
-<span class="sourceLineNo">311</span>  static InputStream getResource(String name) {<a name="line.311"></a>
-<span class="sourceLineNo">312</span>    Check.notEmpty(name, "name");<a name="line.312"></a>
-<span class="sourceLineNo">313</span>    ClassLoader cl = Thread.currentThread().getContextClassLoader();<a name="line.313"></a>
-<span class="sourceLineNo">314</span>    if (cl == null) {<a name="line.314"></a>
-<span class="sourceLineNo">315</span>      cl = Server.class.getClassLoader();<a name="line.315"></a>
-<span class="sourceLineNo">316</span>    }<a name="line.316"></a>
-<span class="sourceLineNo">317</span>    return cl.getResourceAsStream(name);<a name="line.317"></a>
-<span class="sourceLineNo">318</span>  }<a name="line.318"></a>
-<span class="sourceLineNo">319</span><a name="line.319"></a>
-<span class="sourceLineNo">320</span>  /**<a name="line.320"></a>
-<span class="sourceLineNo">321</span>   * Initializes the Server.<a name="line.321"></a>
-<span class="sourceLineNo">322</span>   * &lt;p/&gt;<a name="line.322"></a>
-<span class="sourceLineNo">323</span>   * The initialization steps are:<a name="line.323"></a>
-<span class="sourceLineNo">324</span>   * &lt;ul&gt;<a name="line.324"></a>
-<span class="sourceLineNo">325</span>   * &lt;li&gt;It verifies the service home and temp directories exist&lt;/li&gt;<a name="line.325"></a>
-<span class="sourceLineNo">326</span>   * &lt;li&gt;Loads the Server &lt;code&gt;#SERVER#-default.xml&lt;/code&gt;<a name="line.326"></a>
-<span class="sourceLineNo">327</span>   * configuration file from the classpath&lt;/li&gt;<a name="line.327"></a>
-<span class="sourceLineNo">328</span>   * &lt;li&gt;Initializes log4j logging. If the<a name="line.328"></a>
-<span class="sourceLineNo">329</span>   * &lt;code&gt;#SERVER#-log4j.properties&lt;/code&gt; file does not exist in the config<a name="line.329"></a>
-<span class="sourceLineNo">330</span>   * directory it load &lt;code&gt;default-log4j.properties&lt;/code&gt; from the classpath<a name="line.330"></a>
-<span class="sourceLineNo">331</span>   * &lt;/li&gt;<a name="line.331"></a>
-<span class="sourceLineNo">332</span>   * &lt;li&gt;Loads the &lt;code&gt;#SERVER#-site.xml&lt;/code&gt; file from the server config<a name="line.332"></a>
-<span class="sourceLineNo">333</span>   * directory and merges it with the default configuration.&lt;/li&gt;<a name="line.333"></a>
-<span class="sourceLineNo">334</span>   * &lt;li&gt;Loads the services&lt;/li&gt;<a name="line.334"></a>
-<span class="sourceLineNo">335</span>   * &lt;li&gt;Initializes the services&lt;/li&gt;<a name="line.335"></a>
-<span class="sourceLineNo">336</span>   * &lt;li&gt;Post-initializes the services&lt;/li&gt;<a name="line.336"></a>
-<span class="sourceLineNo">337</span>   * &lt;li&gt;Sets the server startup status&lt;/li&gt;<a name="line.337"></a>
+<span class="sourceLineNo">078</span> */<a name="line.78"></a>
+<span class="sourceLineNo">079</span>@InterfaceAudience.Private<a name="line.79"></a>
+<span class="sourceLineNo">080</span>public class Server {<a name="line.80"></a>
+<span class="sourceLineNo">081</span>  private Logger log;<a name="line.81"></a>
+<span class="sourceLineNo">082</span><a name="line.82"></a>
+<span class="sourceLineNo">083</span>  /**<a name="line.83"></a>
+<span class="sourceLineNo">084</span>   * Server property name that defines the service classes.<a name="line.84"></a>
+<span class="sourceLineNo">085</span>   */<a name="line.85"></a>
+<span class="sourceLineNo">086</span>  public static final String CONF_SERVICES = "services";<a name="line.86"></a>
+<span class="sourceLineNo">087</span><a name="line.87"></a>
+<span class="sourceLineNo">088</span>  /**<a name="line.88"></a>
+<span class="sourceLineNo">089</span>   * Server property name that defines the service extension classes.<a name="line.89"></a>
+<span class="sourceLineNo">090</span>   */<a name="line.90"></a>
+<span class="sourceLineNo">091</span>  public static final String CONF_SERVICES_EXT = "services.ext";<a name="line.91"></a>
+<span class="sourceLineNo">092</span><a name="line.92"></a>
+<span class="sourceLineNo">093</span>  /**<a name="line.93"></a>
+<span class="sourceLineNo">094</span>   * Server property name that defines server startup status.<a name="line.94"></a>
+<span class="sourceLineNo">095</span>   */<a name="line.95"></a>
+<span class="sourceLineNo">096</span>  public static final String CONF_STARTUP_STATUS = "startup.status";<a name="line.96"></a>
+<span class="sourceLineNo">097</span><a name="line.97"></a>
+<span class="sourceLineNo">098</span>  /**<a name="line.98"></a>
+<span class="sourceLineNo">099</span>   * Enumeration that defines the server status.<a name="line.99"></a>
+<span class="sourceLineNo">100</span>   */<a name="line.100"></a>
+<span class="sourceLineNo">101</span>  @InterfaceAudience.Private<a name="line.101"></a>
+<span class="sourceLineNo">102</span>  public static enum Status {<a name="line.102"></a>
+<span class="sourceLineNo">103</span>    UNDEF(false, false),<a name="line.103"></a>
+<span class="sourceLineNo">104</span>    BOOTING(false, true),<a name="line.104"></a>
+<span class="sourceLineNo">105</span>    HALTED(true, true),<a name="line.105"></a>
+<span class="sourceLineNo">106</span>    ADMIN(true, true),<a name="line.106"></a>
+<span class="sourceLineNo">107</span>    NORMAL(true, true),<a name="line.107"></a>
+<span class="sourceLineNo">108</span>    SHUTTING_DOWN(false, true),<a name="line.108"></a>
+<span class="sourceLineNo">109</span>    SHUTDOWN(false, false);<a name="line.109"></a>
+<span class="sourceLineNo">110</span><a name="line.110"></a>
+<span class="sourceLineNo">111</span>    private boolean settable;<a name="line.111"></a>
+<span class="sourceLineNo">112</span>    private boolean operational;<a name="line.112"></a>
+<span class="sourceLineNo">113</span><a name="line.113"></a>
+<span class="sourceLineNo">114</span>    /**<a name="line.114"></a>
+<span class="sourceLineNo">115</span>     * Status constructor.<a name="line.115"></a>
+<span class="sourceLineNo">116</span>     *<a name="line.116"></a>
+<span class="sourceLineNo">117</span>     * @param settable indicates if the status is settable.<a name="line.117"></a>
+<span class="sourceLineNo">118</span>     * @param operational indicates if the server is operational<a name="line.118"></a>
+<span class="sourceLineNo">119</span>     * when in this status.<a name="line.119"></a>
+<span class="sourceLineNo">120</span>     */<a name="line.120"></a>
+<span class="sourceLineNo">121</span>    private Status(boolean settable, boolean operational) {<a name="line.121"></a>
+<span class="sourceLineNo">122</span>      this.settable = settable;<a name="line.122"></a>
+<span class="sourceLineNo">123</span>      this.operational = operational;<a name="line.123"></a>
+<span class="sourceLineNo">124</span>    }<a name="line.124"></a>
+<span class="sourceLineNo">125</span><a name="line.125"></a>
+<span class="sourceLineNo">126</span>    /**<a name="line.126"></a>
+<span class="sourceLineNo">127</span>     * Returns if this server status is operational.<a name="line.127"></a>
+<span class="sourceLineNo">128</span>     *<a name="line.128"></a>
+<span class="sourceLineNo">129</span>     * @return if this server status is operational.<a name="line.129"></a>
+<span class="sourceLineNo">130</span>     */<a name="line.130"></a>
+<span class="sourceLineNo">131</span>    public boolean isOperational() {<a name="line.131"></a>
+<span class="sourceLineNo">132</span>      return operational;<a name="line.132"></a>
+<span class="sourceLineNo">133</span>    }<a name="line.133"></a>
+<span class="sourceLineNo">134</span>  }<a name="line.134"></a>
+<span class="sourceLineNo">135</span><a name="line.135"></a>
+<span class="sourceLineNo">136</span>  /**<a name="line.136"></a>
+<span class="sourceLineNo">137</span>   * Name of the log4j configuration file the Server will load from the<a name="line.137"></a>
+<span class="sourceLineNo">138</span>   * classpath if the &lt;code&gt;#SERVER#-log4j.properties&lt;/code&gt; is not defined<a name="line.138"></a>
+<span class="sourceLineNo">139</span>   * in the server configuration directory.<a name="line.139"></a>
+<span class="sourceLineNo">140</span>   */<a name="line.140"></a>
+<span class="sourceLineNo">141</span>  public static final String DEFAULT_LOG4J_PROPERTIES = "default-log4j.properties";<a name="line.141"></a>
+<span class="sourceLineNo">142</span><a name="line.142"></a>
+<span class="sourceLineNo">143</span>  private Status status;<a name="line.143"></a>
+<span class="sourceLineNo">144</span>  private String name;<a name="line.144"></a>
+<span class="sourceLineNo">145</span>  private String homeDir;<a name="line.145"></a>
+<span class="sourceLineNo">146</span>  private String configDir;<a name="line.146"></a>
+<span class="sourceLineNo">147</span>  private String logDir;<a name="line.147"></a>
+<span class="sourceLineNo">148</span>  private String tempDir;<a name="line.148"></a>
+<span class="sourceLineNo">149</span>  private Configuration config;<a name="line.149"></a>
+<span class="sourceLineNo">150</span>  private Map&lt;Class, Service&gt; services = new LinkedHashMap&lt;Class, Service&gt;();<a name="line.150"></a>
+<span class="sourceLineNo">151</span><a name="line.151"></a>
+<span class="sourceLineNo">152</span>  /**<a name="line.152"></a>
+<span class="sourceLineNo">153</span>   * Creates a server instance.<a name="line.153"></a>
+<span class="sourceLineNo">154</span>   * &lt;p&gt;<a name="line.154"></a>
+<span class="sourceLineNo">155</span>   * The config, log and temp directories are all under the specified home directory.<a name="line.155"></a>
+<span class="sourceLineNo">156</span>   *<a name="line.156"></a>
+<span class="sourceLineNo">157</span>   * @param name server name.<a name="line.157"></a>
+<span class="sourceLineNo">158</span>   * @param homeDir server home directory.<a name="line.158"></a>
+<span class="sourceLineNo">159</span>   */<a name="line.159"></a>
+<span class="sourceLineNo">160</span>  public Server(String name, String homeDir) {<a name="line.160"></a>
+<span class="sourceLineNo">161</span>    this(name, homeDir, null);<a name="line.161"></a>
+<span class="sourceLineNo">162</span>  }<a name="line.162"></a>
+<span class="sourceLineNo">163</span><a name="line.163"></a>
+<span class="sourceLineNo">164</span>  /**<a name="line.164"></a>
+<span class="sourceLineNo">165</span>   * Creates a server instance.<a name="line.165"></a>
+<span class="sourceLineNo">166</span>   *<a name="line.166"></a>
+<span class="sourceLineNo">167</span>   * @param name server name.<a name="line.167"></a>
+<span class="sourceLineNo">168</span>   * @param homeDir server home directory.<a name="line.168"></a>
+<span class="sourceLineNo">169</span>   * @param configDir config directory.<a name="line.169"></a>
+<span class="sourceLineNo">170</span>   * @param logDir log directory.<a name="line.170"></a>
+<span class="sourceLineNo">171</span>   * @param tempDir temp directory.<a name="line.171"></a>
+<span class="sourceLineNo">172</span>   */<a name="line.172"></a>
+<span class="sourceLineNo">173</span>  public Server(String name, String homeDir, String configDir, String logDir, String tempDir) {<a name="line.173"></a>
+<span class="sourceLineNo">174</span>    this(name, homeDir, configDir, logDir, tempDir, null);<a name="line.174"></a>
+<span class="sourceLineNo">175</span>  }<a name="line.175"></a>
+<span class="sourceLineNo">176</span><a name="line.176"></a>
+<span class="sourceLineNo">177</span>  /**<a name="line.177"></a>
+<span class="sourceLineNo">178</span>   * Creates a server instance.<a name="line.178"></a>
+<span class="sourceLineNo">179</span>   * &lt;p&gt;<a name="line.179"></a>
+<span class="sourceLineNo">180</span>   * The config, log and temp directories are all under the specified home directory.<a name="line.180"></a>
+<span class="sourceLineNo">181</span>   * &lt;p&gt;<a name="line.181"></a>
+<span class="sourceLineNo">182</span>   * It uses the provided configuration instead loading it from the config dir.<a name="line.182"></a>
+<span class="sourceLineNo">183</span>   *<a name="line.183"></a>
+<span class="sourceLineNo">184</span>   * @param name server name.<a name="line.184"></a>
+<span class="sourceLineNo">185</span>   * @param homeDir server home directory.<a name="line.185"></a>
+<span class="sourceLineNo">186</span>   * @param config server configuration.<a name="line.186"></a>
+<span class="sourceLineNo">187</span>   */<a name="line.187"></a>
+<span class="sourceLineNo">188</span>  public Server(String name, String homeDir, Configuration config) {<a name="line.188"></a>
+<span class="sourceLineNo">189</span>    this(name, homeDir, homeDir + "/conf", homeDir + "/log", homeDir + "/temp", config);<a name="line.189"></a>
+<span class="sourceLineNo">190</span>  }<a name="line.190"></a>
+<span class="sourceLineNo">191</span><a name="line.191"></a>
+<span class="sourceLineNo">192</span>  /**<a name="line.192"></a>
+<span class="sourceLineNo">193</span>   * Creates a server instance.<a name="line.193"></a>
+<span class="sourceLineNo">194</span>   * &lt;p&gt;<a name="line.194"></a>
+<span class="sourceLineNo">195</span>   * It uses the provided configuration instead loading it from the config dir.<a name="line.195"></a>
+<span class="sourceLineNo">196</span>   *<a name="line.196"></a>
+<span class="sourceLineNo">197</span>   * @param name server name.<a name="line.197"></a>
+<span class="sourceLineNo">198</span>   * @param homeDir server home directory.<a name="line.198"></a>
+<span class="sourceLineNo">199</span>   * @param configDir config directory.<a name="line.199"></a>
+<span class="sourceLineNo">200</span>   * @param logDir log directory.<a name="line.200"></a>
+<span class="sourceLineNo">201</span>   * @param tempDir temp directory.<a name="line.201"></a>
+<span class="sourceLineNo">202</span>   * @param config server configuration.<a name="line.202"></a>
+<span class="sourceLineNo">203</span>   */<a name="line.203"></a>
+<span class="sourceLineNo">204</span>  public Server(String name, String homeDir, String configDir, String logDir, String tempDir, Configuration config) {<a name="line.204"></a>
+<span class="sourceLineNo">205</span>    this.name = Check.notEmpty(name, "name").trim().toLowerCase();<a name="line.205"></a>
+<span class="sourceLineNo">206</span>    this.homeDir = Check.notEmpty(homeDir, "homeDir");<a name="line.206"></a>
+<span class="sourceLineNo">207</span>    this.configDir = Check.notEmpty(configDir, "configDir");<a name="line.207"></a>
+<span class="sourceLineNo">208</span>    this.logDir = Check.notEmpty(logDir, "logDir");<a name="line.208"></a>
+<span class="sourceLineNo">209</span>    this.tempDir = Check.notEmpty(tempDir, "tempDir");<a name="line.209"></a>
+<span class="sourceLineNo">210</span>    checkAbsolutePath(homeDir, "homeDir");<a name="line.210"></a>
+<span class="sourceLineNo">211</span>    checkAbsolutePath(configDir, "configDir");<a name="line.211"></a>
+<span class="sourceLineNo">212</span>    checkAbsolutePath(logDir, "logDir");<a name="line.212"></a>
+<span class="sourceLineNo">213</span>    checkAbsolutePath(tempDir, "tempDir");<a name="line.213"></a>
+<span class="sourceLineNo">214</span>    if (config != null) {<a name="line.214"></a>
+<span class="sourceLineNo">215</span>      this.config = new Configuration(false);<a name="line.215"></a>
+<span class="sourceLineNo">216</span>      ConfigurationUtils.copy(config, this.config);<a name="line.216"></a>
+<span class="sourceLineNo">217</span>    }<a name="line.217"></a>
+<span class="sourceLineNo">218</span>    status = Status.UNDEF;<a name="line.218"></a>
+<span class="sourceLineNo">219</span>  }<a name="line.219"></a>
+<span class="sourceLineNo">220</span><a name="line.220"></a>
+<span class="sourceLineNo">221</span>  /**<a name="line.221"></a>
+<span class="sourceLineNo">222</span>   * Validates that the specified value is an absolute path (starts with '/').<a name="line.222"></a>
+<span class="sourceLineNo">223</span>   *<a name="line.223"></a>
+<span class="sourceLineNo">224</span>   * @param value value to verify it is an absolute path.<a name="line.224"></a>
+<span class="sourceLineNo">225</span>   * @param name name to use in the exception if the value is not an absolute<a name="line.225"></a>
+<span class="sourceLineNo">226</span>   * path.<a name="line.226"></a>
+<span class="sourceLineNo">227</span>   *<a name="line.227"></a>
+<span class="sourceLineNo">228</span>   * @return the value.<a name="line.228"></a>
+<span class="sourceLineNo">229</span>   *<a name="line.229"></a>
+<span class="sourceLineNo">230</span>   * @throws IllegalArgumentException thrown if the value is not an absolute<a name="line.230"></a>
+<span class="sourceLineNo">231</span>   * path.<a name="line.231"></a>
+<span class="sourceLineNo">232</span>   */<a name="line.232"></a>
+<span class="sourceLineNo">233</span>  private String checkAbsolutePath(String value, String name) {<a name="line.233"></a>
+<span class="sourceLineNo">234</span>    if (!new File(value).isAbsolute()) {<a name="line.234"></a>
+<span class="sourceLineNo">235</span>      throw new IllegalArgumentException(<a name="line.235"></a>
+<span class="sourceLineNo">236</span>        MessageFormat.format("[{0}] must be an absolute path [{1}]", name, value));<a name="line.236"></a>
+<span class="sourceLineNo">237</span>    }<a name="line.237"></a>
+<span class="sourceLineNo">238</span>    return value;<a name="line.238"></a>
+<span class="sourceLineNo">239</span>  }<a name="line.239"></a>
+<span class="sourceLineNo">240</span><a name="line.240"></a>
+<span class="sourceLineNo">241</span>  /**<a name="line.241"></a>
+<span class="sourceLineNo">242</span>   * Returns the current server status.<a name="line.242"></a>
+<span class="sourceLineNo">243</span>   *<a name="line.243"></a>
+<span class="sourceLineNo">244</span>   * @return the current server status.<a name="line.244"></a>
+<span class="sourceLineNo">245</span>   */<a name="line.245"></a>
+<span class="sourceLineNo">246</span>  public Status getStatus() {<a name="line.246"></a>
+<span class="sourceLineNo">247</span>    return status;<a name="line.247"></a>
+<span class="sourceLineNo">248</span>  }<a name="line.248"></a>
+<span class="sourceLineNo">249</span><a name="line.249"></a>
+<span class="sourceLineNo">250</span>  /**<a name="line.250"></a>
+<span class="sourceLineNo">251</span>   * Sets a new server status.<a name="line.251"></a>
+<span class="sourceLineNo">252</span>   * &lt;p&gt;<a name="line.252"></a>
+<span class="sourceLineNo">253</span>   * The status must be settable.<a name="line.253"></a>
+<span class="sourceLineNo">254</span>   * &lt;p&gt;<a name="line.254"></a>
+<span class="sourceLineNo">255</span>   * All services will be notified o the status change via the<a name="line.255"></a>
+<span class="sourceLineNo">256</span>   * {@link Service#serverStatusChange(Server.Status, Server.Status)} method. If a service<a name="line.256"></a>
+<span class="sourceLineNo">257</span>   * throws an exception during the notification, the server will be destroyed.<a name="line.257"></a>
+<span class="sourceLineNo">258</span>   *<a name="line.258"></a>
+<span class="sourceLineNo">259</span>   * @param status status to set.<a name="line.259"></a>
+<span class="sourceLineNo">260</span>   *<a name="line.260"></a>
+<span class="sourceLineNo">261</span>   * @throws ServerException thrown if the service has been destroy because of<a name="line.261"></a>
+<span class="sourceLineNo">262</span>   * a failed notification to a service.<a name="line.262"></a>
+<span class="sourceLineNo">263</span>   */<a name="line.263"></a>
+<span class="sourceLineNo">264</span>  public void setStatus(Status status) throws ServerException {<a name="line.264"></a>
+<span class="sourceLineNo">265</span>    Check.notNull(status, "status");<a name="line.265"></a>
+<span class="sourceLineNo">266</span>    if (status.settable) {<a name="line.266"></a>
+<span class="sourceLineNo">267</span>      if (status != this.status) {<a name="line.267"></a>
+<span class="sourceLineNo">268</span>        Status oldStatus = this.status;<a name="line.268"></a>
+<span class="sourceLineNo">269</span>        this.status = status;<a name="line.269"></a>
+<span class="sourceLineNo">270</span>        for (Service service : services.values()) {<a name="line.270"></a>
+<span class="sourceLineNo">271</span>          try {<a name="line.271"></a>
+<span class="sourceLineNo">272</span>            service.serverStatusChange(oldStatus, status);<a name="line.272"></a>
+<span class="sourceLineNo">273</span>          } catch (Exception ex) {<a name="line.273"></a>
+<span class="sourceLineNo">274</span>            log.error("Service [{}] exception during status change to [{}] -server shutting down-,  {}",<a name="line.274"></a>
+<span class="sourceLineNo">275</span>                      new Object[]{service.getInterface().getSimpleName(), status, ex.getMessage(), ex});<a name="line.275"></a>
+<span class="sourceLineNo">276</span>            destroy();<a name="line.276"></a>
+<span class="sourceLineNo">277</span>            throw new ServerException(ServerException.ERROR.S11, service.getInterface().getSimpleName(),<a name="line.277"></a>
+<span class="sourceLineNo">278</span>                                      status, ex.getMessage(), ex);<a name="line.278"></a>
+<span class="sourceLineNo">279</span>          }<a name="line.279"></a>
+<span class="sourceLineNo">280</span>        }<a name="line.280"></a>
+<span class="sourceLineNo">281</span>      }<a name="line.281"></a>
+<span class="sourceLineNo">282</span>    } else {<a name="line.282"></a>
+<span class="sourceLineNo">283</span>      throw new IllegalArgumentException("Status [" + status + " is not settable");<a name="line.283"></a>
+<span class="sourceLineNo">284</span>    }<a name="line.284"></a>
+<span class="sourceLineNo">285</span>  }<a name="line.285"></a>
+<span class="sourceLineNo">286</span><a name="line.286"></a>
+<span class="sourceLineNo">287</span>  /**<a name="line.287"></a>
+<span class="sourceLineNo">288</span>   * Verifies the server is operational.<a name="line.288"></a>
+<span class="sourceLineNo">289</span>   *<a name="line.289"></a>
+<span class="sourceLineNo">290</span>   * @throws IllegalStateException thrown if the server is not operational.<a name="line.290"></a>
+<span class="sourceLineNo">291</span>   */<a name="line.291"></a>
+<span class="sourceLineNo">292</span>  protected void ensureOperational() {<a name="line.292"></a>
+<span class="sourceLineNo">293</span>    if (!getStatus().isOperational()) {<a name="line.293"></a>
+<span class="sourceLineNo">294</span>      throw new IllegalStateException("Server is not running");<a name="line.294"></a>
+<span class="sourceLineNo">295</span>    }<a name="line.295"></a>
+<span class="sourceLineNo">296</span>  }<a name="line.296"></a>
+<span class="sourceLineNo">297</span><a name="line.297"></a>
+<span class="sourceLineNo">298</span>  /**<a name="line.298"></a>
+<span class="sourceLineNo">299</span>   * Convenience method that returns a resource as inputstream from the<a name="line.299"></a>
+<span class="sourceLineNo">300</span>   * classpath.<a name="line.300"></a>
+<span class="sourceLineNo">301</span>   * &lt;p&gt;<a name="line.301"></a>
+<span class="sourceLineNo">302</span>   * It first attempts to use the Thread's context classloader and if not<a name="line.302"></a>
+<span class="sourceLineNo">303</span>   * set it uses the &lt;code&gt;ClassUtils&lt;/code&gt; classloader.<a name="line.303"></a>
+<span class="sourceLineNo">304</span>   *<a name="line.304"></a>
+<span class="sourceLineNo">305</span>   * @param name resource to retrieve.<a name="line.305"></a>
+<span class="sourceLineNo">306</span>   *<a name="line.306"></a>
+<span class="sourceLineNo">307</span>   * @return inputstream with the resource, NULL if the resource does not<a name="line.307"></a>
+<span class="sourceLineNo">308</span>   *         exist.<a name="line.308"></a>
+<span class="sourceLineNo">309</span>   */<a name="line.309"></a>
+<span class="sourceLineNo">310</span>  static InputStream getResource(String name) {<a name="line.310"></a>
+<span class="sourceLineNo">311</span>    Check.notEmpty(name, "name");<a name="line.311"></a>
+<span class="sourceLineNo">312</span>    ClassLoader cl = Thread.currentThread().getContextClassLoader();<a name="line.312"></a>
+<span class="sourceLineNo">313</span>    if (cl == null) {<a name="line.313"></a>
+<span class="sourceLineNo">314</span>      cl = Server.class.getClassLoader();<a name="line.314"></a>
+<span class="sourceLineNo">315</span>    }<a name="line.315"></a>
+<span class="sourceLineNo">316</span>    return cl.getResourceAsStream(name);<a name="line.316"></a>
+<span class="sourceLineNo">317</span>  }<a name="line.317"></a>
+<span class="sourceLineNo">318</span><a name="line.318"></a>
+<span class="sourceLineNo">319</span>  /**<a name="line.319"></a>
+<span class="sourceLineNo">320</span>   * Initializes the Server.<a name="line.320"></a>
+<span class="sourceLineNo">321</span>   * &lt;p&gt;<a name="line.321"></a>
+<span class="sourceLineNo">322</span>   * The initialization steps are:<a name="line.322"></a>
+<span class="sourceLineNo">323</span>   * &lt;ul&gt;<a name="line.323"></a>
+<span class="sourceLineNo">324</span>   * &lt;li&gt;It verifies the service home and temp directories exist&lt;/li&gt;<a name="line.324"></a>
+<span class="sourceLineNo">325</span>   * &lt;li&gt;Loads the Server &lt;code&gt;#SERVER#-default.xml&lt;/code&gt;<a name="line.325"></a>
+<span class="sourceLineNo">326</span>   * configuration file from the classpath&lt;/li&gt;<a name="line.326"></a>
+<span class="sourceLineNo">327</span>   * &lt;li&gt;Initializes log4j logging. If the<a name="line.327"></a>
+<span class="sourceLineNo">328</span>   * &lt;code&gt;#SERVER#-log4j.properties&lt;/code&gt; file does not exist in the config<a name="line.328"></a>
+<span class="sourceLineNo">329</span>   * directory it load &lt;code&gt;default-log4j.properties&lt;/code&gt; from the classpath<a name="line.329"></a>
+<span class="sourceLineNo">330</span>   * &lt;/li&gt;<a name="line.330"></a>
+<span class="sourceLineNo">331</span>   * &lt;li&gt;Loads the &lt;code&gt;#SERVER#-site.xml&lt;/code&gt; file from the server config<a name="line.331"></a>
+<span class="sourceLineNo">332</span>   * directory and merges it with the default configuration.&lt;/li&gt;<a name="line.332"></a>
+<span class="sourceLineNo">333</span>   * &lt;li&gt;Loads the services&lt;/li&gt;<a name="line.333"></a>
+<span class="sourceLineNo">334</span>   * &lt;li&gt;Initializes the services&lt;/li&gt;<a name="line.334"></a>
+<span class="sourceLineNo">335</span>   * &lt;li&gt;Post-initializes the services&lt;/li&gt;<a name="line.335"></a>
+<span class="sourceLineNo">336</span>   * &lt;li&gt;Sets the server startup status&lt;/li&gt;<a name="line.336"></a>
+<span class="sourceLineNo">337</span>   * &lt;/ul&gt;<a name="line.337"></a>
 <span class="sourceLineNo">338</span>   *<a name="line.338"></a>
 <span class="sourceLineNo">339</span>   * @throws ServerException thrown if the server could not be initialized.<a name="line.339"></a>
 <span class="sourceLineNo">340</span>   */<a name="line.340"></a>
@@ -633,7 +633,7 @@
 <span class="sourceLineNo">625</span><a name="line.625"></a>
 <span class="sourceLineNo">626</span>  /**<a name="line.626"></a>
 <span class="sourceLineNo">627</span>   * Destroys the server.<a name="line.627"></a>
-<span class="sourceLineNo">628</span>   * &lt;p/&gt;<a name="line.628"></a>
+<span class="sourceLineNo">628</span>   * &lt;p&gt;<a name="line.628"></a>
 <span class="sourceLineNo">629</span>   * All services are destroyed in reverse order of initialization, then the<a name="line.629"></a>
 <span class="sourceLineNo">630</span>   * Log4j framework is shutdown.<a name="line.630"></a>
 <span class="sourceLineNo">631</span>   */<a name="line.631"></a>
@@ -659,7 +659,7 @@
 <span class="sourceLineNo">651</span><a name="line.651"></a>
 <span class="sourceLineNo">652</span>  /**<a name="line.652"></a>
 <span class="sourceLineNo">653</span>   * Returns the server prefix for server configuration properties.<a name="line.653"></a>
-<span class="sourceLineNo">654</span>   * &lt;p/&gt;<a name="line.654"></a>
+<span class="sourceLineNo">654</span>   * &lt;p&gt;<a name="line.654"></a>
 <span class="sourceLineNo">655</span>   * By default it is the server name.<a name="line.655"></a>
 <span class="sourceLineNo">656</span>   *<a name="line.656"></a>
 <span class="sourceLineNo">657</span>   * @return the prefix for server configuration properties.<a name="line.657"></a>
@@ -741,10 +741,10 @@
 <span class="sourceLineNo">733</span><a name="line.733"></a>
 <span class="sourceLineNo">734</span>  /**<a name="line.734"></a>
 <span class="sourceLineNo">735</span>   * Adds a service programmatically.<a name="line.735"></a>
-<span class="sourceLineNo">736</span>   * &lt;p/&gt;<a name="line.736"></a>
+<span class="sourceLineNo">736</span>   * &lt;p&gt;<a name="line.736"></a>
 <span class="sourceLineNo">737</span>   * If a service with the same interface exists, it will be destroyed and<a name="line.737"></a>
 <span class="sourceLineNo">738</span>   * removed before the given one is initialized and added.<a name="line.738"></a>
-<span class="sourceLineNo">739</span>   * &lt;p/&gt;<a name="line.739"></a>
+<span class="sourceLineNo">739</span>   * &lt;p&gt;<a name="line.739"></a>
 <span class="sourceLineNo">740</span>   * If an exception is thrown the server is destroyed.<a name="line.740"></a>
 <span class="sourceLineNo">741</span>   *<a name="line.741"></a>
 <span class="sourceLineNo">742</span>   * @param klass service class to add.<a name="line.742"></a>
