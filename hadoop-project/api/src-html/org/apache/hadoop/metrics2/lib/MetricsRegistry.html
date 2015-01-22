@@ -371,37 +371,51 @@
 <span class="sourceLineNo">363</span>  }<a name="line.363"></a>
 <span class="sourceLineNo">364</span><a name="line.364"></a>
 <span class="sourceLineNo">365</span>  private void checkMetricName(String name) {<a name="line.365"></a>
-<span class="sourceLineNo">366</span>    if (metricsMap.containsKey(name)) {<a name="line.366"></a>
-<span class="sourceLineNo">367</span>      throw new MetricsException("Metric name "+ name +" already exists!");<a name="line.367"></a>
-<span class="sourceLineNo">368</span>    }<a name="line.368"></a>
-<span class="sourceLineNo">369</span>  }<a name="line.369"></a>
-<span class="sourceLineNo">370</span><a name="line.370"></a>
-<span class="sourceLineNo">371</span>  private void checkTagName(String name) {<a name="line.371"></a>
-<span class="sourceLineNo">372</span>    if (tagsMap.containsKey(name)) {<a name="line.372"></a>
-<span class="sourceLineNo">373</span>      throw new MetricsException("Tag "+ name +" already exists!");<a name="line.373"></a>
+<span class="sourceLineNo">366</span>    // Check for invalid characters in metric name<a name="line.366"></a>
+<span class="sourceLineNo">367</span>    boolean foundWhitespace = false;<a name="line.367"></a>
+<span class="sourceLineNo">368</span>    for (int i = 0; i &lt; name.length(); i++) {<a name="line.368"></a>
+<span class="sourceLineNo">369</span>      char c = name.charAt(i);<a name="line.369"></a>
+<span class="sourceLineNo">370</span>      if (Character.isWhitespace(c)) {<a name="line.370"></a>
+<span class="sourceLineNo">371</span>        foundWhitespace = true;<a name="line.371"></a>
+<span class="sourceLineNo">372</span>        break;<a name="line.372"></a>
+<span class="sourceLineNo">373</span>      }<a name="line.373"></a>
 <span class="sourceLineNo">374</span>    }<a name="line.374"></a>
-<span class="sourceLineNo">375</span>  }<a name="line.375"></a>
-<span class="sourceLineNo">376</span><a name="line.376"></a>
-<span class="sourceLineNo">377</span>  /**<a name="line.377"></a>
-<span class="sourceLineNo">378</span>   * Sample all the mutable metrics and put the snapshot in the builder<a name="line.378"></a>
-<span class="sourceLineNo">379</span>   * @param builder to contain the metrics snapshot<a name="line.379"></a>
-<span class="sourceLineNo">380</span>   * @param all get all the metrics even if the values are not changed.<a name="line.380"></a>
-<span class="sourceLineNo">381</span>   */<a name="line.381"></a>
-<span class="sourceLineNo">382</span>  public synchronized void snapshot(MetricsRecordBuilder builder, boolean all) {<a name="line.382"></a>
-<span class="sourceLineNo">383</span>    for (MetricsTag tag : tags()) {<a name="line.383"></a>
-<span class="sourceLineNo">384</span>      builder.add(tag);<a name="line.384"></a>
-<span class="sourceLineNo">385</span>    }<a name="line.385"></a>
-<span class="sourceLineNo">386</span>    for (MutableMetric metric : metrics()) {<a name="line.386"></a>
-<span class="sourceLineNo">387</span>      metric.snapshot(builder, all);<a name="line.387"></a>
+<span class="sourceLineNo">375</span>    if (foundWhitespace) {<a name="line.375"></a>
+<span class="sourceLineNo">376</span>      throw new MetricsException("Metric name '"+ name +<a name="line.376"></a>
+<span class="sourceLineNo">377</span>          "' contains illegal whitespace character");<a name="line.377"></a>
+<span class="sourceLineNo">378</span>    }<a name="line.378"></a>
+<span class="sourceLineNo">379</span>    // Check if name has already been registered<a name="line.379"></a>
+<span class="sourceLineNo">380</span>    if (metricsMap.containsKey(name)) {<a name="line.380"></a>
+<span class="sourceLineNo">381</span>      throw new MetricsException("Metric name "+ name +" already exists!");<a name="line.381"></a>
+<span class="sourceLineNo">382</span>    }<a name="line.382"></a>
+<span class="sourceLineNo">383</span>  }<a name="line.383"></a>
+<span class="sourceLineNo">384</span><a name="line.384"></a>
+<span class="sourceLineNo">385</span>  private void checkTagName(String name) {<a name="line.385"></a>
+<span class="sourceLineNo">386</span>    if (tagsMap.containsKey(name)) {<a name="line.386"></a>
+<span class="sourceLineNo">387</span>      throw new MetricsException("Tag "+ name +" already exists!");<a name="line.387"></a>
 <span class="sourceLineNo">388</span>    }<a name="line.388"></a>
 <span class="sourceLineNo">389</span>  }<a name="line.389"></a>
 <span class="sourceLineNo">390</span><a name="line.390"></a>
-<span class="sourceLineNo">391</span>  @Override public String toString() {<a name="line.391"></a>
-<span class="sourceLineNo">392</span>    return Objects.toStringHelper(this)<a name="line.392"></a>
-<span class="sourceLineNo">393</span>        .add("info", metricsInfo).add("tags", tags()).add("metrics", metrics())<a name="line.393"></a>
-<span class="sourceLineNo">394</span>        .toString();<a name="line.394"></a>
-<span class="sourceLineNo">395</span>  }<a name="line.395"></a>
-<span class="sourceLineNo">396</span>}<a name="line.396"></a>
+<span class="sourceLineNo">391</span>  /**<a name="line.391"></a>
+<span class="sourceLineNo">392</span>   * Sample all the mutable metrics and put the snapshot in the builder<a name="line.392"></a>
+<span class="sourceLineNo">393</span>   * @param builder to contain the metrics snapshot<a name="line.393"></a>
+<span class="sourceLineNo">394</span>   * @param all get all the metrics even if the values are not changed.<a name="line.394"></a>
+<span class="sourceLineNo">395</span>   */<a name="line.395"></a>
+<span class="sourceLineNo">396</span>  public synchronized void snapshot(MetricsRecordBuilder builder, boolean all) {<a name="line.396"></a>
+<span class="sourceLineNo">397</span>    for (MetricsTag tag : tags()) {<a name="line.397"></a>
+<span class="sourceLineNo">398</span>      builder.add(tag);<a name="line.398"></a>
+<span class="sourceLineNo">399</span>    }<a name="line.399"></a>
+<span class="sourceLineNo">400</span>    for (MutableMetric metric : metrics()) {<a name="line.400"></a>
+<span class="sourceLineNo">401</span>      metric.snapshot(builder, all);<a name="line.401"></a>
+<span class="sourceLineNo">402</span>    }<a name="line.402"></a>
+<span class="sourceLineNo">403</span>  }<a name="line.403"></a>
+<span class="sourceLineNo">404</span><a name="line.404"></a>
+<span class="sourceLineNo">405</span>  @Override public String toString() {<a name="line.405"></a>
+<span class="sourceLineNo">406</span>    return Objects.toStringHelper(this)<a name="line.406"></a>
+<span class="sourceLineNo">407</span>        .add("info", metricsInfo).add("tags", tags()).add("metrics", metrics())<a name="line.407"></a>
+<span class="sourceLineNo">408</span>        .toString();<a name="line.408"></a>
+<span class="sourceLineNo">409</span>  }<a name="line.409"></a>
+<span class="sourceLineNo">410</span>}<a name="line.410"></a>
 
 
 
