@@ -331,7 +331,7 @@
 <span class="sourceLineNo">323</span>    }<a name="line.323"></a>
 <span class="sourceLineNo">324</span><a name="line.324"></a>
 <span class="sourceLineNo">325</span>    private Configuration getConf(Configuration jconf) throws IOException {<a name="line.325"></a>
-<span class="sourceLineNo">326</span>      Job job = new Job(jconf);<a name="line.326"></a>
+<span class="sourceLineNo">326</span>      Job job = Job.getInstance(jconf);<a name="line.326"></a>
 <span class="sourceLineNo">327</span>      FileInputFormat.setInputPaths(job, indir);<a name="line.327"></a>
 <span class="sourceLineNo">328</span>      return job.getConfiguration();<a name="line.328"></a>
 <span class="sourceLineNo">329</span>    }<a name="line.329"></a>

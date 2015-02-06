@@ -91,7 +91,7 @@
 <span class="sourceLineNo">083</span>        ? FileSystem.getLocal(conf)     // assume in DistributedCache<a name="line.83"></a>
 <span class="sourceLineNo">084</span>        : partFile.getFileSystem(conf);<a name="line.84"></a>
 <span class="sourceLineNo">085</span><a name="line.85"></a>
-<span class="sourceLineNo">086</span>      Job job = new Job(conf);<a name="line.86"></a>
+<span class="sourceLineNo">086</span>      Job job = Job.getInstance(conf);<a name="line.86"></a>
 <span class="sourceLineNo">087</span>      Class&lt;K&gt; keyClass = (Class&lt;K&gt;)job.getMapOutputKeyClass();<a name="line.87"></a>
 <span class="sourceLineNo">088</span>      K[] splitPoints = readPartitions(fs, partFile, keyClass, conf);<a name="line.88"></a>
 <span class="sourceLineNo">089</span>      if (splitPoints.length != job.getNumReduceTasks() - 1) {<a name="line.89"></a>

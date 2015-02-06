@@ -81,7 +81,7 @@
 <span class="sourceLineNo">073</span>  public InputSplit[] getSplits(JobConf job, int numSplits) <a name="line.73"></a>
 <span class="sourceLineNo">074</span>    throws IOException {<a name="line.74"></a>
 <span class="sourceLineNo">075</span>    List&lt;org.apache.hadoop.mapreduce.InputSplit&gt; newStyleSplits =<a name="line.75"></a>
-<span class="sourceLineNo">076</span>      super.getSplits(new Job(job));<a name="line.76"></a>
+<span class="sourceLineNo">076</span>      super.getSplits(Job.getInstance(job));<a name="line.76"></a>
 <span class="sourceLineNo">077</span>    InputSplit[] ret = new InputSplit[newStyleSplits.size()];<a name="line.77"></a>
 <span class="sourceLineNo">078</span>    for(int pos = 0; pos &lt; newStyleSplits.size(); ++pos) {<a name="line.78"></a>
 <span class="sourceLineNo">079</span>      org.apache.hadoop.mapreduce.lib.input.CombineFileSplit newStyleSplit = <a name="line.79"></a>
@@ -137,7 +137,7 @@
 <span class="sourceLineNo">129</span>   * @throws IOException if zero items.<a name="line.129"></a>
 <span class="sourceLineNo">130</span>   */<a name="line.130"></a>
 <span class="sourceLineNo">131</span>  protected FileStatus[] listStatus(JobConf job) throws IOException {<a name="line.131"></a>
-<span class="sourceLineNo">132</span>    List&lt;FileStatus&gt; result = super.listStatus(new Job(job));<a name="line.132"></a>
+<span class="sourceLineNo">132</span>    List&lt;FileStatus&gt; result = super.listStatus(Job.getInstance(job));<a name="line.132"></a>
 <span class="sourceLineNo">133</span>    return result.toArray(new FileStatus[result.size()]);<a name="line.133"></a>
 <span class="sourceLineNo">134</span>  }<a name="line.134"></a>
 <span class="sourceLineNo">135</span><a name="line.135"></a>

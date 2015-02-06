@@ -185,7 +185,7 @@
 <span class="sourceLineNo">177</span>  /** {@inheritDoc} */<a name="line.177"></a>
 <span class="sourceLineNo">178</span>  public InputSplit[] getSplits(JobConf job, int chunks) throws IOException {<a name="line.178"></a>
 <span class="sourceLineNo">179</span>    List&lt;org.apache.hadoop.mapreduce.InputSplit&gt; newSplits = <a name="line.179"></a>
-<span class="sourceLineNo">180</span>      super.getSplits(new Job(job));<a name="line.180"></a>
+<span class="sourceLineNo">180</span>      super.getSplits(Job.getInstance(job));<a name="line.180"></a>
 <span class="sourceLineNo">181</span>    InputSplit[] ret = new InputSplit[newSplits.size()];<a name="line.181"></a>
 <span class="sourceLineNo">182</span>    int i = 0;<a name="line.182"></a>
 <span class="sourceLineNo">183</span>    for (org.apache.hadoop.mapreduce.InputSplit s : newSplits) {<a name="line.183"></a>

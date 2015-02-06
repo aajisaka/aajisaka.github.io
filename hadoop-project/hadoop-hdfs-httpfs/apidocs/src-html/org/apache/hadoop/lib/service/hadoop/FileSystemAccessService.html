@@ -185,7 +185,7 @@
 <span class="sourceLineNo">177</span><a name="line.177"></a>
 <span class="sourceLineNo">178</span>    String hadoopConfDirProp = getServiceConfig().get(HADOOP_CONF_DIR, getServer().getConfigDir());<a name="line.178"></a>
 <span class="sourceLineNo">179</span>    File hadoopConfDir = new File(hadoopConfDirProp).getAbsoluteFile();<a name="line.179"></a>
-<span class="sourceLineNo">180</span>    if (hadoopConfDir == null) {<a name="line.180"></a>
+<span class="sourceLineNo">180</span>    if (!hadoopConfDir.exists()) {<a name="line.180"></a>
 <span class="sourceLineNo">181</span>      hadoopConfDir = new File(getServer().getConfigDir()).getAbsoluteFile();<a name="line.181"></a>
 <span class="sourceLineNo">182</span>    }<a name="line.182"></a>
 <span class="sourceLineNo">183</span>    if (!hadoopConfDir.exists()) {<a name="line.183"></a>

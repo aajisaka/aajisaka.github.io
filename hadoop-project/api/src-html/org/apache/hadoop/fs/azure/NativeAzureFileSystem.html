@@ -2048,366 +2048,396 @@
 <span class="sourceLineNo">2040</span>              createPermissionStatus(FsPermission.getDefault()));<a name="line.2040"></a>
 <span class="sourceLineNo">2041</span>        }<a name="line.2041"></a>
 <span class="sourceLineNo">2042</span><a name="line.2042"></a>
-<span class="sourceLineNo">2043</span>        store.updateFolderLastModifiedTime(parentKey, null);<a name="line.2043"></a>
-<span class="sourceLineNo">2044</span>      }<a name="line.2044"></a>
-<span class="sourceLineNo">2045</span>    }<a name="line.2045"></a>
-<span class="sourceLineNo">2046</span>  }<a name="line.2046"></a>
-<span class="sourceLineNo">2047</span><a name="line.2047"></a>
-<span class="sourceLineNo">2048</span>  /**<a name="line.2048"></a>
-<span class="sourceLineNo">2049</span>   * If the source is a page blob folder,<a name="line.2049"></a>
-<span class="sourceLineNo">2050</span>   * prepare to rename this folder atomically. This means to get exclusive<a name="line.2050"></a>
-<span class="sourceLineNo">2051</span>   * access to the source folder, and record the actions to be performed for<a name="line.2051"></a>
-<span class="sourceLineNo">2052</span>   * this rename in a "Rename Pending" file. This code was designed to<a name="line.2052"></a>
-<span class="sourceLineNo">2053</span>   * meet the needs of HBase, which requires atomic rename of write-ahead log<a name="line.2053"></a>
-<span class="sourceLineNo">2054</span>   * (WAL) folders for correctness.<a name="line.2054"></a>
-<span class="sourceLineNo">2055</span>   *<a name="line.2055"></a>
-<span class="sourceLineNo">2056</span>   * Before calling this method, the caller must ensure that the source is a<a name="line.2056"></a>
-<span class="sourceLineNo">2057</span>   * folder.<a name="line.2057"></a>
-<span class="sourceLineNo">2058</span>   *<a name="line.2058"></a>
-<span class="sourceLineNo">2059</span>   * For non-page-blob directories, prepare the in-memory information needed,<a name="line.2059"></a>
-<span class="sourceLineNo">2060</span>   * but don't take the lease or write the redo file. This is done to limit the<a name="line.2060"></a>
-<span class="sourceLineNo">2061</span>   * scope of atomic folder rename to HBase, at least at the time of writing<a name="line.2061"></a>
-<span class="sourceLineNo">2062</span>   * this code.<a name="line.2062"></a>
-<span class="sourceLineNo">2063</span>   *<a name="line.2063"></a>
-<span class="sourceLineNo">2064</span>   * @param srcKey Source folder name.<a name="line.2064"></a>
-<span class="sourceLineNo">2065</span>   * @param dstKey Destination folder name.<a name="line.2065"></a>
-<span class="sourceLineNo">2066</span>   * @throws IOException<a name="line.2066"></a>
-<span class="sourceLineNo">2067</span>   */<a name="line.2067"></a>
-<span class="sourceLineNo">2068</span>  private FolderRenamePending prepareAtomicFolderRename(<a name="line.2068"></a>
-<span class="sourceLineNo">2069</span>      String srcKey, String dstKey) throws IOException {<a name="line.2069"></a>
-<span class="sourceLineNo">2070</span><a name="line.2070"></a>
-<span class="sourceLineNo">2071</span>    if (store.isAtomicRenameKey(srcKey)) {<a name="line.2071"></a>
-<span class="sourceLineNo">2072</span><a name="line.2072"></a>
-<span class="sourceLineNo">2073</span>      // Block unwanted concurrent access to source folder.<a name="line.2073"></a>
-<span class="sourceLineNo">2074</span>      SelfRenewingLease lease = leaseSourceFolder(srcKey);<a name="line.2074"></a>
-<span class="sourceLineNo">2075</span><a name="line.2075"></a>
-<span class="sourceLineNo">2076</span>      // Prepare in-memory information needed to do or redo a folder rename.<a name="line.2076"></a>
-<span class="sourceLineNo">2077</span>      FolderRenamePending renamePending =<a name="line.2077"></a>
-<span class="sourceLineNo">2078</span>          new FolderRenamePending(srcKey, dstKey, lease, this);<a name="line.2078"></a>
-<span class="sourceLineNo">2079</span><a name="line.2079"></a>
-<span class="sourceLineNo">2080</span>      // Save it to persistent storage to help recover if the operation fails.<a name="line.2080"></a>
-<span class="sourceLineNo">2081</span>      renamePending.writeFile(this);<a name="line.2081"></a>
-<span class="sourceLineNo">2082</span>      return renamePending;<a name="line.2082"></a>
-<span class="sourceLineNo">2083</span>    } else {<a name="line.2083"></a>
-<span class="sourceLineNo">2084</span>      FolderRenamePending renamePending =<a name="line.2084"></a>
-<span class="sourceLineNo">2085</span>          new FolderRenamePending(srcKey, dstKey, null, this);<a name="line.2085"></a>
-<span class="sourceLineNo">2086</span>      return renamePending;<a name="line.2086"></a>
-<span class="sourceLineNo">2087</span>    }<a name="line.2087"></a>
-<span class="sourceLineNo">2088</span>  }<a name="line.2088"></a>
-<span class="sourceLineNo">2089</span><a name="line.2089"></a>
-<span class="sourceLineNo">2090</span>  /**<a name="line.2090"></a>
-<span class="sourceLineNo">2091</span>   * Get a self-renewing Azure blob lease on the source folder zero-byte file.<a name="line.2091"></a>
-<span class="sourceLineNo">2092</span>   */<a name="line.2092"></a>
-<span class="sourceLineNo">2093</span>  private SelfRenewingLease leaseSourceFolder(String srcKey)<a name="line.2093"></a>
-<span class="sourceLineNo">2094</span>      throws AzureException {<a name="line.2094"></a>
-<span class="sourceLineNo">2095</span>    return store.acquireLease(srcKey);<a name="line.2095"></a>
-<span class="sourceLineNo">2096</span>  }<a name="line.2096"></a>
-<span class="sourceLineNo">2097</span><a name="line.2097"></a>
-<span class="sourceLineNo">2098</span>  /**<a name="line.2098"></a>
-<span class="sourceLineNo">2099</span>   * Return an array containing hostnames, offset and size of<a name="line.2099"></a>
-<span class="sourceLineNo">2100</span>   * portions of the given file. For WASB we'll just lie and give<a name="line.2100"></a>
-<span class="sourceLineNo">2101</span>   * fake hosts to make sure we get many splits in MR jobs.<a name="line.2101"></a>
-<span class="sourceLineNo">2102</span>   */<a name="line.2102"></a>
-<span class="sourceLineNo">2103</span>  @Override<a name="line.2103"></a>
-<span class="sourceLineNo">2104</span>  public BlockLocation[] getFileBlockLocations(FileStatus file,<a name="line.2104"></a>
-<span class="sourceLineNo">2105</span>      long start, long len) throws IOException {<a name="line.2105"></a>
-<span class="sourceLineNo">2106</span>    if (file == null) {<a name="line.2106"></a>
-<span class="sourceLineNo">2107</span>      return null;<a name="line.2107"></a>
-<span class="sourceLineNo">2108</span>    }<a name="line.2108"></a>
+<span class="sourceLineNo">2043</span>        if (store.isAtomicRenameKey(parentKey)) {<a name="line.2043"></a>
+<span class="sourceLineNo">2044</span>          SelfRenewingLease lease = null;<a name="line.2044"></a>
+<span class="sourceLineNo">2045</span>          try {<a name="line.2045"></a>
+<span class="sourceLineNo">2046</span>            lease = leaseSourceFolder(parentKey);<a name="line.2046"></a>
+<span class="sourceLineNo">2047</span>            store.updateFolderLastModifiedTime(parentKey, lease);<a name="line.2047"></a>
+<span class="sourceLineNo">2048</span>          } catch (AzureException e) {<a name="line.2048"></a>
+<span class="sourceLineNo">2049</span>            String errorCode = "";<a name="line.2049"></a>
+<span class="sourceLineNo">2050</span>            try {<a name="line.2050"></a>
+<span class="sourceLineNo">2051</span>              StorageException e2 = (StorageException) e.getCause();<a name="line.2051"></a>
+<span class="sourceLineNo">2052</span>              errorCode = e2.getErrorCode();<a name="line.2052"></a>
+<span class="sourceLineNo">2053</span>            } catch (Exception e3) {<a name="line.2053"></a>
+<span class="sourceLineNo">2054</span>              // do nothing if cast fails<a name="line.2054"></a>
+<span class="sourceLineNo">2055</span>            }<a name="line.2055"></a>
+<span class="sourceLineNo">2056</span>            if (errorCode.equals("BlobNotFound")) {<a name="line.2056"></a>
+<span class="sourceLineNo">2057</span>              throw new FileNotFoundException("Folder does not exist: " + parentKey);<a name="line.2057"></a>
+<span class="sourceLineNo">2058</span>            }<a name="line.2058"></a>
+<span class="sourceLineNo">2059</span>            LOG.warn("Got unexpected exception trying to get lease on "<a name="line.2059"></a>
+<span class="sourceLineNo">2060</span>                + parentKey + ". " + e.getMessage());<a name="line.2060"></a>
+<span class="sourceLineNo">2061</span>            throw e;<a name="line.2061"></a>
+<span class="sourceLineNo">2062</span>          } finally {<a name="line.2062"></a>
+<span class="sourceLineNo">2063</span>            try {<a name="line.2063"></a>
+<span class="sourceLineNo">2064</span>              if (lease != null) {<a name="line.2064"></a>
+<span class="sourceLineNo">2065</span>                lease.free();<a name="line.2065"></a>
+<span class="sourceLineNo">2066</span>              }<a name="line.2066"></a>
+<span class="sourceLineNo">2067</span>            } catch (Exception e) {<a name="line.2067"></a>
+<span class="sourceLineNo">2068</span>              LOG.error("Unable to free lease on " + parentKey, e);<a name="line.2068"></a>
+<span class="sourceLineNo">2069</span>            }<a name="line.2069"></a>
+<span class="sourceLineNo">2070</span>          }<a name="line.2070"></a>
+<span class="sourceLineNo">2071</span>        } else {<a name="line.2071"></a>
+<span class="sourceLineNo">2072</span>          store.updateFolderLastModifiedTime(parentKey, null);<a name="line.2072"></a>
+<span class="sourceLineNo">2073</span>        }<a name="line.2073"></a>
+<span class="sourceLineNo">2074</span>      }<a name="line.2074"></a>
+<span class="sourceLineNo">2075</span>    }<a name="line.2075"></a>
+<span class="sourceLineNo">2076</span>  }<a name="line.2076"></a>
+<span class="sourceLineNo">2077</span><a name="line.2077"></a>
+<span class="sourceLineNo">2078</span>  /**<a name="line.2078"></a>
+<span class="sourceLineNo">2079</span>   * If the source is a page blob folder,<a name="line.2079"></a>
+<span class="sourceLineNo">2080</span>   * prepare to rename this folder atomically. This means to get exclusive<a name="line.2080"></a>
+<span class="sourceLineNo">2081</span>   * access to the source folder, and record the actions to be performed for<a name="line.2081"></a>
+<span class="sourceLineNo">2082</span>   * this rename in a "Rename Pending" file. This code was designed to<a name="line.2082"></a>
+<span class="sourceLineNo">2083</span>   * meet the needs of HBase, which requires atomic rename of write-ahead log<a name="line.2083"></a>
+<span class="sourceLineNo">2084</span>   * (WAL) folders for correctness.<a name="line.2084"></a>
+<span class="sourceLineNo">2085</span>   *<a name="line.2085"></a>
+<span class="sourceLineNo">2086</span>   * Before calling this method, the caller must ensure that the source is a<a name="line.2086"></a>
+<span class="sourceLineNo">2087</span>   * folder.<a name="line.2087"></a>
+<span class="sourceLineNo">2088</span>   *<a name="line.2088"></a>
+<span class="sourceLineNo">2089</span>   * For non-page-blob directories, prepare the in-memory information needed,<a name="line.2089"></a>
+<span class="sourceLineNo">2090</span>   * but don't take the lease or write the redo file. This is done to limit the<a name="line.2090"></a>
+<span class="sourceLineNo">2091</span>   * scope of atomic folder rename to HBase, at least at the time of writing<a name="line.2091"></a>
+<span class="sourceLineNo">2092</span>   * this code.<a name="line.2092"></a>
+<span class="sourceLineNo">2093</span>   *<a name="line.2093"></a>
+<span class="sourceLineNo">2094</span>   * @param srcKey Source folder name.<a name="line.2094"></a>
+<span class="sourceLineNo">2095</span>   * @param dstKey Destination folder name.<a name="line.2095"></a>
+<span class="sourceLineNo">2096</span>   * @throws IOException<a name="line.2096"></a>
+<span class="sourceLineNo">2097</span>   */<a name="line.2097"></a>
+<span class="sourceLineNo">2098</span>  private FolderRenamePending prepareAtomicFolderRename(<a name="line.2098"></a>
+<span class="sourceLineNo">2099</span>      String srcKey, String dstKey) throws IOException {<a name="line.2099"></a>
+<span class="sourceLineNo">2100</span><a name="line.2100"></a>
+<span class="sourceLineNo">2101</span>    if (store.isAtomicRenameKey(srcKey)) {<a name="line.2101"></a>
+<span class="sourceLineNo">2102</span><a name="line.2102"></a>
+<span class="sourceLineNo">2103</span>      // Block unwanted concurrent access to source folder.<a name="line.2103"></a>
+<span class="sourceLineNo">2104</span>      SelfRenewingLease lease = leaseSourceFolder(srcKey);<a name="line.2104"></a>
+<span class="sourceLineNo">2105</span><a name="line.2105"></a>
+<span class="sourceLineNo">2106</span>      // Prepare in-memory information needed to do or redo a folder rename.<a name="line.2106"></a>
+<span class="sourceLineNo">2107</span>      FolderRenamePending renamePending =<a name="line.2107"></a>
+<span class="sourceLineNo">2108</span>          new FolderRenamePending(srcKey, dstKey, lease, this);<a name="line.2108"></a>
 <span class="sourceLineNo">2109</span><a name="line.2109"></a>
-<span class="sourceLineNo">2110</span>    if ((start &lt; 0) || (len &lt; 0)) {<a name="line.2110"></a>
-<span class="sourceLineNo">2111</span>      throw new IllegalArgumentException("Invalid start or len parameter");<a name="line.2111"></a>
-<span class="sourceLineNo">2112</span>    }<a name="line.2112"></a>
-<span class="sourceLineNo">2113</span><a name="line.2113"></a>
-<span class="sourceLineNo">2114</span>    if (file.getLen() &lt; start) {<a name="line.2114"></a>
-<span class="sourceLineNo">2115</span>      return new BlockLocation[0];<a name="line.2115"></a>
-<span class="sourceLineNo">2116</span>    }<a name="line.2116"></a>
-<span class="sourceLineNo">2117</span>    final String blobLocationHost = getConf().get(<a name="line.2117"></a>
-<span class="sourceLineNo">2118</span>        AZURE_BLOCK_LOCATION_HOST_PROPERTY_NAME,<a name="line.2118"></a>
-<span class="sourceLineNo">2119</span>        AZURE_BLOCK_LOCATION_HOST_DEFAULT);<a name="line.2119"></a>
-<span class="sourceLineNo">2120</span>    final String[] name = { blobLocationHost };<a name="line.2120"></a>
-<span class="sourceLineNo">2121</span>    final String[] host = { blobLocationHost };<a name="line.2121"></a>
-<span class="sourceLineNo">2122</span>    long blockSize = file.getBlockSize();<a name="line.2122"></a>
-<span class="sourceLineNo">2123</span>    if (blockSize &lt;= 0) {<a name="line.2123"></a>
-<span class="sourceLineNo">2124</span>      throw new IllegalArgumentException(<a name="line.2124"></a>
-<span class="sourceLineNo">2125</span>          "The block size for the given file is not a positive number: "<a name="line.2125"></a>
-<span class="sourceLineNo">2126</span>              + blockSize);<a name="line.2126"></a>
-<span class="sourceLineNo">2127</span>    }<a name="line.2127"></a>
-<span class="sourceLineNo">2128</span>    int numberOfLocations = (int) (len / blockSize)<a name="line.2128"></a>
-<span class="sourceLineNo">2129</span>        + ((len % blockSize == 0) ? 0 : 1);<a name="line.2129"></a>
-<span class="sourceLineNo">2130</span>    BlockLocation[] locations = new BlockLocation[numberOfLocations];<a name="line.2130"></a>
-<span class="sourceLineNo">2131</span>    for (int i = 0; i &lt; locations.length; i++) {<a name="line.2131"></a>
-<span class="sourceLineNo">2132</span>      long currentOffset = start + (i * blockSize);<a name="line.2132"></a>
-<span class="sourceLineNo">2133</span>      long currentLength = Math.min(blockSize, start + len - currentOffset);<a name="line.2133"></a>
-<span class="sourceLineNo">2134</span>      locations[i] = new BlockLocation(name, host, currentOffset, currentLength);<a name="line.2134"></a>
-<span class="sourceLineNo">2135</span>    }<a name="line.2135"></a>
-<span class="sourceLineNo">2136</span>    return locations;<a name="line.2136"></a>
-<span class="sourceLineNo">2137</span>  }<a name="line.2137"></a>
-<span class="sourceLineNo">2138</span><a name="line.2138"></a>
-<span class="sourceLineNo">2139</span>  /**<a name="line.2139"></a>
-<span class="sourceLineNo">2140</span>   * Set the working directory to the given directory.<a name="line.2140"></a>
-<span class="sourceLineNo">2141</span>   */<a name="line.2141"></a>
-<span class="sourceLineNo">2142</span>  @Override<a name="line.2142"></a>
-<span class="sourceLineNo">2143</span>  public void setWorkingDirectory(Path newDir) {<a name="line.2143"></a>
-<span class="sourceLineNo">2144</span>    workingDir = makeAbsolute(newDir);<a name="line.2144"></a>
-<span class="sourceLineNo">2145</span>  }<a name="line.2145"></a>
-<span class="sourceLineNo">2146</span><a name="line.2146"></a>
-<span class="sourceLineNo">2147</span>  @Override<a name="line.2147"></a>
-<span class="sourceLineNo">2148</span>  public Path getWorkingDirectory() {<a name="line.2148"></a>
-<span class="sourceLineNo">2149</span>    return workingDir;<a name="line.2149"></a>
-<span class="sourceLineNo">2150</span>  }<a name="line.2150"></a>
-<span class="sourceLineNo">2151</span><a name="line.2151"></a>
-<span class="sourceLineNo">2152</span>  @Override<a name="line.2152"></a>
-<span class="sourceLineNo">2153</span>  public void setPermission(Path p, FsPermission permission) throws IOException {<a name="line.2153"></a>
-<span class="sourceLineNo">2154</span>    Path absolutePath = makeAbsolute(p);<a name="line.2154"></a>
-<span class="sourceLineNo">2155</span>    String key = pathToKey(absolutePath);<a name="line.2155"></a>
-<span class="sourceLineNo">2156</span>    FileMetadata metadata = store.retrieveMetadata(key);<a name="line.2156"></a>
-<span class="sourceLineNo">2157</span>    if (metadata == null) {<a name="line.2157"></a>
-<span class="sourceLineNo">2158</span>      throw new FileNotFoundException("File doesn't exist: " + p);<a name="line.2158"></a>
-<span class="sourceLineNo">2159</span>    }<a name="line.2159"></a>
-<span class="sourceLineNo">2160</span>    permission = applyUMask(permission,<a name="line.2160"></a>
-<span class="sourceLineNo">2161</span>        metadata.isDir() ? UMaskApplyMode.ChangeExistingDirectory<a name="line.2161"></a>
-<span class="sourceLineNo">2162</span>            : UMaskApplyMode.ChangeExistingFile);<a name="line.2162"></a>
-<span class="sourceLineNo">2163</span>    if (metadata.getBlobMaterialization() == BlobMaterialization.Implicit) {<a name="line.2163"></a>
-<span class="sourceLineNo">2164</span>      // It's an implicit folder, need to materialize it.<a name="line.2164"></a>
-<span class="sourceLineNo">2165</span>      store.storeEmptyFolder(key, createPermissionStatus(permission));<a name="line.2165"></a>
-<span class="sourceLineNo">2166</span>    } else if (!metadata.getPermissionStatus().getPermission().<a name="line.2166"></a>
-<span class="sourceLineNo">2167</span>        equals(permission)) {<a name="line.2167"></a>
-<span class="sourceLineNo">2168</span>      store.changePermissionStatus(key, new PermissionStatus(<a name="line.2168"></a>
-<span class="sourceLineNo">2169</span>          metadata.getPermissionStatus().getUserName(),<a name="line.2169"></a>
-<span class="sourceLineNo">2170</span>          metadata.getPermissionStatus().getGroupName(),<a name="line.2170"></a>
-<span class="sourceLineNo">2171</span>          permission));<a name="line.2171"></a>
-<span class="sourceLineNo">2172</span>    }<a name="line.2172"></a>
-<span class="sourceLineNo">2173</span>  }<a name="line.2173"></a>
-<span class="sourceLineNo">2174</span><a name="line.2174"></a>
-<span class="sourceLineNo">2175</span>  @Override<a name="line.2175"></a>
-<span class="sourceLineNo">2176</span>  public void setOwner(Path p, String username, String groupname)<a name="line.2176"></a>
-<span class="sourceLineNo">2177</span>      throws IOException {<a name="line.2177"></a>
-<span class="sourceLineNo">2178</span>    Path absolutePath = makeAbsolute(p);<a name="line.2178"></a>
-<span class="sourceLineNo">2179</span>    String key = pathToKey(absolutePath);<a name="line.2179"></a>
-<span class="sourceLineNo">2180</span>    FileMetadata metadata = store.retrieveMetadata(key);<a name="line.2180"></a>
-<span class="sourceLineNo">2181</span>    if (metadata == null) {<a name="line.2181"></a>
-<span class="sourceLineNo">2182</span>      throw new FileNotFoundException("File doesn't exist: " + p);<a name="line.2182"></a>
-<span class="sourceLineNo">2183</span>    }<a name="line.2183"></a>
-<span class="sourceLineNo">2184</span>    PermissionStatus newPermissionStatus = new PermissionStatus(<a name="line.2184"></a>
-<span class="sourceLineNo">2185</span>        username == null ?<a name="line.2185"></a>
-<span class="sourceLineNo">2186</span>            metadata.getPermissionStatus().getUserName() : username,<a name="line.2186"></a>
-<span class="sourceLineNo">2187</span>        groupname == null ?<a name="line.2187"></a>
-<span class="sourceLineNo">2188</span>            metadata.getPermissionStatus().getGroupName() : groupname,<a name="line.2188"></a>
-<span class="sourceLineNo">2189</span>        metadata.getPermissionStatus().getPermission());<a name="line.2189"></a>
-<span class="sourceLineNo">2190</span>    if (metadata.getBlobMaterialization() == BlobMaterialization.Implicit) {<a name="line.2190"></a>
-<span class="sourceLineNo">2191</span>      // It's an implicit folder, need to materialize it.<a name="line.2191"></a>
-<span class="sourceLineNo">2192</span>      store.storeEmptyFolder(key, newPermissionStatus);<a name="line.2192"></a>
-<span class="sourceLineNo">2193</span>    } else {<a name="line.2193"></a>
-<span class="sourceLineNo">2194</span>      store.changePermissionStatus(key, newPermissionStatus);<a name="line.2194"></a>
-<span class="sourceLineNo">2195</span>    }<a name="line.2195"></a>
-<span class="sourceLineNo">2196</span>  }<a name="line.2196"></a>
-<span class="sourceLineNo">2197</span><a name="line.2197"></a>
-<span class="sourceLineNo">2198</span>  @Override<a name="line.2198"></a>
-<span class="sourceLineNo">2199</span>  public synchronized void close() throws IOException {<a name="line.2199"></a>
-<span class="sourceLineNo">2200</span>    if (isClosed) {<a name="line.2200"></a>
-<span class="sourceLineNo">2201</span>      return;<a name="line.2201"></a>
+<span class="sourceLineNo">2110</span>      // Save it to persistent storage to help recover if the operation fails.<a name="line.2110"></a>
+<span class="sourceLineNo">2111</span>      renamePending.writeFile(this);<a name="line.2111"></a>
+<span class="sourceLineNo">2112</span>      return renamePending;<a name="line.2112"></a>
+<span class="sourceLineNo">2113</span>    } else {<a name="line.2113"></a>
+<span class="sourceLineNo">2114</span>      FolderRenamePending renamePending =<a name="line.2114"></a>
+<span class="sourceLineNo">2115</span>          new FolderRenamePending(srcKey, dstKey, null, this);<a name="line.2115"></a>
+<span class="sourceLineNo">2116</span>      return renamePending;<a name="line.2116"></a>
+<span class="sourceLineNo">2117</span>    }<a name="line.2117"></a>
+<span class="sourceLineNo">2118</span>  }<a name="line.2118"></a>
+<span class="sourceLineNo">2119</span><a name="line.2119"></a>
+<span class="sourceLineNo">2120</span>  /**<a name="line.2120"></a>
+<span class="sourceLineNo">2121</span>   * Get a self-renewing Azure blob lease on the source folder zero-byte file.<a name="line.2121"></a>
+<span class="sourceLineNo">2122</span>   */<a name="line.2122"></a>
+<span class="sourceLineNo">2123</span>  private SelfRenewingLease leaseSourceFolder(String srcKey)<a name="line.2123"></a>
+<span class="sourceLineNo">2124</span>      throws AzureException {<a name="line.2124"></a>
+<span class="sourceLineNo">2125</span>    return store.acquireLease(srcKey);<a name="line.2125"></a>
+<span class="sourceLineNo">2126</span>  }<a name="line.2126"></a>
+<span class="sourceLineNo">2127</span><a name="line.2127"></a>
+<span class="sourceLineNo">2128</span>  /**<a name="line.2128"></a>
+<span class="sourceLineNo">2129</span>   * Return an array containing hostnames, offset and size of<a name="line.2129"></a>
+<span class="sourceLineNo">2130</span>   * portions of the given file. For WASB we'll just lie and give<a name="line.2130"></a>
+<span class="sourceLineNo">2131</span>   * fake hosts to make sure we get many splits in MR jobs.<a name="line.2131"></a>
+<span class="sourceLineNo">2132</span>   */<a name="line.2132"></a>
+<span class="sourceLineNo">2133</span>  @Override<a name="line.2133"></a>
+<span class="sourceLineNo">2134</span>  public BlockLocation[] getFileBlockLocations(FileStatus file,<a name="line.2134"></a>
+<span class="sourceLineNo">2135</span>      long start, long len) throws IOException {<a name="line.2135"></a>
+<span class="sourceLineNo">2136</span>    if (file == null) {<a name="line.2136"></a>
+<span class="sourceLineNo">2137</span>      return null;<a name="line.2137"></a>
+<span class="sourceLineNo">2138</span>    }<a name="line.2138"></a>
+<span class="sourceLineNo">2139</span><a name="line.2139"></a>
+<span class="sourceLineNo">2140</span>    if ((start &lt; 0) || (len &lt; 0)) {<a name="line.2140"></a>
+<span class="sourceLineNo">2141</span>      throw new IllegalArgumentException("Invalid start or len parameter");<a name="line.2141"></a>
+<span class="sourceLineNo">2142</span>    }<a name="line.2142"></a>
+<span class="sourceLineNo">2143</span><a name="line.2143"></a>
+<span class="sourceLineNo">2144</span>    if (file.getLen() &lt; start) {<a name="line.2144"></a>
+<span class="sourceLineNo">2145</span>      return new BlockLocation[0];<a name="line.2145"></a>
+<span class="sourceLineNo">2146</span>    }<a name="line.2146"></a>
+<span class="sourceLineNo">2147</span>    final String blobLocationHost = getConf().get(<a name="line.2147"></a>
+<span class="sourceLineNo">2148</span>        AZURE_BLOCK_LOCATION_HOST_PROPERTY_NAME,<a name="line.2148"></a>
+<span class="sourceLineNo">2149</span>        AZURE_BLOCK_LOCATION_HOST_DEFAULT);<a name="line.2149"></a>
+<span class="sourceLineNo">2150</span>    final String[] name = { blobLocationHost };<a name="line.2150"></a>
+<span class="sourceLineNo">2151</span>    final String[] host = { blobLocationHost };<a name="line.2151"></a>
+<span class="sourceLineNo">2152</span>    long blockSize = file.getBlockSize();<a name="line.2152"></a>
+<span class="sourceLineNo">2153</span>    if (blockSize &lt;= 0) {<a name="line.2153"></a>
+<span class="sourceLineNo">2154</span>      throw new IllegalArgumentException(<a name="line.2154"></a>
+<span class="sourceLineNo">2155</span>          "The block size for the given file is not a positive number: "<a name="line.2155"></a>
+<span class="sourceLineNo">2156</span>              + blockSize);<a name="line.2156"></a>
+<span class="sourceLineNo">2157</span>    }<a name="line.2157"></a>
+<span class="sourceLineNo">2158</span>    int numberOfLocations = (int) (len / blockSize)<a name="line.2158"></a>
+<span class="sourceLineNo">2159</span>        + ((len % blockSize == 0) ? 0 : 1);<a name="line.2159"></a>
+<span class="sourceLineNo">2160</span>    BlockLocation[] locations = new BlockLocation[numberOfLocations];<a name="line.2160"></a>
+<span class="sourceLineNo">2161</span>    for (int i = 0; i &lt; locations.length; i++) {<a name="line.2161"></a>
+<span class="sourceLineNo">2162</span>      long currentOffset = start + (i * blockSize);<a name="line.2162"></a>
+<span class="sourceLineNo">2163</span>      long currentLength = Math.min(blockSize, start + len - currentOffset);<a name="line.2163"></a>
+<span class="sourceLineNo">2164</span>      locations[i] = new BlockLocation(name, host, currentOffset, currentLength);<a name="line.2164"></a>
+<span class="sourceLineNo">2165</span>    }<a name="line.2165"></a>
+<span class="sourceLineNo">2166</span>    return locations;<a name="line.2166"></a>
+<span class="sourceLineNo">2167</span>  }<a name="line.2167"></a>
+<span class="sourceLineNo">2168</span><a name="line.2168"></a>
+<span class="sourceLineNo">2169</span>  /**<a name="line.2169"></a>
+<span class="sourceLineNo">2170</span>   * Set the working directory to the given directory.<a name="line.2170"></a>
+<span class="sourceLineNo">2171</span>   */<a name="line.2171"></a>
+<span class="sourceLineNo">2172</span>  @Override<a name="line.2172"></a>
+<span class="sourceLineNo">2173</span>  public void setWorkingDirectory(Path newDir) {<a name="line.2173"></a>
+<span class="sourceLineNo">2174</span>    workingDir = makeAbsolute(newDir);<a name="line.2174"></a>
+<span class="sourceLineNo">2175</span>  }<a name="line.2175"></a>
+<span class="sourceLineNo">2176</span><a name="line.2176"></a>
+<span class="sourceLineNo">2177</span>  @Override<a name="line.2177"></a>
+<span class="sourceLineNo">2178</span>  public Path getWorkingDirectory() {<a name="line.2178"></a>
+<span class="sourceLineNo">2179</span>    return workingDir;<a name="line.2179"></a>
+<span class="sourceLineNo">2180</span>  }<a name="line.2180"></a>
+<span class="sourceLineNo">2181</span><a name="line.2181"></a>
+<span class="sourceLineNo">2182</span>  @Override<a name="line.2182"></a>
+<span class="sourceLineNo">2183</span>  public void setPermission(Path p, FsPermission permission) throws IOException {<a name="line.2183"></a>
+<span class="sourceLineNo">2184</span>    Path absolutePath = makeAbsolute(p);<a name="line.2184"></a>
+<span class="sourceLineNo">2185</span>    String key = pathToKey(absolutePath);<a name="line.2185"></a>
+<span class="sourceLineNo">2186</span>    FileMetadata metadata = store.retrieveMetadata(key);<a name="line.2186"></a>
+<span class="sourceLineNo">2187</span>    if (metadata == null) {<a name="line.2187"></a>
+<span class="sourceLineNo">2188</span>      throw new FileNotFoundException("File doesn't exist: " + p);<a name="line.2188"></a>
+<span class="sourceLineNo">2189</span>    }<a name="line.2189"></a>
+<span class="sourceLineNo">2190</span>    permission = applyUMask(permission,<a name="line.2190"></a>
+<span class="sourceLineNo">2191</span>        metadata.isDir() ? UMaskApplyMode.ChangeExistingDirectory<a name="line.2191"></a>
+<span class="sourceLineNo">2192</span>            : UMaskApplyMode.ChangeExistingFile);<a name="line.2192"></a>
+<span class="sourceLineNo">2193</span>    if (metadata.getBlobMaterialization() == BlobMaterialization.Implicit) {<a name="line.2193"></a>
+<span class="sourceLineNo">2194</span>      // It's an implicit folder, need to materialize it.<a name="line.2194"></a>
+<span class="sourceLineNo">2195</span>      store.storeEmptyFolder(key, createPermissionStatus(permission));<a name="line.2195"></a>
+<span class="sourceLineNo">2196</span>    } else if (!metadata.getPermissionStatus().getPermission().<a name="line.2196"></a>
+<span class="sourceLineNo">2197</span>        equals(permission)) {<a name="line.2197"></a>
+<span class="sourceLineNo">2198</span>      store.changePermissionStatus(key, new PermissionStatus(<a name="line.2198"></a>
+<span class="sourceLineNo">2199</span>          metadata.getPermissionStatus().getUserName(),<a name="line.2199"></a>
+<span class="sourceLineNo">2200</span>          metadata.getPermissionStatus().getGroupName(),<a name="line.2200"></a>
+<span class="sourceLineNo">2201</span>          permission));<a name="line.2201"></a>
 <span class="sourceLineNo">2202</span>    }<a name="line.2202"></a>
-<span class="sourceLineNo">2203</span><a name="line.2203"></a>
-<span class="sourceLineNo">2204</span>    // Call the base close() to close any resources there.<a name="line.2204"></a>
-<span class="sourceLineNo">2205</span>    super.close();<a name="line.2205"></a>
-<span class="sourceLineNo">2206</span>    // Close the store to close any resources there - e.g. the bandwidth<a name="line.2206"></a>
-<span class="sourceLineNo">2207</span>    // updater thread would be stopped at this time.<a name="line.2207"></a>
-<span class="sourceLineNo">2208</span>    store.close();<a name="line.2208"></a>
-<span class="sourceLineNo">2209</span>    // Notify the metrics system that this file system is closed, which may<a name="line.2209"></a>
-<span class="sourceLineNo">2210</span>    // trigger one final metrics push to get the accurate final file system<a name="line.2210"></a>
-<span class="sourceLineNo">2211</span>    // metrics out.<a name="line.2211"></a>
-<span class="sourceLineNo">2212</span><a name="line.2212"></a>
-<span class="sourceLineNo">2213</span>    long startTime = System.currentTimeMillis();<a name="line.2213"></a>
-<span class="sourceLineNo">2214</span><a name="line.2214"></a>
-<span class="sourceLineNo">2215</span>    if(!getConf().getBoolean(SKIP_AZURE_METRICS_PROPERTY_NAME, false)) {<a name="line.2215"></a>
-<span class="sourceLineNo">2216</span>      AzureFileSystemMetricsSystem.unregisterSource(metricsSourceName);<a name="line.2216"></a>
-<span class="sourceLineNo">2217</span>      AzureFileSystemMetricsSystem.fileSystemClosed();<a name="line.2217"></a>
-<span class="sourceLineNo">2218</span>    }<a name="line.2218"></a>
-<span class="sourceLineNo">2219</span><a name="line.2219"></a>
-<span class="sourceLineNo">2220</span>    if (LOG.isDebugEnabled()) {<a name="line.2220"></a>
-<span class="sourceLineNo">2221</span>        LOG.debug("Submitting metrics when file system closed took "<a name="line.2221"></a>
-<span class="sourceLineNo">2222</span>                + (System.currentTimeMillis() - startTime) + " ms.");<a name="line.2222"></a>
-<span class="sourceLineNo">2223</span>    }<a name="line.2223"></a>
-<span class="sourceLineNo">2224</span>    isClosed = true;<a name="line.2224"></a>
-<span class="sourceLineNo">2225</span>  }<a name="line.2225"></a>
-<span class="sourceLineNo">2226</span><a name="line.2226"></a>
-<span class="sourceLineNo">2227</span>  /**<a name="line.2227"></a>
-<span class="sourceLineNo">2228</span>   * A handler that defines what to do with blobs whose upload was<a name="line.2228"></a>
-<span class="sourceLineNo">2229</span>   * interrupted.<a name="line.2229"></a>
-<span class="sourceLineNo">2230</span>   */<a name="line.2230"></a>
-<span class="sourceLineNo">2231</span>  private abstract class DanglingFileHandler {<a name="line.2231"></a>
-<span class="sourceLineNo">2232</span>    abstract void handleFile(FileMetadata file, FileMetadata tempFile)<a name="line.2232"></a>
-<span class="sourceLineNo">2233</span>      throws IOException;<a name="line.2233"></a>
-<span class="sourceLineNo">2234</span>  }<a name="line.2234"></a>
-<span class="sourceLineNo">2235</span><a name="line.2235"></a>
-<span class="sourceLineNo">2236</span>  /**<a name="line.2236"></a>
-<span class="sourceLineNo">2237</span>   * Handler implementation for just deleting dangling files and cleaning<a name="line.2237"></a>
-<span class="sourceLineNo">2238</span>   * them up.<a name="line.2238"></a>
-<span class="sourceLineNo">2239</span>   */<a name="line.2239"></a>
-<span class="sourceLineNo">2240</span>  private class DanglingFileDeleter extends DanglingFileHandler {<a name="line.2240"></a>
-<span class="sourceLineNo">2241</span>    @Override<a name="line.2241"></a>
-<span class="sourceLineNo">2242</span>    void handleFile(FileMetadata file, FileMetadata tempFile)<a name="line.2242"></a>
-<span class="sourceLineNo">2243</span>        throws IOException {<a name="line.2243"></a>
-<span class="sourceLineNo">2244</span>      if (LOG.isDebugEnabled()) {<a name="line.2244"></a>
-<span class="sourceLineNo">2245</span>        LOG.debug("Deleting dangling file " + file.getKey());<a name="line.2245"></a>
-<span class="sourceLineNo">2246</span>      }<a name="line.2246"></a>
-<span class="sourceLineNo">2247</span>      store.delete(file.getKey());<a name="line.2247"></a>
-<span class="sourceLineNo">2248</span>      store.delete(tempFile.getKey());<a name="line.2248"></a>
-<span class="sourceLineNo">2249</span>    }<a name="line.2249"></a>
-<span class="sourceLineNo">2250</span>  }<a name="line.2250"></a>
-<span class="sourceLineNo">2251</span><a name="line.2251"></a>
-<span class="sourceLineNo">2252</span>  /**<a name="line.2252"></a>
-<span class="sourceLineNo">2253</span>   * Handler implementation for just moving dangling files to recovery<a name="line.2253"></a>
-<span class="sourceLineNo">2254</span>   * location (/lost+found).<a name="line.2254"></a>
-<span class="sourceLineNo">2255</span>   */<a name="line.2255"></a>
-<span class="sourceLineNo">2256</span>  private class DanglingFileRecoverer extends DanglingFileHandler {<a name="line.2256"></a>
-<span class="sourceLineNo">2257</span>    private final Path destination;<a name="line.2257"></a>
-<span class="sourceLineNo">2258</span><a name="line.2258"></a>
-<span class="sourceLineNo">2259</span>    DanglingFileRecoverer(Path destination) {<a name="line.2259"></a>
-<span class="sourceLineNo">2260</span>      this.destination = destination;<a name="line.2260"></a>
-<span class="sourceLineNo">2261</span>    }<a name="line.2261"></a>
-<span class="sourceLineNo">2262</span><a name="line.2262"></a>
-<span class="sourceLineNo">2263</span>    @Override<a name="line.2263"></a>
-<span class="sourceLineNo">2264</span>    void handleFile(FileMetadata file, FileMetadata tempFile)<a name="line.2264"></a>
-<span class="sourceLineNo">2265</span>        throws IOException {<a name="line.2265"></a>
-<span class="sourceLineNo">2266</span>      if (LOG.isDebugEnabled()) {<a name="line.2266"></a>
-<span class="sourceLineNo">2267</span>        LOG.debug("Recovering " + file.getKey());<a name="line.2267"></a>
-<span class="sourceLineNo">2268</span>      }<a name="line.2268"></a>
-<span class="sourceLineNo">2269</span>      // Move to the final destination<a name="line.2269"></a>
-<span class="sourceLineNo">2270</span>      String finalDestinationKey =<a name="line.2270"></a>
-<span class="sourceLineNo">2271</span>          pathToKey(new Path(destination, file.getKey()));<a name="line.2271"></a>
-<span class="sourceLineNo">2272</span>      store.rename(tempFile.getKey(), finalDestinationKey);<a name="line.2272"></a>
-<span class="sourceLineNo">2273</span>      if (!finalDestinationKey.equals(file.getKey())) {<a name="line.2273"></a>
-<span class="sourceLineNo">2274</span>        // Delete the empty link file now that we've restored it.<a name="line.2274"></a>
-<span class="sourceLineNo">2275</span>        store.delete(file.getKey());<a name="line.2275"></a>
+<span class="sourceLineNo">2203</span>  }<a name="line.2203"></a>
+<span class="sourceLineNo">2204</span><a name="line.2204"></a>
+<span class="sourceLineNo">2205</span>  @Override<a name="line.2205"></a>
+<span class="sourceLineNo">2206</span>  public void setOwner(Path p, String username, String groupname)<a name="line.2206"></a>
+<span class="sourceLineNo">2207</span>      throws IOException {<a name="line.2207"></a>
+<span class="sourceLineNo">2208</span>    Path absolutePath = makeAbsolute(p);<a name="line.2208"></a>
+<span class="sourceLineNo">2209</span>    String key = pathToKey(absolutePath);<a name="line.2209"></a>
+<span class="sourceLineNo">2210</span>    FileMetadata metadata = store.retrieveMetadata(key);<a name="line.2210"></a>
+<span class="sourceLineNo">2211</span>    if (metadata == null) {<a name="line.2211"></a>
+<span class="sourceLineNo">2212</span>      throw new FileNotFoundException("File doesn't exist: " + p);<a name="line.2212"></a>
+<span class="sourceLineNo">2213</span>    }<a name="line.2213"></a>
+<span class="sourceLineNo">2214</span>    PermissionStatus newPermissionStatus = new PermissionStatus(<a name="line.2214"></a>
+<span class="sourceLineNo">2215</span>        username == null ?<a name="line.2215"></a>
+<span class="sourceLineNo">2216</span>            metadata.getPermissionStatus().getUserName() : username,<a name="line.2216"></a>
+<span class="sourceLineNo">2217</span>        groupname == null ?<a name="line.2217"></a>
+<span class="sourceLineNo">2218</span>            metadata.getPermissionStatus().getGroupName() : groupname,<a name="line.2218"></a>
+<span class="sourceLineNo">2219</span>        metadata.getPermissionStatus().getPermission());<a name="line.2219"></a>
+<span class="sourceLineNo">2220</span>    if (metadata.getBlobMaterialization() == BlobMaterialization.Implicit) {<a name="line.2220"></a>
+<span class="sourceLineNo">2221</span>      // It's an implicit folder, need to materialize it.<a name="line.2221"></a>
+<span class="sourceLineNo">2222</span>      store.storeEmptyFolder(key, newPermissionStatus);<a name="line.2222"></a>
+<span class="sourceLineNo">2223</span>    } else {<a name="line.2223"></a>
+<span class="sourceLineNo">2224</span>      store.changePermissionStatus(key, newPermissionStatus);<a name="line.2224"></a>
+<span class="sourceLineNo">2225</span>    }<a name="line.2225"></a>
+<span class="sourceLineNo">2226</span>  }<a name="line.2226"></a>
+<span class="sourceLineNo">2227</span><a name="line.2227"></a>
+<span class="sourceLineNo">2228</span>  @Override<a name="line.2228"></a>
+<span class="sourceLineNo">2229</span>  public synchronized void close() throws IOException {<a name="line.2229"></a>
+<span class="sourceLineNo">2230</span>    if (isClosed) {<a name="line.2230"></a>
+<span class="sourceLineNo">2231</span>      return;<a name="line.2231"></a>
+<span class="sourceLineNo">2232</span>    }<a name="line.2232"></a>
+<span class="sourceLineNo">2233</span><a name="line.2233"></a>
+<span class="sourceLineNo">2234</span>    // Call the base close() to close any resources there.<a name="line.2234"></a>
+<span class="sourceLineNo">2235</span>    super.close();<a name="line.2235"></a>
+<span class="sourceLineNo">2236</span>    // Close the store to close any resources there - e.g. the bandwidth<a name="line.2236"></a>
+<span class="sourceLineNo">2237</span>    // updater thread would be stopped at this time.<a name="line.2237"></a>
+<span class="sourceLineNo">2238</span>    store.close();<a name="line.2238"></a>
+<span class="sourceLineNo">2239</span>    // Notify the metrics system that this file system is closed, which may<a name="line.2239"></a>
+<span class="sourceLineNo">2240</span>    // trigger one final metrics push to get the accurate final file system<a name="line.2240"></a>
+<span class="sourceLineNo">2241</span>    // metrics out.<a name="line.2241"></a>
+<span class="sourceLineNo">2242</span><a name="line.2242"></a>
+<span class="sourceLineNo">2243</span>    long startTime = System.currentTimeMillis();<a name="line.2243"></a>
+<span class="sourceLineNo">2244</span><a name="line.2244"></a>
+<span class="sourceLineNo">2245</span>    if(!getConf().getBoolean(SKIP_AZURE_METRICS_PROPERTY_NAME, false)) {<a name="line.2245"></a>
+<span class="sourceLineNo">2246</span>      AzureFileSystemMetricsSystem.unregisterSource(metricsSourceName);<a name="line.2246"></a>
+<span class="sourceLineNo">2247</span>      AzureFileSystemMetricsSystem.fileSystemClosed();<a name="line.2247"></a>
+<span class="sourceLineNo">2248</span>    }<a name="line.2248"></a>
+<span class="sourceLineNo">2249</span><a name="line.2249"></a>
+<span class="sourceLineNo">2250</span>    if (LOG.isDebugEnabled()) {<a name="line.2250"></a>
+<span class="sourceLineNo">2251</span>        LOG.debug("Submitting metrics when file system closed took "<a name="line.2251"></a>
+<span class="sourceLineNo">2252</span>                + (System.currentTimeMillis() - startTime) + " ms.");<a name="line.2252"></a>
+<span class="sourceLineNo">2253</span>    }<a name="line.2253"></a>
+<span class="sourceLineNo">2254</span>    isClosed = true;<a name="line.2254"></a>
+<span class="sourceLineNo">2255</span>  }<a name="line.2255"></a>
+<span class="sourceLineNo">2256</span><a name="line.2256"></a>
+<span class="sourceLineNo">2257</span>  /**<a name="line.2257"></a>
+<span class="sourceLineNo">2258</span>   * A handler that defines what to do with blobs whose upload was<a name="line.2258"></a>
+<span class="sourceLineNo">2259</span>   * interrupted.<a name="line.2259"></a>
+<span class="sourceLineNo">2260</span>   */<a name="line.2260"></a>
+<span class="sourceLineNo">2261</span>  private abstract class DanglingFileHandler {<a name="line.2261"></a>
+<span class="sourceLineNo">2262</span>    abstract void handleFile(FileMetadata file, FileMetadata tempFile)<a name="line.2262"></a>
+<span class="sourceLineNo">2263</span>      throws IOException;<a name="line.2263"></a>
+<span class="sourceLineNo">2264</span>  }<a name="line.2264"></a>
+<span class="sourceLineNo">2265</span><a name="line.2265"></a>
+<span class="sourceLineNo">2266</span>  /**<a name="line.2266"></a>
+<span class="sourceLineNo">2267</span>   * Handler implementation for just deleting dangling files and cleaning<a name="line.2267"></a>
+<span class="sourceLineNo">2268</span>   * them up.<a name="line.2268"></a>
+<span class="sourceLineNo">2269</span>   */<a name="line.2269"></a>
+<span class="sourceLineNo">2270</span>  private class DanglingFileDeleter extends DanglingFileHandler {<a name="line.2270"></a>
+<span class="sourceLineNo">2271</span>    @Override<a name="line.2271"></a>
+<span class="sourceLineNo">2272</span>    void handleFile(FileMetadata file, FileMetadata tempFile)<a name="line.2272"></a>
+<span class="sourceLineNo">2273</span>        throws IOException {<a name="line.2273"></a>
+<span class="sourceLineNo">2274</span>      if (LOG.isDebugEnabled()) {<a name="line.2274"></a>
+<span class="sourceLineNo">2275</span>        LOG.debug("Deleting dangling file " + file.getKey());<a name="line.2275"></a>
 <span class="sourceLineNo">2276</span>      }<a name="line.2276"></a>
-<span class="sourceLineNo">2277</span>    }<a name="line.2277"></a>
-<span class="sourceLineNo">2278</span>  }<a name="line.2278"></a>
-<span class="sourceLineNo">2279</span><a name="line.2279"></a>
-<span class="sourceLineNo">2280</span>  /**<a name="line.2280"></a>
-<span class="sourceLineNo">2281</span>   * Check if a path has colons in its name<a name="line.2281"></a>
-<span class="sourceLineNo">2282</span>   */<a name="line.2282"></a>
-<span class="sourceLineNo">2283</span>  private boolean containsColon(Path p) {<a name="line.2283"></a>
-<span class="sourceLineNo">2284</span>    return p.toUri().getPath().toString().contains(":");<a name="line.2284"></a>
-<span class="sourceLineNo">2285</span>  }<a name="line.2285"></a>
-<span class="sourceLineNo">2286</span><a name="line.2286"></a>
-<span class="sourceLineNo">2287</span>  /**<a name="line.2287"></a>
-<span class="sourceLineNo">2288</span>   * Implements recover and delete (-move and -delete) behaviors for handling<a name="line.2288"></a>
-<span class="sourceLineNo">2289</span>   * dangling files (blobs whose upload was interrupted).<a name="line.2289"></a>
-<span class="sourceLineNo">2290</span>   * <a name="line.2290"></a>
-<span class="sourceLineNo">2291</span>   * @param root<a name="line.2291"></a>
-<span class="sourceLineNo">2292</span>   *          The root path to check from.<a name="line.2292"></a>
-<span class="sourceLineNo">2293</span>   * @param handler<a name="line.2293"></a>
-<span class="sourceLineNo">2294</span>   *          The handler that deals with dangling files.<a name="line.2294"></a>
-<span class="sourceLineNo">2295</span>   */<a name="line.2295"></a>
-<span class="sourceLineNo">2296</span>  private void handleFilesWithDanglingTempData(Path root,<a name="line.2296"></a>
-<span class="sourceLineNo">2297</span>      DanglingFileHandler handler) throws IOException {<a name="line.2297"></a>
-<span class="sourceLineNo">2298</span>    // Calculate the cut-off for when to consider a blob to be dangling.<a name="line.2298"></a>
-<span class="sourceLineNo">2299</span>    long cutoffForDangling = new Date().getTime()<a name="line.2299"></a>
-<span class="sourceLineNo">2300</span>        - getConf().getInt(AZURE_TEMP_EXPIRY_PROPERTY_NAME,<a name="line.2300"></a>
-<span class="sourceLineNo">2301</span>            AZURE_TEMP_EXPIRY_DEFAULT) * 1000;<a name="line.2301"></a>
-<span class="sourceLineNo">2302</span>    // Go over all the blobs under the given root and look for blobs to<a name="line.2302"></a>
-<span class="sourceLineNo">2303</span>    // recover.<a name="line.2303"></a>
-<span class="sourceLineNo">2304</span>    String priorLastKey = null;<a name="line.2304"></a>
-<span class="sourceLineNo">2305</span>    do {<a name="line.2305"></a>
-<span class="sourceLineNo">2306</span>      PartialListing listing = store.listAll(pathToKey(root), AZURE_LIST_ALL,<a name="line.2306"></a>
-<span class="sourceLineNo">2307</span>          AZURE_UNBOUNDED_DEPTH, priorLastKey);<a name="line.2307"></a>
-<span class="sourceLineNo">2308</span><a name="line.2308"></a>
-<span class="sourceLineNo">2309</span>      for (FileMetadata file : listing.getFiles()) {<a name="line.2309"></a>
-<span class="sourceLineNo">2310</span>        if (!file.isDir()) { // We don't recover directory blobs<a name="line.2310"></a>
-<span class="sourceLineNo">2311</span>          // See if this blob has a link in it (meaning it's a place-holder<a name="line.2311"></a>
-<span class="sourceLineNo">2312</span>          // blob for when the upload to the temp blob is complete).<a name="line.2312"></a>
-<span class="sourceLineNo">2313</span>          String link = store.getLinkInFileMetadata(file.getKey());<a name="line.2313"></a>
-<span class="sourceLineNo">2314</span>          if (link != null) {<a name="line.2314"></a>
-<span class="sourceLineNo">2315</span>            // It has a link, see if the temp blob it is pointing to is<a name="line.2315"></a>
-<span class="sourceLineNo">2316</span>            // existent and old enough to be considered dangling.<a name="line.2316"></a>
-<span class="sourceLineNo">2317</span>            FileMetadata linkMetadata = store.retrieveMetadata(link);<a name="line.2317"></a>
-<span class="sourceLineNo">2318</span>            if (linkMetadata != null<a name="line.2318"></a>
-<span class="sourceLineNo">2319</span>                &amp;&amp; linkMetadata.getLastModified() &gt;= cutoffForDangling) {<a name="line.2319"></a>
-<span class="sourceLineNo">2320</span>              // Found one!<a name="line.2320"></a>
-<span class="sourceLineNo">2321</span>              handler.handleFile(file, linkMetadata);<a name="line.2321"></a>
-<span class="sourceLineNo">2322</span>            }<a name="line.2322"></a>
-<span class="sourceLineNo">2323</span>          }<a name="line.2323"></a>
-<span class="sourceLineNo">2324</span>        }<a name="line.2324"></a>
-<span class="sourceLineNo">2325</span>      }<a name="line.2325"></a>
-<span class="sourceLineNo">2326</span>      priorLastKey = listing.getPriorLastKey();<a name="line.2326"></a>
-<span class="sourceLineNo">2327</span>    } while (priorLastKey != null);<a name="line.2327"></a>
-<span class="sourceLineNo">2328</span>  }<a name="line.2328"></a>
-<span class="sourceLineNo">2329</span><a name="line.2329"></a>
-<span class="sourceLineNo">2330</span>  /**<a name="line.2330"></a>
-<span class="sourceLineNo">2331</span>   * Looks under the given root path for any blob that are left "dangling",<a name="line.2331"></a>
-<span class="sourceLineNo">2332</span>   * meaning that they are place-holder blobs that we created while we upload<a name="line.2332"></a>
-<span class="sourceLineNo">2333</span>   * the data to a temporary blob, but for some reason we crashed in the middle<a name="line.2333"></a>
-<span class="sourceLineNo">2334</span>   * of the upload and left them there. If any are found, we move them to the<a name="line.2334"></a>
-<span class="sourceLineNo">2335</span>   * destination given.<a name="line.2335"></a>
-<span class="sourceLineNo">2336</span>   * <a name="line.2336"></a>
-<span class="sourceLineNo">2337</span>   * @param root<a name="line.2337"></a>
-<span class="sourceLineNo">2338</span>   *          The root path to consider.<a name="line.2338"></a>
-<span class="sourceLineNo">2339</span>   * @param destination<a name="line.2339"></a>
-<span class="sourceLineNo">2340</span>   *          The destination path to move any recovered files to.<a name="line.2340"></a>
-<span class="sourceLineNo">2341</span>   * @throws IOException<a name="line.2341"></a>
-<span class="sourceLineNo">2342</span>   */<a name="line.2342"></a>
-<span class="sourceLineNo">2343</span>  public void recoverFilesWithDanglingTempData(Path root, Path destination)<a name="line.2343"></a>
-<span class="sourceLineNo">2344</span>      throws IOException {<a name="line.2344"></a>
-<span class="sourceLineNo">2345</span>    if (LOG.isDebugEnabled()) {<a name="line.2345"></a>
-<span class="sourceLineNo">2346</span>      LOG.debug("Recovering files with dangling temp data in " + root);<a name="line.2346"></a>
-<span class="sourceLineNo">2347</span>    }<a name="line.2347"></a>
-<span class="sourceLineNo">2348</span>    handleFilesWithDanglingTempData(root,<a name="line.2348"></a>
-<span class="sourceLineNo">2349</span>        new DanglingFileRecoverer(destination));<a name="line.2349"></a>
-<span class="sourceLineNo">2350</span>  }<a name="line.2350"></a>
-<span class="sourceLineNo">2351</span><a name="line.2351"></a>
-<span class="sourceLineNo">2352</span>  /**<a name="line.2352"></a>
-<span class="sourceLineNo">2353</span>   * Looks under the given root path for any blob that are left "dangling",<a name="line.2353"></a>
-<span class="sourceLineNo">2354</span>   * meaning that they are place-holder blobs that we created while we upload<a name="line.2354"></a>
-<span class="sourceLineNo">2355</span>   * the data to a temporary blob, but for some reason we crashed in the middle<a name="line.2355"></a>
-<span class="sourceLineNo">2356</span>   * of the upload and left them there. If any are found, we delete them.<a name="line.2356"></a>
-<span class="sourceLineNo">2357</span>   * <a name="line.2357"></a>
-<span class="sourceLineNo">2358</span>   * @param root<a name="line.2358"></a>
-<span class="sourceLineNo">2359</span>   *          The root path to consider.<a name="line.2359"></a>
-<span class="sourceLineNo">2360</span>   * @throws IOException<a name="line.2360"></a>
-<span class="sourceLineNo">2361</span>   */<a name="line.2361"></a>
-<span class="sourceLineNo">2362</span>  public void deleteFilesWithDanglingTempData(Path root) throws IOException {<a name="line.2362"></a>
-<span class="sourceLineNo">2363</span>    if (LOG.isDebugEnabled()) {<a name="line.2363"></a>
-<span class="sourceLineNo">2364</span>      LOG.debug("Deleting files with dangling temp data in " + root);<a name="line.2364"></a>
-<span class="sourceLineNo">2365</span>    }<a name="line.2365"></a>
-<span class="sourceLineNo">2366</span>    handleFilesWithDanglingTempData(root, new DanglingFileDeleter());<a name="line.2366"></a>
-<span class="sourceLineNo">2367</span>  }<a name="line.2367"></a>
-<span class="sourceLineNo">2368</span><a name="line.2368"></a>
-<span class="sourceLineNo">2369</span>  @Override<a name="line.2369"></a>
-<span class="sourceLineNo">2370</span>  protected void finalize() throws Throwable {<a name="line.2370"></a>
-<span class="sourceLineNo">2371</span>    LOG.debug("finalize() called.");<a name="line.2371"></a>
-<span class="sourceLineNo">2372</span>    close();<a name="line.2372"></a>
-<span class="sourceLineNo">2373</span>    super.finalize();<a name="line.2373"></a>
-<span class="sourceLineNo">2374</span>  }<a name="line.2374"></a>
-<span class="sourceLineNo">2375</span><a name="line.2375"></a>
-<span class="sourceLineNo">2376</span>  /**<a name="line.2376"></a>
-<span class="sourceLineNo">2377</span>   * Encode the key with a random prefix for load balancing in Azure storage.<a name="line.2377"></a>
-<span class="sourceLineNo">2378</span>   * Upload data to a random temporary file then do storage side renaming to<a name="line.2378"></a>
-<span class="sourceLineNo">2379</span>   * recover the original key.<a name="line.2379"></a>
-<span class="sourceLineNo">2380</span>   * <a name="line.2380"></a>
-<span class="sourceLineNo">2381</span>   * @param aKey<a name="line.2381"></a>
-<span class="sourceLineNo">2382</span>   * @param numBuckets<a name="line.2382"></a>
-<span class="sourceLineNo">2383</span>   * @return Encoded version of the original key.<a name="line.2383"></a>
-<span class="sourceLineNo">2384</span>   */<a name="line.2384"></a>
-<span class="sourceLineNo">2385</span>  private static String encodeKey(String aKey) {<a name="line.2385"></a>
-<span class="sourceLineNo">2386</span>    // Get the tail end of the key name.<a name="line.2386"></a>
-<span class="sourceLineNo">2387</span>    //<a name="line.2387"></a>
-<span class="sourceLineNo">2388</span>    String fileName = aKey.substring(aKey.lastIndexOf(Path.SEPARATOR) + 1,<a name="line.2388"></a>
-<span class="sourceLineNo">2389</span>        aKey.length());<a name="line.2389"></a>
-<span class="sourceLineNo">2390</span><a name="line.2390"></a>
-<span class="sourceLineNo">2391</span>    // Construct the randomized prefix of the file name. The prefix ensures the<a name="line.2391"></a>
-<span class="sourceLineNo">2392</span>    // file always drops into the same folder but with a varying tail key name.<a name="line.2392"></a>
-<span class="sourceLineNo">2393</span>    String filePrefix = AZURE_TEMP_FOLDER + Path.SEPARATOR<a name="line.2393"></a>
-<span class="sourceLineNo">2394</span>        + UUID.randomUUID().toString();<a name="line.2394"></a>
-<span class="sourceLineNo">2395</span><a name="line.2395"></a>
-<span class="sourceLineNo">2396</span>    // Concatenate the randomized prefix with the tail of the key name.<a name="line.2396"></a>
-<span class="sourceLineNo">2397</span>    String randomizedKey = filePrefix + fileName;<a name="line.2397"></a>
+<span class="sourceLineNo">2277</span>      store.delete(file.getKey());<a name="line.2277"></a>
+<span class="sourceLineNo">2278</span>      store.delete(tempFile.getKey());<a name="line.2278"></a>
+<span class="sourceLineNo">2279</span>    }<a name="line.2279"></a>
+<span class="sourceLineNo">2280</span>  }<a name="line.2280"></a>
+<span class="sourceLineNo">2281</span><a name="line.2281"></a>
+<span class="sourceLineNo">2282</span>  /**<a name="line.2282"></a>
+<span class="sourceLineNo">2283</span>   * Handler implementation for just moving dangling files to recovery<a name="line.2283"></a>
+<span class="sourceLineNo">2284</span>   * location (/lost+found).<a name="line.2284"></a>
+<span class="sourceLineNo">2285</span>   */<a name="line.2285"></a>
+<span class="sourceLineNo">2286</span>  private class DanglingFileRecoverer extends DanglingFileHandler {<a name="line.2286"></a>
+<span class="sourceLineNo">2287</span>    private final Path destination;<a name="line.2287"></a>
+<span class="sourceLineNo">2288</span><a name="line.2288"></a>
+<span class="sourceLineNo">2289</span>    DanglingFileRecoverer(Path destination) {<a name="line.2289"></a>
+<span class="sourceLineNo">2290</span>      this.destination = destination;<a name="line.2290"></a>
+<span class="sourceLineNo">2291</span>    }<a name="line.2291"></a>
+<span class="sourceLineNo">2292</span><a name="line.2292"></a>
+<span class="sourceLineNo">2293</span>    @Override<a name="line.2293"></a>
+<span class="sourceLineNo">2294</span>    void handleFile(FileMetadata file, FileMetadata tempFile)<a name="line.2294"></a>
+<span class="sourceLineNo">2295</span>        throws IOException {<a name="line.2295"></a>
+<span class="sourceLineNo">2296</span>      if (LOG.isDebugEnabled()) {<a name="line.2296"></a>
+<span class="sourceLineNo">2297</span>        LOG.debug("Recovering " + file.getKey());<a name="line.2297"></a>
+<span class="sourceLineNo">2298</span>      }<a name="line.2298"></a>
+<span class="sourceLineNo">2299</span>      // Move to the final destination<a name="line.2299"></a>
+<span class="sourceLineNo">2300</span>      String finalDestinationKey =<a name="line.2300"></a>
+<span class="sourceLineNo">2301</span>          pathToKey(new Path(destination, file.getKey()));<a name="line.2301"></a>
+<span class="sourceLineNo">2302</span>      store.rename(tempFile.getKey(), finalDestinationKey);<a name="line.2302"></a>
+<span class="sourceLineNo">2303</span>      if (!finalDestinationKey.equals(file.getKey())) {<a name="line.2303"></a>
+<span class="sourceLineNo">2304</span>        // Delete the empty link file now that we've restored it.<a name="line.2304"></a>
+<span class="sourceLineNo">2305</span>        store.delete(file.getKey());<a name="line.2305"></a>
+<span class="sourceLineNo">2306</span>      }<a name="line.2306"></a>
+<span class="sourceLineNo">2307</span>    }<a name="line.2307"></a>
+<span class="sourceLineNo">2308</span>  }<a name="line.2308"></a>
+<span class="sourceLineNo">2309</span><a name="line.2309"></a>
+<span class="sourceLineNo">2310</span>  /**<a name="line.2310"></a>
+<span class="sourceLineNo">2311</span>   * Check if a path has colons in its name<a name="line.2311"></a>
+<span class="sourceLineNo">2312</span>   */<a name="line.2312"></a>
+<span class="sourceLineNo">2313</span>  private boolean containsColon(Path p) {<a name="line.2313"></a>
+<span class="sourceLineNo">2314</span>    return p.toUri().getPath().toString().contains(":");<a name="line.2314"></a>
+<span class="sourceLineNo">2315</span>  }<a name="line.2315"></a>
+<span class="sourceLineNo">2316</span><a name="line.2316"></a>
+<span class="sourceLineNo">2317</span>  /**<a name="line.2317"></a>
+<span class="sourceLineNo">2318</span>   * Implements recover and delete (-move and -delete) behaviors for handling<a name="line.2318"></a>
+<span class="sourceLineNo">2319</span>   * dangling files (blobs whose upload was interrupted).<a name="line.2319"></a>
+<span class="sourceLineNo">2320</span>   * <a name="line.2320"></a>
+<span class="sourceLineNo">2321</span>   * @param root<a name="line.2321"></a>
+<span class="sourceLineNo">2322</span>   *          The root path to check from.<a name="line.2322"></a>
+<span class="sourceLineNo">2323</span>   * @param handler<a name="line.2323"></a>
+<span class="sourceLineNo">2324</span>   *          The handler that deals with dangling files.<a name="line.2324"></a>
+<span class="sourceLineNo">2325</span>   */<a name="line.2325"></a>
+<span class="sourceLineNo">2326</span>  private void handleFilesWithDanglingTempData(Path root,<a name="line.2326"></a>
+<span class="sourceLineNo">2327</span>      DanglingFileHandler handler) throws IOException {<a name="line.2327"></a>
+<span class="sourceLineNo">2328</span>    // Calculate the cut-off for when to consider a blob to be dangling.<a name="line.2328"></a>
+<span class="sourceLineNo">2329</span>    long cutoffForDangling = new Date().getTime()<a name="line.2329"></a>
+<span class="sourceLineNo">2330</span>        - getConf().getInt(AZURE_TEMP_EXPIRY_PROPERTY_NAME,<a name="line.2330"></a>
+<span class="sourceLineNo">2331</span>            AZURE_TEMP_EXPIRY_DEFAULT) * 1000;<a name="line.2331"></a>
+<span class="sourceLineNo">2332</span>    // Go over all the blobs under the given root and look for blobs to<a name="line.2332"></a>
+<span class="sourceLineNo">2333</span>    // recover.<a name="line.2333"></a>
+<span class="sourceLineNo">2334</span>    String priorLastKey = null;<a name="line.2334"></a>
+<span class="sourceLineNo">2335</span>    do {<a name="line.2335"></a>
+<span class="sourceLineNo">2336</span>      PartialListing listing = store.listAll(pathToKey(root), AZURE_LIST_ALL,<a name="line.2336"></a>
+<span class="sourceLineNo">2337</span>          AZURE_UNBOUNDED_DEPTH, priorLastKey);<a name="line.2337"></a>
+<span class="sourceLineNo">2338</span><a name="line.2338"></a>
+<span class="sourceLineNo">2339</span>      for (FileMetadata file : listing.getFiles()) {<a name="line.2339"></a>
+<span class="sourceLineNo">2340</span>        if (!file.isDir()) { // We don't recover directory blobs<a name="line.2340"></a>
+<span class="sourceLineNo">2341</span>          // See if this blob has a link in it (meaning it's a place-holder<a name="line.2341"></a>
+<span class="sourceLineNo">2342</span>          // blob for when the upload to the temp blob is complete).<a name="line.2342"></a>
+<span class="sourceLineNo">2343</span>          String link = store.getLinkInFileMetadata(file.getKey());<a name="line.2343"></a>
+<span class="sourceLineNo">2344</span>          if (link != null) {<a name="line.2344"></a>
+<span class="sourceLineNo">2345</span>            // It has a link, see if the temp blob it is pointing to is<a name="line.2345"></a>
+<span class="sourceLineNo">2346</span>            // existent and old enough to be considered dangling.<a name="line.2346"></a>
+<span class="sourceLineNo">2347</span>            FileMetadata linkMetadata = store.retrieveMetadata(link);<a name="line.2347"></a>
+<span class="sourceLineNo">2348</span>            if (linkMetadata != null<a name="line.2348"></a>
+<span class="sourceLineNo">2349</span>                &amp;&amp; linkMetadata.getLastModified() &gt;= cutoffForDangling) {<a name="line.2349"></a>
+<span class="sourceLineNo">2350</span>              // Found one!<a name="line.2350"></a>
+<span class="sourceLineNo">2351</span>              handler.handleFile(file, linkMetadata);<a name="line.2351"></a>
+<span class="sourceLineNo">2352</span>            }<a name="line.2352"></a>
+<span class="sourceLineNo">2353</span>          }<a name="line.2353"></a>
+<span class="sourceLineNo">2354</span>        }<a name="line.2354"></a>
+<span class="sourceLineNo">2355</span>      }<a name="line.2355"></a>
+<span class="sourceLineNo">2356</span>      priorLastKey = listing.getPriorLastKey();<a name="line.2356"></a>
+<span class="sourceLineNo">2357</span>    } while (priorLastKey != null);<a name="line.2357"></a>
+<span class="sourceLineNo">2358</span>  }<a name="line.2358"></a>
+<span class="sourceLineNo">2359</span><a name="line.2359"></a>
+<span class="sourceLineNo">2360</span>  /**<a name="line.2360"></a>
+<span class="sourceLineNo">2361</span>   * Looks under the given root path for any blob that are left "dangling",<a name="line.2361"></a>
+<span class="sourceLineNo">2362</span>   * meaning that they are place-holder blobs that we created while we upload<a name="line.2362"></a>
+<span class="sourceLineNo">2363</span>   * the data to a temporary blob, but for some reason we crashed in the middle<a name="line.2363"></a>
+<span class="sourceLineNo">2364</span>   * of the upload and left them there. If any are found, we move them to the<a name="line.2364"></a>
+<span class="sourceLineNo">2365</span>   * destination given.<a name="line.2365"></a>
+<span class="sourceLineNo">2366</span>   * <a name="line.2366"></a>
+<span class="sourceLineNo">2367</span>   * @param root<a name="line.2367"></a>
+<span class="sourceLineNo">2368</span>   *          The root path to consider.<a name="line.2368"></a>
+<span class="sourceLineNo">2369</span>   * @param destination<a name="line.2369"></a>
+<span class="sourceLineNo">2370</span>   *          The destination path to move any recovered files to.<a name="line.2370"></a>
+<span class="sourceLineNo">2371</span>   * @throws IOException<a name="line.2371"></a>
+<span class="sourceLineNo">2372</span>   */<a name="line.2372"></a>
+<span class="sourceLineNo">2373</span>  public void recoverFilesWithDanglingTempData(Path root, Path destination)<a name="line.2373"></a>
+<span class="sourceLineNo">2374</span>      throws IOException {<a name="line.2374"></a>
+<span class="sourceLineNo">2375</span>    if (LOG.isDebugEnabled()) {<a name="line.2375"></a>
+<span class="sourceLineNo">2376</span>      LOG.debug("Recovering files with dangling temp data in " + root);<a name="line.2376"></a>
+<span class="sourceLineNo">2377</span>    }<a name="line.2377"></a>
+<span class="sourceLineNo">2378</span>    handleFilesWithDanglingTempData(root,<a name="line.2378"></a>
+<span class="sourceLineNo">2379</span>        new DanglingFileRecoverer(destination));<a name="line.2379"></a>
+<span class="sourceLineNo">2380</span>  }<a name="line.2380"></a>
+<span class="sourceLineNo">2381</span><a name="line.2381"></a>
+<span class="sourceLineNo">2382</span>  /**<a name="line.2382"></a>
+<span class="sourceLineNo">2383</span>   * Looks under the given root path for any blob that are left "dangling",<a name="line.2383"></a>
+<span class="sourceLineNo">2384</span>   * meaning that they are place-holder blobs that we created while we upload<a name="line.2384"></a>
+<span class="sourceLineNo">2385</span>   * the data to a temporary blob, but for some reason we crashed in the middle<a name="line.2385"></a>
+<span class="sourceLineNo">2386</span>   * of the upload and left them there. If any are found, we delete them.<a name="line.2386"></a>
+<span class="sourceLineNo">2387</span>   * <a name="line.2387"></a>
+<span class="sourceLineNo">2388</span>   * @param root<a name="line.2388"></a>
+<span class="sourceLineNo">2389</span>   *          The root path to consider.<a name="line.2389"></a>
+<span class="sourceLineNo">2390</span>   * @throws IOException<a name="line.2390"></a>
+<span class="sourceLineNo">2391</span>   */<a name="line.2391"></a>
+<span class="sourceLineNo">2392</span>  public void deleteFilesWithDanglingTempData(Path root) throws IOException {<a name="line.2392"></a>
+<span class="sourceLineNo">2393</span>    if (LOG.isDebugEnabled()) {<a name="line.2393"></a>
+<span class="sourceLineNo">2394</span>      LOG.debug("Deleting files with dangling temp data in " + root);<a name="line.2394"></a>
+<span class="sourceLineNo">2395</span>    }<a name="line.2395"></a>
+<span class="sourceLineNo">2396</span>    handleFilesWithDanglingTempData(root, new DanglingFileDeleter());<a name="line.2396"></a>
+<span class="sourceLineNo">2397</span>  }<a name="line.2397"></a>
 <span class="sourceLineNo">2398</span><a name="line.2398"></a>
-<span class="sourceLineNo">2399</span>    // Return to the caller with the randomized key.<a name="line.2399"></a>
-<span class="sourceLineNo">2400</span>    return randomizedKey;<a name="line.2400"></a>
-<span class="sourceLineNo">2401</span>  }<a name="line.2401"></a>
-<span class="sourceLineNo">2402</span>}<a name="line.2402"></a>
+<span class="sourceLineNo">2399</span>  @Override<a name="line.2399"></a>
+<span class="sourceLineNo">2400</span>  protected void finalize() throws Throwable {<a name="line.2400"></a>
+<span class="sourceLineNo">2401</span>    LOG.debug("finalize() called.");<a name="line.2401"></a>
+<span class="sourceLineNo">2402</span>    close();<a name="line.2402"></a>
+<span class="sourceLineNo">2403</span>    super.finalize();<a name="line.2403"></a>
+<span class="sourceLineNo">2404</span>  }<a name="line.2404"></a>
+<span class="sourceLineNo">2405</span><a name="line.2405"></a>
+<span class="sourceLineNo">2406</span>  /**<a name="line.2406"></a>
+<span class="sourceLineNo">2407</span>   * Encode the key with a random prefix for load balancing in Azure storage.<a name="line.2407"></a>
+<span class="sourceLineNo">2408</span>   * Upload data to a random temporary file then do storage side renaming to<a name="line.2408"></a>
+<span class="sourceLineNo">2409</span>   * recover the original key.<a name="line.2409"></a>
+<span class="sourceLineNo">2410</span>   * <a name="line.2410"></a>
+<span class="sourceLineNo">2411</span>   * @param aKey<a name="line.2411"></a>
+<span class="sourceLineNo">2412</span>   * @param numBuckets<a name="line.2412"></a>
+<span class="sourceLineNo">2413</span>   * @return Encoded version of the original key.<a name="line.2413"></a>
+<span class="sourceLineNo">2414</span>   */<a name="line.2414"></a>
+<span class="sourceLineNo">2415</span>  private static String encodeKey(String aKey) {<a name="line.2415"></a>
+<span class="sourceLineNo">2416</span>    // Get the tail end of the key name.<a name="line.2416"></a>
+<span class="sourceLineNo">2417</span>    //<a name="line.2417"></a>
+<span class="sourceLineNo">2418</span>    String fileName = aKey.substring(aKey.lastIndexOf(Path.SEPARATOR) + 1,<a name="line.2418"></a>
+<span class="sourceLineNo">2419</span>        aKey.length());<a name="line.2419"></a>
+<span class="sourceLineNo">2420</span><a name="line.2420"></a>
+<span class="sourceLineNo">2421</span>    // Construct the randomized prefix of the file name. The prefix ensures the<a name="line.2421"></a>
+<span class="sourceLineNo">2422</span>    // file always drops into the same folder but with a varying tail key name.<a name="line.2422"></a>
+<span class="sourceLineNo">2423</span>    String filePrefix = AZURE_TEMP_FOLDER + Path.SEPARATOR<a name="line.2423"></a>
+<span class="sourceLineNo">2424</span>        + UUID.randomUUID().toString();<a name="line.2424"></a>
+<span class="sourceLineNo">2425</span><a name="line.2425"></a>
+<span class="sourceLineNo">2426</span>    // Concatenate the randomized prefix with the tail of the key name.<a name="line.2426"></a>
+<span class="sourceLineNo">2427</span>    String randomizedKey = filePrefix + fileName;<a name="line.2427"></a>
+<span class="sourceLineNo">2428</span><a name="line.2428"></a>
+<span class="sourceLineNo">2429</span>    // Return to the caller with the randomized key.<a name="line.2429"></a>
+<span class="sourceLineNo">2430</span>    return randomizedKey;<a name="line.2430"></a>
+<span class="sourceLineNo">2431</span>  }<a name="line.2431"></a>
+<span class="sourceLineNo">2432</span>}<a name="line.2432"></a>
 
 
 

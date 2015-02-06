@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="ja">
+<html lang="en">
 <head>
-<title>ソース・コード</title>
+<title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
 </head>
 <body>
@@ -315,88 +315,92 @@
 <span class="sourceLineNo">307</span>      fgroups.put(group.getName(), group);<a name="line.307"></a>
 <span class="sourceLineNo">308</span>    }<a name="line.308"></a>
 <span class="sourceLineNo">309</span>    int numGroups = WritableUtils.readVInt(in);<a name="line.309"></a>
-<span class="sourceLineNo">310</span>    while (numGroups-- &gt; 0) {<a name="line.310"></a>
-<span class="sourceLineNo">311</span>      limits.checkGroups(groups.size() + 1);<a name="line.311"></a>
-<span class="sourceLineNo">312</span>      G group = groupFactory.newGenericGroup(<a name="line.312"></a>
-<span class="sourceLineNo">313</span>          StringInterner.weakIntern(Text.readString(in)), null, limits);<a name="line.313"></a>
-<span class="sourceLineNo">314</span>      group.readFields(in);<a name="line.314"></a>
-<span class="sourceLineNo">315</span>      groups.put(group.getName(), group);<a name="line.315"></a>
-<span class="sourceLineNo">316</span>    }<a name="line.316"></a>
-<span class="sourceLineNo">317</span>  }<a name="line.317"></a>
-<span class="sourceLineNo">318</span><a name="line.318"></a>
-<span class="sourceLineNo">319</span>  /**<a name="line.319"></a>
-<span class="sourceLineNo">320</span>   * Return textual representation of the counter values.<a name="line.320"></a>
-<span class="sourceLineNo">321</span>   * @return the string<a name="line.321"></a>
-<span class="sourceLineNo">322</span>   */<a name="line.322"></a>
-<span class="sourceLineNo">323</span>  @Override<a name="line.323"></a>
-<span class="sourceLineNo">324</span>  public synchronized String toString() {<a name="line.324"></a>
-<span class="sourceLineNo">325</span>    StringBuilder sb = new StringBuilder("Counters: " + countCounters());<a name="line.325"></a>
-<span class="sourceLineNo">326</span>    for (G group: this) {<a name="line.326"></a>
-<span class="sourceLineNo">327</span>      sb.append("\n\t").append(group.getDisplayName());<a name="line.327"></a>
-<span class="sourceLineNo">328</span>      for (Counter counter: group) {<a name="line.328"></a>
-<span class="sourceLineNo">329</span>        sb.append("\n\t\t").append(counter.getDisplayName()).append("=")<a name="line.329"></a>
-<span class="sourceLineNo">330</span>          .append(counter.getValue());<a name="line.330"></a>
-<span class="sourceLineNo">331</span>      }<a name="line.331"></a>
-<span class="sourceLineNo">332</span>    }<a name="line.332"></a>
-<span class="sourceLineNo">333</span>    return sb.toString();<a name="line.333"></a>
-<span class="sourceLineNo">334</span>  }<a name="line.334"></a>
-<span class="sourceLineNo">335</span><a name="line.335"></a>
-<span class="sourceLineNo">336</span>  /**<a name="line.336"></a>
-<span class="sourceLineNo">337</span>   * Increments multiple counters by their amounts in another Counters<a name="line.337"></a>
-<span class="sourceLineNo">338</span>   * instance.<a name="line.338"></a>
-<span class="sourceLineNo">339</span>   * @param other the other Counters instance<a name="line.339"></a>
-<span class="sourceLineNo">340</span>   */<a name="line.340"></a>
-<span class="sourceLineNo">341</span>  public synchronized void incrAllCounters(AbstractCounters&lt;C, G&gt; other) {<a name="line.341"></a>
-<span class="sourceLineNo">342</span>    for(G right : other) {<a name="line.342"></a>
-<span class="sourceLineNo">343</span>      String groupName = right.getName();<a name="line.343"></a>
-<span class="sourceLineNo">344</span>      G left = (isFrameworkGroup(groupName) ? fgroups : groups).get(groupName);<a name="line.344"></a>
-<span class="sourceLineNo">345</span>      if (left == null) {<a name="line.345"></a>
-<span class="sourceLineNo">346</span>        left = addGroup(groupName, right.getDisplayName());<a name="line.346"></a>
-<span class="sourceLineNo">347</span>      }<a name="line.347"></a>
-<span class="sourceLineNo">348</span>      left.incrAllCounters(right);<a name="line.348"></a>
-<span class="sourceLineNo">349</span>    }<a name="line.349"></a>
-<span class="sourceLineNo">350</span>  }<a name="line.350"></a>
-<span class="sourceLineNo">351</span><a name="line.351"></a>
-<span class="sourceLineNo">352</span>  @Override<a name="line.352"></a>
-<span class="sourceLineNo">353</span>  @SuppressWarnings("unchecked")<a name="line.353"></a>
-<span class="sourceLineNo">354</span>  public boolean equals(Object genericRight) {<a name="line.354"></a>
-<span class="sourceLineNo">355</span>    if (genericRight instanceof AbstractCounters&lt;?, ?&gt;) {<a name="line.355"></a>
-<span class="sourceLineNo">356</span>      return Iterators.elementsEqual(iterator(),<a name="line.356"></a>
-<span class="sourceLineNo">357</span>          ((AbstractCounters&lt;C, G&gt;)genericRight).iterator());<a name="line.357"></a>
-<span class="sourceLineNo">358</span>    }<a name="line.358"></a>
-<span class="sourceLineNo">359</span>    return false;<a name="line.359"></a>
-<span class="sourceLineNo">360</span>  }<a name="line.360"></a>
-<span class="sourceLineNo">361</span><a name="line.361"></a>
-<span class="sourceLineNo">362</span>  @Override<a name="line.362"></a>
-<span class="sourceLineNo">363</span>  public int hashCode() {<a name="line.363"></a>
-<span class="sourceLineNo">364</span>    return groups.hashCode();<a name="line.364"></a>
-<span class="sourceLineNo">365</span>  }<a name="line.365"></a>
-<span class="sourceLineNo">366</span><a name="line.366"></a>
-<span class="sourceLineNo">367</span>  /**<a name="line.367"></a>
-<span class="sourceLineNo">368</span>   * Set the "writeAllCounters" option to true or false<a name="line.368"></a>
-<span class="sourceLineNo">369</span>   * @param send  if true all counters would be serialized, otherwise only<a name="line.369"></a>
-<span class="sourceLineNo">370</span>   *              framework counters would be serialized in<a name="line.370"></a>
-<span class="sourceLineNo">371</span>   *              {@link #write(DataOutput)}<a name="line.371"></a>
-<span class="sourceLineNo">372</span>   */<a name="line.372"></a>
-<span class="sourceLineNo">373</span>  @InterfaceAudience.Private<a name="line.373"></a>
-<span class="sourceLineNo">374</span>  public void setWriteAllCounters(boolean send) {<a name="line.374"></a>
-<span class="sourceLineNo">375</span>    writeAllCounters = send;<a name="line.375"></a>
-<span class="sourceLineNo">376</span>  }<a name="line.376"></a>
-<span class="sourceLineNo">377</span><a name="line.377"></a>
-<span class="sourceLineNo">378</span>  /**<a name="line.378"></a>
-<span class="sourceLineNo">379</span>   * Get the "writeAllCounters" option<a name="line.379"></a>
-<span class="sourceLineNo">380</span>   * @return true of all counters would serialized<a name="line.380"></a>
-<span class="sourceLineNo">381</span>   */<a name="line.381"></a>
-<span class="sourceLineNo">382</span>  @InterfaceAudience.Private<a name="line.382"></a>
-<span class="sourceLineNo">383</span>  public boolean getWriteAllCounters() {<a name="line.383"></a>
-<span class="sourceLineNo">384</span>    return writeAllCounters;<a name="line.384"></a>
-<span class="sourceLineNo">385</span>  }<a name="line.385"></a>
-<span class="sourceLineNo">386</span><a name="line.386"></a>
-<span class="sourceLineNo">387</span>  @InterfaceAudience.Private<a name="line.387"></a>
-<span class="sourceLineNo">388</span>  public Limits limits() {<a name="line.388"></a>
-<span class="sourceLineNo">389</span>    return limits;<a name="line.389"></a>
-<span class="sourceLineNo">390</span>  }<a name="line.390"></a>
-<span class="sourceLineNo">391</span>}<a name="line.391"></a>
+<span class="sourceLineNo">310</span>    if (!groups.isEmpty()) {<a name="line.310"></a>
+<span class="sourceLineNo">311</span>      groups.clear();<a name="line.311"></a>
+<span class="sourceLineNo">312</span>      limits.reset();<a name="line.312"></a>
+<span class="sourceLineNo">313</span>    }<a name="line.313"></a>
+<span class="sourceLineNo">314</span>    while (numGroups-- &gt; 0) {<a name="line.314"></a>
+<span class="sourceLineNo">315</span>      limits.checkGroups(groups.size() + 1);<a name="line.315"></a>
+<span class="sourceLineNo">316</span>      G group = groupFactory.newGenericGroup(<a name="line.316"></a>
+<span class="sourceLineNo">317</span>          StringInterner.weakIntern(Text.readString(in)), null, limits);<a name="line.317"></a>
+<span class="sourceLineNo">318</span>      group.readFields(in);<a name="line.318"></a>
+<span class="sourceLineNo">319</span>      groups.put(group.getName(), group);<a name="line.319"></a>
+<span class="sourceLineNo">320</span>    }<a name="line.320"></a>
+<span class="sourceLineNo">321</span>  }<a name="line.321"></a>
+<span class="sourceLineNo">322</span><a name="line.322"></a>
+<span class="sourceLineNo">323</span>  /**<a name="line.323"></a>
+<span class="sourceLineNo">324</span>   * Return textual representation of the counter values.<a name="line.324"></a>
+<span class="sourceLineNo">325</span>   * @return the string<a name="line.325"></a>
+<span class="sourceLineNo">326</span>   */<a name="line.326"></a>
+<span class="sourceLineNo">327</span>  @Override<a name="line.327"></a>
+<span class="sourceLineNo">328</span>  public synchronized String toString() {<a name="line.328"></a>
+<span class="sourceLineNo">329</span>    StringBuilder sb = new StringBuilder("Counters: " + countCounters());<a name="line.329"></a>
+<span class="sourceLineNo">330</span>    for (G group: this) {<a name="line.330"></a>
+<span class="sourceLineNo">331</span>      sb.append("\n\t").append(group.getDisplayName());<a name="line.331"></a>
+<span class="sourceLineNo">332</span>      for (Counter counter: group) {<a name="line.332"></a>
+<span class="sourceLineNo">333</span>        sb.append("\n\t\t").append(counter.getDisplayName()).append("=")<a name="line.333"></a>
+<span class="sourceLineNo">334</span>          .append(counter.getValue());<a name="line.334"></a>
+<span class="sourceLineNo">335</span>      }<a name="line.335"></a>
+<span class="sourceLineNo">336</span>    }<a name="line.336"></a>
+<span class="sourceLineNo">337</span>    return sb.toString();<a name="line.337"></a>
+<span class="sourceLineNo">338</span>  }<a name="line.338"></a>
+<span class="sourceLineNo">339</span><a name="line.339"></a>
+<span class="sourceLineNo">340</span>  /**<a name="line.340"></a>
+<span class="sourceLineNo">341</span>   * Increments multiple counters by their amounts in another Counters<a name="line.341"></a>
+<span class="sourceLineNo">342</span>   * instance.<a name="line.342"></a>
+<span class="sourceLineNo">343</span>   * @param other the other Counters instance<a name="line.343"></a>
+<span class="sourceLineNo">344</span>   */<a name="line.344"></a>
+<span class="sourceLineNo">345</span>  public synchronized void incrAllCounters(AbstractCounters&lt;C, G&gt; other) {<a name="line.345"></a>
+<span class="sourceLineNo">346</span>    for(G right : other) {<a name="line.346"></a>
+<span class="sourceLineNo">347</span>      String groupName = right.getName();<a name="line.347"></a>
+<span class="sourceLineNo">348</span>      G left = (isFrameworkGroup(groupName) ? fgroups : groups).get(groupName);<a name="line.348"></a>
+<span class="sourceLineNo">349</span>      if (left == null) {<a name="line.349"></a>
+<span class="sourceLineNo">350</span>        left = addGroup(groupName, right.getDisplayName());<a name="line.350"></a>
+<span class="sourceLineNo">351</span>      }<a name="line.351"></a>
+<span class="sourceLineNo">352</span>      left.incrAllCounters(right);<a name="line.352"></a>
+<span class="sourceLineNo">353</span>    }<a name="line.353"></a>
+<span class="sourceLineNo">354</span>  }<a name="line.354"></a>
+<span class="sourceLineNo">355</span><a name="line.355"></a>
+<span class="sourceLineNo">356</span>  @Override<a name="line.356"></a>
+<span class="sourceLineNo">357</span>  @SuppressWarnings("unchecked")<a name="line.357"></a>
+<span class="sourceLineNo">358</span>  public boolean equals(Object genericRight) {<a name="line.358"></a>
+<span class="sourceLineNo">359</span>    if (genericRight instanceof AbstractCounters&lt;?, ?&gt;) {<a name="line.359"></a>
+<span class="sourceLineNo">360</span>      return Iterators.elementsEqual(iterator(),<a name="line.360"></a>
+<span class="sourceLineNo">361</span>          ((AbstractCounters&lt;C, G&gt;)genericRight).iterator());<a name="line.361"></a>
+<span class="sourceLineNo">362</span>    }<a name="line.362"></a>
+<span class="sourceLineNo">363</span>    return false;<a name="line.363"></a>
+<span class="sourceLineNo">364</span>  }<a name="line.364"></a>
+<span class="sourceLineNo">365</span><a name="line.365"></a>
+<span class="sourceLineNo">366</span>  @Override<a name="line.366"></a>
+<span class="sourceLineNo">367</span>  public int hashCode() {<a name="line.367"></a>
+<span class="sourceLineNo">368</span>    return groups.hashCode();<a name="line.368"></a>
+<span class="sourceLineNo">369</span>  }<a name="line.369"></a>
+<span class="sourceLineNo">370</span><a name="line.370"></a>
+<span class="sourceLineNo">371</span>  /**<a name="line.371"></a>
+<span class="sourceLineNo">372</span>   * Set the "writeAllCounters" option to true or false<a name="line.372"></a>
+<span class="sourceLineNo">373</span>   * @param send  if true all counters would be serialized, otherwise only<a name="line.373"></a>
+<span class="sourceLineNo">374</span>   *              framework counters would be serialized in<a name="line.374"></a>
+<span class="sourceLineNo">375</span>   *              {@link #write(DataOutput)}<a name="line.375"></a>
+<span class="sourceLineNo">376</span>   */<a name="line.376"></a>
+<span class="sourceLineNo">377</span>  @InterfaceAudience.Private<a name="line.377"></a>
+<span class="sourceLineNo">378</span>  public void setWriteAllCounters(boolean send) {<a name="line.378"></a>
+<span class="sourceLineNo">379</span>    writeAllCounters = send;<a name="line.379"></a>
+<span class="sourceLineNo">380</span>  }<a name="line.380"></a>
+<span class="sourceLineNo">381</span><a name="line.381"></a>
+<span class="sourceLineNo">382</span>  /**<a name="line.382"></a>
+<span class="sourceLineNo">383</span>   * Get the "writeAllCounters" option<a name="line.383"></a>
+<span class="sourceLineNo">384</span>   * @return true of all counters would serialized<a name="line.384"></a>
+<span class="sourceLineNo">385</span>   */<a name="line.385"></a>
+<span class="sourceLineNo">386</span>  @InterfaceAudience.Private<a name="line.386"></a>
+<span class="sourceLineNo">387</span>  public boolean getWriteAllCounters() {<a name="line.387"></a>
+<span class="sourceLineNo">388</span>    return writeAllCounters;<a name="line.388"></a>
+<span class="sourceLineNo">389</span>  }<a name="line.389"></a>
+<span class="sourceLineNo">390</span><a name="line.390"></a>
+<span class="sourceLineNo">391</span>  @InterfaceAudience.Private<a name="line.391"></a>
+<span class="sourceLineNo">392</span>  public Limits limits() {<a name="line.392"></a>
+<span class="sourceLineNo">393</span>    return limits;<a name="line.393"></a>
+<span class="sourceLineNo">394</span>  }<a name="line.394"></a>
+<span class="sourceLineNo">395</span>}<a name="line.395"></a>
 
 
 

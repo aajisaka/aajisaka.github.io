@@ -208,9 +208,11 @@
 
 <property>
   <name>mapreduce.map.memory.mb</name>
-  <value>1024</value>
+  <value>-1</value>
   <description>The amount of memory to request from the scheduler for each
-  map task.
+    map task. If this is not specified or is non-positive, it is inferred from
+    mapreduce.map.java.opts and mapreduce.job.heap.memory-mb.ratio.
+    If java-opts are also not specified, we set it to 1024.
   </description>
 </property>
 
@@ -224,9 +226,11 @@
 
 <property>
   <name>mapreduce.reduce.memory.mb</name>
-  <value>1024</value>
+  <value>-1</value>
   <description>The amount of memory to request from the scheduler for each
-  reduce task.
+    reduce task. If this is not specified or is non-positive, it is inferred
+    from mapreduce.reduce.java.opts and mapreduce.job.heap.memory-mb.ratio.
+    If java-opts are also not specified, we set it to 1024.
   </description>
 </property>
 
@@ -240,7 +244,7 @@
 
 <property>
   <name>mapred.child.java.opts</name>
-  <value>-Xmx200m</value>
+  <value></value>
   <description>Java opts for the task processes.
   The following symbol, if present, will be interpolated: @taskid@ is replaced 
   by current TaskID. Any other occurrences of '@' will go unchanged.
@@ -251,7 +255,10 @@
   Usage of -Djava.library.path can cause programs to no longer function if
   hadoop native libraries are used. These values should instead be set as part 
   of LD_LIBRARY_PATH in the map / reduce JVM env using the mapreduce.map.env and 
-  mapreduce.reduce.env config settings. 
+  mapreduce.reduce.env config settings.
+
+  If -Xmx is not set, it is inferred from mapreduce.{map|reduce}.memory.mb and
+  mapreduce.job.heap.memory-mb.ratio.
   </description>
 </property>
 
@@ -260,7 +267,9 @@
   <name>mapreduce.map.java.opts</name>
   <value></value>
   <description>Java opts only for the child processes that are maps. If set,
-  this will be used instead of mapred.child.java.opts.
+  this will be used instead of mapred.child.java.opts. If -Xmx is not set,
+  it is inferred from mapreduce.map.memory.mb and
+  mapreduce.job.heap.memory-mb.ratio.
   </description>
 </property>
 -->
@@ -270,7 +279,9 @@
   <name>mapreduce.reduce.java.opts</name>
   <value></value>
   <description>Java opts only for the child processes that are reduces. If set,
-  this will be used instead of mapred.child.java.opts.
+  this will be used instead of mapred.child.java.opts. If -Xmx is not set,
+  it is inferred from mapreduce.reduce.memory.mb and
+  mapreduce.job.heap.memory-mb.ratio.
   </description>
 </property>
 -->
@@ -479,11 +490,40 @@
   <description>If true, then multiple instances of some reduce tasks 
                may be executed in parallel.</description>
 </property>
+
 <property>
-  <name>mapreduce.job.speculative.speculativecap</name>
+  <name>mapreduce.job.speculative.speculative-cap-running-tasks</name>
   <value>0.1</value>
   <description>The max percent (0-1) of running tasks that
   can be speculatively re-executed at any time.</description>
+</property>
+
+<property>
+  <name>mapreduce.job.speculative.speculative-cap-total-tasks</name>
+  <value>0.01</value>
+  <description>The max percent (0-1) of all tasks that
+  can be speculatively re-executed at any time.</description>
+</property>
+
+<property>
+  <name>mapreduce.job.speculative.minimum-allowed-tasks</name>
+  <value>10</value>
+  <description>The minimum allowed tasks that
+  can be speculatively re-executed at any time.</description>
+</property>
+
+<property>
+  <name>mapreduce.job.speculative.retry-after-no-speculate</name>
+  <value>1000</value>
+  <description>The waiting time(ms) to do next round of speculation
+  if there is no task speculated in this round.</description>
+</property>
+
+<property>
+  <name>mapreduce.job.speculative.retry-after-speculate</name>
+  <value>15000</value>
+  <description>The waiting time(ms) to do next round of speculation
+  if there are tasks speculated in this round.</description>
 </property>
 
 <property>
@@ -502,16 +542,6 @@
   <description>The number of standard deviations by which a task's
   ave progress-rates must be lower than the average of all running tasks'
   for the task to be considered too slow.
-  </description>
-</property>
-
-<property>
-  <name>mapreduce.job.speculative.slownodethreshold</name>
-  <value>1.0</value>
-  <description>The number of standard deviations by which a Task 
-  Tracker's average map and reduce progress-rates (finishTime-dispatchTime)
-  must be lower than the average of all successful map/reduce task's for
-  the NodeManager to be considered too slow to give a speculative task to.
   </description>
 </property>
 
@@ -1558,6 +1588,14 @@
 </property>
 
 <property>
+  <name>mapreduce.jobhistory.recovery.store.leveldb.path</name>
+  <value>${hadoop.tmp.dir}/mapred/history/recoverystore</value>
+  <description>The URI where history server state will be stored if
+  HistoryServerLeveldbSystemStateStoreService is configured as the recovery
+  storage class.</description>
+</property>
+
+<property>
   <name>mapreduce.jobhistory.http.policy</name>
   <value>HTTP_ONLY</value>
   <description>
@@ -1565,6 +1603,17 @@
     The following values are supported:
     - HTTP_ONLY : Service is provided only on http
     - HTTPS_ONLY : Service is provided only on https
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.job.heap.memory-mb.ratio</name>
+  <value>0.8</value>
+  <description>The ratio of heap-size to container-size. If no -Xmx is
+    specified, it is calculated as
+    (mapreduce.{map|reduce}.memory.mb * mapreduce.heap.memory-mb.ratio).
+    If -Xmx is specified but not mapreduce.{map|reduce}.memory.mb, it is
+    calculated as (heapSize / mapreduce.heap.memory-mb.ratio).
   </description>
 </property>
 </configuration>

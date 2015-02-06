@@ -1213,555 +1213,564 @@
 <span class="sourceLineNo">1205</span>  public static final boolean<a name="line.1205"></a>
 <span class="sourceLineNo">1206</span>      DEFAULT_YARN_MINICLUSTER_CONTROL_RESOURCE_MONITORING = false;<a name="line.1206"></a>
 <span class="sourceLineNo">1207</span><a name="line.1207"></a>
-<span class="sourceLineNo">1208</span>  /** The log directory for the containers */<a name="line.1208"></a>
-<span class="sourceLineNo">1209</span>  public static final String YARN_APP_CONTAINER_LOG_DIR =<a name="line.1209"></a>
-<span class="sourceLineNo">1210</span>      YARN_PREFIX + "app.container.log.dir";<a name="line.1210"></a>
-<span class="sourceLineNo">1211</span><a name="line.1211"></a>
-<span class="sourceLineNo">1212</span>  public static final String YARN_APP_CONTAINER_LOG_SIZE =<a name="line.1212"></a>
-<span class="sourceLineNo">1213</span>      YARN_PREFIX + "app.container.log.filesize";<a name="line.1213"></a>
-<span class="sourceLineNo">1214</span><a name="line.1214"></a>
-<span class="sourceLineNo">1215</span>  public static final String YARN_APP_CONTAINER_LOG_BACKUPS =<a name="line.1215"></a>
-<span class="sourceLineNo">1216</span>      YARN_PREFIX + "app.container.log.backups";<a name="line.1216"></a>
-<span class="sourceLineNo">1217</span><a name="line.1217"></a>
-<span class="sourceLineNo">1218</span>  ////////////////////////////////<a name="line.1218"></a>
-<span class="sourceLineNo">1219</span>  // Timeline Service Configs<a name="line.1219"></a>
-<span class="sourceLineNo">1220</span>  ////////////////////////////////<a name="line.1220"></a>
-<span class="sourceLineNo">1221</span><a name="line.1221"></a>
-<span class="sourceLineNo">1222</span>  public static final String TIMELINE_SERVICE_PREFIX =<a name="line.1222"></a>
-<span class="sourceLineNo">1223</span>      YARN_PREFIX + "timeline-service.";<a name="line.1223"></a>
-<span class="sourceLineNo">1224</span><a name="line.1224"></a>
-<span class="sourceLineNo">1225</span><a name="line.1225"></a>
-<span class="sourceLineNo">1226</span>  // mark app-history related configs @Private as application history is going<a name="line.1226"></a>
-<span class="sourceLineNo">1227</span>  // to be integrated into the timeline service<a name="line.1227"></a>
-<span class="sourceLineNo">1228</span>  @Private<a name="line.1228"></a>
-<span class="sourceLineNo">1229</span>  public static final String APPLICATION_HISTORY_PREFIX =<a name="line.1229"></a>
-<span class="sourceLineNo">1230</span>      TIMELINE_SERVICE_PREFIX + "generic-application-history.";<a name="line.1230"></a>
-<span class="sourceLineNo">1231</span><a name="line.1231"></a>
-<span class="sourceLineNo">1232</span>  /**<a name="line.1232"></a>
-<span class="sourceLineNo">1233</span>   *  The setting that controls whether application history service is<a name="line.1233"></a>
-<span class="sourceLineNo">1234</span>   *  enabled or not.<a name="line.1234"></a>
-<span class="sourceLineNo">1235</span>   */<a name="line.1235"></a>
-<span class="sourceLineNo">1236</span>  @Private<a name="line.1236"></a>
-<span class="sourceLineNo">1237</span>  public static final String APPLICATION_HISTORY_ENABLED =<a name="line.1237"></a>
-<span class="sourceLineNo">1238</span>      APPLICATION_HISTORY_PREFIX + "enabled";<a name="line.1238"></a>
-<span class="sourceLineNo">1239</span>  @Private<a name="line.1239"></a>
-<span class="sourceLineNo">1240</span>  public static final boolean DEFAULT_APPLICATION_HISTORY_ENABLED = false;<a name="line.1240"></a>
-<span class="sourceLineNo">1241</span><a name="line.1241"></a>
-<span class="sourceLineNo">1242</span>  /** Application history store class */<a name="line.1242"></a>
-<span class="sourceLineNo">1243</span>  @Private<a name="line.1243"></a>
-<span class="sourceLineNo">1244</span>  public static final String APPLICATION_HISTORY_STORE =<a name="line.1244"></a>
-<span class="sourceLineNo">1245</span>      APPLICATION_HISTORY_PREFIX + "store-class";<a name="line.1245"></a>
+<span class="sourceLineNo">1208</span>  /** Allow changing the memory for the NodeManager in the MiniYARNCluster */<a name="line.1208"></a>
+<span class="sourceLineNo">1209</span>  public static final String YARN_MINICLUSTER_NM_PMEM_MB =<a name="line.1209"></a>
+<span class="sourceLineNo">1210</span>      YARN_MC_PREFIX + YarnConfiguration.NM_PMEM_MB;<a name="line.1210"></a>
+<span class="sourceLineNo">1211</span>  public static final int DEFAULT_YARN_MINICLUSTER_NM_PMEM_MB = 4 * 1024;<a name="line.1211"></a>
+<span class="sourceLineNo">1212</span><a name="line.1212"></a>
+<span class="sourceLineNo">1213</span>  /** The log directory for the containers */<a name="line.1213"></a>
+<span class="sourceLineNo">1214</span>  public static final String YARN_APP_CONTAINER_LOG_DIR =<a name="line.1214"></a>
+<span class="sourceLineNo">1215</span>      YARN_PREFIX + "app.container.log.dir";<a name="line.1215"></a>
+<span class="sourceLineNo">1216</span><a name="line.1216"></a>
+<span class="sourceLineNo">1217</span>  public static final String YARN_APP_CONTAINER_LOG_SIZE =<a name="line.1217"></a>
+<span class="sourceLineNo">1218</span>      YARN_PREFIX + "app.container.log.filesize";<a name="line.1218"></a>
+<span class="sourceLineNo">1219</span><a name="line.1219"></a>
+<span class="sourceLineNo">1220</span>  public static final String YARN_APP_CONTAINER_LOG_BACKUPS =<a name="line.1220"></a>
+<span class="sourceLineNo">1221</span>      YARN_PREFIX + "app.container.log.backups";<a name="line.1221"></a>
+<span class="sourceLineNo">1222</span><a name="line.1222"></a>
+<span class="sourceLineNo">1223</span>  ////////////////////////////////<a name="line.1223"></a>
+<span class="sourceLineNo">1224</span>  // Timeline Service Configs<a name="line.1224"></a>
+<span class="sourceLineNo">1225</span>  ////////////////////////////////<a name="line.1225"></a>
+<span class="sourceLineNo">1226</span><a name="line.1226"></a>
+<span class="sourceLineNo">1227</span>  public static final String TIMELINE_SERVICE_PREFIX =<a name="line.1227"></a>
+<span class="sourceLineNo">1228</span>      YARN_PREFIX + "timeline-service.";<a name="line.1228"></a>
+<span class="sourceLineNo">1229</span><a name="line.1229"></a>
+<span class="sourceLineNo">1230</span><a name="line.1230"></a>
+<span class="sourceLineNo">1231</span>  // mark app-history related configs @Private as application history is going<a name="line.1231"></a>
+<span class="sourceLineNo">1232</span>  // to be integrated into the timeline service<a name="line.1232"></a>
+<span class="sourceLineNo">1233</span>  @Private<a name="line.1233"></a>
+<span class="sourceLineNo">1234</span>  public static final String APPLICATION_HISTORY_PREFIX =<a name="line.1234"></a>
+<span class="sourceLineNo">1235</span>      TIMELINE_SERVICE_PREFIX + "generic-application-history.";<a name="line.1235"></a>
+<span class="sourceLineNo">1236</span><a name="line.1236"></a>
+<span class="sourceLineNo">1237</span>  /**<a name="line.1237"></a>
+<span class="sourceLineNo">1238</span>   *  The setting that controls whether application history service is<a name="line.1238"></a>
+<span class="sourceLineNo">1239</span>   *  enabled or not.<a name="line.1239"></a>
+<span class="sourceLineNo">1240</span>   */<a name="line.1240"></a>
+<span class="sourceLineNo">1241</span>  @Private<a name="line.1241"></a>
+<span class="sourceLineNo">1242</span>  public static final String APPLICATION_HISTORY_ENABLED =<a name="line.1242"></a>
+<span class="sourceLineNo">1243</span>      APPLICATION_HISTORY_PREFIX + "enabled";<a name="line.1243"></a>
+<span class="sourceLineNo">1244</span>  @Private<a name="line.1244"></a>
+<span class="sourceLineNo">1245</span>  public static final boolean DEFAULT_APPLICATION_HISTORY_ENABLED = false;<a name="line.1245"></a>
 <span class="sourceLineNo">1246</span><a name="line.1246"></a>
-<span class="sourceLineNo">1247</span>  /** URI for FileSystemApplicationHistoryStore */<a name="line.1247"></a>
+<span class="sourceLineNo">1247</span>  /** Application history store class */<a name="line.1247"></a>
 <span class="sourceLineNo">1248</span>  @Private<a name="line.1248"></a>
-<span class="sourceLineNo">1249</span>  public static final String FS_APPLICATION_HISTORY_STORE_URI =<a name="line.1249"></a>
-<span class="sourceLineNo">1250</span>      APPLICATION_HISTORY_PREFIX + "fs-history-store.uri";<a name="line.1250"></a>
+<span class="sourceLineNo">1249</span>  public static final String APPLICATION_HISTORY_STORE =<a name="line.1249"></a>
+<span class="sourceLineNo">1250</span>      APPLICATION_HISTORY_PREFIX + "store-class";<a name="line.1250"></a>
 <span class="sourceLineNo">1251</span><a name="line.1251"></a>
-<span class="sourceLineNo">1252</span>  /** T-file compression types used to compress history data.*/<a name="line.1252"></a>
+<span class="sourceLineNo">1252</span>  /** URI for FileSystemApplicationHistoryStore */<a name="line.1252"></a>
 <span class="sourceLineNo">1253</span>  @Private<a name="line.1253"></a>
-<span class="sourceLineNo">1254</span>  public static final String FS_APPLICATION_HISTORY_STORE_COMPRESSION_TYPE =<a name="line.1254"></a>
-<span class="sourceLineNo">1255</span>      APPLICATION_HISTORY_PREFIX + "fs-history-store.compression-type";<a name="line.1255"></a>
-<span class="sourceLineNo">1256</span>  @Private<a name="line.1256"></a>
-<span class="sourceLineNo">1257</span>  public static final String DEFAULT_FS_APPLICATION_HISTORY_STORE_COMPRESSION_TYPE =<a name="line.1257"></a>
-<span class="sourceLineNo">1258</span>      "none";<a name="line.1258"></a>
-<span class="sourceLineNo">1259</span><a name="line.1259"></a>
-<span class="sourceLineNo">1260</span>  /** The setting that controls whether timeline service is enabled or not. */<a name="line.1260"></a>
-<span class="sourceLineNo">1261</span>  public static final String TIMELINE_SERVICE_ENABLED =<a name="line.1261"></a>
-<span class="sourceLineNo">1262</span>      TIMELINE_SERVICE_PREFIX + "enabled";<a name="line.1262"></a>
-<span class="sourceLineNo">1263</span>  public static final boolean DEFAULT_TIMELINE_SERVICE_ENABLED = false;<a name="line.1263"></a>
+<span class="sourceLineNo">1254</span>  public static final String FS_APPLICATION_HISTORY_STORE_URI =<a name="line.1254"></a>
+<span class="sourceLineNo">1255</span>      APPLICATION_HISTORY_PREFIX + "fs-history-store.uri";<a name="line.1255"></a>
+<span class="sourceLineNo">1256</span><a name="line.1256"></a>
+<span class="sourceLineNo">1257</span>  /** T-file compression types used to compress history data.*/<a name="line.1257"></a>
+<span class="sourceLineNo">1258</span>  @Private<a name="line.1258"></a>
+<span class="sourceLineNo">1259</span>  public static final String FS_APPLICATION_HISTORY_STORE_COMPRESSION_TYPE =<a name="line.1259"></a>
+<span class="sourceLineNo">1260</span>      APPLICATION_HISTORY_PREFIX + "fs-history-store.compression-type";<a name="line.1260"></a>
+<span class="sourceLineNo">1261</span>  @Private<a name="line.1261"></a>
+<span class="sourceLineNo">1262</span>  public static final String DEFAULT_FS_APPLICATION_HISTORY_STORE_COMPRESSION_TYPE =<a name="line.1262"></a>
+<span class="sourceLineNo">1263</span>      "none";<a name="line.1263"></a>
 <span class="sourceLineNo">1264</span><a name="line.1264"></a>
-<span class="sourceLineNo">1265</span>  /** host:port address for timeline service RPC APIs. */<a name="line.1265"></a>
-<span class="sourceLineNo">1266</span>  public static final String TIMELINE_SERVICE_ADDRESS =<a name="line.1266"></a>
-<span class="sourceLineNo">1267</span>      TIMELINE_SERVICE_PREFIX + "address";<a name="line.1267"></a>
-<span class="sourceLineNo">1268</span>  public static final int DEFAULT_TIMELINE_SERVICE_PORT = 10200;<a name="line.1268"></a>
-<span class="sourceLineNo">1269</span>  public static final String DEFAULT_TIMELINE_SERVICE_ADDRESS = "0.0.0.0:"<a name="line.1269"></a>
-<span class="sourceLineNo">1270</span>      + DEFAULT_TIMELINE_SERVICE_PORT;<a name="line.1270"></a>
-<span class="sourceLineNo">1271</span><a name="line.1271"></a>
-<span class="sourceLineNo">1272</span>  /** The listening endpoint for the timeline service application.*/<a name="line.1272"></a>
-<span class="sourceLineNo">1273</span>  public static final String TIMELINE_SERVICE_BIND_HOST =<a name="line.1273"></a>
-<span class="sourceLineNo">1274</span>      TIMELINE_SERVICE_PREFIX + "bind-host";<a name="line.1274"></a>
-<span class="sourceLineNo">1275</span><a name="line.1275"></a>
-<span class="sourceLineNo">1276</span>  /** The number of threads to handle client RPC API requests. */<a name="line.1276"></a>
-<span class="sourceLineNo">1277</span>  public static final String TIMELINE_SERVICE_HANDLER_THREAD_COUNT =<a name="line.1277"></a>
-<span class="sourceLineNo">1278</span>      TIMELINE_SERVICE_PREFIX + "handler-thread-count";<a name="line.1278"></a>
-<span class="sourceLineNo">1279</span>  public static final int DEFAULT_TIMELINE_SERVICE_CLIENT_THREAD_COUNT = 10;<a name="line.1279"></a>
-<span class="sourceLineNo">1280</span>  <a name="line.1280"></a>
-<span class="sourceLineNo">1281</span><a name="line.1281"></a>
-<span class="sourceLineNo">1282</span>  /** The address of the timeline service web application.*/<a name="line.1282"></a>
-<span class="sourceLineNo">1283</span>  public static final String TIMELINE_SERVICE_WEBAPP_ADDRESS =<a name="line.1283"></a>
-<span class="sourceLineNo">1284</span>      TIMELINE_SERVICE_PREFIX  + "webapp.address";<a name="line.1284"></a>
-<span class="sourceLineNo">1285</span><a name="line.1285"></a>
-<span class="sourceLineNo">1286</span>  public static final int DEFAULT_TIMELINE_SERVICE_WEBAPP_PORT = 8188;<a name="line.1286"></a>
-<span class="sourceLineNo">1287</span>  public static final String DEFAULT_TIMELINE_SERVICE_WEBAPP_ADDRESS =<a name="line.1287"></a>
-<span class="sourceLineNo">1288</span>      "0.0.0.0:" + DEFAULT_TIMELINE_SERVICE_WEBAPP_PORT;<a name="line.1288"></a>
-<span class="sourceLineNo">1289</span><a name="line.1289"></a>
-<span class="sourceLineNo">1290</span>  /** The https address of the timeline service web application.*/<a name="line.1290"></a>
-<span class="sourceLineNo">1291</span>  public static final String TIMELINE_SERVICE_WEBAPP_HTTPS_ADDRESS =<a name="line.1291"></a>
-<span class="sourceLineNo">1292</span>      TIMELINE_SERVICE_PREFIX + "webapp.https.address";<a name="line.1292"></a>
-<span class="sourceLineNo">1293</span><a name="line.1293"></a>
-<span class="sourceLineNo">1294</span>  public static final int DEFAULT_TIMELINE_SERVICE_WEBAPP_HTTPS_PORT = 8190;<a name="line.1294"></a>
-<span class="sourceLineNo">1295</span>  public static final String DEFAULT_TIMELINE_SERVICE_WEBAPP_HTTPS_ADDRESS =<a name="line.1295"></a>
-<span class="sourceLineNo">1296</span>      "0.0.0.0:" + DEFAULT_TIMELINE_SERVICE_WEBAPP_HTTPS_PORT;<a name="line.1296"></a>
-<span class="sourceLineNo">1297</span><a name="line.1297"></a>
-<span class="sourceLineNo">1298</span>  /** Timeline service store class */<a name="line.1298"></a>
-<span class="sourceLineNo">1299</span>  public static final String TIMELINE_SERVICE_STORE =<a name="line.1299"></a>
-<span class="sourceLineNo">1300</span>      TIMELINE_SERVICE_PREFIX + "store-class";<a name="line.1300"></a>
-<span class="sourceLineNo">1301</span><a name="line.1301"></a>
-<span class="sourceLineNo">1302</span>  /** Timeline service enable data age off */<a name="line.1302"></a>
-<span class="sourceLineNo">1303</span>  public static final String TIMELINE_SERVICE_TTL_ENABLE =<a name="line.1303"></a>
-<span class="sourceLineNo">1304</span>      TIMELINE_SERVICE_PREFIX + "ttl-enable";<a name="line.1304"></a>
-<span class="sourceLineNo">1305</span><a name="line.1305"></a>
-<span class="sourceLineNo">1306</span>  /** Timeline service length of time to retain data */<a name="line.1306"></a>
-<span class="sourceLineNo">1307</span>  public static final String TIMELINE_SERVICE_TTL_MS =<a name="line.1307"></a>
-<span class="sourceLineNo">1308</span>      TIMELINE_SERVICE_PREFIX + "ttl-ms";<a name="line.1308"></a>
-<span class="sourceLineNo">1309</span><a name="line.1309"></a>
-<span class="sourceLineNo">1310</span>  public static final long DEFAULT_TIMELINE_SERVICE_TTL_MS =<a name="line.1310"></a>
-<span class="sourceLineNo">1311</span>      1000 * 60 * 60 * 24 * 7;<a name="line.1311"></a>
-<span class="sourceLineNo">1312</span><a name="line.1312"></a>
-<span class="sourceLineNo">1313</span>  public static final String TIMELINE_SERVICE_LEVELDB_PREFIX =<a name="line.1313"></a>
-<span class="sourceLineNo">1314</span>      TIMELINE_SERVICE_PREFIX + "leveldb-timeline-store.";<a name="line.1314"></a>
-<span class="sourceLineNo">1315</span><a name="line.1315"></a>
-<span class="sourceLineNo">1316</span>  /** Timeline service leveldb path */<a name="line.1316"></a>
-<span class="sourceLineNo">1317</span>  public static final String TIMELINE_SERVICE_LEVELDB_PATH =<a name="line.1317"></a>
-<span class="sourceLineNo">1318</span>      TIMELINE_SERVICE_LEVELDB_PREFIX + "path";<a name="line.1318"></a>
-<span class="sourceLineNo">1319</span><a name="line.1319"></a>
-<span class="sourceLineNo">1320</span>  /** Timeline service leveldb read cache (uncompressed blocks) */<a name="line.1320"></a>
-<span class="sourceLineNo">1321</span>  public static final String TIMELINE_SERVICE_LEVELDB_READ_CACHE_SIZE =<a name="line.1321"></a>
-<span class="sourceLineNo">1322</span>      TIMELINE_SERVICE_LEVELDB_PREFIX + "read-cache-size";<a name="line.1322"></a>
-<span class="sourceLineNo">1323</span><a name="line.1323"></a>
-<span class="sourceLineNo">1324</span>  public static final long DEFAULT_TIMELINE_SERVICE_LEVELDB_READ_CACHE_SIZE =<a name="line.1324"></a>
-<span class="sourceLineNo">1325</span>      100 * 1024 * 1024;<a name="line.1325"></a>
-<span class="sourceLineNo">1326</span><a name="line.1326"></a>
-<span class="sourceLineNo">1327</span>  /** Timeline service leveldb start time read cache (number of entities) */<a name="line.1327"></a>
-<span class="sourceLineNo">1328</span>  public static final String<a name="line.1328"></a>
-<span class="sourceLineNo">1329</span>      TIMELINE_SERVICE_LEVELDB_START_TIME_READ_CACHE_SIZE =<a name="line.1329"></a>
-<span class="sourceLineNo">1330</span>      TIMELINE_SERVICE_LEVELDB_PREFIX + "start-time-read-cache-size";<a name="line.1330"></a>
+<span class="sourceLineNo">1265</span>  /** The setting that controls whether timeline service is enabled or not. */<a name="line.1265"></a>
+<span class="sourceLineNo">1266</span>  public static final String TIMELINE_SERVICE_ENABLED =<a name="line.1266"></a>
+<span class="sourceLineNo">1267</span>      TIMELINE_SERVICE_PREFIX + "enabled";<a name="line.1267"></a>
+<span class="sourceLineNo">1268</span>  public static final boolean DEFAULT_TIMELINE_SERVICE_ENABLED = false;<a name="line.1268"></a>
+<span class="sourceLineNo">1269</span><a name="line.1269"></a>
+<span class="sourceLineNo">1270</span>  /** host:port address for timeline service RPC APIs. */<a name="line.1270"></a>
+<span class="sourceLineNo">1271</span>  public static final String TIMELINE_SERVICE_ADDRESS =<a name="line.1271"></a>
+<span class="sourceLineNo">1272</span>      TIMELINE_SERVICE_PREFIX + "address";<a name="line.1272"></a>
+<span class="sourceLineNo">1273</span>  public static final int DEFAULT_TIMELINE_SERVICE_PORT = 10200;<a name="line.1273"></a>
+<span class="sourceLineNo">1274</span>  public static final String DEFAULT_TIMELINE_SERVICE_ADDRESS = "0.0.0.0:"<a name="line.1274"></a>
+<span class="sourceLineNo">1275</span>      + DEFAULT_TIMELINE_SERVICE_PORT;<a name="line.1275"></a>
+<span class="sourceLineNo">1276</span><a name="line.1276"></a>
+<span class="sourceLineNo">1277</span>  /** The listening endpoint for the timeline service application.*/<a name="line.1277"></a>
+<span class="sourceLineNo">1278</span>  public static final String TIMELINE_SERVICE_BIND_HOST =<a name="line.1278"></a>
+<span class="sourceLineNo">1279</span>      TIMELINE_SERVICE_PREFIX + "bind-host";<a name="line.1279"></a>
+<span class="sourceLineNo">1280</span><a name="line.1280"></a>
+<span class="sourceLineNo">1281</span>  /** The number of threads to handle client RPC API requests. */<a name="line.1281"></a>
+<span class="sourceLineNo">1282</span>  public static final String TIMELINE_SERVICE_HANDLER_THREAD_COUNT =<a name="line.1282"></a>
+<span class="sourceLineNo">1283</span>      TIMELINE_SERVICE_PREFIX + "handler-thread-count";<a name="line.1283"></a>
+<span class="sourceLineNo">1284</span>  public static final int DEFAULT_TIMELINE_SERVICE_CLIENT_THREAD_COUNT = 10;<a name="line.1284"></a>
+<span class="sourceLineNo">1285</span>  <a name="line.1285"></a>
+<span class="sourceLineNo">1286</span><a name="line.1286"></a>
+<span class="sourceLineNo">1287</span>  /** The address of the timeline service web application.*/<a name="line.1287"></a>
+<span class="sourceLineNo">1288</span>  public static final String TIMELINE_SERVICE_WEBAPP_ADDRESS =<a name="line.1288"></a>
+<span class="sourceLineNo">1289</span>      TIMELINE_SERVICE_PREFIX  + "webapp.address";<a name="line.1289"></a>
+<span class="sourceLineNo">1290</span><a name="line.1290"></a>
+<span class="sourceLineNo">1291</span>  public static final int DEFAULT_TIMELINE_SERVICE_WEBAPP_PORT = 8188;<a name="line.1291"></a>
+<span class="sourceLineNo">1292</span>  public static final String DEFAULT_TIMELINE_SERVICE_WEBAPP_ADDRESS =<a name="line.1292"></a>
+<span class="sourceLineNo">1293</span>      "0.0.0.0:" + DEFAULT_TIMELINE_SERVICE_WEBAPP_PORT;<a name="line.1293"></a>
+<span class="sourceLineNo">1294</span><a name="line.1294"></a>
+<span class="sourceLineNo">1295</span>  /** The https address of the timeline service web application.*/<a name="line.1295"></a>
+<span class="sourceLineNo">1296</span>  public static final String TIMELINE_SERVICE_WEBAPP_HTTPS_ADDRESS =<a name="line.1296"></a>
+<span class="sourceLineNo">1297</span>      TIMELINE_SERVICE_PREFIX + "webapp.https.address";<a name="line.1297"></a>
+<span class="sourceLineNo">1298</span><a name="line.1298"></a>
+<span class="sourceLineNo">1299</span>  public static final int DEFAULT_TIMELINE_SERVICE_WEBAPP_HTTPS_PORT = 8190;<a name="line.1299"></a>
+<span class="sourceLineNo">1300</span>  public static final String DEFAULT_TIMELINE_SERVICE_WEBAPP_HTTPS_ADDRESS =<a name="line.1300"></a>
+<span class="sourceLineNo">1301</span>      "0.0.0.0:" + DEFAULT_TIMELINE_SERVICE_WEBAPP_HTTPS_PORT;<a name="line.1301"></a>
+<span class="sourceLineNo">1302</span><a name="line.1302"></a>
+<span class="sourceLineNo">1303</span>  /** Timeline service store class */<a name="line.1303"></a>
+<span class="sourceLineNo">1304</span>  public static final String TIMELINE_SERVICE_STORE =<a name="line.1304"></a>
+<span class="sourceLineNo">1305</span>      TIMELINE_SERVICE_PREFIX + "store-class";<a name="line.1305"></a>
+<span class="sourceLineNo">1306</span><a name="line.1306"></a>
+<span class="sourceLineNo">1307</span>  /** Timeline service enable data age off */<a name="line.1307"></a>
+<span class="sourceLineNo">1308</span>  public static final String TIMELINE_SERVICE_TTL_ENABLE =<a name="line.1308"></a>
+<span class="sourceLineNo">1309</span>      TIMELINE_SERVICE_PREFIX + "ttl-enable";<a name="line.1309"></a>
+<span class="sourceLineNo">1310</span><a name="line.1310"></a>
+<span class="sourceLineNo">1311</span>  /** Timeline service length of time to retain data */<a name="line.1311"></a>
+<span class="sourceLineNo">1312</span>  public static final String TIMELINE_SERVICE_TTL_MS =<a name="line.1312"></a>
+<span class="sourceLineNo">1313</span>      TIMELINE_SERVICE_PREFIX + "ttl-ms";<a name="line.1313"></a>
+<span class="sourceLineNo">1314</span><a name="line.1314"></a>
+<span class="sourceLineNo">1315</span>  public static final long DEFAULT_TIMELINE_SERVICE_TTL_MS =<a name="line.1315"></a>
+<span class="sourceLineNo">1316</span>      1000 * 60 * 60 * 24 * 7;<a name="line.1316"></a>
+<span class="sourceLineNo">1317</span><a name="line.1317"></a>
+<span class="sourceLineNo">1318</span>  public static final String TIMELINE_SERVICE_LEVELDB_PREFIX =<a name="line.1318"></a>
+<span class="sourceLineNo">1319</span>      TIMELINE_SERVICE_PREFIX + "leveldb-timeline-store.";<a name="line.1319"></a>
+<span class="sourceLineNo">1320</span><a name="line.1320"></a>
+<span class="sourceLineNo">1321</span>  /** Timeline service leveldb path */<a name="line.1321"></a>
+<span class="sourceLineNo">1322</span>  public static final String TIMELINE_SERVICE_LEVELDB_PATH =<a name="line.1322"></a>
+<span class="sourceLineNo">1323</span>      TIMELINE_SERVICE_LEVELDB_PREFIX + "path";<a name="line.1323"></a>
+<span class="sourceLineNo">1324</span><a name="line.1324"></a>
+<span class="sourceLineNo">1325</span>  /** Timeline service leveldb read cache (uncompressed blocks) */<a name="line.1325"></a>
+<span class="sourceLineNo">1326</span>  public static final String TIMELINE_SERVICE_LEVELDB_READ_CACHE_SIZE =<a name="line.1326"></a>
+<span class="sourceLineNo">1327</span>      TIMELINE_SERVICE_LEVELDB_PREFIX + "read-cache-size";<a name="line.1327"></a>
+<span class="sourceLineNo">1328</span><a name="line.1328"></a>
+<span class="sourceLineNo">1329</span>  public static final long DEFAULT_TIMELINE_SERVICE_LEVELDB_READ_CACHE_SIZE =<a name="line.1329"></a>
+<span class="sourceLineNo">1330</span>      100 * 1024 * 1024;<a name="line.1330"></a>
 <span class="sourceLineNo">1331</span><a name="line.1331"></a>
-<span class="sourceLineNo">1332</span>  public static final int<a name="line.1332"></a>
-<span class="sourceLineNo">1333</span>      DEFAULT_TIMELINE_SERVICE_LEVELDB_START_TIME_READ_CACHE_SIZE = 10000;<a name="line.1333"></a>
-<span class="sourceLineNo">1334</span><a name="line.1334"></a>
-<span class="sourceLineNo">1335</span>  /** Timeline service leveldb start time write cache (number of entities) */<a name="line.1335"></a>
-<span class="sourceLineNo">1336</span>  public static final String<a name="line.1336"></a>
-<span class="sourceLineNo">1337</span>      TIMELINE_SERVICE_LEVELDB_START_TIME_WRITE_CACHE_SIZE =<a name="line.1337"></a>
-<span class="sourceLineNo">1338</span>      TIMELINE_SERVICE_LEVELDB_PREFIX + "start-time-write-cache-size";<a name="line.1338"></a>
+<span class="sourceLineNo">1332</span>  /** Timeline service leveldb start time read cache (number of entities) */<a name="line.1332"></a>
+<span class="sourceLineNo">1333</span>  public static final String<a name="line.1333"></a>
+<span class="sourceLineNo">1334</span>      TIMELINE_SERVICE_LEVELDB_START_TIME_READ_CACHE_SIZE =<a name="line.1334"></a>
+<span class="sourceLineNo">1335</span>      TIMELINE_SERVICE_LEVELDB_PREFIX + "start-time-read-cache-size";<a name="line.1335"></a>
+<span class="sourceLineNo">1336</span><a name="line.1336"></a>
+<span class="sourceLineNo">1337</span>  public static final int<a name="line.1337"></a>
+<span class="sourceLineNo">1338</span>      DEFAULT_TIMELINE_SERVICE_LEVELDB_START_TIME_READ_CACHE_SIZE = 10000;<a name="line.1338"></a>
 <span class="sourceLineNo">1339</span><a name="line.1339"></a>
-<span class="sourceLineNo">1340</span>  public static final int<a name="line.1340"></a>
-<span class="sourceLineNo">1341</span>      DEFAULT_TIMELINE_SERVICE_LEVELDB_START_TIME_WRITE_CACHE_SIZE = 10000;<a name="line.1341"></a>
-<span class="sourceLineNo">1342</span><a name="line.1342"></a>
-<span class="sourceLineNo">1343</span>  /** Timeline service leveldb interval to wait between deletion rounds */<a name="line.1343"></a>
-<span class="sourceLineNo">1344</span>  public static final String TIMELINE_SERVICE_LEVELDB_TTL_INTERVAL_MS =<a name="line.1344"></a>
-<span class="sourceLineNo">1345</span>      TIMELINE_SERVICE_LEVELDB_PREFIX + "ttl-interval-ms";<a name="line.1345"></a>
-<span class="sourceLineNo">1346</span><a name="line.1346"></a>
-<span class="sourceLineNo">1347</span>  public static final long DEFAULT_TIMELINE_SERVICE_LEVELDB_TTL_INTERVAL_MS =<a name="line.1347"></a>
-<span class="sourceLineNo">1348</span>      1000 * 60 * 5;<a name="line.1348"></a>
-<span class="sourceLineNo">1349</span><a name="line.1349"></a>
-<span class="sourceLineNo">1350</span>  /** The Kerberos principal for the timeline server.*/<a name="line.1350"></a>
-<span class="sourceLineNo">1351</span>  public static final String TIMELINE_SERVICE_PRINCIPAL =<a name="line.1351"></a>
-<span class="sourceLineNo">1352</span>      TIMELINE_SERVICE_PREFIX + "principal";<a name="line.1352"></a>
-<span class="sourceLineNo">1353</span><a name="line.1353"></a>
-<span class="sourceLineNo">1354</span>  /** The Kerberos keytab for the timeline server.*/<a name="line.1354"></a>
-<span class="sourceLineNo">1355</span>  public static final String TIMELINE_SERVICE_KEYTAB =<a name="line.1355"></a>
-<span class="sourceLineNo">1356</span>      TIMELINE_SERVICE_PREFIX + "keytab";<a name="line.1356"></a>
-<span class="sourceLineNo">1357</span><a name="line.1357"></a>
-<span class="sourceLineNo">1358</span>  /** Enables cross origin support for timeline server.*/<a name="line.1358"></a>
-<span class="sourceLineNo">1359</span>  public static final String TIMELINE_SERVICE_HTTP_CROSS_ORIGIN_ENABLED =<a name="line.1359"></a>
-<span class="sourceLineNo">1360</span>      TIMELINE_SERVICE_PREFIX + "http-cross-origin.enabled";<a name="line.1360"></a>
-<span class="sourceLineNo">1361</span><a name="line.1361"></a>
-<span class="sourceLineNo">1362</span>  /** Default value for cross origin support for timeline server.*/<a name="line.1362"></a>
-<span class="sourceLineNo">1363</span>  public static final boolean<a name="line.1363"></a>
-<span class="sourceLineNo">1364</span>      TIMELINE_SERVICE_HTTP_CROSS_ORIGIN_ENABLED_DEFAULT = false;<a name="line.1364"></a>
-<span class="sourceLineNo">1365</span><a name="line.1365"></a>
-<span class="sourceLineNo">1366</span>  /** Timeline client settings */<a name="line.1366"></a>
-<span class="sourceLineNo">1367</span>  public static final String TIMELINE_SERVICE_CLIENT_PREFIX =<a name="line.1367"></a>
-<span class="sourceLineNo">1368</span>      TIMELINE_SERVICE_PREFIX + "client.";<a name="line.1368"></a>
-<span class="sourceLineNo">1369</span><a name="line.1369"></a>
-<span class="sourceLineNo">1370</span>  /** Timeline client call, max retries (-1 means no limit) */<a name="line.1370"></a>
-<span class="sourceLineNo">1371</span>  public static final String TIMELINE_SERVICE_CLIENT_MAX_RETRIES =<a name="line.1371"></a>
-<span class="sourceLineNo">1372</span>      TIMELINE_SERVICE_CLIENT_PREFIX + "max-retries";<a name="line.1372"></a>
-<span class="sourceLineNo">1373</span><a name="line.1373"></a>
-<span class="sourceLineNo">1374</span>  public static final int DEFAULT_TIMELINE_SERVICE_CLIENT_MAX_RETRIES = 30;<a name="line.1374"></a>
-<span class="sourceLineNo">1375</span><a name="line.1375"></a>
-<span class="sourceLineNo">1376</span>  /** Timeline client call, retry interval */<a name="line.1376"></a>
-<span class="sourceLineNo">1377</span>  public static final String TIMELINE_SERVICE_CLIENT_RETRY_INTERVAL_MS =<a name="line.1377"></a>
-<span class="sourceLineNo">1378</span>      TIMELINE_SERVICE_CLIENT_PREFIX + "retry-interval-ms";<a name="line.1378"></a>
-<span class="sourceLineNo">1379</span><a name="line.1379"></a>
-<span class="sourceLineNo">1380</span>  public static final long<a name="line.1380"></a>
-<span class="sourceLineNo">1381</span>      DEFAULT_TIMELINE_SERVICE_CLIENT_RETRY_INTERVAL_MS = 1000;<a name="line.1381"></a>
-<span class="sourceLineNo">1382</span><a name="line.1382"></a>
-<span class="sourceLineNo">1383</span>  /** Flag to enable recovery of timeline service */<a name="line.1383"></a>
-<span class="sourceLineNo">1384</span>  public static final String TIMELINE_SERVICE_RECOVERY_ENABLED =<a name="line.1384"></a>
-<span class="sourceLineNo">1385</span>      TIMELINE_SERVICE_PREFIX + "recovery.enabled";<a name="line.1385"></a>
-<span class="sourceLineNo">1386</span>  public static final boolean DEFAULT_TIMELINE_SERVICE_RECOVERY_ENABLED = false;<a name="line.1386"></a>
+<span class="sourceLineNo">1340</span>  /** Timeline service leveldb start time write cache (number of entities) */<a name="line.1340"></a>
+<span class="sourceLineNo">1341</span>  public static final String<a name="line.1341"></a>
+<span class="sourceLineNo">1342</span>      TIMELINE_SERVICE_LEVELDB_START_TIME_WRITE_CACHE_SIZE =<a name="line.1342"></a>
+<span class="sourceLineNo">1343</span>      TIMELINE_SERVICE_LEVELDB_PREFIX + "start-time-write-cache-size";<a name="line.1343"></a>
+<span class="sourceLineNo">1344</span><a name="line.1344"></a>
+<span class="sourceLineNo">1345</span>  public static final int<a name="line.1345"></a>
+<span class="sourceLineNo">1346</span>      DEFAULT_TIMELINE_SERVICE_LEVELDB_START_TIME_WRITE_CACHE_SIZE = 10000;<a name="line.1346"></a>
+<span class="sourceLineNo">1347</span><a name="line.1347"></a>
+<span class="sourceLineNo">1348</span>  /** Timeline service leveldb interval to wait between deletion rounds */<a name="line.1348"></a>
+<span class="sourceLineNo">1349</span>  public static final String TIMELINE_SERVICE_LEVELDB_TTL_INTERVAL_MS =<a name="line.1349"></a>
+<span class="sourceLineNo">1350</span>      TIMELINE_SERVICE_LEVELDB_PREFIX + "ttl-interval-ms";<a name="line.1350"></a>
+<span class="sourceLineNo">1351</span><a name="line.1351"></a>
+<span class="sourceLineNo">1352</span>  public static final long DEFAULT_TIMELINE_SERVICE_LEVELDB_TTL_INTERVAL_MS =<a name="line.1352"></a>
+<span class="sourceLineNo">1353</span>      1000 * 60 * 5;<a name="line.1353"></a>
+<span class="sourceLineNo">1354</span><a name="line.1354"></a>
+<span class="sourceLineNo">1355</span>  /** The Kerberos principal for the timeline server.*/<a name="line.1355"></a>
+<span class="sourceLineNo">1356</span>  public static final String TIMELINE_SERVICE_PRINCIPAL =<a name="line.1356"></a>
+<span class="sourceLineNo">1357</span>      TIMELINE_SERVICE_PREFIX + "principal";<a name="line.1357"></a>
+<span class="sourceLineNo">1358</span><a name="line.1358"></a>
+<span class="sourceLineNo">1359</span>  /** The Kerberos keytab for the timeline server.*/<a name="line.1359"></a>
+<span class="sourceLineNo">1360</span>  public static final String TIMELINE_SERVICE_KEYTAB =<a name="line.1360"></a>
+<span class="sourceLineNo">1361</span>      TIMELINE_SERVICE_PREFIX + "keytab";<a name="line.1361"></a>
+<span class="sourceLineNo">1362</span><a name="line.1362"></a>
+<span class="sourceLineNo">1363</span>  /** Enables cross origin support for timeline server.*/<a name="line.1363"></a>
+<span class="sourceLineNo">1364</span>  public static final String TIMELINE_SERVICE_HTTP_CROSS_ORIGIN_ENABLED =<a name="line.1364"></a>
+<span class="sourceLineNo">1365</span>      TIMELINE_SERVICE_PREFIX + "http-cross-origin.enabled";<a name="line.1365"></a>
+<span class="sourceLineNo">1366</span><a name="line.1366"></a>
+<span class="sourceLineNo">1367</span>  /** Default value for cross origin support for timeline server.*/<a name="line.1367"></a>
+<span class="sourceLineNo">1368</span>  public static final boolean<a name="line.1368"></a>
+<span class="sourceLineNo">1369</span>      TIMELINE_SERVICE_HTTP_CROSS_ORIGIN_ENABLED_DEFAULT = false;<a name="line.1369"></a>
+<span class="sourceLineNo">1370</span><a name="line.1370"></a>
+<span class="sourceLineNo">1371</span>  /** Timeline client settings */<a name="line.1371"></a>
+<span class="sourceLineNo">1372</span>  public static final String TIMELINE_SERVICE_CLIENT_PREFIX =<a name="line.1372"></a>
+<span class="sourceLineNo">1373</span>      TIMELINE_SERVICE_PREFIX + "client.";<a name="line.1373"></a>
+<span class="sourceLineNo">1374</span><a name="line.1374"></a>
+<span class="sourceLineNo">1375</span>  /** Timeline client call, max retries (-1 means no limit) */<a name="line.1375"></a>
+<span class="sourceLineNo">1376</span>  public static final String TIMELINE_SERVICE_CLIENT_MAX_RETRIES =<a name="line.1376"></a>
+<span class="sourceLineNo">1377</span>      TIMELINE_SERVICE_CLIENT_PREFIX + "max-retries";<a name="line.1377"></a>
+<span class="sourceLineNo">1378</span><a name="line.1378"></a>
+<span class="sourceLineNo">1379</span>  public static final int DEFAULT_TIMELINE_SERVICE_CLIENT_MAX_RETRIES = 30;<a name="line.1379"></a>
+<span class="sourceLineNo">1380</span><a name="line.1380"></a>
+<span class="sourceLineNo">1381</span>  /** Timeline client call, retry interval */<a name="line.1381"></a>
+<span class="sourceLineNo">1382</span>  public static final String TIMELINE_SERVICE_CLIENT_RETRY_INTERVAL_MS =<a name="line.1382"></a>
+<span class="sourceLineNo">1383</span>      TIMELINE_SERVICE_CLIENT_PREFIX + "retry-interval-ms";<a name="line.1383"></a>
+<span class="sourceLineNo">1384</span><a name="line.1384"></a>
+<span class="sourceLineNo">1385</span>  public static final long<a name="line.1385"></a>
+<span class="sourceLineNo">1386</span>      DEFAULT_TIMELINE_SERVICE_CLIENT_RETRY_INTERVAL_MS = 1000;<a name="line.1386"></a>
 <span class="sourceLineNo">1387</span><a name="line.1387"></a>
-<span class="sourceLineNo">1388</span>  /** Timeline service state store class */<a name="line.1388"></a>
-<span class="sourceLineNo">1389</span>  public static final String TIMELINE_SERVICE_STATE_STORE_CLASS =<a name="line.1389"></a>
-<span class="sourceLineNo">1390</span>      TIMELINE_SERVICE_PREFIX + "state-store-class";<a name="line.1390"></a>
-<span class="sourceLineNo">1391</span><a name="line.1391"></a>
-<span class="sourceLineNo">1392</span>  public static final String TIMELINE_SERVICE_LEVELDB_STATE_STORE_PREFIX =<a name="line.1392"></a>
-<span class="sourceLineNo">1393</span>      TIMELINE_SERVICE_PREFIX + "leveldb-state-store.";<a name="line.1393"></a>
-<span class="sourceLineNo">1394</span><a name="line.1394"></a>
-<span class="sourceLineNo">1395</span>  /** Timeline service state store leveldb path */<a name="line.1395"></a>
-<span class="sourceLineNo">1396</span>  public static final String TIMELINE_SERVICE_LEVELDB_STATE_STORE_PATH =<a name="line.1396"></a>
-<span class="sourceLineNo">1397</span>      TIMELINE_SERVICE_LEVELDB_STATE_STORE_PREFIX + "path";<a name="line.1397"></a>
-<span class="sourceLineNo">1398</span><a name="line.1398"></a>
-<span class="sourceLineNo">1399</span>  // Timeline delegation token related keys<a name="line.1399"></a>
-<span class="sourceLineNo">1400</span>  public static final String  TIMELINE_DELEGATION_KEY_UPDATE_INTERVAL =<a name="line.1400"></a>
-<span class="sourceLineNo">1401</span>      TIMELINE_SERVICE_PREFIX + "delegation.key.update-interval";<a name="line.1401"></a>
-<span class="sourceLineNo">1402</span>  public static final long    DEFAULT_TIMELINE_DELEGATION_KEY_UPDATE_INTERVAL =<a name="line.1402"></a>
-<span class="sourceLineNo">1403</span>      24*60*60*1000; // 1 day<a name="line.1403"></a>
-<span class="sourceLineNo">1404</span>  public static final String  TIMELINE_DELEGATION_TOKEN_RENEW_INTERVAL =<a name="line.1404"></a>
-<span class="sourceLineNo">1405</span>      TIMELINE_SERVICE_PREFIX + "delegation.token.renew-interval";<a name="line.1405"></a>
-<span class="sourceLineNo">1406</span>  public static final long    DEFAULT_TIMELINE_DELEGATION_TOKEN_RENEW_INTERVAL =<a name="line.1406"></a>
-<span class="sourceLineNo">1407</span>      24*60*60*1000;  // 1 day<a name="line.1407"></a>
-<span class="sourceLineNo">1408</span>  public static final String  TIMELINE_DELEGATION_TOKEN_MAX_LIFETIME =<a name="line.1408"></a>
-<span class="sourceLineNo">1409</span>      TIMELINE_SERVICE_PREFIX + "delegation.token.max-lifetime";<a name="line.1409"></a>
-<span class="sourceLineNo">1410</span>  public static final long    DEFAULT_TIMELINE_DELEGATION_TOKEN_MAX_LIFETIME =<a name="line.1410"></a>
-<span class="sourceLineNo">1411</span>      7*24*60*60*1000; // 7 days<a name="line.1411"></a>
-<span class="sourceLineNo">1412</span><a name="line.1412"></a>
-<span class="sourceLineNo">1413</span>  // ///////////////////////////////<a name="line.1413"></a>
-<span class="sourceLineNo">1414</span>  // Shared Cache Configs<a name="line.1414"></a>
-<span class="sourceLineNo">1415</span>  // ///////////////////////////////<a name="line.1415"></a>
-<span class="sourceLineNo">1416</span>  public static final String SHARED_CACHE_PREFIX = "yarn.sharedcache.";<a name="line.1416"></a>
+<span class="sourceLineNo">1388</span>  /** Flag to enable recovery of timeline service */<a name="line.1388"></a>
+<span class="sourceLineNo">1389</span>  public static final String TIMELINE_SERVICE_RECOVERY_ENABLED =<a name="line.1389"></a>
+<span class="sourceLineNo">1390</span>      TIMELINE_SERVICE_PREFIX + "recovery.enabled";<a name="line.1390"></a>
+<span class="sourceLineNo">1391</span>  public static final boolean DEFAULT_TIMELINE_SERVICE_RECOVERY_ENABLED = false;<a name="line.1391"></a>
+<span class="sourceLineNo">1392</span><a name="line.1392"></a>
+<span class="sourceLineNo">1393</span>  /** Timeline service state store class */<a name="line.1393"></a>
+<span class="sourceLineNo">1394</span>  public static final String TIMELINE_SERVICE_STATE_STORE_CLASS =<a name="line.1394"></a>
+<span class="sourceLineNo">1395</span>      TIMELINE_SERVICE_PREFIX + "state-store-class";<a name="line.1395"></a>
+<span class="sourceLineNo">1396</span><a name="line.1396"></a>
+<span class="sourceLineNo">1397</span>  public static final String TIMELINE_SERVICE_LEVELDB_STATE_STORE_PREFIX =<a name="line.1397"></a>
+<span class="sourceLineNo">1398</span>      TIMELINE_SERVICE_PREFIX + "leveldb-state-store.";<a name="line.1398"></a>
+<span class="sourceLineNo">1399</span><a name="line.1399"></a>
+<span class="sourceLineNo">1400</span>  /** Timeline service state store leveldb path */<a name="line.1400"></a>
+<span class="sourceLineNo">1401</span>  public static final String TIMELINE_SERVICE_LEVELDB_STATE_STORE_PATH =<a name="line.1401"></a>
+<span class="sourceLineNo">1402</span>      TIMELINE_SERVICE_LEVELDB_STATE_STORE_PREFIX + "path";<a name="line.1402"></a>
+<span class="sourceLineNo">1403</span><a name="line.1403"></a>
+<span class="sourceLineNo">1404</span>  // Timeline delegation token related keys<a name="line.1404"></a>
+<span class="sourceLineNo">1405</span>  public static final String  TIMELINE_DELEGATION_KEY_UPDATE_INTERVAL =<a name="line.1405"></a>
+<span class="sourceLineNo">1406</span>      TIMELINE_SERVICE_PREFIX + "delegation.key.update-interval";<a name="line.1406"></a>
+<span class="sourceLineNo">1407</span>  public static final long    DEFAULT_TIMELINE_DELEGATION_KEY_UPDATE_INTERVAL =<a name="line.1407"></a>
+<span class="sourceLineNo">1408</span>      24*60*60*1000; // 1 day<a name="line.1408"></a>
+<span class="sourceLineNo">1409</span>  public static final String  TIMELINE_DELEGATION_TOKEN_RENEW_INTERVAL =<a name="line.1409"></a>
+<span class="sourceLineNo">1410</span>      TIMELINE_SERVICE_PREFIX + "delegation.token.renew-interval";<a name="line.1410"></a>
+<span class="sourceLineNo">1411</span>  public static final long    DEFAULT_TIMELINE_DELEGATION_TOKEN_RENEW_INTERVAL =<a name="line.1411"></a>
+<span class="sourceLineNo">1412</span>      24*60*60*1000;  // 1 day<a name="line.1412"></a>
+<span class="sourceLineNo">1413</span>  public static final String  TIMELINE_DELEGATION_TOKEN_MAX_LIFETIME =<a name="line.1413"></a>
+<span class="sourceLineNo">1414</span>      TIMELINE_SERVICE_PREFIX + "delegation.token.max-lifetime";<a name="line.1414"></a>
+<span class="sourceLineNo">1415</span>  public static final long    DEFAULT_TIMELINE_DELEGATION_TOKEN_MAX_LIFETIME =<a name="line.1415"></a>
+<span class="sourceLineNo">1416</span>      7*24*60*60*1000; // 7 days<a name="line.1416"></a>
 <span class="sourceLineNo">1417</span><a name="line.1417"></a>
-<span class="sourceLineNo">1418</span>  // common configs<a name="line.1418"></a>
-<span class="sourceLineNo">1419</span>  /** whether the shared cache is enabled/disabled */<a name="line.1419"></a>
-<span class="sourceLineNo">1420</span>  public static final String SHARED_CACHE_ENABLED =<a name="line.1420"></a>
-<span class="sourceLineNo">1421</span>      SHARED_CACHE_PREFIX + "enabled";<a name="line.1421"></a>
-<span class="sourceLineNo">1422</span>  public static final boolean DEFAULT_SHARED_CACHE_ENABLED = false;<a name="line.1422"></a>
-<span class="sourceLineNo">1423</span><a name="line.1423"></a>
-<span class="sourceLineNo">1424</span>  /** The config key for the shared cache root directory. */<a name="line.1424"></a>
-<span class="sourceLineNo">1425</span>  public static final String SHARED_CACHE_ROOT =<a name="line.1425"></a>
-<span class="sourceLineNo">1426</span>      SHARED_CACHE_PREFIX + "root-dir";<a name="line.1426"></a>
-<span class="sourceLineNo">1427</span>  public static final String DEFAULT_SHARED_CACHE_ROOT = "/sharedcache";<a name="line.1427"></a>
+<span class="sourceLineNo">1418</span>  // ///////////////////////////////<a name="line.1418"></a>
+<span class="sourceLineNo">1419</span>  // Shared Cache Configs<a name="line.1419"></a>
+<span class="sourceLineNo">1420</span>  // ///////////////////////////////<a name="line.1420"></a>
+<span class="sourceLineNo">1421</span>  public static final String SHARED_CACHE_PREFIX = "yarn.sharedcache.";<a name="line.1421"></a>
+<span class="sourceLineNo">1422</span><a name="line.1422"></a>
+<span class="sourceLineNo">1423</span>  // common configs<a name="line.1423"></a>
+<span class="sourceLineNo">1424</span>  /** whether the shared cache is enabled/disabled */<a name="line.1424"></a>
+<span class="sourceLineNo">1425</span>  public static final String SHARED_CACHE_ENABLED =<a name="line.1425"></a>
+<span class="sourceLineNo">1426</span>      SHARED_CACHE_PREFIX + "enabled";<a name="line.1426"></a>
+<span class="sourceLineNo">1427</span>  public static final boolean DEFAULT_SHARED_CACHE_ENABLED = false;<a name="line.1427"></a>
 <span class="sourceLineNo">1428</span><a name="line.1428"></a>
-<span class="sourceLineNo">1429</span>  /** The config key for the level of nested directories before getting to the<a name="line.1429"></a>
-<span class="sourceLineNo">1430</span>   * checksum directory. */<a name="line.1430"></a>
-<span class="sourceLineNo">1431</span>  public static final String SHARED_CACHE_NESTED_LEVEL =<a name="line.1431"></a>
-<span class="sourceLineNo">1432</span>      SHARED_CACHE_PREFIX + "nested-level";<a name="line.1432"></a>
-<span class="sourceLineNo">1433</span>  public static final int DEFAULT_SHARED_CACHE_NESTED_LEVEL = 3;<a name="line.1433"></a>
-<span class="sourceLineNo">1434</span>  <a name="line.1434"></a>
-<span class="sourceLineNo">1435</span>  // Shared Cache Manager Configs<a name="line.1435"></a>
-<span class="sourceLineNo">1436</span><a name="line.1436"></a>
-<span class="sourceLineNo">1437</span>  public static final String SCM_STORE_PREFIX = SHARED_CACHE_PREFIX + "store.";<a name="line.1437"></a>
-<span class="sourceLineNo">1438</span><a name="line.1438"></a>
-<span class="sourceLineNo">1439</span>  public static final String SCM_STORE_CLASS = SCM_STORE_PREFIX + "class";<a name="line.1439"></a>
-<span class="sourceLineNo">1440</span>  public static final String DEFAULT_SCM_STORE_CLASS =<a name="line.1440"></a>
-<span class="sourceLineNo">1441</span>      "org.apache.hadoop.yarn.server.sharedcachemanager.store.InMemorySCMStore";<a name="line.1441"></a>
-<span class="sourceLineNo">1442</span><a name="line.1442"></a>
-<span class="sourceLineNo">1443</span>  public static final String SCM_APP_CHECKER_CLASS = SHARED_CACHE_PREFIX<a name="line.1443"></a>
-<span class="sourceLineNo">1444</span>      + "app-checker.class";<a name="line.1444"></a>
-<span class="sourceLineNo">1445</span>  public static final String DEFAULT_SCM_APP_CHECKER_CLASS =<a name="line.1445"></a>
-<span class="sourceLineNo">1446</span>      "org.apache.hadoop.yarn.server.sharedcachemanager.RemoteAppChecker";<a name="line.1446"></a>
+<span class="sourceLineNo">1429</span>  /** The config key for the shared cache root directory. */<a name="line.1429"></a>
+<span class="sourceLineNo">1430</span>  public static final String SHARED_CACHE_ROOT =<a name="line.1430"></a>
+<span class="sourceLineNo">1431</span>      SHARED_CACHE_PREFIX + "root-dir";<a name="line.1431"></a>
+<span class="sourceLineNo">1432</span>  public static final String DEFAULT_SHARED_CACHE_ROOT = "/sharedcache";<a name="line.1432"></a>
+<span class="sourceLineNo">1433</span><a name="line.1433"></a>
+<span class="sourceLineNo">1434</span>  /** The config key for the level of nested directories before getting to the<a name="line.1434"></a>
+<span class="sourceLineNo">1435</span>   * checksum directory. */<a name="line.1435"></a>
+<span class="sourceLineNo">1436</span>  public static final String SHARED_CACHE_NESTED_LEVEL =<a name="line.1436"></a>
+<span class="sourceLineNo">1437</span>      SHARED_CACHE_PREFIX + "nested-level";<a name="line.1437"></a>
+<span class="sourceLineNo">1438</span>  public static final int DEFAULT_SHARED_CACHE_NESTED_LEVEL = 3;<a name="line.1438"></a>
+<span class="sourceLineNo">1439</span>  <a name="line.1439"></a>
+<span class="sourceLineNo">1440</span>  // Shared Cache Manager Configs<a name="line.1440"></a>
+<span class="sourceLineNo">1441</span><a name="line.1441"></a>
+<span class="sourceLineNo">1442</span>  public static final String SCM_STORE_PREFIX = SHARED_CACHE_PREFIX + "store.";<a name="line.1442"></a>
+<span class="sourceLineNo">1443</span><a name="line.1443"></a>
+<span class="sourceLineNo">1444</span>  public static final String SCM_STORE_CLASS = SCM_STORE_PREFIX + "class";<a name="line.1444"></a>
+<span class="sourceLineNo">1445</span>  public static final String DEFAULT_SCM_STORE_CLASS =<a name="line.1445"></a>
+<span class="sourceLineNo">1446</span>      "org.apache.hadoop.yarn.server.sharedcachemanager.store.InMemorySCMStore";<a name="line.1446"></a>
 <span class="sourceLineNo">1447</span><a name="line.1447"></a>
-<span class="sourceLineNo">1448</span>  /** The address of the SCM admin interface. */<a name="line.1448"></a>
-<span class="sourceLineNo">1449</span>  public static final String SCM_ADMIN_ADDRESS =<a name="line.1449"></a>
-<span class="sourceLineNo">1450</span>      SHARED_CACHE_PREFIX + "admin.address";<a name="line.1450"></a>
-<span class="sourceLineNo">1451</span>  public static final int DEFAULT_SCM_ADMIN_PORT = 8047;<a name="line.1451"></a>
-<span class="sourceLineNo">1452</span>  public static final String DEFAULT_SCM_ADMIN_ADDRESS =<a name="line.1452"></a>
-<span class="sourceLineNo">1453</span>      "0.0.0.0:" + DEFAULT_SCM_ADMIN_PORT;<a name="line.1453"></a>
-<span class="sourceLineNo">1454</span><a name="line.1454"></a>
-<span class="sourceLineNo">1455</span>  /** Number of threads used to handle SCM admin interface. */<a name="line.1455"></a>
-<span class="sourceLineNo">1456</span>  public static final String SCM_ADMIN_CLIENT_THREAD_COUNT =<a name="line.1456"></a>
-<span class="sourceLineNo">1457</span>      SHARED_CACHE_PREFIX + "admin.thread-count";<a name="line.1457"></a>
-<span class="sourceLineNo">1458</span>  public static final int DEFAULT_SCM_ADMIN_CLIENT_THREAD_COUNT = 1;<a name="line.1458"></a>
+<span class="sourceLineNo">1448</span>  public static final String SCM_APP_CHECKER_CLASS = SHARED_CACHE_PREFIX<a name="line.1448"></a>
+<span class="sourceLineNo">1449</span>      + "app-checker.class";<a name="line.1449"></a>
+<span class="sourceLineNo">1450</span>  public static final String DEFAULT_SCM_APP_CHECKER_CLASS =<a name="line.1450"></a>
+<span class="sourceLineNo">1451</span>      "org.apache.hadoop.yarn.server.sharedcachemanager.RemoteAppChecker";<a name="line.1451"></a>
+<span class="sourceLineNo">1452</span><a name="line.1452"></a>
+<span class="sourceLineNo">1453</span>  /** The address of the SCM admin interface. */<a name="line.1453"></a>
+<span class="sourceLineNo">1454</span>  public static final String SCM_ADMIN_ADDRESS =<a name="line.1454"></a>
+<span class="sourceLineNo">1455</span>      SHARED_CACHE_PREFIX + "admin.address";<a name="line.1455"></a>
+<span class="sourceLineNo">1456</span>  public static final int DEFAULT_SCM_ADMIN_PORT = 8047;<a name="line.1456"></a>
+<span class="sourceLineNo">1457</span>  public static final String DEFAULT_SCM_ADMIN_ADDRESS =<a name="line.1457"></a>
+<span class="sourceLineNo">1458</span>      "0.0.0.0:" + DEFAULT_SCM_ADMIN_PORT;<a name="line.1458"></a>
 <span class="sourceLineNo">1459</span><a name="line.1459"></a>
-<span class="sourceLineNo">1460</span>  /** The address of the SCM web application. */<a name="line.1460"></a>
-<span class="sourceLineNo">1461</span>  public static final String SCM_WEBAPP_ADDRESS =<a name="line.1461"></a>
-<span class="sourceLineNo">1462</span>      SHARED_CACHE_PREFIX + "webapp.address";<a name="line.1462"></a>
-<span class="sourceLineNo">1463</span>  public static final int DEFAULT_SCM_WEBAPP_PORT = 8788;<a name="line.1463"></a>
-<span class="sourceLineNo">1464</span>  public static final String DEFAULT_SCM_WEBAPP_ADDRESS =<a name="line.1464"></a>
-<span class="sourceLineNo">1465</span>      "0.0.0.0:" + DEFAULT_SCM_WEBAPP_PORT;<a name="line.1465"></a>
-<span class="sourceLineNo">1466</span><a name="line.1466"></a>
-<span class="sourceLineNo">1467</span>  // In-memory SCM store configuration<a name="line.1467"></a>
-<span class="sourceLineNo">1468</span>  <a name="line.1468"></a>
-<span class="sourceLineNo">1469</span>  public static final String IN_MEMORY_STORE_PREFIX =<a name="line.1469"></a>
-<span class="sourceLineNo">1470</span>      SCM_STORE_PREFIX + "in-memory.";<a name="line.1470"></a>
+<span class="sourceLineNo">1460</span>  /** Number of threads used to handle SCM admin interface. */<a name="line.1460"></a>
+<span class="sourceLineNo">1461</span>  public static final String SCM_ADMIN_CLIENT_THREAD_COUNT =<a name="line.1461"></a>
+<span class="sourceLineNo">1462</span>      SHARED_CACHE_PREFIX + "admin.thread-count";<a name="line.1462"></a>
+<span class="sourceLineNo">1463</span>  public static final int DEFAULT_SCM_ADMIN_CLIENT_THREAD_COUNT = 1;<a name="line.1463"></a>
+<span class="sourceLineNo">1464</span><a name="line.1464"></a>
+<span class="sourceLineNo">1465</span>  /** The address of the SCM web application. */<a name="line.1465"></a>
+<span class="sourceLineNo">1466</span>  public static final String SCM_WEBAPP_ADDRESS =<a name="line.1466"></a>
+<span class="sourceLineNo">1467</span>      SHARED_CACHE_PREFIX + "webapp.address";<a name="line.1467"></a>
+<span class="sourceLineNo">1468</span>  public static final int DEFAULT_SCM_WEBAPP_PORT = 8788;<a name="line.1468"></a>
+<span class="sourceLineNo">1469</span>  public static final String DEFAULT_SCM_WEBAPP_ADDRESS =<a name="line.1469"></a>
+<span class="sourceLineNo">1470</span>      "0.0.0.0:" + DEFAULT_SCM_WEBAPP_PORT;<a name="line.1470"></a>
 <span class="sourceLineNo">1471</span><a name="line.1471"></a>
-<span class="sourceLineNo">1472</span>  /**<a name="line.1472"></a>
-<span class="sourceLineNo">1473</span>   * A resource in the InMemorySCMStore is considered stale if the time since<a name="line.1473"></a>
-<span class="sourceLineNo">1474</span>   * the last reference exceeds the staleness period. This value is specified in<a name="line.1474"></a>
-<span class="sourceLineNo">1475</span>   * minutes.<a name="line.1475"></a>
-<span class="sourceLineNo">1476</span>   */<a name="line.1476"></a>
-<span class="sourceLineNo">1477</span>  public static final String IN_MEMORY_STALENESS_PERIOD_MINS =<a name="line.1477"></a>
-<span class="sourceLineNo">1478</span>      IN_MEMORY_STORE_PREFIX + "staleness-period-mins";<a name="line.1478"></a>
-<span class="sourceLineNo">1479</span>  public static final int DEFAULT_IN_MEMORY_STALENESS_PERIOD_MINS =<a name="line.1479"></a>
-<span class="sourceLineNo">1480</span>      7 * 24 * 60;<a name="line.1480"></a>
-<span class="sourceLineNo">1481</span><a name="line.1481"></a>
-<span class="sourceLineNo">1482</span>  /**<a name="line.1482"></a>
-<span class="sourceLineNo">1483</span>   * Initial delay before the in-memory store runs its first check to remove<a name="line.1483"></a>
-<span class="sourceLineNo">1484</span>   * dead initial applications. Specified in minutes.<a name="line.1484"></a>
-<span class="sourceLineNo">1485</span>   */<a name="line.1485"></a>
-<span class="sourceLineNo">1486</span>  public static final String IN_MEMORY_INITIAL_DELAY_MINS =<a name="line.1486"></a>
-<span class="sourceLineNo">1487</span>      IN_MEMORY_STORE_PREFIX + "initial-delay-mins";<a name="line.1487"></a>
-<span class="sourceLineNo">1488</span>  public static final int DEFAULT_IN_MEMORY_INITIAL_DELAY_MINS = 10;<a name="line.1488"></a>
-<span class="sourceLineNo">1489</span>  <a name="line.1489"></a>
-<span class="sourceLineNo">1490</span>  /**<a name="line.1490"></a>
-<span class="sourceLineNo">1491</span>   * The frequency at which the in-memory store checks to remove dead initial<a name="line.1491"></a>
-<span class="sourceLineNo">1492</span>   * applications. Specified in minutes.<a name="line.1492"></a>
-<span class="sourceLineNo">1493</span>   */<a name="line.1493"></a>
-<span class="sourceLineNo">1494</span>  public static final String IN_MEMORY_CHECK_PERIOD_MINS =<a name="line.1494"></a>
-<span class="sourceLineNo">1495</span>      IN_MEMORY_STORE_PREFIX + "check-period-mins";<a name="line.1495"></a>
-<span class="sourceLineNo">1496</span>  public static final int DEFAULT_IN_MEMORY_CHECK_PERIOD_MINS = 12 * 60;<a name="line.1496"></a>
-<span class="sourceLineNo">1497</span><a name="line.1497"></a>
-<span class="sourceLineNo">1498</span>  // SCM Cleaner service configuration<a name="line.1498"></a>
-<span class="sourceLineNo">1499</span><a name="line.1499"></a>
-<span class="sourceLineNo">1500</span>  private static final String SCM_CLEANER_PREFIX = SHARED_CACHE_PREFIX<a name="line.1500"></a>
-<span class="sourceLineNo">1501</span>      + "cleaner.";<a name="line.1501"></a>
+<span class="sourceLineNo">1472</span>  // In-memory SCM store configuration<a name="line.1472"></a>
+<span class="sourceLineNo">1473</span>  <a name="line.1473"></a>
+<span class="sourceLineNo">1474</span>  public static final String IN_MEMORY_STORE_PREFIX =<a name="line.1474"></a>
+<span class="sourceLineNo">1475</span>      SCM_STORE_PREFIX + "in-memory.";<a name="line.1475"></a>
+<span class="sourceLineNo">1476</span><a name="line.1476"></a>
+<span class="sourceLineNo">1477</span>  /**<a name="line.1477"></a>
+<span class="sourceLineNo">1478</span>   * A resource in the InMemorySCMStore is considered stale if the time since<a name="line.1478"></a>
+<span class="sourceLineNo">1479</span>   * the last reference exceeds the staleness period. This value is specified in<a name="line.1479"></a>
+<span class="sourceLineNo">1480</span>   * minutes.<a name="line.1480"></a>
+<span class="sourceLineNo">1481</span>   */<a name="line.1481"></a>
+<span class="sourceLineNo">1482</span>  public static final String IN_MEMORY_STALENESS_PERIOD_MINS =<a name="line.1482"></a>
+<span class="sourceLineNo">1483</span>      IN_MEMORY_STORE_PREFIX + "staleness-period-mins";<a name="line.1483"></a>
+<span class="sourceLineNo">1484</span>  public static final int DEFAULT_IN_MEMORY_STALENESS_PERIOD_MINS =<a name="line.1484"></a>
+<span class="sourceLineNo">1485</span>      7 * 24 * 60;<a name="line.1485"></a>
+<span class="sourceLineNo">1486</span><a name="line.1486"></a>
+<span class="sourceLineNo">1487</span>  /**<a name="line.1487"></a>
+<span class="sourceLineNo">1488</span>   * Initial delay before the in-memory store runs its first check to remove<a name="line.1488"></a>
+<span class="sourceLineNo">1489</span>   * dead initial applications. Specified in minutes.<a name="line.1489"></a>
+<span class="sourceLineNo">1490</span>   */<a name="line.1490"></a>
+<span class="sourceLineNo">1491</span>  public static final String IN_MEMORY_INITIAL_DELAY_MINS =<a name="line.1491"></a>
+<span class="sourceLineNo">1492</span>      IN_MEMORY_STORE_PREFIX + "initial-delay-mins";<a name="line.1492"></a>
+<span class="sourceLineNo">1493</span>  public static final int DEFAULT_IN_MEMORY_INITIAL_DELAY_MINS = 10;<a name="line.1493"></a>
+<span class="sourceLineNo">1494</span>  <a name="line.1494"></a>
+<span class="sourceLineNo">1495</span>  /**<a name="line.1495"></a>
+<span class="sourceLineNo">1496</span>   * The frequency at which the in-memory store checks to remove dead initial<a name="line.1496"></a>
+<span class="sourceLineNo">1497</span>   * applications. Specified in minutes.<a name="line.1497"></a>
+<span class="sourceLineNo">1498</span>   */<a name="line.1498"></a>
+<span class="sourceLineNo">1499</span>  public static final String IN_MEMORY_CHECK_PERIOD_MINS =<a name="line.1499"></a>
+<span class="sourceLineNo">1500</span>      IN_MEMORY_STORE_PREFIX + "check-period-mins";<a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>  public static final int DEFAULT_IN_MEMORY_CHECK_PERIOD_MINS = 12 * 60;<a name="line.1501"></a>
 <span class="sourceLineNo">1502</span><a name="line.1502"></a>
-<span class="sourceLineNo">1503</span>  /**<a name="line.1503"></a>
-<span class="sourceLineNo">1504</span>   * The frequency at which a cleaner task runs. Specified in minutes.<a name="line.1504"></a>
-<span class="sourceLineNo">1505</span>   */<a name="line.1505"></a>
-<span class="sourceLineNo">1506</span>  public static final String SCM_CLEANER_PERIOD_MINS =<a name="line.1506"></a>
-<span class="sourceLineNo">1507</span>      SCM_CLEANER_PREFIX + "period-mins";<a name="line.1507"></a>
-<span class="sourceLineNo">1508</span>  public static final int DEFAULT_SCM_CLEANER_PERIOD_MINS = 24 * 60;<a name="line.1508"></a>
-<span class="sourceLineNo">1509</span><a name="line.1509"></a>
-<span class="sourceLineNo">1510</span>  /**<a name="line.1510"></a>
-<span class="sourceLineNo">1511</span>   * Initial delay before the first cleaner task is scheduled. Specified in<a name="line.1511"></a>
-<span class="sourceLineNo">1512</span>   * minutes.<a name="line.1512"></a>
-<span class="sourceLineNo">1513</span>   */<a name="line.1513"></a>
-<span class="sourceLineNo">1514</span>  public static final String SCM_CLEANER_INITIAL_DELAY_MINS =<a name="line.1514"></a>
-<span class="sourceLineNo">1515</span>      SCM_CLEANER_PREFIX + "initial-delay-mins";<a name="line.1515"></a>
-<span class="sourceLineNo">1516</span>  public static final int DEFAULT_SCM_CLEANER_INITIAL_DELAY_MINS = 10;<a name="line.1516"></a>
-<span class="sourceLineNo">1517</span><a name="line.1517"></a>
-<span class="sourceLineNo">1518</span>  /**<a name="line.1518"></a>
-<span class="sourceLineNo">1519</span>   * The time to sleep between processing each shared cache resource. Specified<a name="line.1519"></a>
-<span class="sourceLineNo">1520</span>   * in milliseconds.<a name="line.1520"></a>
-<span class="sourceLineNo">1521</span>   */<a name="line.1521"></a>
-<span class="sourceLineNo">1522</span>  public static final String SCM_CLEANER_RESOURCE_SLEEP_MS =<a name="line.1522"></a>
-<span class="sourceLineNo">1523</span>      SCM_CLEANER_PREFIX + "resource-sleep-ms";<a name="line.1523"></a>
-<span class="sourceLineNo">1524</span>  public static final long DEFAULT_SCM_CLEANER_RESOURCE_SLEEP_MS = 0L;<a name="line.1524"></a>
-<span class="sourceLineNo">1525</span><a name="line.1525"></a>
-<span class="sourceLineNo">1526</span>  /** The address of the node manager interface in the SCM. */<a name="line.1526"></a>
-<span class="sourceLineNo">1527</span>  public static final String SCM_UPLOADER_SERVER_ADDRESS = SHARED_CACHE_PREFIX<a name="line.1527"></a>
-<span class="sourceLineNo">1528</span>      + "uploader.server.address";<a name="line.1528"></a>
-<span class="sourceLineNo">1529</span>  public static final int DEFAULT_SCM_UPLOADER_SERVER_PORT = 8046;<a name="line.1529"></a>
-<span class="sourceLineNo">1530</span>  public static final String DEFAULT_SCM_UPLOADER_SERVER_ADDRESS = "0.0.0.0:"<a name="line.1530"></a>
-<span class="sourceLineNo">1531</span>      + DEFAULT_SCM_UPLOADER_SERVER_PORT;<a name="line.1531"></a>
-<span class="sourceLineNo">1532</span><a name="line.1532"></a>
-<span class="sourceLineNo">1533</span>  /**<a name="line.1533"></a>
-<span class="sourceLineNo">1534</span>   * The number of SCM threads used to handle notify requests from the node<a name="line.1534"></a>
-<span class="sourceLineNo">1535</span>   * manager.<a name="line.1535"></a>
-<span class="sourceLineNo">1536</span>   */<a name="line.1536"></a>
-<span class="sourceLineNo">1537</span>  public static final String SCM_UPLOADER_SERVER_THREAD_COUNT =<a name="line.1537"></a>
-<span class="sourceLineNo">1538</span>      SHARED_CACHE_PREFIX + "uploader.server.thread-count";<a name="line.1538"></a>
-<span class="sourceLineNo">1539</span>  public static final int DEFAULT_SCM_UPLOADER_SERVER_THREAD_COUNT = 50;<a name="line.1539"></a>
-<span class="sourceLineNo">1540</span><a name="line.1540"></a>
-<span class="sourceLineNo">1541</span>  /** The address of the client interface in the SCM. */<a name="line.1541"></a>
-<span class="sourceLineNo">1542</span>  public static final String SCM_CLIENT_SERVER_ADDRESS =<a name="line.1542"></a>
-<span class="sourceLineNo">1543</span>      SHARED_CACHE_PREFIX + "client-server.address";<a name="line.1543"></a>
-<span class="sourceLineNo">1544</span>  public static final int DEFAULT_SCM_CLIENT_SERVER_PORT = 8045;<a name="line.1544"></a>
-<span class="sourceLineNo">1545</span>  public static final String DEFAULT_SCM_CLIENT_SERVER_ADDRESS = "0.0.0.0:"<a name="line.1545"></a>
-<span class="sourceLineNo">1546</span>      + DEFAULT_SCM_CLIENT_SERVER_PORT;<a name="line.1546"></a>
-<span class="sourceLineNo">1547</span><a name="line.1547"></a>
-<span class="sourceLineNo">1548</span>  /** The number of threads used to handle shared cache manager requests. */<a name="line.1548"></a>
-<span class="sourceLineNo">1549</span>  public static final String SCM_CLIENT_SERVER_THREAD_COUNT =<a name="line.1549"></a>
-<span class="sourceLineNo">1550</span>      SHARED_CACHE_PREFIX + "client-server.thread-count";<a name="line.1550"></a>
-<span class="sourceLineNo">1551</span>  public static final int DEFAULT_SCM_CLIENT_SERVER_THREAD_COUNT = 50;<a name="line.1551"></a>
+<span class="sourceLineNo">1503</span>  // SCM Cleaner service configuration<a name="line.1503"></a>
+<span class="sourceLineNo">1504</span><a name="line.1504"></a>
+<span class="sourceLineNo">1505</span>  private static final String SCM_CLEANER_PREFIX = SHARED_CACHE_PREFIX<a name="line.1505"></a>
+<span class="sourceLineNo">1506</span>      + "cleaner.";<a name="line.1506"></a>
+<span class="sourceLineNo">1507</span><a name="line.1507"></a>
+<span class="sourceLineNo">1508</span>  /**<a name="line.1508"></a>
+<span class="sourceLineNo">1509</span>   * The frequency at which a cleaner task runs. Specified in minutes.<a name="line.1509"></a>
+<span class="sourceLineNo">1510</span>   */<a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>  public static final String SCM_CLEANER_PERIOD_MINS =<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>      SCM_CLEANER_PREFIX + "period-mins";<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span>  public static final int DEFAULT_SCM_CLEANER_PERIOD_MINS = 24 * 60;<a name="line.1513"></a>
+<span class="sourceLineNo">1514</span><a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>  /**<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span>   * Initial delay before the first cleaner task is scheduled. Specified in<a name="line.1516"></a>
+<span class="sourceLineNo">1517</span>   * minutes.<a name="line.1517"></a>
+<span class="sourceLineNo">1518</span>   */<a name="line.1518"></a>
+<span class="sourceLineNo">1519</span>  public static final String SCM_CLEANER_INITIAL_DELAY_MINS =<a name="line.1519"></a>
+<span class="sourceLineNo">1520</span>      SCM_CLEANER_PREFIX + "initial-delay-mins";<a name="line.1520"></a>
+<span class="sourceLineNo">1521</span>  public static final int DEFAULT_SCM_CLEANER_INITIAL_DELAY_MINS = 10;<a name="line.1521"></a>
+<span class="sourceLineNo">1522</span><a name="line.1522"></a>
+<span class="sourceLineNo">1523</span>  /**<a name="line.1523"></a>
+<span class="sourceLineNo">1524</span>   * The time to sleep between processing each shared cache resource. Specified<a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>   * in milliseconds.<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span>   */<a name="line.1526"></a>
+<span class="sourceLineNo">1527</span>  public static final String SCM_CLEANER_RESOURCE_SLEEP_MS =<a name="line.1527"></a>
+<span class="sourceLineNo">1528</span>      SCM_CLEANER_PREFIX + "resource-sleep-ms";<a name="line.1528"></a>
+<span class="sourceLineNo">1529</span>  public static final long DEFAULT_SCM_CLEANER_RESOURCE_SLEEP_MS = 0L;<a name="line.1529"></a>
+<span class="sourceLineNo">1530</span><a name="line.1530"></a>
+<span class="sourceLineNo">1531</span>  /** The address of the node manager interface in the SCM. */<a name="line.1531"></a>
+<span class="sourceLineNo">1532</span>  public static final String SCM_UPLOADER_SERVER_ADDRESS = SHARED_CACHE_PREFIX<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span>      + "uploader.server.address";<a name="line.1533"></a>
+<span class="sourceLineNo">1534</span>  public static final int DEFAULT_SCM_UPLOADER_SERVER_PORT = 8046;<a name="line.1534"></a>
+<span class="sourceLineNo">1535</span>  public static final String DEFAULT_SCM_UPLOADER_SERVER_ADDRESS = "0.0.0.0:"<a name="line.1535"></a>
+<span class="sourceLineNo">1536</span>      + DEFAULT_SCM_UPLOADER_SERVER_PORT;<a name="line.1536"></a>
+<span class="sourceLineNo">1537</span><a name="line.1537"></a>
+<span class="sourceLineNo">1538</span>  /**<a name="line.1538"></a>
+<span class="sourceLineNo">1539</span>   * The number of SCM threads used to handle notify requests from the node<a name="line.1539"></a>
+<span class="sourceLineNo">1540</span>   * manager.<a name="line.1540"></a>
+<span class="sourceLineNo">1541</span>   */<a name="line.1541"></a>
+<span class="sourceLineNo">1542</span>  public static final String SCM_UPLOADER_SERVER_THREAD_COUNT =<a name="line.1542"></a>
+<span class="sourceLineNo">1543</span>      SHARED_CACHE_PREFIX + "uploader.server.thread-count";<a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>  public static final int DEFAULT_SCM_UPLOADER_SERVER_THREAD_COUNT = 50;<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span><a name="line.1545"></a>
+<span class="sourceLineNo">1546</span>  /** The address of the client interface in the SCM. */<a name="line.1546"></a>
+<span class="sourceLineNo">1547</span>  public static final String SCM_CLIENT_SERVER_ADDRESS =<a name="line.1547"></a>
+<span class="sourceLineNo">1548</span>      SHARED_CACHE_PREFIX + "client-server.address";<a name="line.1548"></a>
+<span class="sourceLineNo">1549</span>  public static final int DEFAULT_SCM_CLIENT_SERVER_PORT = 8045;<a name="line.1549"></a>
+<span class="sourceLineNo">1550</span>  public static final String DEFAULT_SCM_CLIENT_SERVER_ADDRESS = "0.0.0.0:"<a name="line.1550"></a>
+<span class="sourceLineNo">1551</span>      + DEFAULT_SCM_CLIENT_SERVER_PORT;<a name="line.1551"></a>
 <span class="sourceLineNo">1552</span><a name="line.1552"></a>
-<span class="sourceLineNo">1553</span>  /** the checksum algorithm implementation **/<a name="line.1553"></a>
-<span class="sourceLineNo">1554</span>  public static final String SHARED_CACHE_CHECKSUM_ALGO_IMPL =<a name="line.1554"></a>
-<span class="sourceLineNo">1555</span>      SHARED_CACHE_PREFIX + "checksum.algo.impl";<a name="line.1555"></a>
-<span class="sourceLineNo">1556</span>  public static final String DEFAULT_SHARED_CACHE_CHECKSUM_ALGO_IMPL =<a name="line.1556"></a>
-<span class="sourceLineNo">1557</span>      "org.apache.hadoop.yarn.sharedcache.ChecksumSHA256Impl";<a name="line.1557"></a>
-<span class="sourceLineNo">1558</span><a name="line.1558"></a>
-<span class="sourceLineNo">1559</span>  // node manager (uploader) configs<a name="line.1559"></a>
-<span class="sourceLineNo">1560</span>  /**<a name="line.1560"></a>
-<span class="sourceLineNo">1561</span>   * The replication factor for the node manager uploader for the shared cache.<a name="line.1561"></a>
-<span class="sourceLineNo">1562</span>   */<a name="line.1562"></a>
-<span class="sourceLineNo">1563</span>  public static final String SHARED_CACHE_NM_UPLOADER_REPLICATION_FACTOR =<a name="line.1563"></a>
-<span class="sourceLineNo">1564</span>      SHARED_CACHE_PREFIX + "nm.uploader.replication.factor";<a name="line.1564"></a>
-<span class="sourceLineNo">1565</span>  public static final int DEFAULT_SHARED_CACHE_NM_UPLOADER_REPLICATION_FACTOR =<a name="line.1565"></a>
-<span class="sourceLineNo">1566</span>      10;<a name="line.1566"></a>
-<span class="sourceLineNo">1567</span><a name="line.1567"></a>
-<span class="sourceLineNo">1568</span>  public static final String SHARED_CACHE_NM_UPLOADER_THREAD_COUNT =<a name="line.1568"></a>
-<span class="sourceLineNo">1569</span>      SHARED_CACHE_PREFIX + "nm.uploader.thread-count";<a name="line.1569"></a>
-<span class="sourceLineNo">1570</span>  public static final int DEFAULT_SHARED_CACHE_NM_UPLOADER_THREAD_COUNT = 20;<a name="line.1570"></a>
-<span class="sourceLineNo">1571</span><a name="line.1571"></a>
-<span class="sourceLineNo">1572</span>  ////////////////////////////////<a name="line.1572"></a>
-<span class="sourceLineNo">1573</span>  // Other Configs<a name="line.1573"></a>
-<span class="sourceLineNo">1574</span>  ////////////////////////////////<a name="line.1574"></a>
-<span class="sourceLineNo">1575</span><a name="line.1575"></a>
-<span class="sourceLineNo">1576</span>  /**<a name="line.1576"></a>
-<span class="sourceLineNo">1577</span>   * Use YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_INTERVAL_MS instead.<a name="line.1577"></a>
-<span class="sourceLineNo">1578</span>   * The interval of the yarn client's querying application state after<a name="line.1578"></a>
-<span class="sourceLineNo">1579</span>   * application submission. The unit is millisecond.<a name="line.1579"></a>
-<span class="sourceLineNo">1580</span>   */<a name="line.1580"></a>
-<span class="sourceLineNo">1581</span>  @Deprecated<a name="line.1581"></a>
-<span class="sourceLineNo">1582</span>  public static final String YARN_CLIENT_APP_SUBMISSION_POLL_INTERVAL_MS =<a name="line.1582"></a>
-<span class="sourceLineNo">1583</span>      YARN_PREFIX + "client.app-submission.poll-interval";<a name="line.1583"></a>
-<span class="sourceLineNo">1584</span><a name="line.1584"></a>
-<span class="sourceLineNo">1585</span>  /**<a name="line.1585"></a>
-<span class="sourceLineNo">1586</span>   * The interval that the yarn client library uses to poll the completion<a name="line.1586"></a>
-<span class="sourceLineNo">1587</span>   * status of the asynchronous API of application client protocol.<a name="line.1587"></a>
-<span class="sourceLineNo">1588</span>   */<a name="line.1588"></a>
-<span class="sourceLineNo">1589</span>  public static final String YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_INTERVAL_MS =<a name="line.1589"></a>
-<span class="sourceLineNo">1590</span>      YARN_PREFIX + "client.application-client-protocol.poll-interval-ms";<a name="line.1590"></a>
-<span class="sourceLineNo">1591</span>  public static final long DEFAULT_YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_INTERVAL_MS =<a name="line.1591"></a>
-<span class="sourceLineNo">1592</span>      200;<a name="line.1592"></a>
-<span class="sourceLineNo">1593</span><a name="line.1593"></a>
-<span class="sourceLineNo">1594</span>  /**<a name="line.1594"></a>
-<span class="sourceLineNo">1595</span>   * The duration that the yarn client library waits, cumulatively across polls,<a name="line.1595"></a>
-<span class="sourceLineNo">1596</span>   * for an expected state change to occur. Defaults to -1, which indicates no<a name="line.1596"></a>
-<span class="sourceLineNo">1597</span>   * limit.<a name="line.1597"></a>
-<span class="sourceLineNo">1598</span>   */<a name="line.1598"></a>
-<span class="sourceLineNo">1599</span>  public static final String YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_TIMEOUT_MS =<a name="line.1599"></a>
-<span class="sourceLineNo">1600</span>      YARN_PREFIX + "client.application-client-protocol.poll-timeout-ms";<a name="line.1600"></a>
-<span class="sourceLineNo">1601</span>  public static final long DEFAULT_YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_TIMEOUT_MS =<a name="line.1601"></a>
-<span class="sourceLineNo">1602</span>      -1;<a name="line.1602"></a>
-<span class="sourceLineNo">1603</span><a name="line.1603"></a>
-<span class="sourceLineNo">1604</span>  /**<a name="line.1604"></a>
-<span class="sourceLineNo">1605</span>   * Max number of threads in NMClientAsync to process container management<a name="line.1605"></a>
-<span class="sourceLineNo">1606</span>   * events<a name="line.1606"></a>
-<span class="sourceLineNo">1607</span>   */<a name="line.1607"></a>
-<span class="sourceLineNo">1608</span>  public static final String NM_CLIENT_ASYNC_THREAD_POOL_MAX_SIZE =<a name="line.1608"></a>
-<span class="sourceLineNo">1609</span>      YARN_PREFIX + "client.nodemanager-client-async.thread-pool-max-size";<a name="line.1609"></a>
-<span class="sourceLineNo">1610</span>  public static final int DEFAULT_NM_CLIENT_ASYNC_THREAD_POOL_MAX_SIZE = 500;<a name="line.1610"></a>
-<span class="sourceLineNo">1611</span><a name="line.1611"></a>
-<span class="sourceLineNo">1612</span>  /**<a name="line.1612"></a>
-<span class="sourceLineNo">1613</span>   * Maximum number of proxy connections to cache for node managers. If set<a name="line.1613"></a>
-<span class="sourceLineNo">1614</span>   * to a value greater than zero then the cache is enabled and the NMClient<a name="line.1614"></a>
-<span class="sourceLineNo">1615</span>   * and MRAppMaster will cache the specified number of node manager proxies.<a name="line.1615"></a>
-<span class="sourceLineNo">1616</span>   * There will be at max one proxy per node manager. Ex. configuring it to a<a name="line.1616"></a>
-<span class="sourceLineNo">1617</span>   * value of 5 will make sure that client will at max have 5 proxies cached<a name="line.1617"></a>
-<span class="sourceLineNo">1618</span>   * with 5 different node managers. These connections for these proxies will<a name="line.1618"></a>
-<span class="sourceLineNo">1619</span>   * be timed out if idle for more than the system wide idle timeout period.<a name="line.1619"></a>
-<span class="sourceLineNo">1620</span>   * Note that this could cause issues on large clusters as many connections<a name="line.1620"></a>
-<span class="sourceLineNo">1621</span>   * could linger simultaneously and lead to a large number of connection<a name="line.1621"></a>
-<span class="sourceLineNo">1622</span>   * threads. The token used for authentication will be used only at<a name="line.1622"></a>
-<span class="sourceLineNo">1623</span>   * connection creation time. If a new token is received then the earlier<a name="line.1623"></a>
-<span class="sourceLineNo">1624</span>   * connection should be closed in order to use the new token. This and<a name="line.1624"></a>
-<span class="sourceLineNo">1625</span>   * {@link YarnConfiguration#NM_CLIENT_ASYNC_THREAD_POOL_MAX_SIZE} are related<a name="line.1625"></a>
-<span class="sourceLineNo">1626</span>   * and should be in sync (no need for them to be equal).<a name="line.1626"></a>
-<span class="sourceLineNo">1627</span>   * If the value of this property is zero then the connection cache is<a name="line.1627"></a>
-<span class="sourceLineNo">1628</span>   * disabled and connections will use a zero idle timeout to prevent too<a name="line.1628"></a>
-<span class="sourceLineNo">1629</span>   * many connection threads on large clusters.<a name="line.1629"></a>
-<span class="sourceLineNo">1630</span>   */<a name="line.1630"></a>
-<span class="sourceLineNo">1631</span>  public static final String NM_CLIENT_MAX_NM_PROXIES =<a name="line.1631"></a>
-<span class="sourceLineNo">1632</span>      YARN_PREFIX + "client.max-cached-nodemanagers-proxies";<a name="line.1632"></a>
-<span class="sourceLineNo">1633</span>  public static final int DEFAULT_NM_CLIENT_MAX_NM_PROXIES = 0;<a name="line.1633"></a>
-<span class="sourceLineNo">1634</span><a name="line.1634"></a>
-<span class="sourceLineNo">1635</span>  /** Max time to wait to establish a connection to NM */<a name="line.1635"></a>
-<span class="sourceLineNo">1636</span>  public static final String CLIENT_NM_CONNECT_MAX_WAIT_MS =<a name="line.1636"></a>
-<span class="sourceLineNo">1637</span>      YARN_PREFIX + "client.nodemanager-connect.max-wait-ms";<a name="line.1637"></a>
-<span class="sourceLineNo">1638</span>  public static final long DEFAULT_CLIENT_NM_CONNECT_MAX_WAIT_MS =<a name="line.1638"></a>
-<span class="sourceLineNo">1639</span>      15 * 60 * 1000;<a name="line.1639"></a>
-<span class="sourceLineNo">1640</span><a name="line.1640"></a>
-<span class="sourceLineNo">1641</span>  /** Time interval between each attempt to connect to NM */<a name="line.1641"></a>
-<span class="sourceLineNo">1642</span>  public static final String CLIENT_NM_CONNECT_RETRY_INTERVAL_MS =<a name="line.1642"></a>
-<span class="sourceLineNo">1643</span>      YARN_PREFIX + "client.nodemanager-connect.retry-interval-ms";<a name="line.1643"></a>
-<span class="sourceLineNo">1644</span>  public static final long DEFAULT_CLIENT_NM_CONNECT_RETRY_INTERVAL_MS<a name="line.1644"></a>
-<span class="sourceLineNo">1645</span>      = 10 * 1000;<a name="line.1645"></a>
-<span class="sourceLineNo">1646</span><a name="line.1646"></a>
-<span class="sourceLineNo">1647</span>  public static final String YARN_HTTP_POLICY_KEY = YARN_PREFIX + "http.policy";<a name="line.1647"></a>
-<span class="sourceLineNo">1648</span>  public static final String YARN_HTTP_POLICY_DEFAULT = HttpConfig.Policy.HTTP_ONLY<a name="line.1648"></a>
-<span class="sourceLineNo">1649</span>      .name();<a name="line.1649"></a>
-<span class="sourceLineNo">1650</span>  <a name="line.1650"></a>
-<span class="sourceLineNo">1651</span>  public static final String NODE_LABELS_PREFIX = YARN_PREFIX + "node-labels.";<a name="line.1651"></a>
-<span class="sourceLineNo">1652</span><a name="line.1652"></a>
-<span class="sourceLineNo">1653</span>  /**<a name="line.1653"></a>
-<span class="sourceLineNo">1654</span>   * Class for RMNodeLabelsManager Please note this value should be consistent<a name="line.1654"></a>
-<span class="sourceLineNo">1655</span>   * in client nodes and RM node(s)<a name="line.1655"></a>
-<span class="sourceLineNo">1656</span>   */<a name="line.1656"></a>
-<span class="sourceLineNo">1657</span>  public static final String RM_NODE_LABELS_MANAGER_CLASS = NODE_LABELS_PREFIX<a name="line.1657"></a>
-<span class="sourceLineNo">1658</span>      + "manager-class";<a name="line.1658"></a>
-<span class="sourceLineNo">1659</span>  <a name="line.1659"></a>
-<span class="sourceLineNo">1660</span>  /** URI for NodeLabelManager */<a name="line.1660"></a>
-<span class="sourceLineNo">1661</span>  public static final String FS_NODE_LABELS_STORE_ROOT_DIR = NODE_LABELS_PREFIX<a name="line.1661"></a>
-<span class="sourceLineNo">1662</span>      + "fs-store.root-dir";<a name="line.1662"></a>
-<span class="sourceLineNo">1663</span>  public static final String FS_NODE_LABELS_STORE_RETRY_POLICY_SPEC =<a name="line.1663"></a>
-<span class="sourceLineNo">1664</span>      NODE_LABELS_PREFIX + "fs-store.retry-policy-spec";<a name="line.1664"></a>
-<span class="sourceLineNo">1665</span>  public static final String DEFAULT_FS_NODE_LABELS_STORE_RETRY_POLICY_SPEC =<a name="line.1665"></a>
-<span class="sourceLineNo">1666</span>      "2000, 500";<a name="line.1666"></a>
-<span class="sourceLineNo">1667</span><a name="line.1667"></a>
-<span class="sourceLineNo">1668</span>  public YarnConfiguration() {<a name="line.1668"></a>
-<span class="sourceLineNo">1669</span>    super();<a name="line.1669"></a>
-<span class="sourceLineNo">1670</span>  }<a name="line.1670"></a>
-<span class="sourceLineNo">1671</span>  <a name="line.1671"></a>
-<span class="sourceLineNo">1672</span>  public YarnConfiguration(Configuration conf) {<a name="line.1672"></a>
-<span class="sourceLineNo">1673</span>    super(conf);<a name="line.1673"></a>
-<span class="sourceLineNo">1674</span>    if (! (conf instanceof YarnConfiguration)) {<a name="line.1674"></a>
-<span class="sourceLineNo">1675</span>      this.reloadConfiguration();<a name="line.1675"></a>
-<span class="sourceLineNo">1676</span>    }<a name="line.1676"></a>
-<span class="sourceLineNo">1677</span>  }<a name="line.1677"></a>
-<span class="sourceLineNo">1678</span><a name="line.1678"></a>
-<span class="sourceLineNo">1679</span>  @Private<a name="line.1679"></a>
-<span class="sourceLineNo">1680</span>  public static List&lt;String&gt; getServiceAddressConfKeys(Configuration conf) {<a name="line.1680"></a>
-<span class="sourceLineNo">1681</span>    return useHttps(conf) ? RM_SERVICES_ADDRESS_CONF_KEYS_HTTPS<a name="line.1681"></a>
-<span class="sourceLineNo">1682</span>        : RM_SERVICES_ADDRESS_CONF_KEYS_HTTP;<a name="line.1682"></a>
-<span class="sourceLineNo">1683</span>  }<a name="line.1683"></a>
-<span class="sourceLineNo">1684</span><a name="line.1684"></a>
-<span class="sourceLineNo">1685</span>  /**<a name="line.1685"></a>
-<span class="sourceLineNo">1686</span>   * Get the socket address for &lt;code&gt;name&lt;/code&gt; property as a<a name="line.1686"></a>
-<span class="sourceLineNo">1687</span>   * &lt;code&gt;InetSocketAddress&lt;/code&gt;. On a HA cluster,<a name="line.1687"></a>
-<span class="sourceLineNo">1688</span>   * this fetches the address corresponding to the RM identified by<a name="line.1688"></a>
-<span class="sourceLineNo">1689</span>   * {@link #RM_HA_ID}.<a name="line.1689"></a>
-<span class="sourceLineNo">1690</span>   * @param name property name.<a name="line.1690"></a>
-<span class="sourceLineNo">1691</span>   * @param defaultAddress the default value<a name="line.1691"></a>
-<span class="sourceLineNo">1692</span>   * @param defaultPort the default port<a name="line.1692"></a>
-<span class="sourceLineNo">1693</span>   * @return InetSocketAddress<a name="line.1693"></a>
-<span class="sourceLineNo">1694</span>   */<a name="line.1694"></a>
-<span class="sourceLineNo">1695</span>  @Override<a name="line.1695"></a>
-<span class="sourceLineNo">1696</span>  public InetSocketAddress getSocketAddr(<a name="line.1696"></a>
-<span class="sourceLineNo">1697</span>      String name, String defaultAddress, int defaultPort) {<a name="line.1697"></a>
-<span class="sourceLineNo">1698</span>    String address;<a name="line.1698"></a>
-<span class="sourceLineNo">1699</span>    if (HAUtil.isHAEnabled(this) &amp;&amp; getServiceAddressConfKeys(this).contains(name)) {<a name="line.1699"></a>
-<span class="sourceLineNo">1700</span>      address = HAUtil.getConfValueForRMInstance(name, defaultAddress, this);<a name="line.1700"></a>
-<span class="sourceLineNo">1701</span>    } else {<a name="line.1701"></a>
-<span class="sourceLineNo">1702</span>      address = get(name, defaultAddress);<a name="line.1702"></a>
-<span class="sourceLineNo">1703</span>    }<a name="line.1703"></a>
-<span class="sourceLineNo">1704</span>    return NetUtils.createSocketAddr(address, defaultPort, name);<a name="line.1704"></a>
-<span class="sourceLineNo">1705</span>  }<a name="line.1705"></a>
-<span class="sourceLineNo">1706</span><a name="line.1706"></a>
-<span class="sourceLineNo">1707</span>  @Override<a name="line.1707"></a>
-<span class="sourceLineNo">1708</span>  public InetSocketAddress updateConnectAddr(String name,<a name="line.1708"></a>
-<span class="sourceLineNo">1709</span>                                             InetSocketAddress addr) {<a name="line.1709"></a>
-<span class="sourceLineNo">1710</span>    String prefix = name;<a name="line.1710"></a>
-<span class="sourceLineNo">1711</span>    if (HAUtil.isHAEnabled(this)) {<a name="line.1711"></a>
-<span class="sourceLineNo">1712</span>      prefix = HAUtil.addSuffix(prefix, HAUtil.getRMHAId(this));<a name="line.1712"></a>
-<span class="sourceLineNo">1713</span>    }<a name="line.1713"></a>
-<span class="sourceLineNo">1714</span>    return super.updateConnectAddr(prefix, addr);<a name="line.1714"></a>
-<span class="sourceLineNo">1715</span>  }<a name="line.1715"></a>
-<span class="sourceLineNo">1716</span><a name="line.1716"></a>
-<span class="sourceLineNo">1717</span>  @Private<a name="line.1717"></a>
-<span class="sourceLineNo">1718</span>  public static int getRMDefaultPortNumber(String addressPrefix,<a name="line.1718"></a>
-<span class="sourceLineNo">1719</span>      Configuration conf) {<a name="line.1719"></a>
-<span class="sourceLineNo">1720</span>    if (addressPrefix.equals(YarnConfiguration.RM_ADDRESS)) {<a name="line.1720"></a>
-<span class="sourceLineNo">1721</span>      return YarnConfiguration.DEFAULT_RM_PORT;<a name="line.1721"></a>
-<span class="sourceLineNo">1722</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_SCHEDULER_ADDRESS)) {<a name="line.1722"></a>
-<span class="sourceLineNo">1723</span>      return YarnConfiguration.DEFAULT_RM_SCHEDULER_PORT;<a name="line.1723"></a>
-<span class="sourceLineNo">1724</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_WEBAPP_ADDRESS)) {<a name="line.1724"></a>
-<span class="sourceLineNo">1725</span>      return YarnConfiguration.DEFAULT_RM_WEBAPP_PORT;<a name="line.1725"></a>
-<span class="sourceLineNo">1726</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_WEBAPP_HTTPS_ADDRESS)) {<a name="line.1726"></a>
-<span class="sourceLineNo">1727</span>      return YarnConfiguration.DEFAULT_RM_WEBAPP_HTTPS_PORT;<a name="line.1727"></a>
-<span class="sourceLineNo">1728</span>    } else if (addressPrefix<a name="line.1728"></a>
-<span class="sourceLineNo">1729</span>        .equals(YarnConfiguration.RM_RESOURCE_TRACKER_ADDRESS)) {<a name="line.1729"></a>
-<span class="sourceLineNo">1730</span>      return YarnConfiguration.DEFAULT_RM_RESOURCE_TRACKER_PORT;<a name="line.1730"></a>
-<span class="sourceLineNo">1731</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_ADMIN_ADDRESS)) {<a name="line.1731"></a>
-<span class="sourceLineNo">1732</span>      return YarnConfiguration.DEFAULT_RM_ADMIN_PORT;<a name="line.1732"></a>
-<span class="sourceLineNo">1733</span>    } else {<a name="line.1733"></a>
-<span class="sourceLineNo">1734</span>      throw new HadoopIllegalArgumentException(<a name="line.1734"></a>
-<span class="sourceLineNo">1735</span>          "Invalid RM RPC address Prefix: " + addressPrefix<a name="line.1735"></a>
-<span class="sourceLineNo">1736</span>              + ". The valid value should be one of "<a name="line.1736"></a>
-<span class="sourceLineNo">1737</span>              + getServiceAddressConfKeys(conf));<a name="line.1737"></a>
-<span class="sourceLineNo">1738</span>    }<a name="line.1738"></a>
-<span class="sourceLineNo">1739</span>  }<a name="line.1739"></a>
-<span class="sourceLineNo">1740</span><a name="line.1740"></a>
-<span class="sourceLineNo">1741</span>  public static boolean useHttps(Configuration conf) {<a name="line.1741"></a>
-<span class="sourceLineNo">1742</span>    return HttpConfig.Policy.HTTPS_ONLY == HttpConfig.Policy.fromString(conf<a name="line.1742"></a>
-<span class="sourceLineNo">1743</span>        .get(YARN_HTTP_POLICY_KEY,<a name="line.1743"></a>
-<span class="sourceLineNo">1744</span>            YARN_HTTP_POLICY_DEFAULT));<a name="line.1744"></a>
-<span class="sourceLineNo">1745</span>  }<a name="line.1745"></a>
-<span class="sourceLineNo">1746</span><a name="line.1746"></a>
-<span class="sourceLineNo">1747</span>  @Private<a name="line.1747"></a>
-<span class="sourceLineNo">1748</span>  public static String getClusterId(Configuration conf) {<a name="line.1748"></a>
-<span class="sourceLineNo">1749</span>    String clusterId = conf.get(YarnConfiguration.RM_CLUSTER_ID);<a name="line.1749"></a>
-<span class="sourceLineNo">1750</span>    if (clusterId == null) {<a name="line.1750"></a>
-<span class="sourceLineNo">1751</span>      throw new HadoopIllegalArgumentException("Configuration doesn't specify " +<a name="line.1751"></a>
-<span class="sourceLineNo">1752</span>          YarnConfiguration.RM_CLUSTER_ID);<a name="line.1752"></a>
-<span class="sourceLineNo">1753</span>    }<a name="line.1753"></a>
-<span class="sourceLineNo">1754</span>    return clusterId;<a name="line.1754"></a>
-<span class="sourceLineNo">1755</span>  }<a name="line.1755"></a>
-<span class="sourceLineNo">1756</span>}<a name="line.1756"></a>
+<span class="sourceLineNo">1553</span>  /** The number of threads used to handle shared cache manager requests. */<a name="line.1553"></a>
+<span class="sourceLineNo">1554</span>  public static final String SCM_CLIENT_SERVER_THREAD_COUNT =<a name="line.1554"></a>
+<span class="sourceLineNo">1555</span>      SHARED_CACHE_PREFIX + "client-server.thread-count";<a name="line.1555"></a>
+<span class="sourceLineNo">1556</span>  public static final int DEFAULT_SCM_CLIENT_SERVER_THREAD_COUNT = 50;<a name="line.1556"></a>
+<span class="sourceLineNo">1557</span><a name="line.1557"></a>
+<span class="sourceLineNo">1558</span>  /** the checksum algorithm implementation **/<a name="line.1558"></a>
+<span class="sourceLineNo">1559</span>  public static final String SHARED_CACHE_CHECKSUM_ALGO_IMPL =<a name="line.1559"></a>
+<span class="sourceLineNo">1560</span>      SHARED_CACHE_PREFIX + "checksum.algo.impl";<a name="line.1560"></a>
+<span class="sourceLineNo">1561</span>  public static final String DEFAULT_SHARED_CACHE_CHECKSUM_ALGO_IMPL =<a name="line.1561"></a>
+<span class="sourceLineNo">1562</span>      "org.apache.hadoop.yarn.sharedcache.ChecksumSHA256Impl";<a name="line.1562"></a>
+<span class="sourceLineNo">1563</span><a name="line.1563"></a>
+<span class="sourceLineNo">1564</span>  // node manager (uploader) configs<a name="line.1564"></a>
+<span class="sourceLineNo">1565</span>  /**<a name="line.1565"></a>
+<span class="sourceLineNo">1566</span>   * The replication factor for the node manager uploader for the shared cache.<a name="line.1566"></a>
+<span class="sourceLineNo">1567</span>   */<a name="line.1567"></a>
+<span class="sourceLineNo">1568</span>  public static final String SHARED_CACHE_NM_UPLOADER_REPLICATION_FACTOR =<a name="line.1568"></a>
+<span class="sourceLineNo">1569</span>      SHARED_CACHE_PREFIX + "nm.uploader.replication.factor";<a name="line.1569"></a>
+<span class="sourceLineNo">1570</span>  public static final int DEFAULT_SHARED_CACHE_NM_UPLOADER_REPLICATION_FACTOR =<a name="line.1570"></a>
+<span class="sourceLineNo">1571</span>      10;<a name="line.1571"></a>
+<span class="sourceLineNo">1572</span><a name="line.1572"></a>
+<span class="sourceLineNo">1573</span>  public static final String SHARED_CACHE_NM_UPLOADER_THREAD_COUNT =<a name="line.1573"></a>
+<span class="sourceLineNo">1574</span>      SHARED_CACHE_PREFIX + "nm.uploader.thread-count";<a name="line.1574"></a>
+<span class="sourceLineNo">1575</span>  public static final int DEFAULT_SHARED_CACHE_NM_UPLOADER_THREAD_COUNT = 20;<a name="line.1575"></a>
+<span class="sourceLineNo">1576</span><a name="line.1576"></a>
+<span class="sourceLineNo">1577</span>  ////////////////////////////////<a name="line.1577"></a>
+<span class="sourceLineNo">1578</span>  // Other Configs<a name="line.1578"></a>
+<span class="sourceLineNo">1579</span>  ////////////////////////////////<a name="line.1579"></a>
+<span class="sourceLineNo">1580</span><a name="line.1580"></a>
+<span class="sourceLineNo">1581</span>  /**<a name="line.1581"></a>
+<span class="sourceLineNo">1582</span>   * Use YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_INTERVAL_MS instead.<a name="line.1582"></a>
+<span class="sourceLineNo">1583</span>   * The interval of the yarn client's querying application state after<a name="line.1583"></a>
+<span class="sourceLineNo">1584</span>   * application submission. The unit is millisecond.<a name="line.1584"></a>
+<span class="sourceLineNo">1585</span>   */<a name="line.1585"></a>
+<span class="sourceLineNo">1586</span>  @Deprecated<a name="line.1586"></a>
+<span class="sourceLineNo">1587</span>  public static final String YARN_CLIENT_APP_SUBMISSION_POLL_INTERVAL_MS =<a name="line.1587"></a>
+<span class="sourceLineNo">1588</span>      YARN_PREFIX + "client.app-submission.poll-interval";<a name="line.1588"></a>
+<span class="sourceLineNo">1589</span><a name="line.1589"></a>
+<span class="sourceLineNo">1590</span>  /**<a name="line.1590"></a>
+<span class="sourceLineNo">1591</span>   * The interval that the yarn client library uses to poll the completion<a name="line.1591"></a>
+<span class="sourceLineNo">1592</span>   * status of the asynchronous API of application client protocol.<a name="line.1592"></a>
+<span class="sourceLineNo">1593</span>   */<a name="line.1593"></a>
+<span class="sourceLineNo">1594</span>  public static final String YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_INTERVAL_MS =<a name="line.1594"></a>
+<span class="sourceLineNo">1595</span>      YARN_PREFIX + "client.application-client-protocol.poll-interval-ms";<a name="line.1595"></a>
+<span class="sourceLineNo">1596</span>  public static final long DEFAULT_YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_INTERVAL_MS =<a name="line.1596"></a>
+<span class="sourceLineNo">1597</span>      200;<a name="line.1597"></a>
+<span class="sourceLineNo">1598</span><a name="line.1598"></a>
+<span class="sourceLineNo">1599</span>  /**<a name="line.1599"></a>
+<span class="sourceLineNo">1600</span>   * The duration that the yarn client library waits, cumulatively across polls,<a name="line.1600"></a>
+<span class="sourceLineNo">1601</span>   * for an expected state change to occur. Defaults to -1, which indicates no<a name="line.1601"></a>
+<span class="sourceLineNo">1602</span>   * limit.<a name="line.1602"></a>
+<span class="sourceLineNo">1603</span>   */<a name="line.1603"></a>
+<span class="sourceLineNo">1604</span>  public static final String YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_TIMEOUT_MS =<a name="line.1604"></a>
+<span class="sourceLineNo">1605</span>      YARN_PREFIX + "client.application-client-protocol.poll-timeout-ms";<a name="line.1605"></a>
+<span class="sourceLineNo">1606</span>  public static final long DEFAULT_YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_TIMEOUT_MS =<a name="line.1606"></a>
+<span class="sourceLineNo">1607</span>      -1;<a name="line.1607"></a>
+<span class="sourceLineNo">1608</span><a name="line.1608"></a>
+<span class="sourceLineNo">1609</span>  /**<a name="line.1609"></a>
+<span class="sourceLineNo">1610</span>   * Max number of threads in NMClientAsync to process container management<a name="line.1610"></a>
+<span class="sourceLineNo">1611</span>   * events<a name="line.1611"></a>
+<span class="sourceLineNo">1612</span>   */<a name="line.1612"></a>
+<span class="sourceLineNo">1613</span>  public static final String NM_CLIENT_ASYNC_THREAD_POOL_MAX_SIZE =<a name="line.1613"></a>
+<span class="sourceLineNo">1614</span>      YARN_PREFIX + "client.nodemanager-client-async.thread-pool-max-size";<a name="line.1614"></a>
+<span class="sourceLineNo">1615</span>  public static final int DEFAULT_NM_CLIENT_ASYNC_THREAD_POOL_MAX_SIZE = 500;<a name="line.1615"></a>
+<span class="sourceLineNo">1616</span><a name="line.1616"></a>
+<span class="sourceLineNo">1617</span>  /**<a name="line.1617"></a>
+<span class="sourceLineNo">1618</span>   * Maximum number of proxy connections to cache for node managers. If set<a name="line.1618"></a>
+<span class="sourceLineNo">1619</span>   * to a value greater than zero then the cache is enabled and the NMClient<a name="line.1619"></a>
+<span class="sourceLineNo">1620</span>   * and MRAppMaster will cache the specified number of node manager proxies.<a name="line.1620"></a>
+<span class="sourceLineNo">1621</span>   * There will be at max one proxy per node manager. Ex. configuring it to a<a name="line.1621"></a>
+<span class="sourceLineNo">1622</span>   * value of 5 will make sure that client will at max have 5 proxies cached<a name="line.1622"></a>
+<span class="sourceLineNo">1623</span>   * with 5 different node managers. These connections for these proxies will<a name="line.1623"></a>
+<span class="sourceLineNo">1624</span>   * be timed out if idle for more than the system wide idle timeout period.<a name="line.1624"></a>
+<span class="sourceLineNo">1625</span>   * Note that this could cause issues on large clusters as many connections<a name="line.1625"></a>
+<span class="sourceLineNo">1626</span>   * could linger simultaneously and lead to a large number of connection<a name="line.1626"></a>
+<span class="sourceLineNo">1627</span>   * threads. The token used for authentication will be used only at<a name="line.1627"></a>
+<span class="sourceLineNo">1628</span>   * connection creation time. If a new token is received then the earlier<a name="line.1628"></a>
+<span class="sourceLineNo">1629</span>   * connection should be closed in order to use the new token. This and<a name="line.1629"></a>
+<span class="sourceLineNo">1630</span>   * {@link YarnConfiguration#NM_CLIENT_ASYNC_THREAD_POOL_MAX_SIZE} are related<a name="line.1630"></a>
+<span class="sourceLineNo">1631</span>   * and should be in sync (no need for them to be equal).<a name="line.1631"></a>
+<span class="sourceLineNo">1632</span>   * If the value of this property is zero then the connection cache is<a name="line.1632"></a>
+<span class="sourceLineNo">1633</span>   * disabled and connections will use a zero idle timeout to prevent too<a name="line.1633"></a>
+<span class="sourceLineNo">1634</span>   * many connection threads on large clusters.<a name="line.1634"></a>
+<span class="sourceLineNo">1635</span>   */<a name="line.1635"></a>
+<span class="sourceLineNo">1636</span>  public static final String NM_CLIENT_MAX_NM_PROXIES =<a name="line.1636"></a>
+<span class="sourceLineNo">1637</span>      YARN_PREFIX + "client.max-cached-nodemanagers-proxies";<a name="line.1637"></a>
+<span class="sourceLineNo">1638</span>  public static final int DEFAULT_NM_CLIENT_MAX_NM_PROXIES = 0;<a name="line.1638"></a>
+<span class="sourceLineNo">1639</span><a name="line.1639"></a>
+<span class="sourceLineNo">1640</span>  /** Max time to wait to establish a connection to NM */<a name="line.1640"></a>
+<span class="sourceLineNo">1641</span>  public static final String CLIENT_NM_CONNECT_MAX_WAIT_MS =<a name="line.1641"></a>
+<span class="sourceLineNo">1642</span>      YARN_PREFIX + "client.nodemanager-connect.max-wait-ms";<a name="line.1642"></a>
+<span class="sourceLineNo">1643</span>  public static final long DEFAULT_CLIENT_NM_CONNECT_MAX_WAIT_MS =<a name="line.1643"></a>
+<span class="sourceLineNo">1644</span>      15 * 60 * 1000;<a name="line.1644"></a>
+<span class="sourceLineNo">1645</span><a name="line.1645"></a>
+<span class="sourceLineNo">1646</span>  /** Time interval between each attempt to connect to NM */<a name="line.1646"></a>
+<span class="sourceLineNo">1647</span>  public static final String CLIENT_NM_CONNECT_RETRY_INTERVAL_MS =<a name="line.1647"></a>
+<span class="sourceLineNo">1648</span>      YARN_PREFIX + "client.nodemanager-connect.retry-interval-ms";<a name="line.1648"></a>
+<span class="sourceLineNo">1649</span>  public static final long DEFAULT_CLIENT_NM_CONNECT_RETRY_INTERVAL_MS<a name="line.1649"></a>
+<span class="sourceLineNo">1650</span>      = 10 * 1000;<a name="line.1650"></a>
+<span class="sourceLineNo">1651</span><a name="line.1651"></a>
+<span class="sourceLineNo">1652</span>  public static final String YARN_HTTP_POLICY_KEY = YARN_PREFIX + "http.policy";<a name="line.1652"></a>
+<span class="sourceLineNo">1653</span>  public static final String YARN_HTTP_POLICY_DEFAULT = HttpConfig.Policy.HTTP_ONLY<a name="line.1653"></a>
+<span class="sourceLineNo">1654</span>      .name();<a name="line.1654"></a>
+<span class="sourceLineNo">1655</span>  <a name="line.1655"></a>
+<span class="sourceLineNo">1656</span>  /**<a name="line.1656"></a>
+<span class="sourceLineNo">1657</span>   * Node-labels configurations<a name="line.1657"></a>
+<span class="sourceLineNo">1658</span>   */<a name="line.1658"></a>
+<span class="sourceLineNo">1659</span>  public static final String NODE_LABELS_PREFIX = YARN_PREFIX + "node-labels.";<a name="line.1659"></a>
+<span class="sourceLineNo">1660</span>  <a name="line.1660"></a>
+<span class="sourceLineNo">1661</span>  /** URI for NodeLabelManager */<a name="line.1661"></a>
+<span class="sourceLineNo">1662</span>  public static final String FS_NODE_LABELS_STORE_ROOT_DIR = NODE_LABELS_PREFIX<a name="line.1662"></a>
+<span class="sourceLineNo">1663</span>      + "fs-store.root-dir";<a name="line.1663"></a>
+<span class="sourceLineNo">1664</span>  public static final String FS_NODE_LABELS_STORE_RETRY_POLICY_SPEC =<a name="line.1664"></a>
+<span class="sourceLineNo">1665</span>      NODE_LABELS_PREFIX + "fs-store.retry-policy-spec";<a name="line.1665"></a>
+<span class="sourceLineNo">1666</span>  public static final String DEFAULT_FS_NODE_LABELS_STORE_RETRY_POLICY_SPEC =<a name="line.1666"></a>
+<span class="sourceLineNo">1667</span>      "2000, 500";<a name="line.1667"></a>
+<span class="sourceLineNo">1668</span>  <a name="line.1668"></a>
+<span class="sourceLineNo">1669</span>  /**<a name="line.1669"></a>
+<span class="sourceLineNo">1670</span>   * Flag to indicate if the node labels feature enabled, by default it's<a name="line.1670"></a>
+<span class="sourceLineNo">1671</span>   * disabled<a name="line.1671"></a>
+<span class="sourceLineNo">1672</span>   */<a name="line.1672"></a>
+<span class="sourceLineNo">1673</span>  public static final String NODE_LABELS_ENABLED = NODE_LABELS_PREFIX<a name="line.1673"></a>
+<span class="sourceLineNo">1674</span>      + "enabled";<a name="line.1674"></a>
+<span class="sourceLineNo">1675</span>  public static final boolean DEFAULT_NODE_LABELS_ENABLED = false;<a name="line.1675"></a>
+<span class="sourceLineNo">1676</span><a name="line.1676"></a>
+<span class="sourceLineNo">1677</span>  public YarnConfiguration() {<a name="line.1677"></a>
+<span class="sourceLineNo">1678</span>    super();<a name="line.1678"></a>
+<span class="sourceLineNo">1679</span>  }<a name="line.1679"></a>
+<span class="sourceLineNo">1680</span>  <a name="line.1680"></a>
+<span class="sourceLineNo">1681</span>  public YarnConfiguration(Configuration conf) {<a name="line.1681"></a>
+<span class="sourceLineNo">1682</span>    super(conf);<a name="line.1682"></a>
+<span class="sourceLineNo">1683</span>    if (! (conf instanceof YarnConfiguration)) {<a name="line.1683"></a>
+<span class="sourceLineNo">1684</span>      this.reloadConfiguration();<a name="line.1684"></a>
+<span class="sourceLineNo">1685</span>    }<a name="line.1685"></a>
+<span class="sourceLineNo">1686</span>  }<a name="line.1686"></a>
+<span class="sourceLineNo">1687</span><a name="line.1687"></a>
+<span class="sourceLineNo">1688</span>  @Private<a name="line.1688"></a>
+<span class="sourceLineNo">1689</span>  public static List&lt;String&gt; getServiceAddressConfKeys(Configuration conf) {<a name="line.1689"></a>
+<span class="sourceLineNo">1690</span>    return useHttps(conf) ? RM_SERVICES_ADDRESS_CONF_KEYS_HTTPS<a name="line.1690"></a>
+<span class="sourceLineNo">1691</span>        : RM_SERVICES_ADDRESS_CONF_KEYS_HTTP;<a name="line.1691"></a>
+<span class="sourceLineNo">1692</span>  }<a name="line.1692"></a>
+<span class="sourceLineNo">1693</span><a name="line.1693"></a>
+<span class="sourceLineNo">1694</span>  /**<a name="line.1694"></a>
+<span class="sourceLineNo">1695</span>   * Get the socket address for &lt;code&gt;name&lt;/code&gt; property as a<a name="line.1695"></a>
+<span class="sourceLineNo">1696</span>   * &lt;code&gt;InetSocketAddress&lt;/code&gt;. On a HA cluster,<a name="line.1696"></a>
+<span class="sourceLineNo">1697</span>   * this fetches the address corresponding to the RM identified by<a name="line.1697"></a>
+<span class="sourceLineNo">1698</span>   * {@link #RM_HA_ID}.<a name="line.1698"></a>
+<span class="sourceLineNo">1699</span>   * @param name property name.<a name="line.1699"></a>
+<span class="sourceLineNo">1700</span>   * @param defaultAddress the default value<a name="line.1700"></a>
+<span class="sourceLineNo">1701</span>   * @param defaultPort the default port<a name="line.1701"></a>
+<span class="sourceLineNo">1702</span>   * @return InetSocketAddress<a name="line.1702"></a>
+<span class="sourceLineNo">1703</span>   */<a name="line.1703"></a>
+<span class="sourceLineNo">1704</span>  @Override<a name="line.1704"></a>
+<span class="sourceLineNo">1705</span>  public InetSocketAddress getSocketAddr(<a name="line.1705"></a>
+<span class="sourceLineNo">1706</span>      String name, String defaultAddress, int defaultPort) {<a name="line.1706"></a>
+<span class="sourceLineNo">1707</span>    String address;<a name="line.1707"></a>
+<span class="sourceLineNo">1708</span>    if (HAUtil.isHAEnabled(this) &amp;&amp; getServiceAddressConfKeys(this).contains(name)) {<a name="line.1708"></a>
+<span class="sourceLineNo">1709</span>      address = HAUtil.getConfValueForRMInstance(name, defaultAddress, this);<a name="line.1709"></a>
+<span class="sourceLineNo">1710</span>    } else {<a name="line.1710"></a>
+<span class="sourceLineNo">1711</span>      address = get(name, defaultAddress);<a name="line.1711"></a>
+<span class="sourceLineNo">1712</span>    }<a name="line.1712"></a>
+<span class="sourceLineNo">1713</span>    return NetUtils.createSocketAddr(address, defaultPort, name);<a name="line.1713"></a>
+<span class="sourceLineNo">1714</span>  }<a name="line.1714"></a>
+<span class="sourceLineNo">1715</span><a name="line.1715"></a>
+<span class="sourceLineNo">1716</span>  @Override<a name="line.1716"></a>
+<span class="sourceLineNo">1717</span>  public InetSocketAddress updateConnectAddr(String name,<a name="line.1717"></a>
+<span class="sourceLineNo">1718</span>                                             InetSocketAddress addr) {<a name="line.1718"></a>
+<span class="sourceLineNo">1719</span>    String prefix = name;<a name="line.1719"></a>
+<span class="sourceLineNo">1720</span>    if (HAUtil.isHAEnabled(this)) {<a name="line.1720"></a>
+<span class="sourceLineNo">1721</span>      prefix = HAUtil.addSuffix(prefix, HAUtil.getRMHAId(this));<a name="line.1721"></a>
+<span class="sourceLineNo">1722</span>    }<a name="line.1722"></a>
+<span class="sourceLineNo">1723</span>    return super.updateConnectAddr(prefix, addr);<a name="line.1723"></a>
+<span class="sourceLineNo">1724</span>  }<a name="line.1724"></a>
+<span class="sourceLineNo">1725</span><a name="line.1725"></a>
+<span class="sourceLineNo">1726</span>  @Private<a name="line.1726"></a>
+<span class="sourceLineNo">1727</span>  public static int getRMDefaultPortNumber(String addressPrefix,<a name="line.1727"></a>
+<span class="sourceLineNo">1728</span>      Configuration conf) {<a name="line.1728"></a>
+<span class="sourceLineNo">1729</span>    if (addressPrefix.equals(YarnConfiguration.RM_ADDRESS)) {<a name="line.1729"></a>
+<span class="sourceLineNo">1730</span>      return YarnConfiguration.DEFAULT_RM_PORT;<a name="line.1730"></a>
+<span class="sourceLineNo">1731</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_SCHEDULER_ADDRESS)) {<a name="line.1731"></a>
+<span class="sourceLineNo">1732</span>      return YarnConfiguration.DEFAULT_RM_SCHEDULER_PORT;<a name="line.1732"></a>
+<span class="sourceLineNo">1733</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_WEBAPP_ADDRESS)) {<a name="line.1733"></a>
+<span class="sourceLineNo">1734</span>      return YarnConfiguration.DEFAULT_RM_WEBAPP_PORT;<a name="line.1734"></a>
+<span class="sourceLineNo">1735</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_WEBAPP_HTTPS_ADDRESS)) {<a name="line.1735"></a>
+<span class="sourceLineNo">1736</span>      return YarnConfiguration.DEFAULT_RM_WEBAPP_HTTPS_PORT;<a name="line.1736"></a>
+<span class="sourceLineNo">1737</span>    } else if (addressPrefix<a name="line.1737"></a>
+<span class="sourceLineNo">1738</span>        .equals(YarnConfiguration.RM_RESOURCE_TRACKER_ADDRESS)) {<a name="line.1738"></a>
+<span class="sourceLineNo">1739</span>      return YarnConfiguration.DEFAULT_RM_RESOURCE_TRACKER_PORT;<a name="line.1739"></a>
+<span class="sourceLineNo">1740</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_ADMIN_ADDRESS)) {<a name="line.1740"></a>
+<span class="sourceLineNo">1741</span>      return YarnConfiguration.DEFAULT_RM_ADMIN_PORT;<a name="line.1741"></a>
+<span class="sourceLineNo">1742</span>    } else {<a name="line.1742"></a>
+<span class="sourceLineNo">1743</span>      throw new HadoopIllegalArgumentException(<a name="line.1743"></a>
+<span class="sourceLineNo">1744</span>          "Invalid RM RPC address Prefix: " + addressPrefix<a name="line.1744"></a>
+<span class="sourceLineNo">1745</span>              + ". The valid value should be one of "<a name="line.1745"></a>
+<span class="sourceLineNo">1746</span>              + getServiceAddressConfKeys(conf));<a name="line.1746"></a>
+<span class="sourceLineNo">1747</span>    }<a name="line.1747"></a>
+<span class="sourceLineNo">1748</span>  }<a name="line.1748"></a>
+<span class="sourceLineNo">1749</span><a name="line.1749"></a>
+<span class="sourceLineNo">1750</span>  public static boolean useHttps(Configuration conf) {<a name="line.1750"></a>
+<span class="sourceLineNo">1751</span>    return HttpConfig.Policy.HTTPS_ONLY == HttpConfig.Policy.fromString(conf<a name="line.1751"></a>
+<span class="sourceLineNo">1752</span>        .get(YARN_HTTP_POLICY_KEY,<a name="line.1752"></a>
+<span class="sourceLineNo">1753</span>            YARN_HTTP_POLICY_DEFAULT));<a name="line.1753"></a>
+<span class="sourceLineNo">1754</span>  }<a name="line.1754"></a>
+<span class="sourceLineNo">1755</span><a name="line.1755"></a>
+<span class="sourceLineNo">1756</span>  @Private<a name="line.1756"></a>
+<span class="sourceLineNo">1757</span>  public static String getClusterId(Configuration conf) {<a name="line.1757"></a>
+<span class="sourceLineNo">1758</span>    String clusterId = conf.get(YarnConfiguration.RM_CLUSTER_ID);<a name="line.1758"></a>
+<span class="sourceLineNo">1759</span>    if (clusterId == null) {<a name="line.1759"></a>
+<span class="sourceLineNo">1760</span>      throw new HadoopIllegalArgumentException("Configuration doesn't specify " +<a name="line.1760"></a>
+<span class="sourceLineNo">1761</span>          YarnConfiguration.RM_CLUSTER_ID);<a name="line.1761"></a>
+<span class="sourceLineNo">1762</span>    }<a name="line.1762"></a>
+<span class="sourceLineNo">1763</span>    return clusterId;<a name="line.1763"></a>
+<span class="sourceLineNo">1764</span>  }<a name="line.1764"></a>
+<span class="sourceLineNo">1765</span>}<a name="line.1765"></a>
 
 
 

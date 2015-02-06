@@ -356,7 +356,7 @@
 <span class="sourceLineNo">348</span>   * Configures a JobConf instance and calls {@link #writePartitionFile}.<a name="line.348"></a>
 <span class="sourceLineNo">349</span>   */<a name="line.349"></a>
 <span class="sourceLineNo">350</span>  public int run(String[] args) throws Exception {<a name="line.350"></a>
-<span class="sourceLineNo">351</span>    Job job = new Job(getConf());<a name="line.351"></a>
+<span class="sourceLineNo">351</span>    Job job = Job.getInstance(getConf());<a name="line.351"></a>
 <span class="sourceLineNo">352</span>    ArrayList&lt;String&gt; otherArgs = new ArrayList&lt;String&gt;();<a name="line.352"></a>
 <span class="sourceLineNo">353</span>    Sampler&lt;K,V&gt; sampler = null;<a name="line.353"></a>
 <span class="sourceLineNo">354</span>    for(int i=0; i &lt; args.length; ++i) {<a name="line.354"></a>
