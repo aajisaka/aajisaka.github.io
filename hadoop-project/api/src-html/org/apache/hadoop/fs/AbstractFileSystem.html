@@ -647,559 +647,568 @@
 <span class="sourceLineNo">639</span><a name="line.639"></a>
 <span class="sourceLineNo">640</span>  /**<a name="line.640"></a>
 <span class="sourceLineNo">641</span>   * The specification of this method matches that of<a name="line.641"></a>
-<span class="sourceLineNo">642</span>   * {@link FileContext#setReplication(Path, short)} except that Path f must be<a name="line.642"></a>
-<span class="sourceLineNo">643</span>   * for this file system.<a name="line.643"></a>
+<span class="sourceLineNo">642</span>   * {@link FileContext#truncate(Path, long)} except that Path f must be for<a name="line.642"></a>
+<span class="sourceLineNo">643</span>   * this file system.<a name="line.643"></a>
 <span class="sourceLineNo">644</span>   */<a name="line.644"></a>
-<span class="sourceLineNo">645</span>  public abstract boolean setReplication(final Path f,<a name="line.645"></a>
-<span class="sourceLineNo">646</span>      final short replication) throws AccessControlException,<a name="line.646"></a>
-<span class="sourceLineNo">647</span>      FileNotFoundException, UnresolvedLinkException, IOException;<a name="line.647"></a>
+<span class="sourceLineNo">645</span>  public abstract boolean truncate(Path f, long newLength)<a name="line.645"></a>
+<span class="sourceLineNo">646</span>      throws AccessControlException, FileNotFoundException,<a name="line.646"></a>
+<span class="sourceLineNo">647</span>      UnresolvedLinkException, IOException;<a name="line.647"></a>
 <span class="sourceLineNo">648</span><a name="line.648"></a>
 <span class="sourceLineNo">649</span>  /**<a name="line.649"></a>
 <span class="sourceLineNo">650</span>   * The specification of this method matches that of<a name="line.650"></a>
-<span class="sourceLineNo">651</span>   * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path<a name="line.651"></a>
-<span class="sourceLineNo">652</span>   * f must be for this file system.<a name="line.652"></a>
+<span class="sourceLineNo">651</span>   * {@link FileContext#setReplication(Path, short)} except that Path f must be<a name="line.651"></a>
+<span class="sourceLineNo">652</span>   * for this file system.<a name="line.652"></a>
 <span class="sourceLineNo">653</span>   */<a name="line.653"></a>
-<span class="sourceLineNo">654</span>  public final void rename(final Path src, final Path dst,<a name="line.654"></a>
-<span class="sourceLineNo">655</span>      final Options.Rename... options) throws AccessControlException,<a name="line.655"></a>
-<span class="sourceLineNo">656</span>      FileAlreadyExistsException, FileNotFoundException,<a name="line.656"></a>
-<span class="sourceLineNo">657</span>      ParentNotDirectoryException, UnresolvedLinkException, IOException {<a name="line.657"></a>
-<span class="sourceLineNo">658</span>    boolean overwrite = false;<a name="line.658"></a>
-<span class="sourceLineNo">659</span>    if (null != options) {<a name="line.659"></a>
-<span class="sourceLineNo">660</span>      for (Rename option : options) {<a name="line.660"></a>
-<span class="sourceLineNo">661</span>        if (option == Rename.OVERWRITE) {<a name="line.661"></a>
-<span class="sourceLineNo">662</span>          overwrite = true;<a name="line.662"></a>
-<span class="sourceLineNo">663</span>        }<a name="line.663"></a>
-<span class="sourceLineNo">664</span>      }<a name="line.664"></a>
-<span class="sourceLineNo">665</span>    }<a name="line.665"></a>
-<span class="sourceLineNo">666</span>    renameInternal(src, dst, overwrite);<a name="line.666"></a>
-<span class="sourceLineNo">667</span>  }<a name="line.667"></a>
-<span class="sourceLineNo">668</span>  <a name="line.668"></a>
-<span class="sourceLineNo">669</span>  /**<a name="line.669"></a>
-<span class="sourceLineNo">670</span>   * The specification of this method matches that of<a name="line.670"></a>
-<span class="sourceLineNo">671</span>   * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path<a name="line.671"></a>
-<span class="sourceLineNo">672</span>   * f must be for this file system and NO OVERWRITE is performed.<a name="line.672"></a>
-<span class="sourceLineNo">673</span>   * <a name="line.673"></a>
-<span class="sourceLineNo">674</span>   * File systems that do not have a built in overwrite need implement only this<a name="line.674"></a>
-<span class="sourceLineNo">675</span>   * method and can take advantage of the default impl of the other<a name="line.675"></a>
-<span class="sourceLineNo">676</span>   * {@link #renameInternal(Path, Path, boolean)}<a name="line.676"></a>
-<span class="sourceLineNo">677</span>   */<a name="line.677"></a>
-<span class="sourceLineNo">678</span>  public abstract void renameInternal(final Path src, final Path dst)<a name="line.678"></a>
-<span class="sourceLineNo">679</span>      throws AccessControlException, FileAlreadyExistsException,<a name="line.679"></a>
-<span class="sourceLineNo">680</span>      FileNotFoundException, ParentNotDirectoryException,<a name="line.680"></a>
-<span class="sourceLineNo">681</span>      UnresolvedLinkException, IOException;<a name="line.681"></a>
-<span class="sourceLineNo">682</span>  <a name="line.682"></a>
-<span class="sourceLineNo">683</span>  /**<a name="line.683"></a>
-<span class="sourceLineNo">684</span>   * The specification of this method matches that of<a name="line.684"></a>
-<span class="sourceLineNo">685</span>   * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path<a name="line.685"></a>
-<span class="sourceLineNo">686</span>   * f must be for this file system.<a name="line.686"></a>
-<span class="sourceLineNo">687</span>   */<a name="line.687"></a>
-<span class="sourceLineNo">688</span>  public void renameInternal(final Path src, final Path dst,<a name="line.688"></a>
-<span class="sourceLineNo">689</span>      boolean overwrite) throws AccessControlException,<a name="line.689"></a>
-<span class="sourceLineNo">690</span>      FileAlreadyExistsException, FileNotFoundException,<a name="line.690"></a>
-<span class="sourceLineNo">691</span>      ParentNotDirectoryException, UnresolvedLinkException, IOException {<a name="line.691"></a>
-<span class="sourceLineNo">692</span>    // Default implementation deals with overwrite in a non-atomic way<a name="line.692"></a>
-<span class="sourceLineNo">693</span>    final FileStatus srcStatus = getFileLinkStatus(src);<a name="line.693"></a>
-<span class="sourceLineNo">694</span><a name="line.694"></a>
-<span class="sourceLineNo">695</span>    FileStatus dstStatus;<a name="line.695"></a>
-<span class="sourceLineNo">696</span>    try {<a name="line.696"></a>
-<span class="sourceLineNo">697</span>      dstStatus = getFileLinkStatus(dst);<a name="line.697"></a>
-<span class="sourceLineNo">698</span>    } catch (IOException e) {<a name="line.698"></a>
-<span class="sourceLineNo">699</span>      dstStatus = null;<a name="line.699"></a>
-<span class="sourceLineNo">700</span>    }<a name="line.700"></a>
-<span class="sourceLineNo">701</span>    if (dstStatus != null) {<a name="line.701"></a>
-<span class="sourceLineNo">702</span>      if (dst.equals(src)) {<a name="line.702"></a>
-<span class="sourceLineNo">703</span>        throw new FileAlreadyExistsException(<a name="line.703"></a>
-<span class="sourceLineNo">704</span>            "The source "+src+" and destination "+dst+" are the same");<a name="line.704"></a>
-<span class="sourceLineNo">705</span>      }<a name="line.705"></a>
-<span class="sourceLineNo">706</span>      if (srcStatus.isSymlink() &amp;&amp; dst.equals(srcStatus.getSymlink())) {<a name="line.706"></a>
-<span class="sourceLineNo">707</span>        throw new FileAlreadyExistsException(<a name="line.707"></a>
-<span class="sourceLineNo">708</span>            "Cannot rename symlink "+src+" to its target "+dst);<a name="line.708"></a>
-<span class="sourceLineNo">709</span>      }<a name="line.709"></a>
-<span class="sourceLineNo">710</span>      // It's OK to rename a file to a symlink and vice versa<a name="line.710"></a>
-<span class="sourceLineNo">711</span>      if (srcStatus.isDirectory() != dstStatus.isDirectory()) {<a name="line.711"></a>
-<span class="sourceLineNo">712</span>        throw new IOException("Source " + src + " and destination " + dst<a name="line.712"></a>
-<span class="sourceLineNo">713</span>            + " must both be directories");<a name="line.713"></a>
+<span class="sourceLineNo">654</span>  public abstract boolean setReplication(final Path f,<a name="line.654"></a>
+<span class="sourceLineNo">655</span>      final short replication) throws AccessControlException,<a name="line.655"></a>
+<span class="sourceLineNo">656</span>      FileNotFoundException, UnresolvedLinkException, IOException;<a name="line.656"></a>
+<span class="sourceLineNo">657</span><a name="line.657"></a>
+<span class="sourceLineNo">658</span>  /**<a name="line.658"></a>
+<span class="sourceLineNo">659</span>   * The specification of this method matches that of<a name="line.659"></a>
+<span class="sourceLineNo">660</span>   * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path<a name="line.660"></a>
+<span class="sourceLineNo">661</span>   * f must be for this file system.<a name="line.661"></a>
+<span class="sourceLineNo">662</span>   */<a name="line.662"></a>
+<span class="sourceLineNo">663</span>  public final void rename(final Path src, final Path dst,<a name="line.663"></a>
+<span class="sourceLineNo">664</span>      final Options.Rename... options) throws AccessControlException,<a name="line.664"></a>
+<span class="sourceLineNo">665</span>      FileAlreadyExistsException, FileNotFoundException,<a name="line.665"></a>
+<span class="sourceLineNo">666</span>      ParentNotDirectoryException, UnresolvedLinkException, IOException {<a name="line.666"></a>
+<span class="sourceLineNo">667</span>    boolean overwrite = false;<a name="line.667"></a>
+<span class="sourceLineNo">668</span>    if (null != options) {<a name="line.668"></a>
+<span class="sourceLineNo">669</span>      for (Rename option : options) {<a name="line.669"></a>
+<span class="sourceLineNo">670</span>        if (option == Rename.OVERWRITE) {<a name="line.670"></a>
+<span class="sourceLineNo">671</span>          overwrite = true;<a name="line.671"></a>
+<span class="sourceLineNo">672</span>        }<a name="line.672"></a>
+<span class="sourceLineNo">673</span>      }<a name="line.673"></a>
+<span class="sourceLineNo">674</span>    }<a name="line.674"></a>
+<span class="sourceLineNo">675</span>    renameInternal(src, dst, overwrite);<a name="line.675"></a>
+<span class="sourceLineNo">676</span>  }<a name="line.676"></a>
+<span class="sourceLineNo">677</span>  <a name="line.677"></a>
+<span class="sourceLineNo">678</span>  /**<a name="line.678"></a>
+<span class="sourceLineNo">679</span>   * The specification of this method matches that of<a name="line.679"></a>
+<span class="sourceLineNo">680</span>   * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path<a name="line.680"></a>
+<span class="sourceLineNo">681</span>   * f must be for this file system and NO OVERWRITE is performed.<a name="line.681"></a>
+<span class="sourceLineNo">682</span>   * <a name="line.682"></a>
+<span class="sourceLineNo">683</span>   * File systems that do not have a built in overwrite need implement only this<a name="line.683"></a>
+<span class="sourceLineNo">684</span>   * method and can take advantage of the default impl of the other<a name="line.684"></a>
+<span class="sourceLineNo">685</span>   * {@link #renameInternal(Path, Path, boolean)}<a name="line.685"></a>
+<span class="sourceLineNo">686</span>   */<a name="line.686"></a>
+<span class="sourceLineNo">687</span>  public abstract void renameInternal(final Path src, final Path dst)<a name="line.687"></a>
+<span class="sourceLineNo">688</span>      throws AccessControlException, FileAlreadyExistsException,<a name="line.688"></a>
+<span class="sourceLineNo">689</span>      FileNotFoundException, ParentNotDirectoryException,<a name="line.689"></a>
+<span class="sourceLineNo">690</span>      UnresolvedLinkException, IOException;<a name="line.690"></a>
+<span class="sourceLineNo">691</span>  <a name="line.691"></a>
+<span class="sourceLineNo">692</span>  /**<a name="line.692"></a>
+<span class="sourceLineNo">693</span>   * The specification of this method matches that of<a name="line.693"></a>
+<span class="sourceLineNo">694</span>   * {@link FileContext#rename(Path, Path, Options.Rename...)} except that Path<a name="line.694"></a>
+<span class="sourceLineNo">695</span>   * f must be for this file system.<a name="line.695"></a>
+<span class="sourceLineNo">696</span>   */<a name="line.696"></a>
+<span class="sourceLineNo">697</span>  public void renameInternal(final Path src, final Path dst,<a name="line.697"></a>
+<span class="sourceLineNo">698</span>      boolean overwrite) throws AccessControlException,<a name="line.698"></a>
+<span class="sourceLineNo">699</span>      FileAlreadyExistsException, FileNotFoundException,<a name="line.699"></a>
+<span class="sourceLineNo">700</span>      ParentNotDirectoryException, UnresolvedLinkException, IOException {<a name="line.700"></a>
+<span class="sourceLineNo">701</span>    // Default implementation deals with overwrite in a non-atomic way<a name="line.701"></a>
+<span class="sourceLineNo">702</span>    final FileStatus srcStatus = getFileLinkStatus(src);<a name="line.702"></a>
+<span class="sourceLineNo">703</span><a name="line.703"></a>
+<span class="sourceLineNo">704</span>    FileStatus dstStatus;<a name="line.704"></a>
+<span class="sourceLineNo">705</span>    try {<a name="line.705"></a>
+<span class="sourceLineNo">706</span>      dstStatus = getFileLinkStatus(dst);<a name="line.706"></a>
+<span class="sourceLineNo">707</span>    } catch (IOException e) {<a name="line.707"></a>
+<span class="sourceLineNo">708</span>      dstStatus = null;<a name="line.708"></a>
+<span class="sourceLineNo">709</span>    }<a name="line.709"></a>
+<span class="sourceLineNo">710</span>    if (dstStatus != null) {<a name="line.710"></a>
+<span class="sourceLineNo">711</span>      if (dst.equals(src)) {<a name="line.711"></a>
+<span class="sourceLineNo">712</span>        throw new FileAlreadyExistsException(<a name="line.712"></a>
+<span class="sourceLineNo">713</span>            "The source "+src+" and destination "+dst+" are the same");<a name="line.713"></a>
 <span class="sourceLineNo">714</span>      }<a name="line.714"></a>
-<span class="sourceLineNo">715</span>      if (!overwrite) {<a name="line.715"></a>
-<span class="sourceLineNo">716</span>        throw new FileAlreadyExistsException("Rename destination " + dst<a name="line.716"></a>
-<span class="sourceLineNo">717</span>            + " already exists.");<a name="line.717"></a>
+<span class="sourceLineNo">715</span>      if (srcStatus.isSymlink() &amp;&amp; dst.equals(srcStatus.getSymlink())) {<a name="line.715"></a>
+<span class="sourceLineNo">716</span>        throw new FileAlreadyExistsException(<a name="line.716"></a>
+<span class="sourceLineNo">717</span>            "Cannot rename symlink "+src+" to its target "+dst);<a name="line.717"></a>
 <span class="sourceLineNo">718</span>      }<a name="line.718"></a>
-<span class="sourceLineNo">719</span>      // Delete the destination that is a file or an empty directory<a name="line.719"></a>
-<span class="sourceLineNo">720</span>      if (dstStatus.isDirectory()) {<a name="line.720"></a>
-<span class="sourceLineNo">721</span>        RemoteIterator&lt;FileStatus&gt; list = listStatusIterator(dst);<a name="line.721"></a>
-<span class="sourceLineNo">722</span>        if (list != null &amp;&amp; list.hasNext()) {<a name="line.722"></a>
-<span class="sourceLineNo">723</span>          throw new IOException(<a name="line.723"></a>
-<span class="sourceLineNo">724</span>              "Rename cannot overwrite non empty destination directory " + dst);<a name="line.724"></a>
-<span class="sourceLineNo">725</span>        }<a name="line.725"></a>
-<span class="sourceLineNo">726</span>      }<a name="line.726"></a>
-<span class="sourceLineNo">727</span>      delete(dst, false);<a name="line.727"></a>
-<span class="sourceLineNo">728</span>    } else {<a name="line.728"></a>
-<span class="sourceLineNo">729</span>      final Path parent = dst.getParent();<a name="line.729"></a>
-<span class="sourceLineNo">730</span>      final FileStatus parentStatus = getFileStatus(parent);<a name="line.730"></a>
-<span class="sourceLineNo">731</span>      if (parentStatus.isFile()) {<a name="line.731"></a>
-<span class="sourceLineNo">732</span>        throw new ParentNotDirectoryException("Rename destination parent "<a name="line.732"></a>
-<span class="sourceLineNo">733</span>            + parent + " is a file.");<a name="line.733"></a>
-<span class="sourceLineNo">734</span>      }<a name="line.734"></a>
-<span class="sourceLineNo">735</span>    }<a name="line.735"></a>
-<span class="sourceLineNo">736</span>    renameInternal(src, dst);<a name="line.736"></a>
-<span class="sourceLineNo">737</span>  }<a name="line.737"></a>
-<span class="sourceLineNo">738</span>  <a name="line.738"></a>
-<span class="sourceLineNo">739</span>  /**<a name="line.739"></a>
-<span class="sourceLineNo">740</span>   * Returns true if the file system supports symlinks, false otherwise.<a name="line.740"></a>
-<span class="sourceLineNo">741</span>   * @return true if filesystem supports symlinks<a name="line.741"></a>
-<span class="sourceLineNo">742</span>   */<a name="line.742"></a>
-<span class="sourceLineNo">743</span>  public boolean supportsSymlinks() {<a name="line.743"></a>
-<span class="sourceLineNo">744</span>    return false;<a name="line.744"></a>
-<span class="sourceLineNo">745</span>  }<a name="line.745"></a>
-<span class="sourceLineNo">746</span>  <a name="line.746"></a>
-<span class="sourceLineNo">747</span>  /**<a name="line.747"></a>
-<span class="sourceLineNo">748</span>   * The specification of this method matches that of  <a name="line.748"></a>
-<span class="sourceLineNo">749</span>   * {@link FileContext#createSymlink(Path, Path, boolean)};<a name="line.749"></a>
-<span class="sourceLineNo">750</span>   */<a name="line.750"></a>
-<span class="sourceLineNo">751</span>  public void createSymlink(final Path target, final Path link,<a name="line.751"></a>
-<span class="sourceLineNo">752</span>      final boolean createParent) throws IOException, UnresolvedLinkException {<a name="line.752"></a>
-<span class="sourceLineNo">753</span>    throw new IOException("File system does not support symlinks");    <a name="line.753"></a>
+<span class="sourceLineNo">719</span>      // It's OK to rename a file to a symlink and vice versa<a name="line.719"></a>
+<span class="sourceLineNo">720</span>      if (srcStatus.isDirectory() != dstStatus.isDirectory()) {<a name="line.720"></a>
+<span class="sourceLineNo">721</span>        throw new IOException("Source " + src + " and destination " + dst<a name="line.721"></a>
+<span class="sourceLineNo">722</span>            + " must both be directories");<a name="line.722"></a>
+<span class="sourceLineNo">723</span>      }<a name="line.723"></a>
+<span class="sourceLineNo">724</span>      if (!overwrite) {<a name="line.724"></a>
+<span class="sourceLineNo">725</span>        throw new FileAlreadyExistsException("Rename destination " + dst<a name="line.725"></a>
+<span class="sourceLineNo">726</span>            + " already exists.");<a name="line.726"></a>
+<span class="sourceLineNo">727</span>      }<a name="line.727"></a>
+<span class="sourceLineNo">728</span>      // Delete the destination that is a file or an empty directory<a name="line.728"></a>
+<span class="sourceLineNo">729</span>      if (dstStatus.isDirectory()) {<a name="line.729"></a>
+<span class="sourceLineNo">730</span>        RemoteIterator&lt;FileStatus&gt; list = listStatusIterator(dst);<a name="line.730"></a>
+<span class="sourceLineNo">731</span>        if (list != null &amp;&amp; list.hasNext()) {<a name="line.731"></a>
+<span class="sourceLineNo">732</span>          throw new IOException(<a name="line.732"></a>
+<span class="sourceLineNo">733</span>              "Rename cannot overwrite non empty destination directory " + dst);<a name="line.733"></a>
+<span class="sourceLineNo">734</span>        }<a name="line.734"></a>
+<span class="sourceLineNo">735</span>      }<a name="line.735"></a>
+<span class="sourceLineNo">736</span>      delete(dst, false);<a name="line.736"></a>
+<span class="sourceLineNo">737</span>    } else {<a name="line.737"></a>
+<span class="sourceLineNo">738</span>      final Path parent = dst.getParent();<a name="line.738"></a>
+<span class="sourceLineNo">739</span>      final FileStatus parentStatus = getFileStatus(parent);<a name="line.739"></a>
+<span class="sourceLineNo">740</span>      if (parentStatus.isFile()) {<a name="line.740"></a>
+<span class="sourceLineNo">741</span>        throw new ParentNotDirectoryException("Rename destination parent "<a name="line.741"></a>
+<span class="sourceLineNo">742</span>            + parent + " is a file.");<a name="line.742"></a>
+<span class="sourceLineNo">743</span>      }<a name="line.743"></a>
+<span class="sourceLineNo">744</span>    }<a name="line.744"></a>
+<span class="sourceLineNo">745</span>    renameInternal(src, dst);<a name="line.745"></a>
+<span class="sourceLineNo">746</span>  }<a name="line.746"></a>
+<span class="sourceLineNo">747</span>  <a name="line.747"></a>
+<span class="sourceLineNo">748</span>  /**<a name="line.748"></a>
+<span class="sourceLineNo">749</span>   * Returns true if the file system supports symlinks, false otherwise.<a name="line.749"></a>
+<span class="sourceLineNo">750</span>   * @return true if filesystem supports symlinks<a name="line.750"></a>
+<span class="sourceLineNo">751</span>   */<a name="line.751"></a>
+<span class="sourceLineNo">752</span>  public boolean supportsSymlinks() {<a name="line.752"></a>
+<span class="sourceLineNo">753</span>    return false;<a name="line.753"></a>
 <span class="sourceLineNo">754</span>  }<a name="line.754"></a>
-<span class="sourceLineNo">755</span><a name="line.755"></a>
+<span class="sourceLineNo">755</span>  <a name="line.755"></a>
 <span class="sourceLineNo">756</span>  /**<a name="line.756"></a>
-<span class="sourceLineNo">757</span>   * Partially resolves the path. This is used during symlink resolution in<a name="line.757"></a>
-<span class="sourceLineNo">758</span>   * {@link FSLinkResolver}, and differs from the similarly named method<a name="line.758"></a>
-<span class="sourceLineNo">759</span>   * {@link FileContext#getLinkTarget(Path)}.<a name="line.759"></a>
-<span class="sourceLineNo">760</span>   * @throws IOException subclass implementations may throw IOException <a name="line.760"></a>
-<span class="sourceLineNo">761</span>   */<a name="line.761"></a>
-<span class="sourceLineNo">762</span>  public Path getLinkTarget(final Path f) throws IOException {<a name="line.762"></a>
-<span class="sourceLineNo">763</span>    throw new AssertionError("Implementation Error: " + getClass()<a name="line.763"></a>
-<span class="sourceLineNo">764</span>        + " that threw an UnresolvedLinkException, causing this method to be"<a name="line.764"></a>
-<span class="sourceLineNo">765</span>        + " called, needs to override this method.");<a name="line.765"></a>
-<span class="sourceLineNo">766</span>  }<a name="line.766"></a>
-<span class="sourceLineNo">767</span>    <a name="line.767"></a>
-<span class="sourceLineNo">768</span>  /**<a name="line.768"></a>
-<span class="sourceLineNo">769</span>   * The specification of this method matches that of<a name="line.769"></a>
-<span class="sourceLineNo">770</span>   * {@link FileContext#setPermission(Path, FsPermission)} except that Path f<a name="line.770"></a>
-<span class="sourceLineNo">771</span>   * must be for this file system.<a name="line.771"></a>
-<span class="sourceLineNo">772</span>   */<a name="line.772"></a>
-<span class="sourceLineNo">773</span>  public abstract void setPermission(final Path f,<a name="line.773"></a>
-<span class="sourceLineNo">774</span>      final FsPermission permission) throws AccessControlException,<a name="line.774"></a>
-<span class="sourceLineNo">775</span>      FileNotFoundException, UnresolvedLinkException, IOException;<a name="line.775"></a>
-<span class="sourceLineNo">776</span><a name="line.776"></a>
+<span class="sourceLineNo">757</span>   * The specification of this method matches that of  <a name="line.757"></a>
+<span class="sourceLineNo">758</span>   * {@link FileContext#createSymlink(Path, Path, boolean)};<a name="line.758"></a>
+<span class="sourceLineNo">759</span>   */<a name="line.759"></a>
+<span class="sourceLineNo">760</span>  public void createSymlink(final Path target, final Path link,<a name="line.760"></a>
+<span class="sourceLineNo">761</span>      final boolean createParent) throws IOException, UnresolvedLinkException {<a name="line.761"></a>
+<span class="sourceLineNo">762</span>    throw new IOException("File system does not support symlinks");    <a name="line.762"></a>
+<span class="sourceLineNo">763</span>  }<a name="line.763"></a>
+<span class="sourceLineNo">764</span><a name="line.764"></a>
+<span class="sourceLineNo">765</span>  /**<a name="line.765"></a>
+<span class="sourceLineNo">766</span>   * Partially resolves the path. This is used during symlink resolution in<a name="line.766"></a>
+<span class="sourceLineNo">767</span>   * {@link FSLinkResolver}, and differs from the similarly named method<a name="line.767"></a>
+<span class="sourceLineNo">768</span>   * {@link FileContext#getLinkTarget(Path)}.<a name="line.768"></a>
+<span class="sourceLineNo">769</span>   * @throws IOException subclass implementations may throw IOException <a name="line.769"></a>
+<span class="sourceLineNo">770</span>   */<a name="line.770"></a>
+<span class="sourceLineNo">771</span>  public Path getLinkTarget(final Path f) throws IOException {<a name="line.771"></a>
+<span class="sourceLineNo">772</span>    throw new AssertionError("Implementation Error: " + getClass()<a name="line.772"></a>
+<span class="sourceLineNo">773</span>        + " that threw an UnresolvedLinkException, causing this method to be"<a name="line.773"></a>
+<span class="sourceLineNo">774</span>        + " called, needs to override this method.");<a name="line.774"></a>
+<span class="sourceLineNo">775</span>  }<a name="line.775"></a>
+<span class="sourceLineNo">776</span>    <a name="line.776"></a>
 <span class="sourceLineNo">777</span>  /**<a name="line.777"></a>
 <span class="sourceLineNo">778</span>   * The specification of this method matches that of<a name="line.778"></a>
-<span class="sourceLineNo">779</span>   * {@link FileContext#setOwner(Path, String, String)} except that Path f must<a name="line.779"></a>
-<span class="sourceLineNo">780</span>   * be for this file system.<a name="line.780"></a>
+<span class="sourceLineNo">779</span>   * {@link FileContext#setPermission(Path, FsPermission)} except that Path f<a name="line.779"></a>
+<span class="sourceLineNo">780</span>   * must be for this file system.<a name="line.780"></a>
 <span class="sourceLineNo">781</span>   */<a name="line.781"></a>
-<span class="sourceLineNo">782</span>  public abstract void setOwner(final Path f, final String username,<a name="line.782"></a>
-<span class="sourceLineNo">783</span>      final String groupname) throws AccessControlException,<a name="line.783"></a>
+<span class="sourceLineNo">782</span>  public abstract void setPermission(final Path f,<a name="line.782"></a>
+<span class="sourceLineNo">783</span>      final FsPermission permission) throws AccessControlException,<a name="line.783"></a>
 <span class="sourceLineNo">784</span>      FileNotFoundException, UnresolvedLinkException, IOException;<a name="line.784"></a>
 <span class="sourceLineNo">785</span><a name="line.785"></a>
 <span class="sourceLineNo">786</span>  /**<a name="line.786"></a>
 <span class="sourceLineNo">787</span>   * The specification of this method matches that of<a name="line.787"></a>
-<span class="sourceLineNo">788</span>   * {@link FileContext#setTimes(Path, long, long)} except that Path f must be<a name="line.788"></a>
-<span class="sourceLineNo">789</span>   * for this file system.<a name="line.789"></a>
+<span class="sourceLineNo">788</span>   * {@link FileContext#setOwner(Path, String, String)} except that Path f must<a name="line.788"></a>
+<span class="sourceLineNo">789</span>   * be for this file system.<a name="line.789"></a>
 <span class="sourceLineNo">790</span>   */<a name="line.790"></a>
-<span class="sourceLineNo">791</span>  public abstract void setTimes(final Path f, final long mtime,<a name="line.791"></a>
-<span class="sourceLineNo">792</span>    final long atime) throws AccessControlException, FileNotFoundException,<a name="line.792"></a>
-<span class="sourceLineNo">793</span>      UnresolvedLinkException, IOException;<a name="line.793"></a>
+<span class="sourceLineNo">791</span>  public abstract void setOwner(final Path f, final String username,<a name="line.791"></a>
+<span class="sourceLineNo">792</span>      final String groupname) throws AccessControlException,<a name="line.792"></a>
+<span class="sourceLineNo">793</span>      FileNotFoundException, UnresolvedLinkException, IOException;<a name="line.793"></a>
 <span class="sourceLineNo">794</span><a name="line.794"></a>
 <span class="sourceLineNo">795</span>  /**<a name="line.795"></a>
 <span class="sourceLineNo">796</span>   * The specification of this method matches that of<a name="line.796"></a>
-<span class="sourceLineNo">797</span>   * {@link FileContext#getFileChecksum(Path)} except that Path f must be for<a name="line.797"></a>
-<span class="sourceLineNo">798</span>   * this file system.<a name="line.798"></a>
+<span class="sourceLineNo">797</span>   * {@link FileContext#setTimes(Path, long, long)} except that Path f must be<a name="line.797"></a>
+<span class="sourceLineNo">798</span>   * for this file system.<a name="line.798"></a>
 <span class="sourceLineNo">799</span>   */<a name="line.799"></a>
-<span class="sourceLineNo">800</span>  public abstract FileChecksum getFileChecksum(final Path f)<a name="line.800"></a>
-<span class="sourceLineNo">801</span>      throws AccessControlException, FileNotFoundException,<a name="line.801"></a>
+<span class="sourceLineNo">800</span>  public abstract void setTimes(final Path f, final long mtime,<a name="line.800"></a>
+<span class="sourceLineNo">801</span>    final long atime) throws AccessControlException, FileNotFoundException,<a name="line.801"></a>
 <span class="sourceLineNo">802</span>      UnresolvedLinkException, IOException;<a name="line.802"></a>
-<span class="sourceLineNo">803</span>  <a name="line.803"></a>
+<span class="sourceLineNo">803</span><a name="line.803"></a>
 <span class="sourceLineNo">804</span>  /**<a name="line.804"></a>
 <span class="sourceLineNo">805</span>   * The specification of this method matches that of<a name="line.805"></a>
-<span class="sourceLineNo">806</span>   * {@link FileContext#getFileStatus(Path)} <a name="line.806"></a>
-<span class="sourceLineNo">807</span>   * except that an UnresolvedLinkException may be thrown if a symlink is <a name="line.807"></a>
-<span class="sourceLineNo">808</span>   * encountered in the path.<a name="line.808"></a>
-<span class="sourceLineNo">809</span>   */<a name="line.809"></a>
-<span class="sourceLineNo">810</span>  public abstract FileStatus getFileStatus(final Path f)<a name="line.810"></a>
-<span class="sourceLineNo">811</span>      throws AccessControlException, FileNotFoundException,<a name="line.811"></a>
-<span class="sourceLineNo">812</span>      UnresolvedLinkException, IOException;<a name="line.812"></a>
-<span class="sourceLineNo">813</span><a name="line.813"></a>
-<span class="sourceLineNo">814</span>  /**<a name="line.814"></a>
-<span class="sourceLineNo">815</span>   * The specification of this method matches that of<a name="line.815"></a>
-<span class="sourceLineNo">816</span>   * {@link FileContext#access(Path, FsAction)}<a name="line.816"></a>
-<span class="sourceLineNo">817</span>   * except that an UnresolvedLinkException may be thrown if a symlink is<a name="line.817"></a>
-<span class="sourceLineNo">818</span>   * encountered in the path.<a name="line.818"></a>
-<span class="sourceLineNo">819</span>   */<a name="line.819"></a>
-<span class="sourceLineNo">820</span>  @InterfaceAudience.LimitedPrivate({"HDFS", "Hive"})<a name="line.820"></a>
-<span class="sourceLineNo">821</span>  public void access(Path path, FsAction mode) throws AccessControlException,<a name="line.821"></a>
-<span class="sourceLineNo">822</span>      FileNotFoundException, UnresolvedLinkException, IOException {<a name="line.822"></a>
-<span class="sourceLineNo">823</span>    FileSystem.checkAccessPermissions(this.getFileStatus(path), mode);<a name="line.823"></a>
-<span class="sourceLineNo">824</span>  }<a name="line.824"></a>
-<span class="sourceLineNo">825</span><a name="line.825"></a>
-<span class="sourceLineNo">826</span>  /**<a name="line.826"></a>
-<span class="sourceLineNo">827</span>   * The specification of this method matches that of<a name="line.827"></a>
-<span class="sourceLineNo">828</span>   * {@link FileContext#getFileLinkStatus(Path)}<a name="line.828"></a>
-<span class="sourceLineNo">829</span>   * except that an UnresolvedLinkException may be thrown if a symlink is  <a name="line.829"></a>
-<span class="sourceLineNo">830</span>   * encountered in the path leading up to the final path component.<a name="line.830"></a>
-<span class="sourceLineNo">831</span>   * If the file system does not support symlinks then the behavior is<a name="line.831"></a>
-<span class="sourceLineNo">832</span>   * equivalent to {@link AbstractFileSystem#getFileStatus(Path)}.<a name="line.832"></a>
-<span class="sourceLineNo">833</span>   */<a name="line.833"></a>
-<span class="sourceLineNo">834</span>  public FileStatus getFileLinkStatus(final Path f)<a name="line.834"></a>
-<span class="sourceLineNo">835</span>      throws AccessControlException, FileNotFoundException,<a name="line.835"></a>
-<span class="sourceLineNo">836</span>      UnsupportedFileSystemException, IOException {<a name="line.836"></a>
-<span class="sourceLineNo">837</span>    return getFileStatus(f);<a name="line.837"></a>
-<span class="sourceLineNo">838</span>  }<a name="line.838"></a>
-<span class="sourceLineNo">839</span><a name="line.839"></a>
-<span class="sourceLineNo">840</span>  /**<a name="line.840"></a>
-<span class="sourceLineNo">841</span>   * The specification of this method matches that of<a name="line.841"></a>
-<span class="sourceLineNo">842</span>   * {@link FileContext#getFileBlockLocations(Path, long, long)} except that<a name="line.842"></a>
-<span class="sourceLineNo">843</span>   * Path f must be for this file system.<a name="line.843"></a>
-<span class="sourceLineNo">844</span>   */<a name="line.844"></a>
-<span class="sourceLineNo">845</span>  public abstract BlockLocation[] getFileBlockLocations(final Path f,<a name="line.845"></a>
-<span class="sourceLineNo">846</span>      final long start, final long len) throws AccessControlException,<a name="line.846"></a>
-<span class="sourceLineNo">847</span>      FileNotFoundException, UnresolvedLinkException, IOException;<a name="line.847"></a>
+<span class="sourceLineNo">806</span>   * {@link FileContext#getFileChecksum(Path)} except that Path f must be for<a name="line.806"></a>
+<span class="sourceLineNo">807</span>   * this file system.<a name="line.807"></a>
+<span class="sourceLineNo">808</span>   */<a name="line.808"></a>
+<span class="sourceLineNo">809</span>  public abstract FileChecksum getFileChecksum(final Path f)<a name="line.809"></a>
+<span class="sourceLineNo">810</span>      throws AccessControlException, FileNotFoundException,<a name="line.810"></a>
+<span class="sourceLineNo">811</span>      UnresolvedLinkException, IOException;<a name="line.811"></a>
+<span class="sourceLineNo">812</span>  <a name="line.812"></a>
+<span class="sourceLineNo">813</span>  /**<a name="line.813"></a>
+<span class="sourceLineNo">814</span>   * The specification of this method matches that of<a name="line.814"></a>
+<span class="sourceLineNo">815</span>   * {@link FileContext#getFileStatus(Path)} <a name="line.815"></a>
+<span class="sourceLineNo">816</span>   * except that an UnresolvedLinkException may be thrown if a symlink is <a name="line.816"></a>
+<span class="sourceLineNo">817</span>   * encountered in the path.<a name="line.817"></a>
+<span class="sourceLineNo">818</span>   */<a name="line.818"></a>
+<span class="sourceLineNo">819</span>  public abstract FileStatus getFileStatus(final Path f)<a name="line.819"></a>
+<span class="sourceLineNo">820</span>      throws AccessControlException, FileNotFoundException,<a name="line.820"></a>
+<span class="sourceLineNo">821</span>      UnresolvedLinkException, IOException;<a name="line.821"></a>
+<span class="sourceLineNo">822</span><a name="line.822"></a>
+<span class="sourceLineNo">823</span>  /**<a name="line.823"></a>
+<span class="sourceLineNo">824</span>   * The specification of this method matches that of<a name="line.824"></a>
+<span class="sourceLineNo">825</span>   * {@link FileContext#access(Path, FsAction)}<a name="line.825"></a>
+<span class="sourceLineNo">826</span>   * except that an UnresolvedLinkException may be thrown if a symlink is<a name="line.826"></a>
+<span class="sourceLineNo">827</span>   * encountered in the path.<a name="line.827"></a>
+<span class="sourceLineNo">828</span>   */<a name="line.828"></a>
+<span class="sourceLineNo">829</span>  @InterfaceAudience.LimitedPrivate({"HDFS", "Hive"})<a name="line.829"></a>
+<span class="sourceLineNo">830</span>  public void access(Path path, FsAction mode) throws AccessControlException,<a name="line.830"></a>
+<span class="sourceLineNo">831</span>      FileNotFoundException, UnresolvedLinkException, IOException {<a name="line.831"></a>
+<span class="sourceLineNo">832</span>    FileSystem.checkAccessPermissions(this.getFileStatus(path), mode);<a name="line.832"></a>
+<span class="sourceLineNo">833</span>  }<a name="line.833"></a>
+<span class="sourceLineNo">834</span><a name="line.834"></a>
+<span class="sourceLineNo">835</span>  /**<a name="line.835"></a>
+<span class="sourceLineNo">836</span>   * The specification of this method matches that of<a name="line.836"></a>
+<span class="sourceLineNo">837</span>   * {@link FileContext#getFileLinkStatus(Path)}<a name="line.837"></a>
+<span class="sourceLineNo">838</span>   * except that an UnresolvedLinkException may be thrown if a symlink is  <a name="line.838"></a>
+<span class="sourceLineNo">839</span>   * encountered in the path leading up to the final path component.<a name="line.839"></a>
+<span class="sourceLineNo">840</span>   * If the file system does not support symlinks then the behavior is<a name="line.840"></a>
+<span class="sourceLineNo">841</span>   * equivalent to {@link AbstractFileSystem#getFileStatus(Path)}.<a name="line.841"></a>
+<span class="sourceLineNo">842</span>   */<a name="line.842"></a>
+<span class="sourceLineNo">843</span>  public FileStatus getFileLinkStatus(final Path f)<a name="line.843"></a>
+<span class="sourceLineNo">844</span>      throws AccessControlException, FileNotFoundException,<a name="line.844"></a>
+<span class="sourceLineNo">845</span>      UnsupportedFileSystemException, IOException {<a name="line.845"></a>
+<span class="sourceLineNo">846</span>    return getFileStatus(f);<a name="line.846"></a>
+<span class="sourceLineNo">847</span>  }<a name="line.847"></a>
 <span class="sourceLineNo">848</span><a name="line.848"></a>
 <span class="sourceLineNo">849</span>  /**<a name="line.849"></a>
 <span class="sourceLineNo">850</span>   * The specification of this method matches that of<a name="line.850"></a>
-<span class="sourceLineNo">851</span>   * {@link FileContext#getFsStatus(Path)} except that Path f must be for this<a name="line.851"></a>
-<span class="sourceLineNo">852</span>   * file system.<a name="line.852"></a>
+<span class="sourceLineNo">851</span>   * {@link FileContext#getFileBlockLocations(Path, long, long)} except that<a name="line.851"></a>
+<span class="sourceLineNo">852</span>   * Path f must be for this file system.<a name="line.852"></a>
 <span class="sourceLineNo">853</span>   */<a name="line.853"></a>
-<span class="sourceLineNo">854</span>  public FsStatus getFsStatus(final Path f) throws AccessControlException,<a name="line.854"></a>
-<span class="sourceLineNo">855</span>      FileNotFoundException, UnresolvedLinkException, IOException {<a name="line.855"></a>
-<span class="sourceLineNo">856</span>    // default impl gets FsStatus of root<a name="line.856"></a>
-<span class="sourceLineNo">857</span>    return getFsStatus();<a name="line.857"></a>
-<span class="sourceLineNo">858</span>  }<a name="line.858"></a>
-<span class="sourceLineNo">859</span>  <a name="line.859"></a>
-<span class="sourceLineNo">860</span>  /**<a name="line.860"></a>
-<span class="sourceLineNo">861</span>   * The specification of this method matches that of<a name="line.861"></a>
-<span class="sourceLineNo">862</span>   * {@link FileContext#getFsStatus(Path)}.<a name="line.862"></a>
-<span class="sourceLineNo">863</span>   */<a name="line.863"></a>
-<span class="sourceLineNo">864</span>  public abstract FsStatus getFsStatus() throws AccessControlException,<a name="line.864"></a>
-<span class="sourceLineNo">865</span>      FileNotFoundException, IOException;<a name="line.865"></a>
-<span class="sourceLineNo">866</span><a name="line.866"></a>
-<span class="sourceLineNo">867</span>  /**<a name="line.867"></a>
-<span class="sourceLineNo">868</span>   * The specification of this method matches that of<a name="line.868"></a>
-<span class="sourceLineNo">869</span>   * {@link FileContext#listStatus(Path)} except that Path f must be for this<a name="line.869"></a>
-<span class="sourceLineNo">870</span>   * file system.<a name="line.870"></a>
-<span class="sourceLineNo">871</span>   */<a name="line.871"></a>
-<span class="sourceLineNo">872</span>  public RemoteIterator&lt;FileStatus&gt; listStatusIterator(final Path f)<a name="line.872"></a>
-<span class="sourceLineNo">873</span>      throws AccessControlException, FileNotFoundException,<a name="line.873"></a>
-<span class="sourceLineNo">874</span>      UnresolvedLinkException, IOException {<a name="line.874"></a>
-<span class="sourceLineNo">875</span>    return new RemoteIterator&lt;FileStatus&gt;() {<a name="line.875"></a>
-<span class="sourceLineNo">876</span>      private int i = 0;<a name="line.876"></a>
-<span class="sourceLineNo">877</span>      private FileStatus[] statusList = listStatus(f);<a name="line.877"></a>
-<span class="sourceLineNo">878</span>      <a name="line.878"></a>
-<span class="sourceLineNo">879</span>      @Override<a name="line.879"></a>
-<span class="sourceLineNo">880</span>      public boolean hasNext() {<a name="line.880"></a>
-<span class="sourceLineNo">881</span>        return i &lt; statusList.length;<a name="line.881"></a>
-<span class="sourceLineNo">882</span>      }<a name="line.882"></a>
-<span class="sourceLineNo">883</span>      <a name="line.883"></a>
-<span class="sourceLineNo">884</span>      @Override<a name="line.884"></a>
-<span class="sourceLineNo">885</span>      public FileStatus next() {<a name="line.885"></a>
-<span class="sourceLineNo">886</span>        if (!hasNext()) {<a name="line.886"></a>
-<span class="sourceLineNo">887</span>          throw new NoSuchElementException();<a name="line.887"></a>
-<span class="sourceLineNo">888</span>        }<a name="line.888"></a>
-<span class="sourceLineNo">889</span>        return statusList[i++];<a name="line.889"></a>
-<span class="sourceLineNo">890</span>      }<a name="line.890"></a>
-<span class="sourceLineNo">891</span>    };<a name="line.891"></a>
-<span class="sourceLineNo">892</span>  }<a name="line.892"></a>
-<span class="sourceLineNo">893</span><a name="line.893"></a>
-<span class="sourceLineNo">894</span>  /**<a name="line.894"></a>
-<span class="sourceLineNo">895</span>   * The specification of this method matches that of<a name="line.895"></a>
-<span class="sourceLineNo">896</span>   * {@link FileContext#listLocatedStatus(Path)} except that Path f <a name="line.896"></a>
-<span class="sourceLineNo">897</span>   * must be for this file system.<a name="line.897"></a>
-<span class="sourceLineNo">898</span>   */<a name="line.898"></a>
-<span class="sourceLineNo">899</span>  public RemoteIterator&lt;LocatedFileStatus&gt; listLocatedStatus(final Path f)<a name="line.899"></a>
-<span class="sourceLineNo">900</span>      throws AccessControlException, FileNotFoundException,<a name="line.900"></a>
-<span class="sourceLineNo">901</span>      UnresolvedLinkException, IOException {<a name="line.901"></a>
-<span class="sourceLineNo">902</span>    return new RemoteIterator&lt;LocatedFileStatus&gt;() {<a name="line.902"></a>
-<span class="sourceLineNo">903</span>      private RemoteIterator&lt;FileStatus&gt; itor = listStatusIterator(f);<a name="line.903"></a>
-<span class="sourceLineNo">904</span>      <a name="line.904"></a>
-<span class="sourceLineNo">905</span>      @Override<a name="line.905"></a>
-<span class="sourceLineNo">906</span>      public boolean hasNext() throws IOException {<a name="line.906"></a>
-<span class="sourceLineNo">907</span>        return itor.hasNext();<a name="line.907"></a>
-<span class="sourceLineNo">908</span>      }<a name="line.908"></a>
-<span class="sourceLineNo">909</span>      <a name="line.909"></a>
-<span class="sourceLineNo">910</span>      @Override<a name="line.910"></a>
-<span class="sourceLineNo">911</span>      public LocatedFileStatus next() throws IOException {<a name="line.911"></a>
-<span class="sourceLineNo">912</span>        if (!hasNext()) {<a name="line.912"></a>
-<span class="sourceLineNo">913</span>          throw new NoSuchElementException("No more entry in " + f);<a name="line.913"></a>
-<span class="sourceLineNo">914</span>        }<a name="line.914"></a>
-<span class="sourceLineNo">915</span>        FileStatus result = itor.next();<a name="line.915"></a>
-<span class="sourceLineNo">916</span>        BlockLocation[] locs = null;<a name="line.916"></a>
-<span class="sourceLineNo">917</span>        if (result.isFile()) {<a name="line.917"></a>
-<span class="sourceLineNo">918</span>          locs = getFileBlockLocations(<a name="line.918"></a>
-<span class="sourceLineNo">919</span>              result.getPath(), 0, result.getLen());<a name="line.919"></a>
-<span class="sourceLineNo">920</span>        }<a name="line.920"></a>
-<span class="sourceLineNo">921</span>        return new LocatedFileStatus(result, locs);<a name="line.921"></a>
-<span class="sourceLineNo">922</span>      }<a name="line.922"></a>
-<span class="sourceLineNo">923</span>    };<a name="line.923"></a>
-<span class="sourceLineNo">924</span>  }<a name="line.924"></a>
-<span class="sourceLineNo">925</span><a name="line.925"></a>
-<span class="sourceLineNo">926</span>  /**<a name="line.926"></a>
-<span class="sourceLineNo">927</span>   * The specification of this method matches that of<a name="line.927"></a>
-<span class="sourceLineNo">928</span>   * {@link FileContext.Util#listStatus(Path)} except that Path f must be <a name="line.928"></a>
-<span class="sourceLineNo">929</span>   * for this file system.<a name="line.929"></a>
-<span class="sourceLineNo">930</span>   */<a name="line.930"></a>
-<span class="sourceLineNo">931</span>  public abstract FileStatus[] listStatus(final Path f)<a name="line.931"></a>
-<span class="sourceLineNo">932</span>      throws AccessControlException, FileNotFoundException,<a name="line.932"></a>
-<span class="sourceLineNo">933</span>      UnresolvedLinkException, IOException;<a name="line.933"></a>
+<span class="sourceLineNo">854</span>  public abstract BlockLocation[] getFileBlockLocations(final Path f,<a name="line.854"></a>
+<span class="sourceLineNo">855</span>      final long start, final long len) throws AccessControlException,<a name="line.855"></a>
+<span class="sourceLineNo">856</span>      FileNotFoundException, UnresolvedLinkException, IOException;<a name="line.856"></a>
+<span class="sourceLineNo">857</span><a name="line.857"></a>
+<span class="sourceLineNo">858</span>  /**<a name="line.858"></a>
+<span class="sourceLineNo">859</span>   * The specification of this method matches that of<a name="line.859"></a>
+<span class="sourceLineNo">860</span>   * {@link FileContext#getFsStatus(Path)} except that Path f must be for this<a name="line.860"></a>
+<span class="sourceLineNo">861</span>   * file system.<a name="line.861"></a>
+<span class="sourceLineNo">862</span>   */<a name="line.862"></a>
+<span class="sourceLineNo">863</span>  public FsStatus getFsStatus(final Path f) throws AccessControlException,<a name="line.863"></a>
+<span class="sourceLineNo">864</span>      FileNotFoundException, UnresolvedLinkException, IOException {<a name="line.864"></a>
+<span class="sourceLineNo">865</span>    // default impl gets FsStatus of root<a name="line.865"></a>
+<span class="sourceLineNo">866</span>    return getFsStatus();<a name="line.866"></a>
+<span class="sourceLineNo">867</span>  }<a name="line.867"></a>
+<span class="sourceLineNo">868</span>  <a name="line.868"></a>
+<span class="sourceLineNo">869</span>  /**<a name="line.869"></a>
+<span class="sourceLineNo">870</span>   * The specification of this method matches that of<a name="line.870"></a>
+<span class="sourceLineNo">871</span>   * {@link FileContext#getFsStatus(Path)}.<a name="line.871"></a>
+<span class="sourceLineNo">872</span>   */<a name="line.872"></a>
+<span class="sourceLineNo">873</span>  public abstract FsStatus getFsStatus() throws AccessControlException,<a name="line.873"></a>
+<span class="sourceLineNo">874</span>      FileNotFoundException, IOException;<a name="line.874"></a>
+<span class="sourceLineNo">875</span><a name="line.875"></a>
+<span class="sourceLineNo">876</span>  /**<a name="line.876"></a>
+<span class="sourceLineNo">877</span>   * The specification of this method matches that of<a name="line.877"></a>
+<span class="sourceLineNo">878</span>   * {@link FileContext#listStatus(Path)} except that Path f must be for this<a name="line.878"></a>
+<span class="sourceLineNo">879</span>   * file system.<a name="line.879"></a>
+<span class="sourceLineNo">880</span>   */<a name="line.880"></a>
+<span class="sourceLineNo">881</span>  public RemoteIterator&lt;FileStatus&gt; listStatusIterator(final Path f)<a name="line.881"></a>
+<span class="sourceLineNo">882</span>      throws AccessControlException, FileNotFoundException,<a name="line.882"></a>
+<span class="sourceLineNo">883</span>      UnresolvedLinkException, IOException {<a name="line.883"></a>
+<span class="sourceLineNo">884</span>    return new RemoteIterator&lt;FileStatus&gt;() {<a name="line.884"></a>
+<span class="sourceLineNo">885</span>      private int i = 0;<a name="line.885"></a>
+<span class="sourceLineNo">886</span>      private FileStatus[] statusList = listStatus(f);<a name="line.886"></a>
+<span class="sourceLineNo">887</span>      <a name="line.887"></a>
+<span class="sourceLineNo">888</span>      @Override<a name="line.888"></a>
+<span class="sourceLineNo">889</span>      public boolean hasNext() {<a name="line.889"></a>
+<span class="sourceLineNo">890</span>        return i &lt; statusList.length;<a name="line.890"></a>
+<span class="sourceLineNo">891</span>      }<a name="line.891"></a>
+<span class="sourceLineNo">892</span>      <a name="line.892"></a>
+<span class="sourceLineNo">893</span>      @Override<a name="line.893"></a>
+<span class="sourceLineNo">894</span>      public FileStatus next() {<a name="line.894"></a>
+<span class="sourceLineNo">895</span>        if (!hasNext()) {<a name="line.895"></a>
+<span class="sourceLineNo">896</span>          throw new NoSuchElementException();<a name="line.896"></a>
+<span class="sourceLineNo">897</span>        }<a name="line.897"></a>
+<span class="sourceLineNo">898</span>        return statusList[i++];<a name="line.898"></a>
+<span class="sourceLineNo">899</span>      }<a name="line.899"></a>
+<span class="sourceLineNo">900</span>    };<a name="line.900"></a>
+<span class="sourceLineNo">901</span>  }<a name="line.901"></a>
+<span class="sourceLineNo">902</span><a name="line.902"></a>
+<span class="sourceLineNo">903</span>  /**<a name="line.903"></a>
+<span class="sourceLineNo">904</span>   * The specification of this method matches that of<a name="line.904"></a>
+<span class="sourceLineNo">905</span>   * {@link FileContext#listLocatedStatus(Path)} except that Path f <a name="line.905"></a>
+<span class="sourceLineNo">906</span>   * must be for this file system.<a name="line.906"></a>
+<span class="sourceLineNo">907</span>   */<a name="line.907"></a>
+<span class="sourceLineNo">908</span>  public RemoteIterator&lt;LocatedFileStatus&gt; listLocatedStatus(final Path f)<a name="line.908"></a>
+<span class="sourceLineNo">909</span>      throws AccessControlException, FileNotFoundException,<a name="line.909"></a>
+<span class="sourceLineNo">910</span>      UnresolvedLinkException, IOException {<a name="line.910"></a>
+<span class="sourceLineNo">911</span>    return new RemoteIterator&lt;LocatedFileStatus&gt;() {<a name="line.911"></a>
+<span class="sourceLineNo">912</span>      private RemoteIterator&lt;FileStatus&gt; itor = listStatusIterator(f);<a name="line.912"></a>
+<span class="sourceLineNo">913</span>      <a name="line.913"></a>
+<span class="sourceLineNo">914</span>      @Override<a name="line.914"></a>
+<span class="sourceLineNo">915</span>      public boolean hasNext() throws IOException {<a name="line.915"></a>
+<span class="sourceLineNo">916</span>        return itor.hasNext();<a name="line.916"></a>
+<span class="sourceLineNo">917</span>      }<a name="line.917"></a>
+<span class="sourceLineNo">918</span>      <a name="line.918"></a>
+<span class="sourceLineNo">919</span>      @Override<a name="line.919"></a>
+<span class="sourceLineNo">920</span>      public LocatedFileStatus next() throws IOException {<a name="line.920"></a>
+<span class="sourceLineNo">921</span>        if (!hasNext()) {<a name="line.921"></a>
+<span class="sourceLineNo">922</span>          throw new NoSuchElementException("No more entry in " + f);<a name="line.922"></a>
+<span class="sourceLineNo">923</span>        }<a name="line.923"></a>
+<span class="sourceLineNo">924</span>        FileStatus result = itor.next();<a name="line.924"></a>
+<span class="sourceLineNo">925</span>        BlockLocation[] locs = null;<a name="line.925"></a>
+<span class="sourceLineNo">926</span>        if (result.isFile()) {<a name="line.926"></a>
+<span class="sourceLineNo">927</span>          locs = getFileBlockLocations(<a name="line.927"></a>
+<span class="sourceLineNo">928</span>              result.getPath(), 0, result.getLen());<a name="line.928"></a>
+<span class="sourceLineNo">929</span>        }<a name="line.929"></a>
+<span class="sourceLineNo">930</span>        return new LocatedFileStatus(result, locs);<a name="line.930"></a>
+<span class="sourceLineNo">931</span>      }<a name="line.931"></a>
+<span class="sourceLineNo">932</span>    };<a name="line.932"></a>
+<span class="sourceLineNo">933</span>  }<a name="line.933"></a>
 <span class="sourceLineNo">934</span><a name="line.934"></a>
 <span class="sourceLineNo">935</span>  /**<a name="line.935"></a>
-<span class="sourceLineNo">936</span>   * @return an iterator over the corrupt files under the given path<a name="line.936"></a>
-<span class="sourceLineNo">937</span>   * (may contain duplicates if a file has more than one corrupt block)<a name="line.937"></a>
-<span class="sourceLineNo">938</span>   * @throws IOException<a name="line.938"></a>
+<span class="sourceLineNo">936</span>   * The specification of this method matches that of<a name="line.936"></a>
+<span class="sourceLineNo">937</span>   * {@link FileContext.Util#listStatus(Path)} except that Path f must be <a name="line.937"></a>
+<span class="sourceLineNo">938</span>   * for this file system.<a name="line.938"></a>
 <span class="sourceLineNo">939</span>   */<a name="line.939"></a>
-<span class="sourceLineNo">940</span>  public RemoteIterator&lt;Path&gt; listCorruptFileBlocks(Path path)<a name="line.940"></a>
-<span class="sourceLineNo">941</span>    throws IOException {<a name="line.941"></a>
-<span class="sourceLineNo">942</span>    throw new UnsupportedOperationException(getClass().getCanonicalName() +<a name="line.942"></a>
-<span class="sourceLineNo">943</span>                                            " does not support" +<a name="line.943"></a>
-<span class="sourceLineNo">944</span>                                            " listCorruptFileBlocks");<a name="line.944"></a>
-<span class="sourceLineNo">945</span>  }<a name="line.945"></a>
-<span class="sourceLineNo">946</span><a name="line.946"></a>
-<span class="sourceLineNo">947</span>  /**<a name="line.947"></a>
-<span class="sourceLineNo">948</span>   * The specification of this method matches that of<a name="line.948"></a>
-<span class="sourceLineNo">949</span>   * {@link FileContext#setVerifyChecksum(boolean, Path)} except that Path f<a name="line.949"></a>
-<span class="sourceLineNo">950</span>   * must be for this file system.<a name="line.950"></a>
-<span class="sourceLineNo">951</span>   */<a name="line.951"></a>
-<span class="sourceLineNo">952</span>  public abstract void setVerifyChecksum(final boolean verifyChecksum)<a name="line.952"></a>
-<span class="sourceLineNo">953</span>      throws AccessControlException, IOException;<a name="line.953"></a>
-<span class="sourceLineNo">954</span>  <a name="line.954"></a>
-<span class="sourceLineNo">955</span>  /**<a name="line.955"></a>
-<span class="sourceLineNo">956</span>   * Get a canonical name for this file system.<a name="line.956"></a>
-<span class="sourceLineNo">957</span>   * @return a URI string that uniquely identifies this file system<a name="line.957"></a>
-<span class="sourceLineNo">958</span>   */<a name="line.958"></a>
-<span class="sourceLineNo">959</span>  public String getCanonicalServiceName() {<a name="line.959"></a>
-<span class="sourceLineNo">960</span>    return SecurityUtil.buildDTServiceName(getUri(), getUriDefaultPort());<a name="line.960"></a>
-<span class="sourceLineNo">961</span>  }<a name="line.961"></a>
-<span class="sourceLineNo">962</span>  <a name="line.962"></a>
-<span class="sourceLineNo">963</span>  /**<a name="line.963"></a>
-<span class="sourceLineNo">964</span>   * Get one or more delegation tokens associated with the filesystem. Normally<a name="line.964"></a>
-<span class="sourceLineNo">965</span>   * a file system returns a single delegation token. A file system that manages<a name="line.965"></a>
-<span class="sourceLineNo">966</span>   * multiple file systems underneath, could return set of delegation tokens for<a name="line.966"></a>
-<span class="sourceLineNo">967</span>   * all the file systems it manages<a name="line.967"></a>
-<span class="sourceLineNo">968</span>   * <a name="line.968"></a>
-<span class="sourceLineNo">969</span>   * @param renewer the account name that is allowed to renew the token.<a name="line.969"></a>
-<span class="sourceLineNo">970</span>   * @return List of delegation tokens.<a name="line.970"></a>
-<span class="sourceLineNo">971</span>   *   If delegation tokens not supported then return a list of size zero.<a name="line.971"></a>
-<span class="sourceLineNo">972</span>   * @throws IOException<a name="line.972"></a>
-<span class="sourceLineNo">973</span>   */<a name="line.973"></a>
-<span class="sourceLineNo">974</span>  @InterfaceAudience.LimitedPrivate( { "HDFS", "MapReduce" })<a name="line.974"></a>
-<span class="sourceLineNo">975</span>  public List&lt;Token&lt;?&gt;&gt; getDelegationTokens(String renewer) throws IOException {<a name="line.975"></a>
-<span class="sourceLineNo">976</span>    return new ArrayList&lt;Token&lt;?&gt;&gt;(0);<a name="line.976"></a>
-<span class="sourceLineNo">977</span>  }<a name="line.977"></a>
-<span class="sourceLineNo">978</span><a name="line.978"></a>
-<span class="sourceLineNo">979</span>  /**<a name="line.979"></a>
-<span class="sourceLineNo">980</span>   * Modifies ACL entries of files and directories.  This method can add new ACL<a name="line.980"></a>
-<span class="sourceLineNo">981</span>   * entries or modify the permissions on existing ACL entries.  All existing<a name="line.981"></a>
-<span class="sourceLineNo">982</span>   * ACL entries that are not specified in this call are retained without<a name="line.982"></a>
-<span class="sourceLineNo">983</span>   * changes.  (Modifications are merged into the current ACL.)<a name="line.983"></a>
-<span class="sourceLineNo">984</span>   *<a name="line.984"></a>
-<span class="sourceLineNo">985</span>   * @param path Path to modify<a name="line.985"></a>
-<span class="sourceLineNo">986</span>   * @param aclSpec List&lt;AclEntry&gt; describing modifications<a name="line.986"></a>
-<span class="sourceLineNo">987</span>   * @throws IOException if an ACL could not be modified<a name="line.987"></a>
-<span class="sourceLineNo">988</span>   */<a name="line.988"></a>
-<span class="sourceLineNo">989</span>  public void modifyAclEntries(Path path, List&lt;AclEntry&gt; aclSpec)<a name="line.989"></a>
-<span class="sourceLineNo">990</span>      throws IOException {<a name="line.990"></a>
-<span class="sourceLineNo">991</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.991"></a>
-<span class="sourceLineNo">992</span>        + " doesn't support modifyAclEntries");<a name="line.992"></a>
-<span class="sourceLineNo">993</span>  }<a name="line.993"></a>
-<span class="sourceLineNo">994</span><a name="line.994"></a>
-<span class="sourceLineNo">995</span>  /**<a name="line.995"></a>
-<span class="sourceLineNo">996</span>   * Removes ACL entries from files and directories.  Other ACL entries are<a name="line.996"></a>
-<span class="sourceLineNo">997</span>   * retained.<a name="line.997"></a>
-<span class="sourceLineNo">998</span>   *<a name="line.998"></a>
-<span class="sourceLineNo">999</span>   * @param path Path to modify<a name="line.999"></a>
-<span class="sourceLineNo">1000</span>   * @param aclSpec List&lt;AclEntry&gt; describing entries to remove<a name="line.1000"></a>
-<span class="sourceLineNo">1001</span>   * @throws IOException if an ACL could not be modified<a name="line.1001"></a>
-<span class="sourceLineNo">1002</span>   */<a name="line.1002"></a>
-<span class="sourceLineNo">1003</span>  public void removeAclEntries(Path path, List&lt;AclEntry&gt; aclSpec)<a name="line.1003"></a>
-<span class="sourceLineNo">1004</span>      throws IOException {<a name="line.1004"></a>
-<span class="sourceLineNo">1005</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1005"></a>
-<span class="sourceLineNo">1006</span>        + " doesn't support removeAclEntries");<a name="line.1006"></a>
-<span class="sourceLineNo">1007</span>  }<a name="line.1007"></a>
-<span class="sourceLineNo">1008</span><a name="line.1008"></a>
-<span class="sourceLineNo">1009</span>  /**<a name="line.1009"></a>
-<span class="sourceLineNo">1010</span>   * Removes all default ACL entries from files and directories.<a name="line.1010"></a>
-<span class="sourceLineNo">1011</span>   *<a name="line.1011"></a>
-<span class="sourceLineNo">1012</span>   * @param path Path to modify<a name="line.1012"></a>
-<span class="sourceLineNo">1013</span>   * @throws IOException if an ACL could not be modified<a name="line.1013"></a>
-<span class="sourceLineNo">1014</span>   */<a name="line.1014"></a>
-<span class="sourceLineNo">1015</span>  public void removeDefaultAcl(Path path)<a name="line.1015"></a>
-<span class="sourceLineNo">1016</span>      throws IOException {<a name="line.1016"></a>
-<span class="sourceLineNo">1017</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1017"></a>
-<span class="sourceLineNo">1018</span>        + " doesn't support removeDefaultAcl");<a name="line.1018"></a>
-<span class="sourceLineNo">1019</span>  }<a name="line.1019"></a>
-<span class="sourceLineNo">1020</span><a name="line.1020"></a>
-<span class="sourceLineNo">1021</span>  /**<a name="line.1021"></a>
-<span class="sourceLineNo">1022</span>   * Removes all but the base ACL entries of files and directories.  The entries<a name="line.1022"></a>
-<span class="sourceLineNo">1023</span>   * for user, group, and others are retained for compatibility with permission<a name="line.1023"></a>
-<span class="sourceLineNo">1024</span>   * bits.<a name="line.1024"></a>
-<span class="sourceLineNo">1025</span>   *<a name="line.1025"></a>
-<span class="sourceLineNo">1026</span>   * @param path Path to modify<a name="line.1026"></a>
-<span class="sourceLineNo">1027</span>   * @throws IOException if an ACL could not be removed<a name="line.1027"></a>
-<span class="sourceLineNo">1028</span>   */<a name="line.1028"></a>
-<span class="sourceLineNo">1029</span>  public void removeAcl(Path path)<a name="line.1029"></a>
-<span class="sourceLineNo">1030</span>      throws IOException {<a name="line.1030"></a>
-<span class="sourceLineNo">1031</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1031"></a>
-<span class="sourceLineNo">1032</span>        + " doesn't support removeAcl");<a name="line.1032"></a>
-<span class="sourceLineNo">1033</span>  }<a name="line.1033"></a>
-<span class="sourceLineNo">1034</span><a name="line.1034"></a>
-<span class="sourceLineNo">1035</span>  /**<a name="line.1035"></a>
-<span class="sourceLineNo">1036</span>   * Fully replaces ACL of files and directories, discarding all existing<a name="line.1036"></a>
-<span class="sourceLineNo">1037</span>   * entries.<a name="line.1037"></a>
-<span class="sourceLineNo">1038</span>   *<a name="line.1038"></a>
-<span class="sourceLineNo">1039</span>   * @param path Path to modify<a name="line.1039"></a>
-<span class="sourceLineNo">1040</span>   * @param aclSpec List&lt;AclEntry&gt; describing modifications, must include entries<a name="line.1040"></a>
-<span class="sourceLineNo">1041</span>   *   for user, group, and others for compatibility with permission bits.<a name="line.1041"></a>
-<span class="sourceLineNo">1042</span>   * @throws IOException if an ACL could not be modified<a name="line.1042"></a>
-<span class="sourceLineNo">1043</span>   */<a name="line.1043"></a>
-<span class="sourceLineNo">1044</span>  public void setAcl(Path path, List&lt;AclEntry&gt; aclSpec) throws IOException {<a name="line.1044"></a>
-<span class="sourceLineNo">1045</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1045"></a>
-<span class="sourceLineNo">1046</span>        + " doesn't support setAcl");<a name="line.1046"></a>
-<span class="sourceLineNo">1047</span>  }<a name="line.1047"></a>
-<span class="sourceLineNo">1048</span><a name="line.1048"></a>
-<span class="sourceLineNo">1049</span>  /**<a name="line.1049"></a>
-<span class="sourceLineNo">1050</span>   * Gets the ACLs of files and directories.<a name="line.1050"></a>
-<span class="sourceLineNo">1051</span>   *<a name="line.1051"></a>
-<span class="sourceLineNo">1052</span>   * @param path Path to get<a name="line.1052"></a>
-<span class="sourceLineNo">1053</span>   * @return RemoteIterator&lt;AclStatus&gt; which returns each AclStatus<a name="line.1053"></a>
-<span class="sourceLineNo">1054</span>   * @throws IOException if an ACL could not be read<a name="line.1054"></a>
-<span class="sourceLineNo">1055</span>   */<a name="line.1055"></a>
-<span class="sourceLineNo">1056</span>  public AclStatus getAclStatus(Path path) throws IOException {<a name="line.1056"></a>
-<span class="sourceLineNo">1057</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1057"></a>
-<span class="sourceLineNo">1058</span>        + " doesn't support getAclStatus");<a name="line.1058"></a>
-<span class="sourceLineNo">1059</span>  }<a name="line.1059"></a>
-<span class="sourceLineNo">1060</span><a name="line.1060"></a>
-<span class="sourceLineNo">1061</span>  /**<a name="line.1061"></a>
-<span class="sourceLineNo">1062</span>   * Set an xattr of a file or directory.<a name="line.1062"></a>
-<span class="sourceLineNo">1063</span>   * The name must be prefixed with the namespace followed by ".". For example,<a name="line.1063"></a>
-<span class="sourceLineNo">1064</span>   * "user.attr".<a name="line.1064"></a>
-<span class="sourceLineNo">1065</span>   * &lt;p/&gt;<a name="line.1065"></a>
-<span class="sourceLineNo">1066</span>   * Refer to the HDFS extended attributes user documentation for details.<a name="line.1066"></a>
-<span class="sourceLineNo">1067</span>   *<a name="line.1067"></a>
-<span class="sourceLineNo">1068</span>   * @param path Path to modify<a name="line.1068"></a>
-<span class="sourceLineNo">1069</span>   * @param name xattr name.<a name="line.1069"></a>
-<span class="sourceLineNo">1070</span>   * @param value xattr value.<a name="line.1070"></a>
-<span class="sourceLineNo">1071</span>   * @throws IOException<a name="line.1071"></a>
-<span class="sourceLineNo">1072</span>   */<a name="line.1072"></a>
-<span class="sourceLineNo">1073</span>  public void setXAttr(Path path, String name, byte[] value)<a name="line.1073"></a>
-<span class="sourceLineNo">1074</span>      throws IOException {<a name="line.1074"></a>
-<span class="sourceLineNo">1075</span>    setXAttr(path, name, value, EnumSet.of(XAttrSetFlag.CREATE,<a name="line.1075"></a>
-<span class="sourceLineNo">1076</span>        XAttrSetFlag.REPLACE));<a name="line.1076"></a>
-<span class="sourceLineNo">1077</span>  }<a name="line.1077"></a>
-<span class="sourceLineNo">1078</span><a name="line.1078"></a>
-<span class="sourceLineNo">1079</span>  /**<a name="line.1079"></a>
-<span class="sourceLineNo">1080</span>   * Set an xattr of a file or directory.<a name="line.1080"></a>
-<span class="sourceLineNo">1081</span>   * The name must be prefixed with the namespace followed by ".". For example,<a name="line.1081"></a>
-<span class="sourceLineNo">1082</span>   * "user.attr".<a name="line.1082"></a>
-<span class="sourceLineNo">1083</span>   * &lt;p/&gt;<a name="line.1083"></a>
-<span class="sourceLineNo">1084</span>   * Refer to the HDFS extended attributes user documentation for details.<a name="line.1084"></a>
-<span class="sourceLineNo">1085</span>   *<a name="line.1085"></a>
-<span class="sourceLineNo">1086</span>   * @param path Path to modify<a name="line.1086"></a>
-<span class="sourceLineNo">1087</span>   * @param name xattr name.<a name="line.1087"></a>
-<span class="sourceLineNo">1088</span>   * @param value xattr value.<a name="line.1088"></a>
-<span class="sourceLineNo">1089</span>   * @param flag xattr set flag<a name="line.1089"></a>
-<span class="sourceLineNo">1090</span>   * @throws IOException<a name="line.1090"></a>
-<span class="sourceLineNo">1091</span>   */<a name="line.1091"></a>
-<span class="sourceLineNo">1092</span>  public void setXAttr(Path path, String name, byte[] value,<a name="line.1092"></a>
-<span class="sourceLineNo">1093</span>      EnumSet&lt;XAttrSetFlag&gt; flag) throws IOException {<a name="line.1093"></a>
-<span class="sourceLineNo">1094</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1094"></a>
-<span class="sourceLineNo">1095</span>        + " doesn't support setXAttr");<a name="line.1095"></a>
-<span class="sourceLineNo">1096</span>  }<a name="line.1096"></a>
-<span class="sourceLineNo">1097</span><a name="line.1097"></a>
-<span class="sourceLineNo">1098</span>  /**<a name="line.1098"></a>
-<span class="sourceLineNo">1099</span>   * Get an xattr for a file or directory.<a name="line.1099"></a>
-<span class="sourceLineNo">1100</span>   * The name must be prefixed with the namespace followed by ".". For example,<a name="line.1100"></a>
-<span class="sourceLineNo">1101</span>   * "user.attr".<a name="line.1101"></a>
-<span class="sourceLineNo">1102</span>   * &lt;p/&gt;<a name="line.1102"></a>
-<span class="sourceLineNo">1103</span>   * Refer to the HDFS extended attributes user documentation for details.<a name="line.1103"></a>
-<span class="sourceLineNo">1104</span>   *<a name="line.1104"></a>
-<span class="sourceLineNo">1105</span>   * @param path Path to get extended attribute<a name="line.1105"></a>
-<span class="sourceLineNo">1106</span>   * @param name xattr name.<a name="line.1106"></a>
-<span class="sourceLineNo">1107</span>   * @return byte[] xattr value.<a name="line.1107"></a>
-<span class="sourceLineNo">1108</span>   * @throws IOException<a name="line.1108"></a>
-<span class="sourceLineNo">1109</span>   */<a name="line.1109"></a>
-<span class="sourceLineNo">1110</span>  public byte[] getXAttr(Path path, String name) throws IOException {<a name="line.1110"></a>
-<span class="sourceLineNo">1111</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1111"></a>
-<span class="sourceLineNo">1112</span>        + " doesn't support getXAttr");<a name="line.1112"></a>
-<span class="sourceLineNo">1113</span>  }<a name="line.1113"></a>
-<span class="sourceLineNo">1114</span><a name="line.1114"></a>
-<span class="sourceLineNo">1115</span>  /**<a name="line.1115"></a>
-<span class="sourceLineNo">1116</span>   * Get all of the xattrs for a file or directory.<a name="line.1116"></a>
-<span class="sourceLineNo">1117</span>   * Only those xattrs for which the logged-in user has permissions to view<a name="line.1117"></a>
-<span class="sourceLineNo">1118</span>   * are returned.<a name="line.1118"></a>
-<span class="sourceLineNo">1119</span>   * &lt;p/&gt;<a name="line.1119"></a>
-<span class="sourceLineNo">1120</span>   * Refer to the HDFS extended attributes user documentation for details.<a name="line.1120"></a>
-<span class="sourceLineNo">1121</span>   *<a name="line.1121"></a>
-<span class="sourceLineNo">1122</span>   * @param path Path to get extended attributes<a name="line.1122"></a>
-<span class="sourceLineNo">1123</span>   * @return Map&lt;String, byte[]&gt; describing the XAttrs of the file or directory<a name="line.1123"></a>
-<span class="sourceLineNo">1124</span>   * @throws IOException<a name="line.1124"></a>
-<span class="sourceLineNo">1125</span>   */<a name="line.1125"></a>
-<span class="sourceLineNo">1126</span>  public Map&lt;String, byte[]&gt; getXAttrs(Path path) throws IOException {<a name="line.1126"></a>
-<span class="sourceLineNo">1127</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1127"></a>
-<span class="sourceLineNo">1128</span>        + " doesn't support getXAttrs");<a name="line.1128"></a>
-<span class="sourceLineNo">1129</span>  }<a name="line.1129"></a>
-<span class="sourceLineNo">1130</span><a name="line.1130"></a>
-<span class="sourceLineNo">1131</span>  /**<a name="line.1131"></a>
-<span class="sourceLineNo">1132</span>   * Get all of the xattrs for a file or directory.<a name="line.1132"></a>
-<span class="sourceLineNo">1133</span>   * Only those xattrs for which the logged-in user has permissions to view<a name="line.1133"></a>
-<span class="sourceLineNo">1134</span>   * are returned.<a name="line.1134"></a>
-<span class="sourceLineNo">1135</span>   * &lt;p/&gt;<a name="line.1135"></a>
-<span class="sourceLineNo">1136</span>   * Refer to the HDFS extended attributes user documentation for details.<a name="line.1136"></a>
-<span class="sourceLineNo">1137</span>   *<a name="line.1137"></a>
-<span class="sourceLineNo">1138</span>   * @param path Path to get extended attributes<a name="line.1138"></a>
-<span class="sourceLineNo">1139</span>   * @param names XAttr names.<a name="line.1139"></a>
-<span class="sourceLineNo">1140</span>   * @return Map&lt;String, byte[]&gt; describing the XAttrs of the file or directory<a name="line.1140"></a>
-<span class="sourceLineNo">1141</span>   * @throws IOException<a name="line.1141"></a>
-<span class="sourceLineNo">1142</span>   */<a name="line.1142"></a>
-<span class="sourceLineNo">1143</span>  public Map&lt;String, byte[]&gt; getXAttrs(Path path, List&lt;String&gt; names)<a name="line.1143"></a>
-<span class="sourceLineNo">1144</span>      throws IOException {<a name="line.1144"></a>
-<span class="sourceLineNo">1145</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1145"></a>
-<span class="sourceLineNo">1146</span>        + " doesn't support getXAttrs");<a name="line.1146"></a>
-<span class="sourceLineNo">1147</span>  }<a name="line.1147"></a>
-<span class="sourceLineNo">1148</span><a name="line.1148"></a>
-<span class="sourceLineNo">1149</span>  /**<a name="line.1149"></a>
-<span class="sourceLineNo">1150</span>   * Get all of the xattr names for a file or directory.<a name="line.1150"></a>
-<span class="sourceLineNo">1151</span>   * Only the xattr names for which the logged-in user has permissions to view<a name="line.1151"></a>
-<span class="sourceLineNo">1152</span>   * are returned.<a name="line.1152"></a>
-<span class="sourceLineNo">1153</span>   * &lt;p/&gt;<a name="line.1153"></a>
-<span class="sourceLineNo">1154</span>   * Refer to the HDFS extended attributes user documentation for details.<a name="line.1154"></a>
-<span class="sourceLineNo">1155</span>   *<a name="line.1155"></a>
-<span class="sourceLineNo">1156</span>   * @param path Path to get extended attributes<a name="line.1156"></a>
-<span class="sourceLineNo">1157</span>   * @return Map&lt;String, byte[]&gt; describing the XAttrs of the file or directory<a name="line.1157"></a>
-<span class="sourceLineNo">1158</span>   * @throws IOException<a name="line.1158"></a>
-<span class="sourceLineNo">1159</span>   */<a name="line.1159"></a>
-<span class="sourceLineNo">1160</span>  public List&lt;String&gt; listXAttrs(Path path)<a name="line.1160"></a>
-<span class="sourceLineNo">1161</span>          throws IOException {<a name="line.1161"></a>
-<span class="sourceLineNo">1162</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1162"></a>
-<span class="sourceLineNo">1163</span>            + " doesn't support listXAttrs");<a name="line.1163"></a>
-<span class="sourceLineNo">1164</span>  }<a name="line.1164"></a>
-<span class="sourceLineNo">1165</span><a name="line.1165"></a>
-<span class="sourceLineNo">1166</span>  /**<a name="line.1166"></a>
-<span class="sourceLineNo">1167</span>   * Remove an xattr of a file or directory.<a name="line.1167"></a>
-<span class="sourceLineNo">1168</span>   * The name must be prefixed with the namespace followed by ".". For example,<a name="line.1168"></a>
-<span class="sourceLineNo">1169</span>   * "user.attr".<a name="line.1169"></a>
-<span class="sourceLineNo">1170</span>   * &lt;p/&gt;<a name="line.1170"></a>
-<span class="sourceLineNo">1171</span>   * Refer to the HDFS extended attributes user documentation for details.<a name="line.1171"></a>
-<span class="sourceLineNo">1172</span>   *<a name="line.1172"></a>
-<span class="sourceLineNo">1173</span>   * @param path Path to remove extended attribute<a name="line.1173"></a>
-<span class="sourceLineNo">1174</span>   * @param name xattr name<a name="line.1174"></a>
-<span class="sourceLineNo">1175</span>   * @throws IOException<a name="line.1175"></a>
-<span class="sourceLineNo">1176</span>   */<a name="line.1176"></a>
-<span class="sourceLineNo">1177</span>  public void removeXAttr(Path path, String name) throws IOException {<a name="line.1177"></a>
-<span class="sourceLineNo">1178</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1178"></a>
-<span class="sourceLineNo">1179</span>        + " doesn't support removeXAttr");<a name="line.1179"></a>
-<span class="sourceLineNo">1180</span>  }<a name="line.1180"></a>
-<span class="sourceLineNo">1181</span><a name="line.1181"></a>
-<span class="sourceLineNo">1182</span>  @Override //Object<a name="line.1182"></a>
-<span class="sourceLineNo">1183</span>  public int hashCode() {<a name="line.1183"></a>
-<span class="sourceLineNo">1184</span>    return myUri.hashCode();<a name="line.1184"></a>
-<span class="sourceLineNo">1185</span>  }<a name="line.1185"></a>
-<span class="sourceLineNo">1186</span>  <a name="line.1186"></a>
-<span class="sourceLineNo">1187</span>  @Override //Object<a name="line.1187"></a>
-<span class="sourceLineNo">1188</span>  public boolean equals(Object other) {<a name="line.1188"></a>
-<span class="sourceLineNo">1189</span>    if (other == null || !(other instanceof AbstractFileSystem)) {<a name="line.1189"></a>
-<span class="sourceLineNo">1190</span>      return false;<a name="line.1190"></a>
-<span class="sourceLineNo">1191</span>    }<a name="line.1191"></a>
-<span class="sourceLineNo">1192</span>    return myUri.equals(((AbstractFileSystem) other).myUri);<a name="line.1192"></a>
-<span class="sourceLineNo">1193</span>  }<a name="line.1193"></a>
-<span class="sourceLineNo">1194</span>}<a name="line.1194"></a>
+<span class="sourceLineNo">940</span>  public abstract FileStatus[] listStatus(final Path f)<a name="line.940"></a>
+<span class="sourceLineNo">941</span>      throws AccessControlException, FileNotFoundException,<a name="line.941"></a>
+<span class="sourceLineNo">942</span>      UnresolvedLinkException, IOException;<a name="line.942"></a>
+<span class="sourceLineNo">943</span><a name="line.943"></a>
+<span class="sourceLineNo">944</span>  /**<a name="line.944"></a>
+<span class="sourceLineNo">945</span>   * @return an iterator over the corrupt files under the given path<a name="line.945"></a>
+<span class="sourceLineNo">946</span>   * (may contain duplicates if a file has more than one corrupt block)<a name="line.946"></a>
+<span class="sourceLineNo">947</span>   * @throws IOException<a name="line.947"></a>
+<span class="sourceLineNo">948</span>   */<a name="line.948"></a>
+<span class="sourceLineNo">949</span>  public RemoteIterator&lt;Path&gt; listCorruptFileBlocks(Path path)<a name="line.949"></a>
+<span class="sourceLineNo">950</span>    throws IOException {<a name="line.950"></a>
+<span class="sourceLineNo">951</span>    throw new UnsupportedOperationException(getClass().getCanonicalName() +<a name="line.951"></a>
+<span class="sourceLineNo">952</span>                                            " does not support" +<a name="line.952"></a>
+<span class="sourceLineNo">953</span>                                            " listCorruptFileBlocks");<a name="line.953"></a>
+<span class="sourceLineNo">954</span>  }<a name="line.954"></a>
+<span class="sourceLineNo">955</span><a name="line.955"></a>
+<span class="sourceLineNo">956</span>  /**<a name="line.956"></a>
+<span class="sourceLineNo">957</span>   * The specification of this method matches that of<a name="line.957"></a>
+<span class="sourceLineNo">958</span>   * {@link FileContext#setVerifyChecksum(boolean, Path)} except that Path f<a name="line.958"></a>
+<span class="sourceLineNo">959</span>   * must be for this file system.<a name="line.959"></a>
+<span class="sourceLineNo">960</span>   */<a name="line.960"></a>
+<span class="sourceLineNo">961</span>  public abstract void setVerifyChecksum(final boolean verifyChecksum)<a name="line.961"></a>
+<span class="sourceLineNo">962</span>      throws AccessControlException, IOException;<a name="line.962"></a>
+<span class="sourceLineNo">963</span>  <a name="line.963"></a>
+<span class="sourceLineNo">964</span>  /**<a name="line.964"></a>
+<span class="sourceLineNo">965</span>   * Get a canonical name for this file system.<a name="line.965"></a>
+<span class="sourceLineNo">966</span>   * @return a URI string that uniquely identifies this file system<a name="line.966"></a>
+<span class="sourceLineNo">967</span>   */<a name="line.967"></a>
+<span class="sourceLineNo">968</span>  public String getCanonicalServiceName() {<a name="line.968"></a>
+<span class="sourceLineNo">969</span>    return SecurityUtil.buildDTServiceName(getUri(), getUriDefaultPort());<a name="line.969"></a>
+<span class="sourceLineNo">970</span>  }<a name="line.970"></a>
+<span class="sourceLineNo">971</span>  <a name="line.971"></a>
+<span class="sourceLineNo">972</span>  /**<a name="line.972"></a>
+<span class="sourceLineNo">973</span>   * Get one or more delegation tokens associated with the filesystem. Normally<a name="line.973"></a>
+<span class="sourceLineNo">974</span>   * a file system returns a single delegation token. A file system that manages<a name="line.974"></a>
+<span class="sourceLineNo">975</span>   * multiple file systems underneath, could return set of delegation tokens for<a name="line.975"></a>
+<span class="sourceLineNo">976</span>   * all the file systems it manages<a name="line.976"></a>
+<span class="sourceLineNo">977</span>   * <a name="line.977"></a>
+<span class="sourceLineNo">978</span>   * @param renewer the account name that is allowed to renew the token.<a name="line.978"></a>
+<span class="sourceLineNo">979</span>   * @return List of delegation tokens.<a name="line.979"></a>
+<span class="sourceLineNo">980</span>   *   If delegation tokens not supported then return a list of size zero.<a name="line.980"></a>
+<span class="sourceLineNo">981</span>   * @throws IOException<a name="line.981"></a>
+<span class="sourceLineNo">982</span>   */<a name="line.982"></a>
+<span class="sourceLineNo">983</span>  @InterfaceAudience.LimitedPrivate( { "HDFS", "MapReduce" })<a name="line.983"></a>
+<span class="sourceLineNo">984</span>  public List&lt;Token&lt;?&gt;&gt; getDelegationTokens(String renewer) throws IOException {<a name="line.984"></a>
+<span class="sourceLineNo">985</span>    return new ArrayList&lt;Token&lt;?&gt;&gt;(0);<a name="line.985"></a>
+<span class="sourceLineNo">986</span>  }<a name="line.986"></a>
+<span class="sourceLineNo">987</span><a name="line.987"></a>
+<span class="sourceLineNo">988</span>  /**<a name="line.988"></a>
+<span class="sourceLineNo">989</span>   * Modifies ACL entries of files and directories.  This method can add new ACL<a name="line.989"></a>
+<span class="sourceLineNo">990</span>   * entries or modify the permissions on existing ACL entries.  All existing<a name="line.990"></a>
+<span class="sourceLineNo">991</span>   * ACL entries that are not specified in this call are retained without<a name="line.991"></a>
+<span class="sourceLineNo">992</span>   * changes.  (Modifications are merged into the current ACL.)<a name="line.992"></a>
+<span class="sourceLineNo">993</span>   *<a name="line.993"></a>
+<span class="sourceLineNo">994</span>   * @param path Path to modify<a name="line.994"></a>
+<span class="sourceLineNo">995</span>   * @param aclSpec List&lt;AclEntry&gt; describing modifications<a name="line.995"></a>
+<span class="sourceLineNo">996</span>   * @throws IOException if an ACL could not be modified<a name="line.996"></a>
+<span class="sourceLineNo">997</span>   */<a name="line.997"></a>
+<span class="sourceLineNo">998</span>  public void modifyAclEntries(Path path, List&lt;AclEntry&gt; aclSpec)<a name="line.998"></a>
+<span class="sourceLineNo">999</span>      throws IOException {<a name="line.999"></a>
+<span class="sourceLineNo">1000</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1000"></a>
+<span class="sourceLineNo">1001</span>        + " doesn't support modifyAclEntries");<a name="line.1001"></a>
+<span class="sourceLineNo">1002</span>  }<a name="line.1002"></a>
+<span class="sourceLineNo">1003</span><a name="line.1003"></a>
+<span class="sourceLineNo">1004</span>  /**<a name="line.1004"></a>
+<span class="sourceLineNo">1005</span>   * Removes ACL entries from files and directories.  Other ACL entries are<a name="line.1005"></a>
+<span class="sourceLineNo">1006</span>   * retained.<a name="line.1006"></a>
+<span class="sourceLineNo">1007</span>   *<a name="line.1007"></a>
+<span class="sourceLineNo">1008</span>   * @param path Path to modify<a name="line.1008"></a>
+<span class="sourceLineNo">1009</span>   * @param aclSpec List&lt;AclEntry&gt; describing entries to remove<a name="line.1009"></a>
+<span class="sourceLineNo">1010</span>   * @throws IOException if an ACL could not be modified<a name="line.1010"></a>
+<span class="sourceLineNo">1011</span>   */<a name="line.1011"></a>
+<span class="sourceLineNo">1012</span>  public void removeAclEntries(Path path, List&lt;AclEntry&gt; aclSpec)<a name="line.1012"></a>
+<span class="sourceLineNo">1013</span>      throws IOException {<a name="line.1013"></a>
+<span class="sourceLineNo">1014</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1014"></a>
+<span class="sourceLineNo">1015</span>        + " doesn't support removeAclEntries");<a name="line.1015"></a>
+<span class="sourceLineNo">1016</span>  }<a name="line.1016"></a>
+<span class="sourceLineNo">1017</span><a name="line.1017"></a>
+<span class="sourceLineNo">1018</span>  /**<a name="line.1018"></a>
+<span class="sourceLineNo">1019</span>   * Removes all default ACL entries from files and directories.<a name="line.1019"></a>
+<span class="sourceLineNo">1020</span>   *<a name="line.1020"></a>
+<span class="sourceLineNo">1021</span>   * @param path Path to modify<a name="line.1021"></a>
+<span class="sourceLineNo">1022</span>   * @throws IOException if an ACL could not be modified<a name="line.1022"></a>
+<span class="sourceLineNo">1023</span>   */<a name="line.1023"></a>
+<span class="sourceLineNo">1024</span>  public void removeDefaultAcl(Path path)<a name="line.1024"></a>
+<span class="sourceLineNo">1025</span>      throws IOException {<a name="line.1025"></a>
+<span class="sourceLineNo">1026</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1026"></a>
+<span class="sourceLineNo">1027</span>        + " doesn't support removeDefaultAcl");<a name="line.1027"></a>
+<span class="sourceLineNo">1028</span>  }<a name="line.1028"></a>
+<span class="sourceLineNo">1029</span><a name="line.1029"></a>
+<span class="sourceLineNo">1030</span>  /**<a name="line.1030"></a>
+<span class="sourceLineNo">1031</span>   * Removes all but the base ACL entries of files and directories.  The entries<a name="line.1031"></a>
+<span class="sourceLineNo">1032</span>   * for user, group, and others are retained for compatibility with permission<a name="line.1032"></a>
+<span class="sourceLineNo">1033</span>   * bits.<a name="line.1033"></a>
+<span class="sourceLineNo">1034</span>   *<a name="line.1034"></a>
+<span class="sourceLineNo">1035</span>   * @param path Path to modify<a name="line.1035"></a>
+<span class="sourceLineNo">1036</span>   * @throws IOException if an ACL could not be removed<a name="line.1036"></a>
+<span class="sourceLineNo">1037</span>   */<a name="line.1037"></a>
+<span class="sourceLineNo">1038</span>  public void removeAcl(Path path)<a name="line.1038"></a>
+<span class="sourceLineNo">1039</span>      throws IOException {<a name="line.1039"></a>
+<span class="sourceLineNo">1040</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1040"></a>
+<span class="sourceLineNo">1041</span>        + " doesn't support removeAcl");<a name="line.1041"></a>
+<span class="sourceLineNo">1042</span>  }<a name="line.1042"></a>
+<span class="sourceLineNo">1043</span><a name="line.1043"></a>
+<span class="sourceLineNo">1044</span>  /**<a name="line.1044"></a>
+<span class="sourceLineNo">1045</span>   * Fully replaces ACL of files and directories, discarding all existing<a name="line.1045"></a>
+<span class="sourceLineNo">1046</span>   * entries.<a name="line.1046"></a>
+<span class="sourceLineNo">1047</span>   *<a name="line.1047"></a>
+<span class="sourceLineNo">1048</span>   * @param path Path to modify<a name="line.1048"></a>
+<span class="sourceLineNo">1049</span>   * @param aclSpec List&lt;AclEntry&gt; describing modifications, must include entries<a name="line.1049"></a>
+<span class="sourceLineNo">1050</span>   *   for user, group, and others for compatibility with permission bits.<a name="line.1050"></a>
+<span class="sourceLineNo">1051</span>   * @throws IOException if an ACL could not be modified<a name="line.1051"></a>
+<span class="sourceLineNo">1052</span>   */<a name="line.1052"></a>
+<span class="sourceLineNo">1053</span>  public void setAcl(Path path, List&lt;AclEntry&gt; aclSpec) throws IOException {<a name="line.1053"></a>
+<span class="sourceLineNo">1054</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1054"></a>
+<span class="sourceLineNo">1055</span>        + " doesn't support setAcl");<a name="line.1055"></a>
+<span class="sourceLineNo">1056</span>  }<a name="line.1056"></a>
+<span class="sourceLineNo">1057</span><a name="line.1057"></a>
+<span class="sourceLineNo">1058</span>  /**<a name="line.1058"></a>
+<span class="sourceLineNo">1059</span>   * Gets the ACLs of files and directories.<a name="line.1059"></a>
+<span class="sourceLineNo">1060</span>   *<a name="line.1060"></a>
+<span class="sourceLineNo">1061</span>   * @param path Path to get<a name="line.1061"></a>
+<span class="sourceLineNo">1062</span>   * @return RemoteIterator&lt;AclStatus&gt; which returns each AclStatus<a name="line.1062"></a>
+<span class="sourceLineNo">1063</span>   * @throws IOException if an ACL could not be read<a name="line.1063"></a>
+<span class="sourceLineNo">1064</span>   */<a name="line.1064"></a>
+<span class="sourceLineNo">1065</span>  public AclStatus getAclStatus(Path path) throws IOException {<a name="line.1065"></a>
+<span class="sourceLineNo">1066</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1066"></a>
+<span class="sourceLineNo">1067</span>        + " doesn't support getAclStatus");<a name="line.1067"></a>
+<span class="sourceLineNo">1068</span>  }<a name="line.1068"></a>
+<span class="sourceLineNo">1069</span><a name="line.1069"></a>
+<span class="sourceLineNo">1070</span>  /**<a name="line.1070"></a>
+<span class="sourceLineNo">1071</span>   * Set an xattr of a file or directory.<a name="line.1071"></a>
+<span class="sourceLineNo">1072</span>   * The name must be prefixed with the namespace followed by ".". For example,<a name="line.1072"></a>
+<span class="sourceLineNo">1073</span>   * "user.attr".<a name="line.1073"></a>
+<span class="sourceLineNo">1074</span>   * &lt;p/&gt;<a name="line.1074"></a>
+<span class="sourceLineNo">1075</span>   * Refer to the HDFS extended attributes user documentation for details.<a name="line.1075"></a>
+<span class="sourceLineNo">1076</span>   *<a name="line.1076"></a>
+<span class="sourceLineNo">1077</span>   * @param path Path to modify<a name="line.1077"></a>
+<span class="sourceLineNo">1078</span>   * @param name xattr name.<a name="line.1078"></a>
+<span class="sourceLineNo">1079</span>   * @param value xattr value.<a name="line.1079"></a>
+<span class="sourceLineNo">1080</span>   * @throws IOException<a name="line.1080"></a>
+<span class="sourceLineNo">1081</span>   */<a name="line.1081"></a>
+<span class="sourceLineNo">1082</span>  public void setXAttr(Path path, String name, byte[] value)<a name="line.1082"></a>
+<span class="sourceLineNo">1083</span>      throws IOException {<a name="line.1083"></a>
+<span class="sourceLineNo">1084</span>    setXAttr(path, name, value, EnumSet.of(XAttrSetFlag.CREATE,<a name="line.1084"></a>
+<span class="sourceLineNo">1085</span>        XAttrSetFlag.REPLACE));<a name="line.1085"></a>
+<span class="sourceLineNo">1086</span>  }<a name="line.1086"></a>
+<span class="sourceLineNo">1087</span><a name="line.1087"></a>
+<span class="sourceLineNo">1088</span>  /**<a name="line.1088"></a>
+<span class="sourceLineNo">1089</span>   * Set an xattr of a file or directory.<a name="line.1089"></a>
+<span class="sourceLineNo">1090</span>   * The name must be prefixed with the namespace followed by ".". For example,<a name="line.1090"></a>
+<span class="sourceLineNo">1091</span>   * "user.attr".<a name="line.1091"></a>
+<span class="sourceLineNo">1092</span>   * &lt;p/&gt;<a name="line.1092"></a>
+<span class="sourceLineNo">1093</span>   * Refer to the HDFS extended attributes user documentation for details.<a name="line.1093"></a>
+<span class="sourceLineNo">1094</span>   *<a name="line.1094"></a>
+<span class="sourceLineNo">1095</span>   * @param path Path to modify<a name="line.1095"></a>
+<span class="sourceLineNo">1096</span>   * @param name xattr name.<a name="line.1096"></a>
+<span class="sourceLineNo">1097</span>   * @param value xattr value.<a name="line.1097"></a>
+<span class="sourceLineNo">1098</span>   * @param flag xattr set flag<a name="line.1098"></a>
+<span class="sourceLineNo">1099</span>   * @throws IOException<a name="line.1099"></a>
+<span class="sourceLineNo">1100</span>   */<a name="line.1100"></a>
+<span class="sourceLineNo">1101</span>  public void setXAttr(Path path, String name, byte[] value,<a name="line.1101"></a>
+<span class="sourceLineNo">1102</span>      EnumSet&lt;XAttrSetFlag&gt; flag) throws IOException {<a name="line.1102"></a>
+<span class="sourceLineNo">1103</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1103"></a>
+<span class="sourceLineNo">1104</span>        + " doesn't support setXAttr");<a name="line.1104"></a>
+<span class="sourceLineNo">1105</span>  }<a name="line.1105"></a>
+<span class="sourceLineNo">1106</span><a name="line.1106"></a>
+<span class="sourceLineNo">1107</span>  /**<a name="line.1107"></a>
+<span class="sourceLineNo">1108</span>   * Get an xattr for a file or directory.<a name="line.1108"></a>
+<span class="sourceLineNo">1109</span>   * The name must be prefixed with the namespace followed by ".". For example,<a name="line.1109"></a>
+<span class="sourceLineNo">1110</span>   * "user.attr".<a name="line.1110"></a>
+<span class="sourceLineNo">1111</span>   * &lt;p/&gt;<a name="line.1111"></a>
+<span class="sourceLineNo">1112</span>   * Refer to the HDFS extended attributes user documentation for details.<a name="line.1112"></a>
+<span class="sourceLineNo">1113</span>   *<a name="line.1113"></a>
+<span class="sourceLineNo">1114</span>   * @param path Path to get extended attribute<a name="line.1114"></a>
+<span class="sourceLineNo">1115</span>   * @param name xattr name.<a name="line.1115"></a>
+<span class="sourceLineNo">1116</span>   * @return byte[] xattr value.<a name="line.1116"></a>
+<span class="sourceLineNo">1117</span>   * @throws IOException<a name="line.1117"></a>
+<span class="sourceLineNo">1118</span>   */<a name="line.1118"></a>
+<span class="sourceLineNo">1119</span>  public byte[] getXAttr(Path path, String name) throws IOException {<a name="line.1119"></a>
+<span class="sourceLineNo">1120</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1120"></a>
+<span class="sourceLineNo">1121</span>        + " doesn't support getXAttr");<a name="line.1121"></a>
+<span class="sourceLineNo">1122</span>  }<a name="line.1122"></a>
+<span class="sourceLineNo">1123</span><a name="line.1123"></a>
+<span class="sourceLineNo">1124</span>  /**<a name="line.1124"></a>
+<span class="sourceLineNo">1125</span>   * Get all of the xattrs for a file or directory.<a name="line.1125"></a>
+<span class="sourceLineNo">1126</span>   * Only those xattrs for which the logged-in user has permissions to view<a name="line.1126"></a>
+<span class="sourceLineNo">1127</span>   * are returned.<a name="line.1127"></a>
+<span class="sourceLineNo">1128</span>   * &lt;p/&gt;<a name="line.1128"></a>
+<span class="sourceLineNo">1129</span>   * Refer to the HDFS extended attributes user documentation for details.<a name="line.1129"></a>
+<span class="sourceLineNo">1130</span>   *<a name="line.1130"></a>
+<span class="sourceLineNo">1131</span>   * @param path Path to get extended attributes<a name="line.1131"></a>
+<span class="sourceLineNo">1132</span>   * @return Map&lt;String, byte[]&gt; describing the XAttrs of the file or directory<a name="line.1132"></a>
+<span class="sourceLineNo">1133</span>   * @throws IOException<a name="line.1133"></a>
+<span class="sourceLineNo">1134</span>   */<a name="line.1134"></a>
+<span class="sourceLineNo">1135</span>  public Map&lt;String, byte[]&gt; getXAttrs(Path path) throws IOException {<a name="line.1135"></a>
+<span class="sourceLineNo">1136</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1136"></a>
+<span class="sourceLineNo">1137</span>        + " doesn't support getXAttrs");<a name="line.1137"></a>
+<span class="sourceLineNo">1138</span>  }<a name="line.1138"></a>
+<span class="sourceLineNo">1139</span><a name="line.1139"></a>
+<span class="sourceLineNo">1140</span>  /**<a name="line.1140"></a>
+<span class="sourceLineNo">1141</span>   * Get all of the xattrs for a file or directory.<a name="line.1141"></a>
+<span class="sourceLineNo">1142</span>   * Only those xattrs for which the logged-in user has permissions to view<a name="line.1142"></a>
+<span class="sourceLineNo">1143</span>   * are returned.<a name="line.1143"></a>
+<span class="sourceLineNo">1144</span>   * &lt;p/&gt;<a name="line.1144"></a>
+<span class="sourceLineNo">1145</span>   * Refer to the HDFS extended attributes user documentation for details.<a name="line.1145"></a>
+<span class="sourceLineNo">1146</span>   *<a name="line.1146"></a>
+<span class="sourceLineNo">1147</span>   * @param path Path to get extended attributes<a name="line.1147"></a>
+<span class="sourceLineNo">1148</span>   * @param names XAttr names.<a name="line.1148"></a>
+<span class="sourceLineNo">1149</span>   * @return Map&lt;String, byte[]&gt; describing the XAttrs of the file or directory<a name="line.1149"></a>
+<span class="sourceLineNo">1150</span>   * @throws IOException<a name="line.1150"></a>
+<span class="sourceLineNo">1151</span>   */<a name="line.1151"></a>
+<span class="sourceLineNo">1152</span>  public Map&lt;String, byte[]&gt; getXAttrs(Path path, List&lt;String&gt; names)<a name="line.1152"></a>
+<span class="sourceLineNo">1153</span>      throws IOException {<a name="line.1153"></a>
+<span class="sourceLineNo">1154</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1154"></a>
+<span class="sourceLineNo">1155</span>        + " doesn't support getXAttrs");<a name="line.1155"></a>
+<span class="sourceLineNo">1156</span>  }<a name="line.1156"></a>
+<span class="sourceLineNo">1157</span><a name="line.1157"></a>
+<span class="sourceLineNo">1158</span>  /**<a name="line.1158"></a>
+<span class="sourceLineNo">1159</span>   * Get all of the xattr names for a file or directory.<a name="line.1159"></a>
+<span class="sourceLineNo">1160</span>   * Only the xattr names for which the logged-in user has permissions to view<a name="line.1160"></a>
+<span class="sourceLineNo">1161</span>   * are returned.<a name="line.1161"></a>
+<span class="sourceLineNo">1162</span>   * &lt;p/&gt;<a name="line.1162"></a>
+<span class="sourceLineNo">1163</span>   * Refer to the HDFS extended attributes user documentation for details.<a name="line.1163"></a>
+<span class="sourceLineNo">1164</span>   *<a name="line.1164"></a>
+<span class="sourceLineNo">1165</span>   * @param path Path to get extended attributes<a name="line.1165"></a>
+<span class="sourceLineNo">1166</span>   * @return Map&lt;String, byte[]&gt; describing the XAttrs of the file or directory<a name="line.1166"></a>
+<span class="sourceLineNo">1167</span>   * @throws IOException<a name="line.1167"></a>
+<span class="sourceLineNo">1168</span>   */<a name="line.1168"></a>
+<span class="sourceLineNo">1169</span>  public List&lt;String&gt; listXAttrs(Path path)<a name="line.1169"></a>
+<span class="sourceLineNo">1170</span>          throws IOException {<a name="line.1170"></a>
+<span class="sourceLineNo">1171</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1171"></a>
+<span class="sourceLineNo">1172</span>            + " doesn't support listXAttrs");<a name="line.1172"></a>
+<span class="sourceLineNo">1173</span>  }<a name="line.1173"></a>
+<span class="sourceLineNo">1174</span><a name="line.1174"></a>
+<span class="sourceLineNo">1175</span>  /**<a name="line.1175"></a>
+<span class="sourceLineNo">1176</span>   * Remove an xattr of a file or directory.<a name="line.1176"></a>
+<span class="sourceLineNo">1177</span>   * The name must be prefixed with the namespace followed by ".". For example,<a name="line.1177"></a>
+<span class="sourceLineNo">1178</span>   * "user.attr".<a name="line.1178"></a>
+<span class="sourceLineNo">1179</span>   * &lt;p/&gt;<a name="line.1179"></a>
+<span class="sourceLineNo">1180</span>   * Refer to the HDFS extended attributes user documentation for details.<a name="line.1180"></a>
+<span class="sourceLineNo">1181</span>   *<a name="line.1181"></a>
+<span class="sourceLineNo">1182</span>   * @param path Path to remove extended attribute<a name="line.1182"></a>
+<span class="sourceLineNo">1183</span>   * @param name xattr name<a name="line.1183"></a>
+<span class="sourceLineNo">1184</span>   * @throws IOException<a name="line.1184"></a>
+<span class="sourceLineNo">1185</span>   */<a name="line.1185"></a>
+<span class="sourceLineNo">1186</span>  public void removeXAttr(Path path, String name) throws IOException {<a name="line.1186"></a>
+<span class="sourceLineNo">1187</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1187"></a>
+<span class="sourceLineNo">1188</span>        + " doesn't support removeXAttr");<a name="line.1188"></a>
+<span class="sourceLineNo">1189</span>  }<a name="line.1189"></a>
+<span class="sourceLineNo">1190</span><a name="line.1190"></a>
+<span class="sourceLineNo">1191</span>  @Override //Object<a name="line.1191"></a>
+<span class="sourceLineNo">1192</span>  public int hashCode() {<a name="line.1192"></a>
+<span class="sourceLineNo">1193</span>    return myUri.hashCode();<a name="line.1193"></a>
+<span class="sourceLineNo">1194</span>  }<a name="line.1194"></a>
+<span class="sourceLineNo">1195</span>  <a name="line.1195"></a>
+<span class="sourceLineNo">1196</span>  @Override //Object<a name="line.1196"></a>
+<span class="sourceLineNo">1197</span>  public boolean equals(Object other) {<a name="line.1197"></a>
+<span class="sourceLineNo">1198</span>    if (other == null || !(other instanceof AbstractFileSystem)) {<a name="line.1198"></a>
+<span class="sourceLineNo">1199</span>      return false;<a name="line.1199"></a>
+<span class="sourceLineNo">1200</span>    }<a name="line.1200"></a>
+<span class="sourceLineNo">1201</span>    return myUri.equals(((AbstractFileSystem) other).myUri);<a name="line.1201"></a>
+<span class="sourceLineNo">1202</span>  }<a name="line.1202"></a>
+<span class="sourceLineNo">1203</span>}<a name="line.1203"></a>
 
 
 
