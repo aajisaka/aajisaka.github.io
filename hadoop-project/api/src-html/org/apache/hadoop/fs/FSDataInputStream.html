@@ -43,7 +43,7 @@
 <span class="sourceLineNo">035</span>public class FSDataInputStream extends DataInputStream<a name="line.35"></a>
 <span class="sourceLineNo">036</span>    implements Seekable, PositionedReadable, <a name="line.36"></a>
 <span class="sourceLineNo">037</span>      ByteBufferReadable, HasFileDescriptor, CanSetDropBehind, CanSetReadahead,<a name="line.37"></a>
-<span class="sourceLineNo">038</span>      HasEnhancedByteBufferAccess {<a name="line.38"></a>
+<span class="sourceLineNo">038</span>      HasEnhancedByteBufferAccess, CanUnbuffer {<a name="line.38"></a>
 <span class="sourceLineNo">039</span>  /**<a name="line.39"></a>
 <span class="sourceLineNo">040</span>   * Map ByteBuffers that we have handed out to readers to ByteBufferPool <a name="line.40"></a>
 <span class="sourceLineNo">041</span>   * objects<a name="line.41"></a>
@@ -228,7 +228,17 @@
 <span class="sourceLineNo">220</span>      bufferPool.putBuffer(buffer);<a name="line.220"></a>
 <span class="sourceLineNo">221</span>    }<a name="line.221"></a>
 <span class="sourceLineNo">222</span>  }<a name="line.222"></a>
-<span class="sourceLineNo">223</span>}<a name="line.223"></a>
+<span class="sourceLineNo">223</span><a name="line.223"></a>
+<span class="sourceLineNo">224</span>  @Override<a name="line.224"></a>
+<span class="sourceLineNo">225</span>  public void unbuffer() {<a name="line.225"></a>
+<span class="sourceLineNo">226</span>    try {<a name="line.226"></a>
+<span class="sourceLineNo">227</span>      ((CanUnbuffer)in).unbuffer();<a name="line.227"></a>
+<span class="sourceLineNo">228</span>    } catch (ClassCastException e) {<a name="line.228"></a>
+<span class="sourceLineNo">229</span>      throw new UnsupportedOperationException("this stream does not " +<a name="line.229"></a>
+<span class="sourceLineNo">230</span>          "support unbuffering.");<a name="line.230"></a>
+<span class="sourceLineNo">231</span>    }<a name="line.231"></a>
+<span class="sourceLineNo">232</span>  }<a name="line.232"></a>
+<span class="sourceLineNo">233</span>}<a name="line.233"></a>
 
 
 

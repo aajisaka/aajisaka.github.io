@@ -326,13 +326,13 @@
 <span class="sourceLineNo">318</span>   *  Emits the records.<a name="line.318"></a>
 <span class="sourceLineNo">319</span>   */<a name="line.319"></a>
 <span class="sourceLineNo">320</span>  private synchronized void emitRecords() throws IOException {<a name="line.320"></a>
-<span class="sourceLineNo">321</span>    for (String recordName : bufferedData.keySet()) {<a name="line.321"></a>
-<span class="sourceLineNo">322</span>      RecordMap recordMap = bufferedData.get(recordName);<a name="line.322"></a>
+<span class="sourceLineNo">321</span>    for (Map.Entry&lt;String,RecordMap&gt; recordEntry : bufferedData.entrySet()) {<a name="line.321"></a>
+<span class="sourceLineNo">322</span>      RecordMap recordMap = recordEntry.getValue();<a name="line.322"></a>
 <span class="sourceLineNo">323</span>      synchronized (recordMap) {<a name="line.323"></a>
 <span class="sourceLineNo">324</span>        Set&lt;Entry&lt;TagMap, MetricMap&gt;&gt; entrySet = recordMap.entrySet ();<a name="line.324"></a>
 <span class="sourceLineNo">325</span>        for (Entry&lt;TagMap, MetricMap&gt; entry : entrySet) {<a name="line.325"></a>
 <span class="sourceLineNo">326</span>          OutputRecord outRec = new OutputRecord(entry.getKey(), entry.getValue());<a name="line.326"></a>
-<span class="sourceLineNo">327</span>          emitRecord(contextName, recordName, outRec);<a name="line.327"></a>
+<span class="sourceLineNo">327</span>          emitRecord(contextName, recordEntry.getKey(), outRec);<a name="line.327"></a>
 <span class="sourceLineNo">328</span>        }<a name="line.328"></a>
 <span class="sourceLineNo">329</span>      }<a name="line.329"></a>
 <span class="sourceLineNo">330</span>    }<a name="line.330"></a>
@@ -347,8 +347,8 @@
 <span class="sourceLineNo">339</span>  @Override<a name="line.339"></a>
 <span class="sourceLineNo">340</span>  public synchronized Map&lt;String, Collection&lt;OutputRecord&gt;&gt; getAllRecords() {<a name="line.340"></a>
 <span class="sourceLineNo">341</span>    Map&lt;String, Collection&lt;OutputRecord&gt;&gt; out = new TreeMap&lt;String, Collection&lt;OutputRecord&gt;&gt;();<a name="line.341"></a>
-<span class="sourceLineNo">342</span>    for (String recordName : bufferedData.keySet()) {<a name="line.342"></a>
-<span class="sourceLineNo">343</span>      RecordMap recordMap = bufferedData.get(recordName);<a name="line.343"></a>
+<span class="sourceLineNo">342</span>    for (Map.Entry&lt;String,RecordMap&gt; recordEntry : bufferedData.entrySet()) {<a name="line.342"></a>
+<span class="sourceLineNo">343</span>      RecordMap recordMap = recordEntry.getValue();<a name="line.343"></a>
 <span class="sourceLineNo">344</span>      synchronized (recordMap) {<a name="line.344"></a>
 <span class="sourceLineNo">345</span>        List&lt;OutputRecord&gt; records = new ArrayList&lt;OutputRecord&gt;();<a name="line.345"></a>
 <span class="sourceLineNo">346</span>        Set&lt;Entry&lt;TagMap, MetricMap&gt;&gt; entrySet = recordMap.entrySet();<a name="line.346"></a>
@@ -356,7 +356,7 @@
 <span class="sourceLineNo">348</span>          OutputRecord outRec = new OutputRecord(entry.getKey(), entry.getValue());<a name="line.348"></a>
 <span class="sourceLineNo">349</span>          records.add(outRec);<a name="line.349"></a>
 <span class="sourceLineNo">350</span>        }<a name="line.350"></a>
-<span class="sourceLineNo">351</span>        out.put(recordName, records);<a name="line.351"></a>
+<span class="sourceLineNo">351</span>        out.put(recordEntry.getKey(), records);<a name="line.351"></a>
 <span class="sourceLineNo">352</span>      }<a name="line.352"></a>
 <span class="sourceLineNo">353</span>    }<a name="line.353"></a>
 <span class="sourceLineNo">354</span>    return out;<a name="line.354"></a>
