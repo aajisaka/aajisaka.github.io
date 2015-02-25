@@ -218,6 +218,7 @@ org.apache.hadoop.tracing
 org.apache.hadoop.typedbytes
 org.apache.hadoop.util
 org.apache.hadoop.util.bloom
+org.apache.hadoop.util.curator
 org.apache.hadoop.util.hash
 org.apache.hadoop.yarn
 org.apache.hadoop.yarn.api

@@ -37,9 +37,9 @@
 <span class="sourceLineNo">029</span>import org.apache.hadoop.fs.FileSystem;<a name="line.29"></a>
 <span class="sourceLineNo">030</span>import org.apache.hadoop.fs.Path;<a name="line.30"></a>
 <span class="sourceLineNo">031</span>import org.apache.hadoop.fs.RemoteIterator;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import org.apache.hadoop.hdfs.DFSInotifyEventInputStream;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import org.apache.hadoop.hdfs.DistributedFileSystem;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import org.apache.hadoop.hdfs.StorageType;<a name="line.34"></a>
+<span class="sourceLineNo">032</span>import org.apache.hadoop.fs.StorageType;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.apache.hadoop.hdfs.DFSInotifyEventInputStream;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import org.apache.hadoop.hdfs.DistributedFileSystem;<a name="line.34"></a>
 <span class="sourceLineNo">035</span>import org.apache.hadoop.hdfs.protocol.CacheDirectiveEntry;<a name="line.35"></a>
 <span class="sourceLineNo">036</span>import org.apache.hadoop.hdfs.protocol.CacheDirectiveInfo;<a name="line.36"></a>
 <span class="sourceLineNo">037</span>import org.apache.hadoop.hdfs.protocol.CachePoolEntry;<a name="line.37"></a>
@@ -104,8 +104,8 @@
 <span class="sourceLineNo">096</span>  }<a name="line.96"></a>
 <span class="sourceLineNo">097</span>  <a name="line.97"></a>
 <span class="sourceLineNo">098</span>  /**<a name="line.98"></a>
-<span class="sourceLineNo">099</span>   * Set the disk space quota (size of files) for a directory. Note that<a name="line.99"></a>
-<span class="sourceLineNo">100</span>   * directories and sym links do not occupy disk space.<a name="line.100"></a>
+<span class="sourceLineNo">099</span>   * Set the storage space quota (size of files) for a directory. Note that<a name="line.99"></a>
+<span class="sourceLineNo">100</span>   * directories and sym links do not occupy storage space.<a name="line.100"></a>
 <span class="sourceLineNo">101</span>   * <a name="line.101"></a>
 <span class="sourceLineNo">102</span>   * @param src the path to set the space quota of<a name="line.102"></a>
 <span class="sourceLineNo">103</span>   * @param spaceQuota the value to set for the space quota<a name="line.103"></a>
@@ -116,8 +116,8 @@
 <span class="sourceLineNo">108</span>  }<a name="line.108"></a>
 <span class="sourceLineNo">109</span>  <a name="line.109"></a>
 <span class="sourceLineNo">110</span>  /**<a name="line.110"></a>
-<span class="sourceLineNo">111</span>   * Clear the disk space quota (size of files) for a directory. Note that<a name="line.111"></a>
-<span class="sourceLineNo">112</span>   * directories and sym links do not occupy disk space.<a name="line.112"></a>
+<span class="sourceLineNo">111</span>   * Clear the storage space quota (size of files) for a directory. Note that<a name="line.111"></a>
+<span class="sourceLineNo">112</span>   * directories and sym links do not occupy storage space.<a name="line.112"></a>
 <span class="sourceLineNo">113</span>   * <a name="line.113"></a>
 <span class="sourceLineNo">114</span>   * @param src the path to clear the space quota of<a name="line.114"></a>
 <span class="sourceLineNo">115</span>   * @throws IOException in the event of error<a name="line.115"></a>
@@ -128,21 +128,21 @@
 <span class="sourceLineNo">120</span><a name="line.120"></a>
 <span class="sourceLineNo">121</span>  /**<a name="line.121"></a>
 <span class="sourceLineNo">122</span>   * Set the quota by storage type for a directory. Note that<a name="line.122"></a>
-<span class="sourceLineNo">123</span>   * directories and sym links do not occupy disk space.<a name="line.123"></a>
+<span class="sourceLineNo">123</span>   * directories and sym links do not occupy storage type quota.<a name="line.123"></a>
 <span class="sourceLineNo">124</span>   *<a name="line.124"></a>
 <span class="sourceLineNo">125</span>   * @param src the target directory to set the quota by storage type<a name="line.125"></a>
 <span class="sourceLineNo">126</span>   * @param type the storage type to set for quota by storage type<a name="line.126"></a>
-<span class="sourceLineNo">127</span>   * @param spaceQuota the value to set for quota by storage type<a name="line.127"></a>
+<span class="sourceLineNo">127</span>   * @param quota the value to set for quota by storage type<a name="line.127"></a>
 <span class="sourceLineNo">128</span>   * @throws IOException in the event of error<a name="line.128"></a>
 <span class="sourceLineNo">129</span>   */<a name="line.129"></a>
-<span class="sourceLineNo">130</span>  public void setQuotaByStorageType(Path src, StorageType type, long spaceQuota)<a name="line.130"></a>
+<span class="sourceLineNo">130</span>  public void setQuotaByStorageType(Path src, StorageType type, long quota)<a name="line.130"></a>
 <span class="sourceLineNo">131</span>      throws IOException {<a name="line.131"></a>
-<span class="sourceLineNo">132</span>    dfs.setQuotaByStorageType(src, type, spaceQuota);<a name="line.132"></a>
+<span class="sourceLineNo">132</span>    dfs.setQuotaByStorageType(src, type, quota);<a name="line.132"></a>
 <span class="sourceLineNo">133</span>  }<a name="line.133"></a>
 <span class="sourceLineNo">134</span><a name="line.134"></a>
 <span class="sourceLineNo">135</span>  /**<a name="line.135"></a>
 <span class="sourceLineNo">136</span>   * Clear the space quota by storage type for a directory. Note that<a name="line.136"></a>
-<span class="sourceLineNo">137</span>   * directories and sym links do not occupy disk space.<a name="line.137"></a>
+<span class="sourceLineNo">137</span>   * directories and sym links do not occupy storage type quota.<a name="line.137"></a>
 <span class="sourceLineNo">138</span>   *<a name="line.138"></a>
 <span class="sourceLineNo">139</span>   * @param src the target directory to clear the quota by storage type<a name="line.139"></a>
 <span class="sourceLineNo">140</span>   * @param type the storage type to clear for quota by storage type<a name="line.140"></a>
