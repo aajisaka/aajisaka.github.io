@@ -238,193 +238,191 @@
 <span class="sourceLineNo">230</span>              // to reflect the possibility of existing elements being<a name="line.230"></a>
 <span class="sourceLineNo">231</span>              // pushed out<a name="line.231"></a>
 <span class="sourceLineNo">232</span>              int ind = r.nextInt(numSamples);<a name="line.232"></a>
-<span class="sourceLineNo">233</span>              if (ind != numSamples) {<a name="line.233"></a>
-<span class="sourceLineNo">234</span>                samples.set(ind, ReflectionUtils.copy(job.getConfiguration(),<a name="line.234"></a>
-<span class="sourceLineNo">235</span>                                 reader.getCurrentKey(), null));<a name="line.235"></a>
-<span class="sourceLineNo">236</span>              }<a name="line.236"></a>
-<span class="sourceLineNo">237</span>              freq *= (numSamples - 1) / (double) numSamples;<a name="line.237"></a>
-<span class="sourceLineNo">238</span>            }<a name="line.238"></a>
-<span class="sourceLineNo">239</span>          }<a name="line.239"></a>
-<span class="sourceLineNo">240</span>        }<a name="line.240"></a>
-<span class="sourceLineNo">241</span>        reader.close();<a name="line.241"></a>
-<span class="sourceLineNo">242</span>      }<a name="line.242"></a>
-<span class="sourceLineNo">243</span>      return (K[])samples.toArray();<a name="line.243"></a>
-<span class="sourceLineNo">244</span>    }<a name="line.244"></a>
-<span class="sourceLineNo">245</span>  }<a name="line.245"></a>
-<span class="sourceLineNo">246</span><a name="line.246"></a>
-<span class="sourceLineNo">247</span>  /**<a name="line.247"></a>
-<span class="sourceLineNo">248</span>   * Sample from s splits at regular intervals.<a name="line.248"></a>
-<span class="sourceLineNo">249</span>   * Useful for sorted data.<a name="line.249"></a>
-<span class="sourceLineNo">250</span>   */<a name="line.250"></a>
-<span class="sourceLineNo">251</span>  public static class IntervalSampler&lt;K,V&gt; implements Sampler&lt;K,V&gt; {<a name="line.251"></a>
-<span class="sourceLineNo">252</span>    protected final double freq;<a name="line.252"></a>
-<span class="sourceLineNo">253</span>    protected final int maxSplitsSampled;<a name="line.253"></a>
-<span class="sourceLineNo">254</span><a name="line.254"></a>
-<span class="sourceLineNo">255</span>    /**<a name="line.255"></a>
-<span class="sourceLineNo">256</span>     * Create a new IntervalSampler sampling &lt;em&gt;all&lt;/em&gt; splits.<a name="line.256"></a>
-<span class="sourceLineNo">257</span>     * @param freq The frequency with which records will be emitted.<a name="line.257"></a>
-<span class="sourceLineNo">258</span>     */<a name="line.258"></a>
-<span class="sourceLineNo">259</span>    public IntervalSampler(double freq) {<a name="line.259"></a>
-<span class="sourceLineNo">260</span>      this(freq, Integer.MAX_VALUE);<a name="line.260"></a>
-<span class="sourceLineNo">261</span>    }<a name="line.261"></a>
-<span class="sourceLineNo">262</span><a name="line.262"></a>
-<span class="sourceLineNo">263</span>    /**<a name="line.263"></a>
-<span class="sourceLineNo">264</span>     * Create a new IntervalSampler.<a name="line.264"></a>
-<span class="sourceLineNo">265</span>     * @param freq The frequency with which records will be emitted.<a name="line.265"></a>
-<span class="sourceLineNo">266</span>     * @param maxSplitsSampled The maximum number of splits to examine.<a name="line.266"></a>
-<span class="sourceLineNo">267</span>     * @see #getSample<a name="line.267"></a>
-<span class="sourceLineNo">268</span>     */<a name="line.268"></a>
-<span class="sourceLineNo">269</span>    public IntervalSampler(double freq, int maxSplitsSampled) {<a name="line.269"></a>
-<span class="sourceLineNo">270</span>      this.freq = freq;<a name="line.270"></a>
-<span class="sourceLineNo">271</span>      this.maxSplitsSampled = maxSplitsSampled;<a name="line.271"></a>
-<span class="sourceLineNo">272</span>    }<a name="line.272"></a>
-<span class="sourceLineNo">273</span><a name="line.273"></a>
-<span class="sourceLineNo">274</span>    /**<a name="line.274"></a>
-<span class="sourceLineNo">275</span>     * For each split sampled, emit when the ratio of the number of records<a name="line.275"></a>
-<span class="sourceLineNo">276</span>     * retained to the total record count is less than the specified<a name="line.276"></a>
-<span class="sourceLineNo">277</span>     * frequency.<a name="line.277"></a>
-<span class="sourceLineNo">278</span>     */<a name="line.278"></a>
-<span class="sourceLineNo">279</span>    @SuppressWarnings("unchecked") // ArrayList::toArray doesn't preserve type<a name="line.279"></a>
-<span class="sourceLineNo">280</span>    public K[] getSample(InputFormat&lt;K,V&gt; inf, Job job) <a name="line.280"></a>
-<span class="sourceLineNo">281</span>        throws IOException, InterruptedException {<a name="line.281"></a>
-<span class="sourceLineNo">282</span>      List&lt;InputSplit&gt; splits = inf.getSplits(job);<a name="line.282"></a>
-<span class="sourceLineNo">283</span>      ArrayList&lt;K&gt; samples = new ArrayList&lt;K&gt;();<a name="line.283"></a>
-<span class="sourceLineNo">284</span>      int splitsToSample = Math.min(maxSplitsSampled, splits.size());<a name="line.284"></a>
-<span class="sourceLineNo">285</span>      long records = 0;<a name="line.285"></a>
-<span class="sourceLineNo">286</span>      long kept = 0;<a name="line.286"></a>
-<span class="sourceLineNo">287</span>      for (int i = 0; i &lt; splitsToSample; ++i) {<a name="line.287"></a>
-<span class="sourceLineNo">288</span>        TaskAttemptContext samplingContext = new TaskAttemptContextImpl(<a name="line.288"></a>
-<span class="sourceLineNo">289</span>            job.getConfiguration(), new TaskAttemptID());<a name="line.289"></a>
-<span class="sourceLineNo">290</span>        RecordReader&lt;K,V&gt; reader = inf.createRecordReader(<a name="line.290"></a>
-<span class="sourceLineNo">291</span>            splits.get(i), samplingContext);<a name="line.291"></a>
-<span class="sourceLineNo">292</span>        reader.initialize(splits.get(i), samplingContext);<a name="line.292"></a>
-<span class="sourceLineNo">293</span>        while (reader.nextKeyValue()) {<a name="line.293"></a>
-<span class="sourceLineNo">294</span>          ++records;<a name="line.294"></a>
-<span class="sourceLineNo">295</span>          if ((double) kept / records &lt; freq) {<a name="line.295"></a>
-<span class="sourceLineNo">296</span>            samples.add(ReflectionUtils.copy(job.getConfiguration(),<a name="line.296"></a>
-<span class="sourceLineNo">297</span>                                 reader.getCurrentKey(), null));<a name="line.297"></a>
-<span class="sourceLineNo">298</span>            ++kept;<a name="line.298"></a>
-<span class="sourceLineNo">299</span>          }<a name="line.299"></a>
-<span class="sourceLineNo">300</span>        }<a name="line.300"></a>
-<span class="sourceLineNo">301</span>        reader.close();<a name="line.301"></a>
-<span class="sourceLineNo">302</span>      }<a name="line.302"></a>
-<span class="sourceLineNo">303</span>      return (K[])samples.toArray();<a name="line.303"></a>
-<span class="sourceLineNo">304</span>    }<a name="line.304"></a>
-<span class="sourceLineNo">305</span>  }<a name="line.305"></a>
-<span class="sourceLineNo">306</span><a name="line.306"></a>
-<span class="sourceLineNo">307</span>  /**<a name="line.307"></a>
-<span class="sourceLineNo">308</span>   * Write a partition file for the given job, using the Sampler provided.<a name="line.308"></a>
-<span class="sourceLineNo">309</span>   * Queries the sampler for a sample keyset, sorts by the output key<a name="line.309"></a>
-<span class="sourceLineNo">310</span>   * comparator, selects the keys for each rank, and writes to the destination<a name="line.310"></a>
-<span class="sourceLineNo">311</span>   * returned from {@link TotalOrderPartitioner#getPartitionFile}.<a name="line.311"></a>
-<span class="sourceLineNo">312</span>   */<a name="line.312"></a>
-<span class="sourceLineNo">313</span>  @SuppressWarnings("unchecked") // getInputFormat, getOutputKeyComparator<a name="line.313"></a>
-<span class="sourceLineNo">314</span>  public static &lt;K,V&gt; void writePartitionFile(Job job, Sampler&lt;K,V&gt; sampler) <a name="line.314"></a>
-<span class="sourceLineNo">315</span>      throws IOException, ClassNotFoundException, InterruptedException {<a name="line.315"></a>
-<span class="sourceLineNo">316</span>    Configuration conf = job.getConfiguration();<a name="line.316"></a>
-<span class="sourceLineNo">317</span>    final InputFormat inf = <a name="line.317"></a>
-<span class="sourceLineNo">318</span>        ReflectionUtils.newInstance(job.getInputFormatClass(), conf);<a name="line.318"></a>
-<span class="sourceLineNo">319</span>    int numPartitions = job.getNumReduceTasks();<a name="line.319"></a>
-<span class="sourceLineNo">320</span>    K[] samples = (K[])sampler.getSample(inf, job);<a name="line.320"></a>
-<span class="sourceLineNo">321</span>    LOG.info("Using " + samples.length + " samples");<a name="line.321"></a>
-<span class="sourceLineNo">322</span>    RawComparator&lt;K&gt; comparator =<a name="line.322"></a>
-<span class="sourceLineNo">323</span>      (RawComparator&lt;K&gt;) job.getSortComparator();<a name="line.323"></a>
-<span class="sourceLineNo">324</span>    Arrays.sort(samples, comparator);<a name="line.324"></a>
-<span class="sourceLineNo">325</span>    Path dst = new Path(TotalOrderPartitioner.getPartitionFile(conf));<a name="line.325"></a>
-<span class="sourceLineNo">326</span>    FileSystem fs = dst.getFileSystem(conf);<a name="line.326"></a>
-<span class="sourceLineNo">327</span>    if (fs.exists(dst)) {<a name="line.327"></a>
-<span class="sourceLineNo">328</span>      fs.delete(dst, false);<a name="line.328"></a>
-<span class="sourceLineNo">329</span>    }<a name="line.329"></a>
-<span class="sourceLineNo">330</span>    SequenceFile.Writer writer = SequenceFile.createWriter(fs, <a name="line.330"></a>
-<span class="sourceLineNo">331</span>      conf, dst, job.getMapOutputKeyClass(), NullWritable.class);<a name="line.331"></a>
-<span class="sourceLineNo">332</span>    NullWritable nullValue = NullWritable.get();<a name="line.332"></a>
-<span class="sourceLineNo">333</span>    float stepSize = samples.length / (float) numPartitions;<a name="line.333"></a>
-<span class="sourceLineNo">334</span>    int last = -1;<a name="line.334"></a>
-<span class="sourceLineNo">335</span>    for(int i = 1; i &lt; numPartitions; ++i) {<a name="line.335"></a>
-<span class="sourceLineNo">336</span>      int k = Math.round(stepSize * i);<a name="line.336"></a>
-<span class="sourceLineNo">337</span>      while (last &gt;= k &amp;&amp; comparator.compare(samples[last], samples[k]) == 0) {<a name="line.337"></a>
-<span class="sourceLineNo">338</span>        ++k;<a name="line.338"></a>
-<span class="sourceLineNo">339</span>      }<a name="line.339"></a>
-<span class="sourceLineNo">340</span>      writer.append(samples[k], nullValue);<a name="line.340"></a>
-<span class="sourceLineNo">341</span>      last = k;<a name="line.341"></a>
-<span class="sourceLineNo">342</span>    }<a name="line.342"></a>
-<span class="sourceLineNo">343</span>    writer.close();<a name="line.343"></a>
-<span class="sourceLineNo">344</span>  }<a name="line.344"></a>
-<span class="sourceLineNo">345</span><a name="line.345"></a>
-<span class="sourceLineNo">346</span>  /**<a name="line.346"></a>
-<span class="sourceLineNo">347</span>   * Driver for InputSampler from the command line.<a name="line.347"></a>
-<span class="sourceLineNo">348</span>   * Configures a JobConf instance and calls {@link #writePartitionFile}.<a name="line.348"></a>
-<span class="sourceLineNo">349</span>   */<a name="line.349"></a>
-<span class="sourceLineNo">350</span>  public int run(String[] args) throws Exception {<a name="line.350"></a>
-<span class="sourceLineNo">351</span>    Job job = Job.getInstance(getConf());<a name="line.351"></a>
-<span class="sourceLineNo">352</span>    ArrayList&lt;String&gt; otherArgs = new ArrayList&lt;String&gt;();<a name="line.352"></a>
-<span class="sourceLineNo">353</span>    Sampler&lt;K,V&gt; sampler = null;<a name="line.353"></a>
-<span class="sourceLineNo">354</span>    for(int i=0; i &lt; args.length; ++i) {<a name="line.354"></a>
-<span class="sourceLineNo">355</span>      try {<a name="line.355"></a>
-<span class="sourceLineNo">356</span>        if ("-r".equals(args[i])) {<a name="line.356"></a>
-<span class="sourceLineNo">357</span>          job.setNumReduceTasks(Integer.parseInt(args[++i]));<a name="line.357"></a>
-<span class="sourceLineNo">358</span>        } else if ("-inFormat".equals(args[i])) {<a name="line.358"></a>
-<span class="sourceLineNo">359</span>          job.setInputFormatClass(<a name="line.359"></a>
-<span class="sourceLineNo">360</span>              Class.forName(args[++i]).asSubclass(InputFormat.class));<a name="line.360"></a>
-<span class="sourceLineNo">361</span>        } else if ("-keyClass".equals(args[i])) {<a name="line.361"></a>
-<span class="sourceLineNo">362</span>          job.setMapOutputKeyClass(<a name="line.362"></a>
-<span class="sourceLineNo">363</span>              Class.forName(args[++i]).asSubclass(WritableComparable.class));<a name="line.363"></a>
-<span class="sourceLineNo">364</span>        } else if ("-splitSample".equals(args[i])) {<a name="line.364"></a>
-<span class="sourceLineNo">365</span>          int numSamples = Integer.parseInt(args[++i]);<a name="line.365"></a>
-<span class="sourceLineNo">366</span>          int maxSplits = Integer.parseInt(args[++i]);<a name="line.366"></a>
-<span class="sourceLineNo">367</span>          if (0 &gt;= maxSplits) maxSplits = Integer.MAX_VALUE;<a name="line.367"></a>
-<span class="sourceLineNo">368</span>          sampler = new SplitSampler&lt;K,V&gt;(numSamples, maxSplits);<a name="line.368"></a>
-<span class="sourceLineNo">369</span>        } else if ("-splitRandom".equals(args[i])) {<a name="line.369"></a>
-<span class="sourceLineNo">370</span>          double pcnt = Double.parseDouble(args[++i]);<a name="line.370"></a>
-<span class="sourceLineNo">371</span>          int numSamples = Integer.parseInt(args[++i]);<a name="line.371"></a>
-<span class="sourceLineNo">372</span>          int maxSplits = Integer.parseInt(args[++i]);<a name="line.372"></a>
-<span class="sourceLineNo">373</span>          if (0 &gt;= maxSplits) maxSplits = Integer.MAX_VALUE;<a name="line.373"></a>
-<span class="sourceLineNo">374</span>          sampler = new RandomSampler&lt;K,V&gt;(pcnt, numSamples, maxSplits);<a name="line.374"></a>
-<span class="sourceLineNo">375</span>        } else if ("-splitInterval".equals(args[i])) {<a name="line.375"></a>
-<span class="sourceLineNo">376</span>          double pcnt = Double.parseDouble(args[++i]);<a name="line.376"></a>
-<span class="sourceLineNo">377</span>          int maxSplits = Integer.parseInt(args[++i]);<a name="line.377"></a>
-<span class="sourceLineNo">378</span>          if (0 &gt;= maxSplits) maxSplits = Integer.MAX_VALUE;<a name="line.378"></a>
-<span class="sourceLineNo">379</span>          sampler = new IntervalSampler&lt;K,V&gt;(pcnt, maxSplits);<a name="line.379"></a>
-<span class="sourceLineNo">380</span>        } else {<a name="line.380"></a>
-<span class="sourceLineNo">381</span>          otherArgs.add(args[i]);<a name="line.381"></a>
-<span class="sourceLineNo">382</span>        }<a name="line.382"></a>
-<span class="sourceLineNo">383</span>      } catch (NumberFormatException except) {<a name="line.383"></a>
-<span class="sourceLineNo">384</span>        System.out.println("ERROR: Integer expected instead of " + args[i]);<a name="line.384"></a>
-<span class="sourceLineNo">385</span>        return printUsage();<a name="line.385"></a>
-<span class="sourceLineNo">386</span>      } catch (ArrayIndexOutOfBoundsException except) {<a name="line.386"></a>
-<span class="sourceLineNo">387</span>        System.out.println("ERROR: Required parameter missing from " +<a name="line.387"></a>
-<span class="sourceLineNo">388</span>            args[i-1]);<a name="line.388"></a>
-<span class="sourceLineNo">389</span>        return printUsage();<a name="line.389"></a>
-<span class="sourceLineNo">390</span>      }<a name="line.390"></a>
-<span class="sourceLineNo">391</span>    }<a name="line.391"></a>
-<span class="sourceLineNo">392</span>    if (job.getNumReduceTasks() &lt;= 1) {<a name="line.392"></a>
-<span class="sourceLineNo">393</span>      System.err.println("Sampler requires more than one reducer");<a name="line.393"></a>
-<span class="sourceLineNo">394</span>      return printUsage();<a name="line.394"></a>
-<span class="sourceLineNo">395</span>    }<a name="line.395"></a>
-<span class="sourceLineNo">396</span>    if (otherArgs.size() &lt; 2) {<a name="line.396"></a>
-<span class="sourceLineNo">397</span>      System.out.println("ERROR: Wrong number of parameters: ");<a name="line.397"></a>
-<span class="sourceLineNo">398</span>      return printUsage();<a name="line.398"></a>
-<span class="sourceLineNo">399</span>    }<a name="line.399"></a>
-<span class="sourceLineNo">400</span>    if (null == sampler) {<a name="line.400"></a>
-<span class="sourceLineNo">401</span>      sampler = new RandomSampler&lt;K,V&gt;(0.1, 10000, 10);<a name="line.401"></a>
-<span class="sourceLineNo">402</span>    }<a name="line.402"></a>
-<span class="sourceLineNo">403</span><a name="line.403"></a>
-<span class="sourceLineNo">404</span>    Path outf = new Path(otherArgs.remove(otherArgs.size() - 1));<a name="line.404"></a>
-<span class="sourceLineNo">405</span>    TotalOrderPartitioner.setPartitionFile(getConf(), outf);<a name="line.405"></a>
-<span class="sourceLineNo">406</span>    for (String s : otherArgs) {<a name="line.406"></a>
-<span class="sourceLineNo">407</span>      FileInputFormat.addInputPath(job, new Path(s));<a name="line.407"></a>
-<span class="sourceLineNo">408</span>    }<a name="line.408"></a>
-<span class="sourceLineNo">409</span>    InputSampler.&lt;K,V&gt;writePartitionFile(job, sampler);<a name="line.409"></a>
-<span class="sourceLineNo">410</span><a name="line.410"></a>
-<span class="sourceLineNo">411</span>    return 0;<a name="line.411"></a>
-<span class="sourceLineNo">412</span>  }<a name="line.412"></a>
-<span class="sourceLineNo">413</span><a name="line.413"></a>
-<span class="sourceLineNo">414</span>  public static void main(String[] args) throws Exception {<a name="line.414"></a>
-<span class="sourceLineNo">415</span>    InputSampler&lt;?,?&gt; sampler = new InputSampler(new Configuration());<a name="line.415"></a>
-<span class="sourceLineNo">416</span>    int res = ToolRunner.run(sampler, args);<a name="line.416"></a>
-<span class="sourceLineNo">417</span>    System.exit(res);<a name="line.417"></a>
-<span class="sourceLineNo">418</span>  }<a name="line.418"></a>
-<span class="sourceLineNo">419</span>}<a name="line.419"></a>
+<span class="sourceLineNo">233</span>              samples.set(ind, ReflectionUtils.copy(job.getConfiguration(),<a name="line.233"></a>
+<span class="sourceLineNo">234</span>                               reader.getCurrentKey(), null));<a name="line.234"></a>
+<span class="sourceLineNo">235</span>              freq *= (numSamples - 1) / (double) numSamples;<a name="line.235"></a>
+<span class="sourceLineNo">236</span>            }<a name="line.236"></a>
+<span class="sourceLineNo">237</span>          }<a name="line.237"></a>
+<span class="sourceLineNo">238</span>        }<a name="line.238"></a>
+<span class="sourceLineNo">239</span>        reader.close();<a name="line.239"></a>
+<span class="sourceLineNo">240</span>      }<a name="line.240"></a>
+<span class="sourceLineNo">241</span>      return (K[])samples.toArray();<a name="line.241"></a>
+<span class="sourceLineNo">242</span>    }<a name="line.242"></a>
+<span class="sourceLineNo">243</span>  }<a name="line.243"></a>
+<span class="sourceLineNo">244</span><a name="line.244"></a>
+<span class="sourceLineNo">245</span>  /**<a name="line.245"></a>
+<span class="sourceLineNo">246</span>   * Sample from s splits at regular intervals.<a name="line.246"></a>
+<span class="sourceLineNo">247</span>   * Useful for sorted data.<a name="line.247"></a>
+<span class="sourceLineNo">248</span>   */<a name="line.248"></a>
+<span class="sourceLineNo">249</span>  public static class IntervalSampler&lt;K,V&gt; implements Sampler&lt;K,V&gt; {<a name="line.249"></a>
+<span class="sourceLineNo">250</span>    protected final double freq;<a name="line.250"></a>
+<span class="sourceLineNo">251</span>    protected final int maxSplitsSampled;<a name="line.251"></a>
+<span class="sourceLineNo">252</span><a name="line.252"></a>
+<span class="sourceLineNo">253</span>    /**<a name="line.253"></a>
+<span class="sourceLineNo">254</span>     * Create a new IntervalSampler sampling &lt;em&gt;all&lt;/em&gt; splits.<a name="line.254"></a>
+<span class="sourceLineNo">255</span>     * @param freq The frequency with which records will be emitted.<a name="line.255"></a>
+<span class="sourceLineNo">256</span>     */<a name="line.256"></a>
+<span class="sourceLineNo">257</span>    public IntervalSampler(double freq) {<a name="line.257"></a>
+<span class="sourceLineNo">258</span>      this(freq, Integer.MAX_VALUE);<a name="line.258"></a>
+<span class="sourceLineNo">259</span>    }<a name="line.259"></a>
+<span class="sourceLineNo">260</span><a name="line.260"></a>
+<span class="sourceLineNo">261</span>    /**<a name="line.261"></a>
+<span class="sourceLineNo">262</span>     * Create a new IntervalSampler.<a name="line.262"></a>
+<span class="sourceLineNo">263</span>     * @param freq The frequency with which records will be emitted.<a name="line.263"></a>
+<span class="sourceLineNo">264</span>     * @param maxSplitsSampled The maximum number of splits to examine.<a name="line.264"></a>
+<span class="sourceLineNo">265</span>     * @see #getSample<a name="line.265"></a>
+<span class="sourceLineNo">266</span>     */<a name="line.266"></a>
+<span class="sourceLineNo">267</span>    public IntervalSampler(double freq, int maxSplitsSampled) {<a name="line.267"></a>
+<span class="sourceLineNo">268</span>      this.freq = freq;<a name="line.268"></a>
+<span class="sourceLineNo">269</span>      this.maxSplitsSampled = maxSplitsSampled;<a name="line.269"></a>
+<span class="sourceLineNo">270</span>    }<a name="line.270"></a>
+<span class="sourceLineNo">271</span><a name="line.271"></a>
+<span class="sourceLineNo">272</span>    /**<a name="line.272"></a>
+<span class="sourceLineNo">273</span>     * For each split sampled, emit when the ratio of the number of records<a name="line.273"></a>
+<span class="sourceLineNo">274</span>     * retained to the total record count is less than the specified<a name="line.274"></a>
+<span class="sourceLineNo">275</span>     * frequency.<a name="line.275"></a>
+<span class="sourceLineNo">276</span>     */<a name="line.276"></a>
+<span class="sourceLineNo">277</span>    @SuppressWarnings("unchecked") // ArrayList::toArray doesn't preserve type<a name="line.277"></a>
+<span class="sourceLineNo">278</span>    public K[] getSample(InputFormat&lt;K,V&gt; inf, Job job) <a name="line.278"></a>
+<span class="sourceLineNo">279</span>        throws IOException, InterruptedException {<a name="line.279"></a>
+<span class="sourceLineNo">280</span>      List&lt;InputSplit&gt; splits = inf.getSplits(job);<a name="line.280"></a>
+<span class="sourceLineNo">281</span>      ArrayList&lt;K&gt; samples = new ArrayList&lt;K&gt;();<a name="line.281"></a>
+<span class="sourceLineNo">282</span>      int splitsToSample = Math.min(maxSplitsSampled, splits.size());<a name="line.282"></a>
+<span class="sourceLineNo">283</span>      long records = 0;<a name="line.283"></a>
+<span class="sourceLineNo">284</span>      long kept = 0;<a name="line.284"></a>
+<span class="sourceLineNo">285</span>      for (int i = 0; i &lt; splitsToSample; ++i) {<a name="line.285"></a>
+<span class="sourceLineNo">286</span>        TaskAttemptContext samplingContext = new TaskAttemptContextImpl(<a name="line.286"></a>
+<span class="sourceLineNo">287</span>            job.getConfiguration(), new TaskAttemptID());<a name="line.287"></a>
+<span class="sourceLineNo">288</span>        RecordReader&lt;K,V&gt; reader = inf.createRecordReader(<a name="line.288"></a>
+<span class="sourceLineNo">289</span>            splits.get(i), samplingContext);<a name="line.289"></a>
+<span class="sourceLineNo">290</span>        reader.initialize(splits.get(i), samplingContext);<a name="line.290"></a>
+<span class="sourceLineNo">291</span>        while (reader.nextKeyValue()) {<a name="line.291"></a>
+<span class="sourceLineNo">292</span>          ++records;<a name="line.292"></a>
+<span class="sourceLineNo">293</span>          if ((double) kept / records &lt; freq) {<a name="line.293"></a>
+<span class="sourceLineNo">294</span>            samples.add(ReflectionUtils.copy(job.getConfiguration(),<a name="line.294"></a>
+<span class="sourceLineNo">295</span>                                 reader.getCurrentKey(), null));<a name="line.295"></a>
+<span class="sourceLineNo">296</span>            ++kept;<a name="line.296"></a>
+<span class="sourceLineNo">297</span>          }<a name="line.297"></a>
+<span class="sourceLineNo">298</span>        }<a name="line.298"></a>
+<span class="sourceLineNo">299</span>        reader.close();<a name="line.299"></a>
+<span class="sourceLineNo">300</span>      }<a name="line.300"></a>
+<span class="sourceLineNo">301</span>      return (K[])samples.toArray();<a name="line.301"></a>
+<span class="sourceLineNo">302</span>    }<a name="line.302"></a>
+<span class="sourceLineNo">303</span>  }<a name="line.303"></a>
+<span class="sourceLineNo">304</span><a name="line.304"></a>
+<span class="sourceLineNo">305</span>  /**<a name="line.305"></a>
+<span class="sourceLineNo">306</span>   * Write a partition file for the given job, using the Sampler provided.<a name="line.306"></a>
+<span class="sourceLineNo">307</span>   * Queries the sampler for a sample keyset, sorts by the output key<a name="line.307"></a>
+<span class="sourceLineNo">308</span>   * comparator, selects the keys for each rank, and writes to the destination<a name="line.308"></a>
+<span class="sourceLineNo">309</span>   * returned from {@link TotalOrderPartitioner#getPartitionFile}.<a name="line.309"></a>
+<span class="sourceLineNo">310</span>   */<a name="line.310"></a>
+<span class="sourceLineNo">311</span>  @SuppressWarnings("unchecked") // getInputFormat, getOutputKeyComparator<a name="line.311"></a>
+<span class="sourceLineNo">312</span>  public static &lt;K,V&gt; void writePartitionFile(Job job, Sampler&lt;K,V&gt; sampler) <a name="line.312"></a>
+<span class="sourceLineNo">313</span>      throws IOException, ClassNotFoundException, InterruptedException {<a name="line.313"></a>
+<span class="sourceLineNo">314</span>    Configuration conf = job.getConfiguration();<a name="line.314"></a>
+<span class="sourceLineNo">315</span>    final InputFormat inf = <a name="line.315"></a>
+<span class="sourceLineNo">316</span>        ReflectionUtils.newInstance(job.getInputFormatClass(), conf);<a name="line.316"></a>
+<span class="sourceLineNo">317</span>    int numPartitions = job.getNumReduceTasks();<a name="line.317"></a>
+<span class="sourceLineNo">318</span>    K[] samples = (K[])sampler.getSample(inf, job);<a name="line.318"></a>
+<span class="sourceLineNo">319</span>    LOG.info("Using " + samples.length + " samples");<a name="line.319"></a>
+<span class="sourceLineNo">320</span>    RawComparator&lt;K&gt; comparator =<a name="line.320"></a>
+<span class="sourceLineNo">321</span>      (RawComparator&lt;K&gt;) job.getSortComparator();<a name="line.321"></a>
+<span class="sourceLineNo">322</span>    Arrays.sort(samples, comparator);<a name="line.322"></a>
+<span class="sourceLineNo">323</span>    Path dst = new Path(TotalOrderPartitioner.getPartitionFile(conf));<a name="line.323"></a>
+<span class="sourceLineNo">324</span>    FileSystem fs = dst.getFileSystem(conf);<a name="line.324"></a>
+<span class="sourceLineNo">325</span>    if (fs.exists(dst)) {<a name="line.325"></a>
+<span class="sourceLineNo">326</span>      fs.delete(dst, false);<a name="line.326"></a>
+<span class="sourceLineNo">327</span>    }<a name="line.327"></a>
+<span class="sourceLineNo">328</span>    SequenceFile.Writer writer = SequenceFile.createWriter(fs, <a name="line.328"></a>
+<span class="sourceLineNo">329</span>      conf, dst, job.getMapOutputKeyClass(), NullWritable.class);<a name="line.329"></a>
+<span class="sourceLineNo">330</span>    NullWritable nullValue = NullWritable.get();<a name="line.330"></a>
+<span class="sourceLineNo">331</span>    float stepSize = samples.length / (float) numPartitions;<a name="line.331"></a>
+<span class="sourceLineNo">332</span>    int last = -1;<a name="line.332"></a>
+<span class="sourceLineNo">333</span>    for(int i = 1; i &lt; numPartitions; ++i) {<a name="line.333"></a>
+<span class="sourceLineNo">334</span>      int k = Math.round(stepSize * i);<a name="line.334"></a>
+<span class="sourceLineNo">335</span>      while (last &gt;= k &amp;&amp; comparator.compare(samples[last], samples[k]) == 0) {<a name="line.335"></a>
+<span class="sourceLineNo">336</span>        ++k;<a name="line.336"></a>
+<span class="sourceLineNo">337</span>      }<a name="line.337"></a>
+<span class="sourceLineNo">338</span>      writer.append(samples[k], nullValue);<a name="line.338"></a>
+<span class="sourceLineNo">339</span>      last = k;<a name="line.339"></a>
+<span class="sourceLineNo">340</span>    }<a name="line.340"></a>
+<span class="sourceLineNo">341</span>    writer.close();<a name="line.341"></a>
+<span class="sourceLineNo">342</span>  }<a name="line.342"></a>
+<span class="sourceLineNo">343</span><a name="line.343"></a>
+<span class="sourceLineNo">344</span>  /**<a name="line.344"></a>
+<span class="sourceLineNo">345</span>   * Driver for InputSampler from the command line.<a name="line.345"></a>
+<span class="sourceLineNo">346</span>   * Configures a JobConf instance and calls {@link #writePartitionFile}.<a name="line.346"></a>
+<span class="sourceLineNo">347</span>   */<a name="line.347"></a>
+<span class="sourceLineNo">348</span>  public int run(String[] args) throws Exception {<a name="line.348"></a>
+<span class="sourceLineNo">349</span>    Job job = Job.getInstance(getConf());<a name="line.349"></a>
+<span class="sourceLineNo">350</span>    ArrayList&lt;String&gt; otherArgs = new ArrayList&lt;String&gt;();<a name="line.350"></a>
+<span class="sourceLineNo">351</span>    Sampler&lt;K,V&gt; sampler = null;<a name="line.351"></a>
+<span class="sourceLineNo">352</span>    for(int i=0; i &lt; args.length; ++i) {<a name="line.352"></a>
+<span class="sourceLineNo">353</span>      try {<a name="line.353"></a>
+<span class="sourceLineNo">354</span>        if ("-r".equals(args[i])) {<a name="line.354"></a>
+<span class="sourceLineNo">355</span>          job.setNumReduceTasks(Integer.parseInt(args[++i]));<a name="line.355"></a>
+<span class="sourceLineNo">356</span>        } else if ("-inFormat".equals(args[i])) {<a name="line.356"></a>
+<span class="sourceLineNo">357</span>          job.setInputFormatClass(<a name="line.357"></a>
+<span class="sourceLineNo">358</span>              Class.forName(args[++i]).asSubclass(InputFormat.class));<a name="line.358"></a>
+<span class="sourceLineNo">359</span>        } else if ("-keyClass".equals(args[i])) {<a name="line.359"></a>
+<span class="sourceLineNo">360</span>          job.setMapOutputKeyClass(<a name="line.360"></a>
+<span class="sourceLineNo">361</span>              Class.forName(args[++i]).asSubclass(WritableComparable.class));<a name="line.361"></a>
+<span class="sourceLineNo">362</span>        } else if ("-splitSample".equals(args[i])) {<a name="line.362"></a>
+<span class="sourceLineNo">363</span>          int numSamples = Integer.parseInt(args[++i]);<a name="line.363"></a>
+<span class="sourceLineNo">364</span>          int maxSplits = Integer.parseInt(args[++i]);<a name="line.364"></a>
+<span class="sourceLineNo">365</span>          if (0 &gt;= maxSplits) maxSplits = Integer.MAX_VALUE;<a name="line.365"></a>
+<span class="sourceLineNo">366</span>          sampler = new SplitSampler&lt;K,V&gt;(numSamples, maxSplits);<a name="line.366"></a>
+<span class="sourceLineNo">367</span>        } else if ("-splitRandom".equals(args[i])) {<a name="line.367"></a>
+<span class="sourceLineNo">368</span>          double pcnt = Double.parseDouble(args[++i]);<a name="line.368"></a>
+<span class="sourceLineNo">369</span>          int numSamples = Integer.parseInt(args[++i]);<a name="line.369"></a>
+<span class="sourceLineNo">370</span>          int maxSplits = Integer.parseInt(args[++i]);<a name="line.370"></a>
+<span class="sourceLineNo">371</span>          if (0 &gt;= maxSplits) maxSplits = Integer.MAX_VALUE;<a name="line.371"></a>
+<span class="sourceLineNo">372</span>          sampler = new RandomSampler&lt;K,V&gt;(pcnt, numSamples, maxSplits);<a name="line.372"></a>
+<span class="sourceLineNo">373</span>        } else if ("-splitInterval".equals(args[i])) {<a name="line.373"></a>
+<span class="sourceLineNo">374</span>          double pcnt = Double.parseDouble(args[++i]);<a name="line.374"></a>
+<span class="sourceLineNo">375</span>          int maxSplits = Integer.parseInt(args[++i]);<a name="line.375"></a>
+<span class="sourceLineNo">376</span>          if (0 &gt;= maxSplits) maxSplits = Integer.MAX_VALUE;<a name="line.376"></a>
+<span class="sourceLineNo">377</span>          sampler = new IntervalSampler&lt;K,V&gt;(pcnt, maxSplits);<a name="line.377"></a>
+<span class="sourceLineNo">378</span>        } else {<a name="line.378"></a>
+<span class="sourceLineNo">379</span>          otherArgs.add(args[i]);<a name="line.379"></a>
+<span class="sourceLineNo">380</span>        }<a name="line.380"></a>
+<span class="sourceLineNo">381</span>      } catch (NumberFormatException except) {<a name="line.381"></a>
+<span class="sourceLineNo">382</span>        System.out.println("ERROR: Integer expected instead of " + args[i]);<a name="line.382"></a>
+<span class="sourceLineNo">383</span>        return printUsage();<a name="line.383"></a>
+<span class="sourceLineNo">384</span>      } catch (ArrayIndexOutOfBoundsException except) {<a name="line.384"></a>
+<span class="sourceLineNo">385</span>        System.out.println("ERROR: Required parameter missing from " +<a name="line.385"></a>
+<span class="sourceLineNo">386</span>            args[i-1]);<a name="line.386"></a>
+<span class="sourceLineNo">387</span>        return printUsage();<a name="line.387"></a>
+<span class="sourceLineNo">388</span>      }<a name="line.388"></a>
+<span class="sourceLineNo">389</span>    }<a name="line.389"></a>
+<span class="sourceLineNo">390</span>    if (job.getNumReduceTasks() &lt;= 1) {<a name="line.390"></a>
+<span class="sourceLineNo">391</span>      System.err.println("Sampler requires more than one reducer");<a name="line.391"></a>
+<span class="sourceLineNo">392</span>      return printUsage();<a name="line.392"></a>
+<span class="sourceLineNo">393</span>    }<a name="line.393"></a>
+<span class="sourceLineNo">394</span>    if (otherArgs.size() &lt; 2) {<a name="line.394"></a>
+<span class="sourceLineNo">395</span>      System.out.println("ERROR: Wrong number of parameters: ");<a name="line.395"></a>
+<span class="sourceLineNo">396</span>      return printUsage();<a name="line.396"></a>
+<span class="sourceLineNo">397</span>    }<a name="line.397"></a>
+<span class="sourceLineNo">398</span>    if (null == sampler) {<a name="line.398"></a>
+<span class="sourceLineNo">399</span>      sampler = new RandomSampler&lt;K,V&gt;(0.1, 10000, 10);<a name="line.399"></a>
+<span class="sourceLineNo">400</span>    }<a name="line.400"></a>
+<span class="sourceLineNo">401</span><a name="line.401"></a>
+<span class="sourceLineNo">402</span>    Path outf = new Path(otherArgs.remove(otherArgs.size() - 1));<a name="line.402"></a>
+<span class="sourceLineNo">403</span>    TotalOrderPartitioner.setPartitionFile(getConf(), outf);<a name="line.403"></a>
+<span class="sourceLineNo">404</span>    for (String s : otherArgs) {<a name="line.404"></a>
+<span class="sourceLineNo">405</span>      FileInputFormat.addInputPath(job, new Path(s));<a name="line.405"></a>
+<span class="sourceLineNo">406</span>    }<a name="line.406"></a>
+<span class="sourceLineNo">407</span>    InputSampler.&lt;K,V&gt;writePartitionFile(job, sampler);<a name="line.407"></a>
+<span class="sourceLineNo">408</span><a name="line.408"></a>
+<span class="sourceLineNo">409</span>    return 0;<a name="line.409"></a>
+<span class="sourceLineNo">410</span>  }<a name="line.410"></a>
+<span class="sourceLineNo">411</span><a name="line.411"></a>
+<span class="sourceLineNo">412</span>  public static void main(String[] args) throws Exception {<a name="line.412"></a>
+<span class="sourceLineNo">413</span>    InputSampler&lt;?,?&gt; sampler = new InputSampler(new Configuration());<a name="line.413"></a>
+<span class="sourceLineNo">414</span>    int res = ToolRunner.run(sampler, args);<a name="line.414"></a>
+<span class="sourceLineNo">415</span>    System.exit(res);<a name="line.415"></a>
+<span class="sourceLineNo">416</span>  }<a name="line.416"></a>
+<span class="sourceLineNo">417</span>}<a name="line.417"></a>
 
 
 

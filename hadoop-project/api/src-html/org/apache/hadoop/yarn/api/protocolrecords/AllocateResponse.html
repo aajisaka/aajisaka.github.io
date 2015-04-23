@@ -47,27 +47,27 @@
 <span class="sourceLineNo">039</span>import org.apache.hadoop.yarn.util.Records;<a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
 <span class="sourceLineNo">041</span>/**<a name="line.41"></a>
-<span class="sourceLineNo">042</span> * &lt;p&gt;The response sent by the &lt;code&gt;ResourceManager&lt;/code&gt; the  <a name="line.42"></a>
-<span class="sourceLineNo">043</span> * &lt;code&gt;ApplicationMaster&lt;/code&gt; during resource negotiation.&lt;/p&gt;<a name="line.43"></a>
-<span class="sourceLineNo">044</span> *<a name="line.44"></a>
-<span class="sourceLineNo">045</span> * &lt;p&gt;The response, includes:<a name="line.45"></a>
-<span class="sourceLineNo">046</span> *   &lt;ul&gt;<a name="line.46"></a>
-<span class="sourceLineNo">047</span> *     &lt;li&gt;Response ID to track duplicate responses.&lt;/li&gt;<a name="line.47"></a>
-<span class="sourceLineNo">048</span> *     &lt;li&gt;<a name="line.48"></a>
-<span class="sourceLineNo">049</span> *       An AMCommand sent by ResourceManager to let the &lt;code&gt;ApplicationMaster&lt;/code&gt;<a name="line.49"></a>
-<span class="sourceLineNo">050</span> *       take some actions (resync, shutdown etc.).<a name="line.50"></a>
-<span class="sourceLineNo">051</span> *     &lt;li&gt;A list of newly allocated {@link Container}.&lt;/li&gt;<a name="line.51"></a>
-<span class="sourceLineNo">052</span> *     &lt;li&gt;A list of completed {@link Container}s' statuses.&lt;/li&gt;<a name="line.52"></a>
-<span class="sourceLineNo">053</span> *     &lt;li&gt;<a name="line.53"></a>
-<span class="sourceLineNo">054</span> *       The available headroom for resources in the cluster for the<a name="line.54"></a>
-<span class="sourceLineNo">055</span> *       application. <a name="line.55"></a>
-<span class="sourceLineNo">056</span> *     &lt;/li&gt;<a name="line.56"></a>
-<span class="sourceLineNo">057</span> *     &lt;li&gt;A list of nodes whose status has been updated.&lt;/li&gt;<a name="line.57"></a>
-<span class="sourceLineNo">058</span> *     &lt;li&gt;The number of available nodes in a cluster.&lt;/li&gt;<a name="line.58"></a>
-<span class="sourceLineNo">059</span> *     &lt;li&gt;A description of resources requested back by the cluster&lt;/li&gt;<a name="line.59"></a>
-<span class="sourceLineNo">060</span> *     &lt;li&gt;AMRMToken, if AMRMToken has been rolled over&lt;/li&gt;<a name="line.60"></a>
-<span class="sourceLineNo">061</span> *   &lt;/ul&gt;<a name="line.61"></a>
-<span class="sourceLineNo">062</span> * &lt;/p&gt;<a name="line.62"></a>
+<span class="sourceLineNo">042</span> * The response sent by the &lt;code&gt;ResourceManager&lt;/code&gt; the<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * &lt;code&gt;ApplicationMaster&lt;/code&gt; during resource negotiation.<a name="line.43"></a>
+<span class="sourceLineNo">044</span> * &lt;p&gt;<a name="line.44"></a>
+<span class="sourceLineNo">045</span> * The response, includes:<a name="line.45"></a>
+<span class="sourceLineNo">046</span> * &lt;ul&gt;<a name="line.46"></a>
+<span class="sourceLineNo">047</span> *   &lt;li&gt;Response ID to track duplicate responses.&lt;/li&gt;<a name="line.47"></a>
+<span class="sourceLineNo">048</span> *   &lt;li&gt;<a name="line.48"></a>
+<span class="sourceLineNo">049</span> *     An AMCommand sent by ResourceManager to let the<a name="line.49"></a>
+<span class="sourceLineNo">050</span> *     {@code ApplicationMaster} take some actions (resync, shutdown etc.).<a name="line.50"></a>
+<span class="sourceLineNo">051</span> *   &lt;/li&gt;<a name="line.51"></a>
+<span class="sourceLineNo">052</span> *   &lt;li&gt;A list of newly allocated {@link Container}.&lt;/li&gt;<a name="line.52"></a>
+<span class="sourceLineNo">053</span> *   &lt;li&gt;A list of completed {@link Container}s' statuses.&lt;/li&gt;<a name="line.53"></a>
+<span class="sourceLineNo">054</span> *   &lt;li&gt;<a name="line.54"></a>
+<span class="sourceLineNo">055</span> *     The available headroom for resources in the cluster for the<a name="line.55"></a>
+<span class="sourceLineNo">056</span> *     application.<a name="line.56"></a>
+<span class="sourceLineNo">057</span> *   &lt;/li&gt;<a name="line.57"></a>
+<span class="sourceLineNo">058</span> *   &lt;li&gt;A list of nodes whose status has been updated.&lt;/li&gt;<a name="line.58"></a>
+<span class="sourceLineNo">059</span> *   &lt;li&gt;The number of available nodes in a cluster.&lt;/li&gt;<a name="line.59"></a>
+<span class="sourceLineNo">060</span> *   &lt;li&gt;A description of resources requested back by the cluster&lt;/li&gt;<a name="line.60"></a>
+<span class="sourceLineNo">061</span> *   &lt;li&gt;AMRMToken, if AMRMToken has been rolled over&lt;/li&gt;<a name="line.61"></a>
+<span class="sourceLineNo">062</span> * &lt;/ul&gt;<a name="line.62"></a>
 <span class="sourceLineNo">063</span> * <a name="line.63"></a>
 <span class="sourceLineNo">064</span> * @see ApplicationMasterProtocol#allocate(AllocateRequest)<a name="line.64"></a>
 <span class="sourceLineNo">065</span> */<a name="line.65"></a>
@@ -228,16 +228,16 @@
 <span class="sourceLineNo">220</span>  public abstract void setNumClusterNodes(int numNodes);<a name="line.220"></a>
 <span class="sourceLineNo">221</span><a name="line.221"></a>
 <span class="sourceLineNo">222</span>  /**<a name="line.222"></a>
-<span class="sourceLineNo">223</span>   * &lt;p&gt;Get the description of containers owned by the AM, but requested back by<a name="line.223"></a>
+<span class="sourceLineNo">223</span>   * Get the description of containers owned by the AM, but requested back by<a name="line.223"></a>
 <span class="sourceLineNo">224</span>   * the cluster. Note that the RM may have an inconsistent view of the<a name="line.224"></a>
 <span class="sourceLineNo">225</span>   * resources owned by the AM. These messages are advisory, and the AM may<a name="line.225"></a>
-<span class="sourceLineNo">226</span>   * elect to ignore them.&lt;p&gt;<a name="line.226"></a>
-<span class="sourceLineNo">227</span>   *<a name="line.227"></a>
-<span class="sourceLineNo">228</span>   * &lt;p&gt;The message is a snapshot of the resources the RM wants back from the AM.<a name="line.228"></a>
+<span class="sourceLineNo">226</span>   * elect to ignore them.<a name="line.226"></a>
+<span class="sourceLineNo">227</span>   * &lt;p&gt;<a name="line.227"></a>
+<span class="sourceLineNo">228</span>   * The message is a snapshot of the resources the RM wants back from the AM.<a name="line.228"></a>
 <span class="sourceLineNo">229</span>   * While demand persists, the RM will repeat its request; applications should<a name="line.229"></a>
-<span class="sourceLineNo">230</span>   * not interpret each message as a request for &lt;em&gt;additional&lt;em&gt;<a name="line.230"></a>
+<span class="sourceLineNo">230</span>   * not interpret each message as a request for &lt;em&gt;additional&lt;/em&gt;<a name="line.230"></a>
 <span class="sourceLineNo">231</span>   * resources on top of previous messages. Resources requested consistently<a name="line.231"></a>
-<span class="sourceLineNo">232</span>   * over some duration may be forcibly killed by the RM.&lt;p&gt;<a name="line.232"></a>
+<span class="sourceLineNo">232</span>   * over some duration may be forcibly killed by the RM.<a name="line.232"></a>
 <span class="sourceLineNo">233</span>   *<a name="line.233"></a>
 <span class="sourceLineNo">234</span>   * @return A specification of the resources to reclaim from this AM.<a name="line.234"></a>
 <span class="sourceLineNo">235</span>   */<a name="line.235"></a>
@@ -250,67 +250,69 @@
 <span class="sourceLineNo">242</span>  public abstract void setPreemptionMessage(PreemptionMessage request);<a name="line.242"></a>
 <span class="sourceLineNo">243</span><a name="line.243"></a>
 <span class="sourceLineNo">244</span>  /**<a name="line.244"></a>
-<span class="sourceLineNo">245</span>   * &lt;p&gt;Get the list of NMTokens required for communicating with NM. New NMTokens<a name="line.245"></a>
-<span class="sourceLineNo">246</span>   * issued only if&lt;p&gt;<a name="line.246"></a>
-<span class="sourceLineNo">247</span>   * &lt;p&gt;1) AM is receiving first container on underlying NodeManager.&lt;br&gt;<a name="line.247"></a>
-<span class="sourceLineNo">248</span>   * OR&lt;br&gt;<a name="line.248"></a>
-<span class="sourceLineNo">249</span>   * 2) NMToken master key rolled over in ResourceManager and AM is getting new<a name="line.249"></a>
-<span class="sourceLineNo">250</span>   * container on the same underlying NodeManager.&lt;p&gt;<a name="line.250"></a>
-<span class="sourceLineNo">251</span>   * &lt;p&gt;AM will receive one NMToken per NM irrespective of the number of containers<a name="line.251"></a>
-<span class="sourceLineNo">252</span>   * issued on same NM. AM is expected to store these tokens until issued a<a name="line.252"></a>
-<span class="sourceLineNo">253</span>   * new token for the same NM.&lt;p&gt;<a name="line.253"></a>
-<span class="sourceLineNo">254</span>   */<a name="line.254"></a>
-<span class="sourceLineNo">255</span>  @Public<a name="line.255"></a>
-<span class="sourceLineNo">256</span>  @Stable<a name="line.256"></a>
-<span class="sourceLineNo">257</span>  public abstract List&lt;NMToken&gt; getNMTokens();<a name="line.257"></a>
-<span class="sourceLineNo">258</span><a name="line.258"></a>
-<span class="sourceLineNo">259</span>  @Private<a name="line.259"></a>
-<span class="sourceLineNo">260</span>  @Unstable<a name="line.260"></a>
-<span class="sourceLineNo">261</span>  public abstract void setNMTokens(List&lt;NMToken&gt; nmTokens);<a name="line.261"></a>
-<span class="sourceLineNo">262</span>  <a name="line.262"></a>
-<span class="sourceLineNo">263</span>  /**<a name="line.263"></a>
-<span class="sourceLineNo">264</span>   * Get the list of newly increased containers by &lt;code&gt;ResourceManager&lt;/code&gt;<a name="line.264"></a>
-<span class="sourceLineNo">265</span>   */<a name="line.265"></a>
-<span class="sourceLineNo">266</span>  @Public<a name="line.266"></a>
-<span class="sourceLineNo">267</span>  @Stable<a name="line.267"></a>
-<span class="sourceLineNo">268</span>  public abstract List&lt;ContainerResourceIncrease&gt; getIncreasedContainers();<a name="line.268"></a>
-<span class="sourceLineNo">269</span><a name="line.269"></a>
-<span class="sourceLineNo">270</span>  /**<a name="line.270"></a>
-<span class="sourceLineNo">271</span>   * Set the list of newly increased containers by &lt;code&gt;ResourceManager&lt;/code&gt;<a name="line.271"></a>
-<span class="sourceLineNo">272</span>   */<a name="line.272"></a>
-<span class="sourceLineNo">273</span>  @Private<a name="line.273"></a>
-<span class="sourceLineNo">274</span>  @Unstable<a name="line.274"></a>
-<span class="sourceLineNo">275</span>  public abstract void setIncreasedContainers(<a name="line.275"></a>
-<span class="sourceLineNo">276</span>      List&lt;ContainerResourceIncrease&gt; increasedContainers);<a name="line.276"></a>
-<span class="sourceLineNo">277</span><a name="line.277"></a>
-<span class="sourceLineNo">278</span>  /**<a name="line.278"></a>
-<span class="sourceLineNo">279</span>   * Get the list of newly decreased containers by &lt;code&gt;NodeManager&lt;/code&gt;<a name="line.279"></a>
-<span class="sourceLineNo">280</span>   */<a name="line.280"></a>
-<span class="sourceLineNo">281</span>  @Public<a name="line.281"></a>
-<span class="sourceLineNo">282</span>  @Stable<a name="line.282"></a>
-<span class="sourceLineNo">283</span>  public abstract List&lt;ContainerResourceDecrease&gt; getDecreasedContainers();<a name="line.283"></a>
-<span class="sourceLineNo">284</span><a name="line.284"></a>
-<span class="sourceLineNo">285</span>  /**<a name="line.285"></a>
-<span class="sourceLineNo">286</span>   * Set the list of newly decreased containers by &lt;code&gt;NodeManager&lt;/code&gt;<a name="line.286"></a>
-<span class="sourceLineNo">287</span>   */<a name="line.287"></a>
-<span class="sourceLineNo">288</span>  @Private<a name="line.288"></a>
-<span class="sourceLineNo">289</span>  @Unstable<a name="line.289"></a>
-<span class="sourceLineNo">290</span>  public abstract void setDecreasedContainers(<a name="line.290"></a>
-<span class="sourceLineNo">291</span>      List&lt;ContainerResourceDecrease&gt; decreasedContainers);<a name="line.291"></a>
-<span class="sourceLineNo">292</span><a name="line.292"></a>
-<span class="sourceLineNo">293</span>  /**<a name="line.293"></a>
-<span class="sourceLineNo">294</span>   * The AMRMToken that belong to this attempt<a name="line.294"></a>
-<span class="sourceLineNo">295</span>   *<a name="line.295"></a>
-<span class="sourceLineNo">296</span>   * @return The AMRMToken that belong to this attempt<a name="line.296"></a>
-<span class="sourceLineNo">297</span>   */<a name="line.297"></a>
-<span class="sourceLineNo">298</span>  @Public<a name="line.298"></a>
-<span class="sourceLineNo">299</span>  @Unstable<a name="line.299"></a>
-<span class="sourceLineNo">300</span>  public abstract Token getAMRMToken();<a name="line.300"></a>
-<span class="sourceLineNo">301</span><a name="line.301"></a>
-<span class="sourceLineNo">302</span>  @Private<a name="line.302"></a>
-<span class="sourceLineNo">303</span>  @Unstable<a name="line.303"></a>
-<span class="sourceLineNo">304</span>  public abstract void setAMRMToken(Token amRMToken);<a name="line.304"></a>
-<span class="sourceLineNo">305</span>}<a name="line.305"></a>
+<span class="sourceLineNo">245</span>   * Get the list of NMTokens required for communicating with NM. New NMTokens<a name="line.245"></a>
+<span class="sourceLineNo">246</span>   * issued only if<a name="line.246"></a>
+<span class="sourceLineNo">247</span>   * &lt;p&gt;<a name="line.247"></a>
+<span class="sourceLineNo">248</span>   * 1) AM is receiving first container on underlying NodeManager.&lt;br&gt;<a name="line.248"></a>
+<span class="sourceLineNo">249</span>   * OR&lt;br&gt;<a name="line.249"></a>
+<span class="sourceLineNo">250</span>   * 2) NMToken master key rolled over in ResourceManager and AM is getting new<a name="line.250"></a>
+<span class="sourceLineNo">251</span>   * container on the same underlying NodeManager.<a name="line.251"></a>
+<span class="sourceLineNo">252</span>   * &lt;p&gt;<a name="line.252"></a>
+<span class="sourceLineNo">253</span>   * AM will receive one NMToken per NM irrespective of the number of containers<a name="line.253"></a>
+<span class="sourceLineNo">254</span>   * issued on same NM. AM is expected to store these tokens until issued a<a name="line.254"></a>
+<span class="sourceLineNo">255</span>   * new token for the same NM.<a name="line.255"></a>
+<span class="sourceLineNo">256</span>   */<a name="line.256"></a>
+<span class="sourceLineNo">257</span>  @Public<a name="line.257"></a>
+<span class="sourceLineNo">258</span>  @Stable<a name="line.258"></a>
+<span class="sourceLineNo">259</span>  public abstract List&lt;NMToken&gt; getNMTokens();<a name="line.259"></a>
+<span class="sourceLineNo">260</span><a name="line.260"></a>
+<span class="sourceLineNo">261</span>  @Private<a name="line.261"></a>
+<span class="sourceLineNo">262</span>  @Unstable<a name="line.262"></a>
+<span class="sourceLineNo">263</span>  public abstract void setNMTokens(List&lt;NMToken&gt; nmTokens);<a name="line.263"></a>
+<span class="sourceLineNo">264</span>  <a name="line.264"></a>
+<span class="sourceLineNo">265</span>  /**<a name="line.265"></a>
+<span class="sourceLineNo">266</span>   * Get the list of newly increased containers by &lt;code&gt;ResourceManager&lt;/code&gt;<a name="line.266"></a>
+<span class="sourceLineNo">267</span>   */<a name="line.267"></a>
+<span class="sourceLineNo">268</span>  @Public<a name="line.268"></a>
+<span class="sourceLineNo">269</span>  @Stable<a name="line.269"></a>
+<span class="sourceLineNo">270</span>  public abstract List&lt;ContainerResourceIncrease&gt; getIncreasedContainers();<a name="line.270"></a>
+<span class="sourceLineNo">271</span><a name="line.271"></a>
+<span class="sourceLineNo">272</span>  /**<a name="line.272"></a>
+<span class="sourceLineNo">273</span>   * Set the list of newly increased containers by &lt;code&gt;ResourceManager&lt;/code&gt;<a name="line.273"></a>
+<span class="sourceLineNo">274</span>   */<a name="line.274"></a>
+<span class="sourceLineNo">275</span>  @Private<a name="line.275"></a>
+<span class="sourceLineNo">276</span>  @Unstable<a name="line.276"></a>
+<span class="sourceLineNo">277</span>  public abstract void setIncreasedContainers(<a name="line.277"></a>
+<span class="sourceLineNo">278</span>      List&lt;ContainerResourceIncrease&gt; increasedContainers);<a name="line.278"></a>
+<span class="sourceLineNo">279</span><a name="line.279"></a>
+<span class="sourceLineNo">280</span>  /**<a name="line.280"></a>
+<span class="sourceLineNo">281</span>   * Get the list of newly decreased containers by &lt;code&gt;NodeManager&lt;/code&gt;<a name="line.281"></a>
+<span class="sourceLineNo">282</span>   */<a name="line.282"></a>
+<span class="sourceLineNo">283</span>  @Public<a name="line.283"></a>
+<span class="sourceLineNo">284</span>  @Stable<a name="line.284"></a>
+<span class="sourceLineNo">285</span>  public abstract List&lt;ContainerResourceDecrease&gt; getDecreasedContainers();<a name="line.285"></a>
+<span class="sourceLineNo">286</span><a name="line.286"></a>
+<span class="sourceLineNo">287</span>  /**<a name="line.287"></a>
+<span class="sourceLineNo">288</span>   * Set the list of newly decreased containers by &lt;code&gt;NodeManager&lt;/code&gt;<a name="line.288"></a>
+<span class="sourceLineNo">289</span>   */<a name="line.289"></a>
+<span class="sourceLineNo">290</span>  @Private<a name="line.290"></a>
+<span class="sourceLineNo">291</span>  @Unstable<a name="line.291"></a>
+<span class="sourceLineNo">292</span>  public abstract void setDecreasedContainers(<a name="line.292"></a>
+<span class="sourceLineNo">293</span>      List&lt;ContainerResourceDecrease&gt; decreasedContainers);<a name="line.293"></a>
+<span class="sourceLineNo">294</span><a name="line.294"></a>
+<span class="sourceLineNo">295</span>  /**<a name="line.295"></a>
+<span class="sourceLineNo">296</span>   * The AMRMToken that belong to this attempt<a name="line.296"></a>
+<span class="sourceLineNo">297</span>   *<a name="line.297"></a>
+<span class="sourceLineNo">298</span>   * @return The AMRMToken that belong to this attempt<a name="line.298"></a>
+<span class="sourceLineNo">299</span>   */<a name="line.299"></a>
+<span class="sourceLineNo">300</span>  @Public<a name="line.300"></a>
+<span class="sourceLineNo">301</span>  @Unstable<a name="line.301"></a>
+<span class="sourceLineNo">302</span>  public abstract Token getAMRMToken();<a name="line.302"></a>
+<span class="sourceLineNo">303</span><a name="line.303"></a>
+<span class="sourceLineNo">304</span>  @Private<a name="line.304"></a>
+<span class="sourceLineNo">305</span>  @Unstable<a name="line.305"></a>
+<span class="sourceLineNo">306</span>  public abstract void setAMRMToken(Token amRMToken);<a name="line.306"></a>
+<span class="sourceLineNo">307</span>}<a name="line.307"></a>
 
 
 

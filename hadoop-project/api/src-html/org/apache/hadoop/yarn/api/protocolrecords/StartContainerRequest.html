@@ -82,23 +82,24 @@
 <span class="sourceLineNo">074</span>  public abstract void setContainerLaunchContext(ContainerLaunchContext context);<a name="line.74"></a>
 <span class="sourceLineNo">075</span><a name="line.75"></a>
 <span class="sourceLineNo">076</span>  /**<a name="line.76"></a>
-<span class="sourceLineNo">077</span>   * &lt;p&gt;Get the container token to be used for authorization during starting<a name="line.77"></a>
-<span class="sourceLineNo">078</span>   * container.&lt;/p&gt;<a name="line.78"></a>
-<span class="sourceLineNo">079</span>   * &lt;p&gt;Note: {@link NMToken} will be used for authenticating communication with &lt;/code&gt;<a name="line.79"></a>
-<span class="sourceLineNo">080</span>   * NodeManager&lt;/code&gt;.&lt;/p&gt;<a name="line.80"></a>
-<span class="sourceLineNo">081</span>   * @return the container token to be used for authorization during starting<a name="line.81"></a>
-<span class="sourceLineNo">082</span>   * container.<a name="line.82"></a>
-<span class="sourceLineNo">083</span>   * @see NMToken<a name="line.83"></a>
-<span class="sourceLineNo">084</span>   * @see ContainerManagementProtocol#startContainers(StartContainersRequest)<a name="line.84"></a>
-<span class="sourceLineNo">085</span>   */<a name="line.85"></a>
-<span class="sourceLineNo">086</span>  @Public<a name="line.86"></a>
-<span class="sourceLineNo">087</span>  @Stable<a name="line.87"></a>
-<span class="sourceLineNo">088</span>  public abstract Token getContainerToken();<a name="line.88"></a>
-<span class="sourceLineNo">089</span><a name="line.89"></a>
-<span class="sourceLineNo">090</span>  @Public<a name="line.90"></a>
-<span class="sourceLineNo">091</span>  @Stable<a name="line.91"></a>
-<span class="sourceLineNo">092</span>  public abstract void setContainerToken(Token container);<a name="line.92"></a>
-<span class="sourceLineNo">093</span>}<a name="line.93"></a>
+<span class="sourceLineNo">077</span>   * Get the container token to be used for authorization during starting<a name="line.77"></a>
+<span class="sourceLineNo">078</span>   * container.<a name="line.78"></a>
+<span class="sourceLineNo">079</span>   * &lt;p&gt;<a name="line.79"></a>
+<span class="sourceLineNo">080</span>   * Note: {@link NMToken} will be used for authenticating communication with<a name="line.80"></a>
+<span class="sourceLineNo">081</span>   * {@code NodeManager}.<a name="line.81"></a>
+<span class="sourceLineNo">082</span>   * @return the container token to be used for authorization during starting<a name="line.82"></a>
+<span class="sourceLineNo">083</span>   * container.<a name="line.83"></a>
+<span class="sourceLineNo">084</span>   * @see NMToken<a name="line.84"></a>
+<span class="sourceLineNo">085</span>   * @see ContainerManagementProtocol#startContainers(StartContainersRequest)<a name="line.85"></a>
+<span class="sourceLineNo">086</span>   */<a name="line.86"></a>
+<span class="sourceLineNo">087</span>  @Public<a name="line.87"></a>
+<span class="sourceLineNo">088</span>  @Stable<a name="line.88"></a>
+<span class="sourceLineNo">089</span>  public abstract Token getContainerToken();<a name="line.89"></a>
+<span class="sourceLineNo">090</span><a name="line.90"></a>
+<span class="sourceLineNo">091</span>  @Public<a name="line.91"></a>
+<span class="sourceLineNo">092</span>  @Stable<a name="line.92"></a>
+<span class="sourceLineNo">093</span>  public abstract void setContainerToken(Token container);<a name="line.93"></a>
+<span class="sourceLineNo">094</span>}<a name="line.94"></a>
 
 
 

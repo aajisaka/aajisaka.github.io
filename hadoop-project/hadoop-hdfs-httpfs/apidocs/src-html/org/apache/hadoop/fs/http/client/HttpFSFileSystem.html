@@ -1021,13 +1021,13 @@
 <span class="sourceLineNo">1013</span>    HttpExceptionUtils.validateResponse(conn, HttpURLConnection.HTTP_OK);<a name="line.1013"></a>
 <span class="sourceLineNo">1014</span>    JSONObject json = (JSONObject) ((JSONObject)<a name="line.1014"></a>
 <span class="sourceLineNo">1015</span>      HttpFSUtils.jsonParse(conn)).get(CONTENT_SUMMARY_JSON);<a name="line.1015"></a>
-<span class="sourceLineNo">1016</span>    return new ContentSummary((Long) json.get(CONTENT_SUMMARY_LENGTH_JSON),<a name="line.1016"></a>
-<span class="sourceLineNo">1017</span>                              (Long) json.get(CONTENT_SUMMARY_FILE_COUNT_JSON),<a name="line.1017"></a>
-<span class="sourceLineNo">1018</span>                              (Long) json.get(CONTENT_SUMMARY_DIRECTORY_COUNT_JSON),<a name="line.1018"></a>
-<span class="sourceLineNo">1019</span>                              (Long) json.get(CONTENT_SUMMARY_QUOTA_JSON),<a name="line.1019"></a>
-<span class="sourceLineNo">1020</span>                              (Long) json.get(CONTENT_SUMMARY_SPACE_CONSUMED_JSON),<a name="line.1020"></a>
-<span class="sourceLineNo">1021</span>                              (Long) json.get(CONTENT_SUMMARY_SPACE_QUOTA_JSON)<a name="line.1021"></a>
-<span class="sourceLineNo">1022</span>    );<a name="line.1022"></a>
+<span class="sourceLineNo">1016</span>    return new ContentSummary.Builder().<a name="line.1016"></a>
+<span class="sourceLineNo">1017</span>        length((Long) json.get(CONTENT_SUMMARY_LENGTH_JSON)).<a name="line.1017"></a>
+<span class="sourceLineNo">1018</span>        fileCount((Long) json.get(CONTENT_SUMMARY_FILE_COUNT_JSON)).<a name="line.1018"></a>
+<span class="sourceLineNo">1019</span>        directoryCount((Long) json.get(CONTENT_SUMMARY_DIRECTORY_COUNT_JSON)).<a name="line.1019"></a>
+<span class="sourceLineNo">1020</span>        quota((Long) json.get(CONTENT_SUMMARY_QUOTA_JSON)).<a name="line.1020"></a>
+<span class="sourceLineNo">1021</span>        spaceConsumed((Long) json.get(CONTENT_SUMMARY_SPACE_CONSUMED_JSON)).<a name="line.1021"></a>
+<span class="sourceLineNo">1022</span>        spaceQuota((Long) json.get(CONTENT_SUMMARY_SPACE_QUOTA_JSON)).build();<a name="line.1022"></a>
 <span class="sourceLineNo">1023</span>  }<a name="line.1023"></a>
 <span class="sourceLineNo">1024</span><a name="line.1024"></a>
 <span class="sourceLineNo">1025</span>  @Override<a name="line.1025"></a>

@@ -297,37 +297,35 @@
 <span class="sourceLineNo">289</span>   * Get the timestamps of the archives.  Used by internal<a name="line.289"></a>
 <span class="sourceLineNo">290</span>   * DistributedCache and MapReduce code.<a name="line.290"></a>
 <span class="sourceLineNo">291</span>   * @return a string array of timestamps <a name="line.291"></a>
-<span class="sourceLineNo">292</span>   * @throws IOException<a name="line.292"></a>
-<span class="sourceLineNo">293</span>   */<a name="line.293"></a>
-<span class="sourceLineNo">294</span>  public String[] getArchiveTimestamps();<a name="line.294"></a>
-<span class="sourceLineNo">295</span><a name="line.295"></a>
-<span class="sourceLineNo">296</span>  /**<a name="line.296"></a>
-<span class="sourceLineNo">297</span>   * Get the timestamps of the files.  Used by internal<a name="line.297"></a>
-<span class="sourceLineNo">298</span>   * DistributedCache and MapReduce code.<a name="line.298"></a>
-<span class="sourceLineNo">299</span>   * @return a string array of timestamps <a name="line.299"></a>
-<span class="sourceLineNo">300</span>   * @throws IOException<a name="line.300"></a>
-<span class="sourceLineNo">301</span>   */<a name="line.301"></a>
-<span class="sourceLineNo">302</span>  public String[] getFileTimestamps();<a name="line.302"></a>
-<span class="sourceLineNo">303</span><a name="line.303"></a>
-<span class="sourceLineNo">304</span>  /** <a name="line.304"></a>
-<span class="sourceLineNo">305</span>   * Get the configured number of maximum attempts that will be made to run a<a name="line.305"></a>
-<span class="sourceLineNo">306</span>   * map task, as specified by the &lt;code&gt;mapred.map.max.attempts&lt;/code&gt;<a name="line.306"></a>
-<span class="sourceLineNo">307</span>   * property. If this property is not already set, the default is 4 attempts.<a name="line.307"></a>
-<span class="sourceLineNo">308</span>   *  <a name="line.308"></a>
-<span class="sourceLineNo">309</span>   * @return the max number of attempts per map task.<a name="line.309"></a>
-<span class="sourceLineNo">310</span>   */<a name="line.310"></a>
-<span class="sourceLineNo">311</span>  public int getMaxMapAttempts();<a name="line.311"></a>
-<span class="sourceLineNo">312</span><a name="line.312"></a>
-<span class="sourceLineNo">313</span>  /** <a name="line.313"></a>
-<span class="sourceLineNo">314</span>   * Get the configured number of maximum attempts  that will be made to run a<a name="line.314"></a>
-<span class="sourceLineNo">315</span>   * reduce task, as specified by the &lt;code&gt;mapred.reduce.max.attempts&lt;/code&gt;<a name="line.315"></a>
-<span class="sourceLineNo">316</span>   * property. If this property is not already set, the default is 4 attempts.<a name="line.316"></a>
-<span class="sourceLineNo">317</span>   * <a name="line.317"></a>
-<span class="sourceLineNo">318</span>   * @return the max number of attempts per reduce task.<a name="line.318"></a>
-<span class="sourceLineNo">319</span>   */<a name="line.319"></a>
-<span class="sourceLineNo">320</span>  public int getMaxReduceAttempts();<a name="line.320"></a>
-<span class="sourceLineNo">321</span><a name="line.321"></a>
-<span class="sourceLineNo">322</span>}<a name="line.322"></a>
+<span class="sourceLineNo">292</span>   */<a name="line.292"></a>
+<span class="sourceLineNo">293</span>  public String[] getArchiveTimestamps();<a name="line.293"></a>
+<span class="sourceLineNo">294</span><a name="line.294"></a>
+<span class="sourceLineNo">295</span>  /**<a name="line.295"></a>
+<span class="sourceLineNo">296</span>   * Get the timestamps of the files.  Used by internal<a name="line.296"></a>
+<span class="sourceLineNo">297</span>   * DistributedCache and MapReduce code.<a name="line.297"></a>
+<span class="sourceLineNo">298</span>   * @return a string array of timestamps <a name="line.298"></a>
+<span class="sourceLineNo">299</span>   */<a name="line.299"></a>
+<span class="sourceLineNo">300</span>  public String[] getFileTimestamps();<a name="line.300"></a>
+<span class="sourceLineNo">301</span><a name="line.301"></a>
+<span class="sourceLineNo">302</span>  /** <a name="line.302"></a>
+<span class="sourceLineNo">303</span>   * Get the configured number of maximum attempts that will be made to run a<a name="line.303"></a>
+<span class="sourceLineNo">304</span>   * map task, as specified by the &lt;code&gt;mapred.map.max.attempts&lt;/code&gt;<a name="line.304"></a>
+<span class="sourceLineNo">305</span>   * property. If this property is not already set, the default is 4 attempts.<a name="line.305"></a>
+<span class="sourceLineNo">306</span>   *  <a name="line.306"></a>
+<span class="sourceLineNo">307</span>   * @return the max number of attempts per map task.<a name="line.307"></a>
+<span class="sourceLineNo">308</span>   */<a name="line.308"></a>
+<span class="sourceLineNo">309</span>  public int getMaxMapAttempts();<a name="line.309"></a>
+<span class="sourceLineNo">310</span><a name="line.310"></a>
+<span class="sourceLineNo">311</span>  /** <a name="line.311"></a>
+<span class="sourceLineNo">312</span>   * Get the configured number of maximum attempts  that will be made to run a<a name="line.312"></a>
+<span class="sourceLineNo">313</span>   * reduce task, as specified by the &lt;code&gt;mapred.reduce.max.attempts&lt;/code&gt;<a name="line.313"></a>
+<span class="sourceLineNo">314</span>   * property. If this property is not already set, the default is 4 attempts.<a name="line.314"></a>
+<span class="sourceLineNo">315</span>   * <a name="line.315"></a>
+<span class="sourceLineNo">316</span>   * @return the max number of attempts per reduce task.<a name="line.316"></a>
+<span class="sourceLineNo">317</span>   */<a name="line.317"></a>
+<span class="sourceLineNo">318</span>  public int getMaxReduceAttempts();<a name="line.318"></a>
+<span class="sourceLineNo">319</span><a name="line.319"></a>
+<span class="sourceLineNo">320</span>}<a name="line.320"></a>
 
 
 

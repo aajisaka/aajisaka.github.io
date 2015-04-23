@@ -36,9 +36,9 @@
 <span class="sourceLineNo">028</span>import org.apache.hadoop.io.WritableUtils;<a name="line.28"></a>
 <span class="sourceLineNo">029</span><a name="line.29"></a>
 <span class="sourceLineNo">030</span>/**<a name="line.30"></a>
-<span class="sourceLineNo">031</span> * Various utility functions for Hadooop record I/O runtime.<a name="line.31"></a>
+<span class="sourceLineNo">031</span> * Various utility functions for Hadoop record I/O runtime.<a name="line.31"></a>
 <span class="sourceLineNo">032</span> * <a name="line.32"></a>
-<span class="sourceLineNo">033</span> * @deprecated Replaced by &lt;a href="http://hadoop.apache.org/avro/"&gt;Avro&lt;/a&gt;.<a name="line.33"></a>
+<span class="sourceLineNo">033</span> * @deprecated Replaced by &lt;a href="http://avro.apache.org/"&gt;Avro&lt;/a&gt;.<a name="line.33"></a>
 <span class="sourceLineNo">034</span> */<a name="line.34"></a>
 <span class="sourceLineNo">035</span>@Deprecated<a name="line.35"></a>
 <span class="sourceLineNo">036</span>@InterfaceAudience.Public<a name="line.36"></a>
@@ -470,8 +470,8 @@
 <span class="sourceLineNo">462</span>  <a name="line.462"></a>
 <span class="sourceLineNo">463</span>  /**<a name="line.463"></a>
 <span class="sourceLineNo">464</span>   * Serializes a long to a binary stream with zero-compressed encoding.<a name="line.464"></a>
-<span class="sourceLineNo">465</span>   * For -112 &lt;= i &lt;= 127, only one byte is used with the actual value.<a name="line.465"></a>
-<span class="sourceLineNo">466</span>   * For other values of i, the first byte value indicates whether the<a name="line.466"></a>
+<span class="sourceLineNo">465</span>   * For {@literal -112 &lt;= i &lt;= 127}, only one byte is used with the actual<a name="line.465"></a>
+<span class="sourceLineNo">466</span>   * value. For other values of i, the first byte value indicates whether the<a name="line.466"></a>
 <span class="sourceLineNo">467</span>   * long is positive or negative, and the number of bytes that follow.<a name="line.467"></a>
 <span class="sourceLineNo">468</span>   * If the first byte value v is between -113 and -120, the following long<a name="line.468"></a>
 <span class="sourceLineNo">469</span>   * is positive, with number of bytes that follow are -(v+112).<a name="line.469"></a>
