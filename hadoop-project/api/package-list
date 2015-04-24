@@ -40,6 +40,7 @@ org.apache.hadoop.ha.proto
 org.apache.hadoop.ha.protocolPB
 org.apache.hadoop.hdfs
 org.apache.hadoop.hdfs.client
+org.apache.hadoop.hdfs.client.impl
 org.apache.hadoop.hdfs.inotify
 org.apache.hadoop.hdfs.net
 org.apache.hadoop.hdfs.nfs.conf

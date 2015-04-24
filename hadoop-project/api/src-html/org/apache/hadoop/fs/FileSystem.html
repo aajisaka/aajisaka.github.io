@@ -127,7 +127,7 @@
 <span class="sourceLineNo">119</span>  protected Statistics statistics;<a name="line.119"></a>
 <span class="sourceLineNo">120</span><a name="line.120"></a>
 <span class="sourceLineNo">121</span>  /**<a name="line.121"></a>
-<span class="sourceLineNo">122</span>   * A cache of files that should be deleted when filsystem is closed<a name="line.122"></a>
+<span class="sourceLineNo">122</span>   * A cache of files that should be deleted when filesystem is closed<a name="line.122"></a>
 <span class="sourceLineNo">123</span>   * or the JVM is exited.<a name="line.123"></a>
 <span class="sourceLineNo">124</span>   */<a name="line.124"></a>
 <span class="sourceLineNo">125</span>  private Set&lt;Path&gt; deleteOnExit = new TreeSet&lt;Path&gt;();<a name="line.125"></a>
@@ -3304,7 +3304,22 @@
 <span class="sourceLineNo">3296</span>                         ": " + pair.getValue());<a name="line.3296"></a>
 <span class="sourceLineNo">3297</span>    }<a name="line.3297"></a>
 <span class="sourceLineNo">3298</span>  }<a name="line.3298"></a>
-<span class="sourceLineNo">3299</span>}<a name="line.3299"></a>
+<span class="sourceLineNo">3299</span><a name="line.3299"></a>
+<span class="sourceLineNo">3300</span>  // Symlinks are temporarily disabled - see HADOOP-10020 and HADOOP-10052<a name="line.3300"></a>
+<span class="sourceLineNo">3301</span>  private static boolean symlinksEnabled = false;<a name="line.3301"></a>
+<span class="sourceLineNo">3302</span><a name="line.3302"></a>
+<span class="sourceLineNo">3303</span>  private static Configuration conf = null;<a name="line.3303"></a>
+<span class="sourceLineNo">3304</span><a name="line.3304"></a>
+<span class="sourceLineNo">3305</span>  @VisibleForTesting<a name="line.3305"></a>
+<span class="sourceLineNo">3306</span>  public static boolean areSymlinksEnabled() {<a name="line.3306"></a>
+<span class="sourceLineNo">3307</span>    return symlinksEnabled;<a name="line.3307"></a>
+<span class="sourceLineNo">3308</span>  }<a name="line.3308"></a>
+<span class="sourceLineNo">3309</span><a name="line.3309"></a>
+<span class="sourceLineNo">3310</span>  @VisibleForTesting<a name="line.3310"></a>
+<span class="sourceLineNo">3311</span>  public static void enableSymlinks() {<a name="line.3311"></a>
+<span class="sourceLineNo">3312</span>    symlinksEnabled = true;<a name="line.3312"></a>
+<span class="sourceLineNo">3313</span>  }<a name="line.3313"></a>
+<span class="sourceLineNo">3314</span>}<a name="line.3314"></a>
 
 
 

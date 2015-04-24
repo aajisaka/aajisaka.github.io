@@ -369,8 +369,20 @@
 <span class="sourceLineNo">361</span>  @Public<a name="line.361"></a>
 <span class="sourceLineNo">362</span>  @Stable<a name="line.362"></a>
 <span class="sourceLineNo">363</span>  public abstract Token getAMRMToken();<a name="line.363"></a>
-<span class="sourceLineNo">364</span>  <a name="line.364"></a>
-<span class="sourceLineNo">365</span>}<a name="line.365"></a>
+<span class="sourceLineNo">364</span><a name="line.364"></a>
+<span class="sourceLineNo">365</span>  /**<a name="line.365"></a>
+<span class="sourceLineNo">366</span>   * Get log aggregation status for the application<a name="line.366"></a>
+<span class="sourceLineNo">367</span>   * @return Application's log aggregation status<a name="line.367"></a>
+<span class="sourceLineNo">368</span>   */<a name="line.368"></a>
+<span class="sourceLineNo">369</span>  @Public<a name="line.369"></a>
+<span class="sourceLineNo">370</span>  @Stable<a name="line.370"></a>
+<span class="sourceLineNo">371</span>  public abstract LogAggregationStatus getLogAggregationStatus();<a name="line.371"></a>
+<span class="sourceLineNo">372</span><a name="line.372"></a>
+<span class="sourceLineNo">373</span>  @Private<a name="line.373"></a>
+<span class="sourceLineNo">374</span>  @Unstable<a name="line.374"></a>
+<span class="sourceLineNo">375</span>  public abstract void setLogAggregationStatus(<a name="line.375"></a>
+<span class="sourceLineNo">376</span>      LogAggregationStatus logAggregationStatus);<a name="line.376"></a>
+<span class="sourceLineNo">377</span>}<a name="line.377"></a>
 
 
 

@@ -28,8 +28,8 @@
 <span class="sourceLineNo">020</span>import java.io.DataInput;<a name="line.20"></a>
 <span class="sourceLineNo">021</span>import java.io.DataOutput;<a name="line.21"></a>
 <span class="sourceLineNo">022</span>import java.io.IOException;<a name="line.22"></a>
-<span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>import org.apache.hadoop.fs.StorageType;<a name="line.24"></a>
+<span class="sourceLineNo">023</span>import java.util.List;<a name="line.23"></a>
+<span class="sourceLineNo">024</span><a name="line.24"></a>
 <span class="sourceLineNo">025</span>import org.apache.hadoop.classification.InterfaceAudience;<a name="line.25"></a>
 <span class="sourceLineNo">026</span>import org.apache.hadoop.classification.InterfaceStability;<a name="line.26"></a>
 <span class="sourceLineNo">027</span>import org.apache.hadoop.io.Writable;<a name="line.27"></a>
@@ -183,7 +183,7 @@
 <span class="sourceLineNo">175</span>  /** Return the directory quota */<a name="line.175"></a>
 <span class="sourceLineNo">176</span>  public long getQuota() {return quota;}<a name="line.176"></a>
 <span class="sourceLineNo">177</span>  <a name="line.177"></a>
-<span class="sourceLineNo">178</span>  /** Retuns storage space consumed */<a name="line.178"></a>
+<span class="sourceLineNo">178</span>  /** Returns storage space consumed */<a name="line.178"></a>
 <span class="sourceLineNo">179</span>  public long getSpaceConsumed() {return spaceConsumed;}<a name="line.179"></a>
 <span class="sourceLineNo">180</span><a name="line.180"></a>
 <span class="sourceLineNo">181</span>  /** Returns storage space quota */<a name="line.181"></a>
@@ -263,113 +263,176 @@
 <span class="sourceLineNo">255</span>  private static final String QUOTA_SUMMARY_FORMAT = "%12s %15s ";<a name="line.255"></a>
 <span class="sourceLineNo">256</span>  private static final String SPACE_QUOTA_SUMMARY_FORMAT = "%15s %15s ";<a name="line.256"></a>
 <span class="sourceLineNo">257</span><a name="line.257"></a>
-<span class="sourceLineNo">258</span>  private static final String[] HEADER_FIELDS = new String[] { "DIR_COUNT",<a name="line.258"></a>
-<span class="sourceLineNo">259</span>      "FILE_COUNT", "CONTENT_SIZE"};<a name="line.259"></a>
-<span class="sourceLineNo">260</span>  private static final String[] QUOTA_HEADER_FIELDS = new String[] { "QUOTA",<a name="line.260"></a>
-<span class="sourceLineNo">261</span>      "REM_QUOTA", "SPACE_QUOTA", "REM_SPACE_QUOTA" };<a name="line.261"></a>
-<span class="sourceLineNo">262</span><a name="line.262"></a>
-<span class="sourceLineNo">263</span>  /** The header string */<a name="line.263"></a>
-<span class="sourceLineNo">264</span>  private static final String HEADER = String.format(<a name="line.264"></a>
-<span class="sourceLineNo">265</span>      SUMMARY_FORMAT, (Object[]) HEADER_FIELDS);<a name="line.265"></a>
-<span class="sourceLineNo">266</span><a name="line.266"></a>
-<span class="sourceLineNo">267</span>  private static final String QUOTA_HEADER = String.format(<a name="line.267"></a>
-<span class="sourceLineNo">268</span>      QUOTA_SUMMARY_FORMAT + SPACE_QUOTA_SUMMARY_FORMAT,<a name="line.268"></a>
-<span class="sourceLineNo">269</span>      (Object[]) QUOTA_HEADER_FIELDS) +<a name="line.269"></a>
-<span class="sourceLineNo">270</span>      HEADER;<a name="line.270"></a>
-<span class="sourceLineNo">271</span>  <a name="line.271"></a>
-<span class="sourceLineNo">272</span>  /** Return the header of the output.<a name="line.272"></a>
-<span class="sourceLineNo">273</span>   * if qOption is false, output directory count, file count, and content size;<a name="line.273"></a>
-<span class="sourceLineNo">274</span>   * if qOption is true, output quota and remaining quota as well.<a name="line.274"></a>
-<span class="sourceLineNo">275</span>   * <a name="line.275"></a>
-<span class="sourceLineNo">276</span>   * @param qOption a flag indicating if quota needs to be printed or not<a name="line.276"></a>
-<span class="sourceLineNo">277</span>   * @return the header of the output<a name="line.277"></a>
-<span class="sourceLineNo">278</span>   */<a name="line.278"></a>
-<span class="sourceLineNo">279</span>  public static String getHeader(boolean qOption) {<a name="line.279"></a>
-<span class="sourceLineNo">280</span>    return qOption ? QUOTA_HEADER : HEADER;<a name="line.280"></a>
-<span class="sourceLineNo">281</span>  }<a name="line.281"></a>
-<span class="sourceLineNo">282</span><a name="line.282"></a>
-<span class="sourceLineNo">283</span>  /**<a name="line.283"></a>
-<span class="sourceLineNo">284</span>   * Returns the names of the fields from the summary header.<a name="line.284"></a>
-<span class="sourceLineNo">285</span>   * <a name="line.285"></a>
-<span class="sourceLineNo">286</span>   * @return names of fields as displayed in the header<a name="line.286"></a>
-<span class="sourceLineNo">287</span>   */<a name="line.287"></a>
-<span class="sourceLineNo">288</span>  public static String[] getHeaderFields() {<a name="line.288"></a>
-<span class="sourceLineNo">289</span>    return HEADER_FIELDS;<a name="line.289"></a>
-<span class="sourceLineNo">290</span>  }<a name="line.290"></a>
-<span class="sourceLineNo">291</span><a name="line.291"></a>
-<span class="sourceLineNo">292</span>  /**<a name="line.292"></a>
-<span class="sourceLineNo">293</span>   * Returns the names of the fields used in the quota summary.<a name="line.293"></a>
-<span class="sourceLineNo">294</span>   * <a name="line.294"></a>
-<span class="sourceLineNo">295</span>   * @return names of quota fields as displayed in the header<a name="line.295"></a>
-<span class="sourceLineNo">296</span>   */<a name="line.296"></a>
-<span class="sourceLineNo">297</span>  public static String[] getQuotaHeaderFields() {<a name="line.297"></a>
-<span class="sourceLineNo">298</span>    return QUOTA_HEADER_FIELDS;<a name="line.298"></a>
-<span class="sourceLineNo">299</span>  }<a name="line.299"></a>
-<span class="sourceLineNo">300</span><a name="line.300"></a>
-<span class="sourceLineNo">301</span>  @Override<a name="line.301"></a>
-<span class="sourceLineNo">302</span>  public String toString() {<a name="line.302"></a>
-<span class="sourceLineNo">303</span>    return toString(true);<a name="line.303"></a>
-<span class="sourceLineNo">304</span>  }<a name="line.304"></a>
-<span class="sourceLineNo">305</span><a name="line.305"></a>
-<span class="sourceLineNo">306</span>  /** Return the string representation of the object in the output format.<a name="line.306"></a>
-<span class="sourceLineNo">307</span>   * if qOption is false, output directory count, file count, and content size;<a name="line.307"></a>
-<span class="sourceLineNo">308</span>   * if qOption is true, output quota and remaining quota as well.<a name="line.308"></a>
-<span class="sourceLineNo">309</span>   *<a name="line.309"></a>
-<span class="sourceLineNo">310</span>   * @param qOption a flag indicating if quota needs to be printed or not<a name="line.310"></a>
-<span class="sourceLineNo">311</span>   * @return the string representation of the object<a name="line.311"></a>
-<span class="sourceLineNo">312</span>  */<a name="line.312"></a>
-<span class="sourceLineNo">313</span>  public String toString(boolean qOption) {<a name="line.313"></a>
-<span class="sourceLineNo">314</span>    return toString(qOption, false);<a name="line.314"></a>
-<span class="sourceLineNo">315</span>  }<a name="line.315"></a>
-<span class="sourceLineNo">316</span><a name="line.316"></a>
-<span class="sourceLineNo">317</span>  /** Return the string representation of the object in the output format.<a name="line.317"></a>
-<span class="sourceLineNo">318</span>   * if qOption is false, output directory count, file count, and content size;<a name="line.318"></a>
-<span class="sourceLineNo">319</span>   * if qOption is true, output quota and remaining quota as well.<a name="line.319"></a>
-<span class="sourceLineNo">320</span>   * if hOption is false file sizes are returned in bytes<a name="line.320"></a>
-<span class="sourceLineNo">321</span>   * if hOption is true file sizes are returned in human readable <a name="line.321"></a>
-<span class="sourceLineNo">322</span>   * <a name="line.322"></a>
-<span class="sourceLineNo">323</span>   * @param qOption a flag indicating if quota needs to be printed or not<a name="line.323"></a>
-<span class="sourceLineNo">324</span>   * @param hOption a flag indicating if human readable output if to be used<a name="line.324"></a>
-<span class="sourceLineNo">325</span>   * @return the string representation of the object<a name="line.325"></a>
-<span class="sourceLineNo">326</span>   */<a name="line.326"></a>
-<span class="sourceLineNo">327</span>  public String toString(boolean qOption, boolean hOption) {<a name="line.327"></a>
-<span class="sourceLineNo">328</span>    String prefix = "";<a name="line.328"></a>
-<span class="sourceLineNo">329</span>    if (qOption) {<a name="line.329"></a>
-<span class="sourceLineNo">330</span>      String quotaStr = "none";<a name="line.330"></a>
-<span class="sourceLineNo">331</span>      String quotaRem = "inf";<a name="line.331"></a>
-<span class="sourceLineNo">332</span>      String spaceQuotaStr = "none";<a name="line.332"></a>
-<span class="sourceLineNo">333</span>      String spaceQuotaRem = "inf";<a name="line.333"></a>
-<span class="sourceLineNo">334</span>      <a name="line.334"></a>
-<span class="sourceLineNo">335</span>      if (quota&gt;0) {<a name="line.335"></a>
-<span class="sourceLineNo">336</span>        quotaStr = formatSize(quota, hOption);<a name="line.336"></a>
-<span class="sourceLineNo">337</span>        quotaRem = formatSize(quota-(directoryCount+fileCount), hOption);<a name="line.337"></a>
-<span class="sourceLineNo">338</span>      }<a name="line.338"></a>
-<span class="sourceLineNo">339</span>      if (spaceQuota&gt;0) {<a name="line.339"></a>
-<span class="sourceLineNo">340</span>        spaceQuotaStr = formatSize(spaceQuota, hOption);<a name="line.340"></a>
-<span class="sourceLineNo">341</span>        spaceQuotaRem = formatSize(spaceQuota - spaceConsumed, hOption);<a name="line.341"></a>
-<span class="sourceLineNo">342</span>      }<a name="line.342"></a>
-<span class="sourceLineNo">343</span>      <a name="line.343"></a>
-<span class="sourceLineNo">344</span>      prefix = String.format(QUOTA_SUMMARY_FORMAT + SPACE_QUOTA_SUMMARY_FORMAT,<a name="line.344"></a>
-<span class="sourceLineNo">345</span>                             quotaStr, quotaRem, spaceQuotaStr, spaceQuotaRem);<a name="line.345"></a>
-<span class="sourceLineNo">346</span>    }<a name="line.346"></a>
-<span class="sourceLineNo">347</span>    <a name="line.347"></a>
-<span class="sourceLineNo">348</span>    return prefix + String.format(SUMMARY_FORMAT,<a name="line.348"></a>
-<span class="sourceLineNo">349</span>     formatSize(directoryCount, hOption),<a name="line.349"></a>
-<span class="sourceLineNo">350</span>     formatSize(fileCount, hOption),<a name="line.350"></a>
-<span class="sourceLineNo">351</span>     formatSize(length, hOption));<a name="line.351"></a>
-<span class="sourceLineNo">352</span>  }<a name="line.352"></a>
-<span class="sourceLineNo">353</span>  /**<a name="line.353"></a>
-<span class="sourceLineNo">354</span>   * Formats a size to be human readable or in bytes<a name="line.354"></a>
-<span class="sourceLineNo">355</span>   * @param size value to be formatted<a name="line.355"></a>
-<span class="sourceLineNo">356</span>   * @param humanReadable flag indicating human readable or not<a name="line.356"></a>
-<span class="sourceLineNo">357</span>   * @return String representation of the size<a name="line.357"></a>
-<span class="sourceLineNo">358</span>  */<a name="line.358"></a>
-<span class="sourceLineNo">359</span>  private String formatSize(long size, boolean humanReadable) {<a name="line.359"></a>
-<span class="sourceLineNo">360</span>    return humanReadable<a name="line.360"></a>
-<span class="sourceLineNo">361</span>      ? StringUtils.TraditionalBinaryPrefix.long2String(size, "", 1)<a name="line.361"></a>
-<span class="sourceLineNo">362</span>      : String.valueOf(size);<a name="line.362"></a>
-<span class="sourceLineNo">363</span>  }<a name="line.363"></a>
-<span class="sourceLineNo">364</span>}<a name="line.364"></a>
+<span class="sourceLineNo">258</span>  private static final String STORAGE_TYPE_SUMMARY_FORMAT = "%13s %17s ";<a name="line.258"></a>
+<span class="sourceLineNo">259</span><a name="line.259"></a>
+<span class="sourceLineNo">260</span>  private static final String[] HEADER_FIELDS = new String[] { "DIR_COUNT",<a name="line.260"></a>
+<span class="sourceLineNo">261</span>      "FILE_COUNT", "CONTENT_SIZE"};<a name="line.261"></a>
+<span class="sourceLineNo">262</span>  private static final String[] QUOTA_HEADER_FIELDS = new String[] { "QUOTA",<a name="line.262"></a>
+<span class="sourceLineNo">263</span>      "REM_QUOTA", "SPACE_QUOTA", "REM_SPACE_QUOTA" };<a name="line.263"></a>
+<span class="sourceLineNo">264</span><a name="line.264"></a>
+<span class="sourceLineNo">265</span>  /** The header string */<a name="line.265"></a>
+<span class="sourceLineNo">266</span>  private static final String HEADER = String.format(<a name="line.266"></a>
+<span class="sourceLineNo">267</span>      SUMMARY_FORMAT, (Object[]) HEADER_FIELDS);<a name="line.267"></a>
+<span class="sourceLineNo">268</span><a name="line.268"></a>
+<span class="sourceLineNo">269</span>  private static final String QUOTA_HEADER = String.format(<a name="line.269"></a>
+<span class="sourceLineNo">270</span>      QUOTA_SUMMARY_FORMAT + SPACE_QUOTA_SUMMARY_FORMAT,<a name="line.270"></a>
+<span class="sourceLineNo">271</span>      (Object[]) QUOTA_HEADER_FIELDS) +<a name="line.271"></a>
+<span class="sourceLineNo">272</span>      HEADER;<a name="line.272"></a>
+<span class="sourceLineNo">273</span><a name="line.273"></a>
+<span class="sourceLineNo">274</span>  /** default quota display string */<a name="line.274"></a>
+<span class="sourceLineNo">275</span>  private static final String QUOTA_NONE = "none";<a name="line.275"></a>
+<span class="sourceLineNo">276</span>  private static final String QUOTA_INF = "inf";<a name="line.276"></a>
+<span class="sourceLineNo">277</span><a name="line.277"></a>
+<span class="sourceLineNo">278</span>  /** Return the header of the output.<a name="line.278"></a>
+<span class="sourceLineNo">279</span>   * if qOption is false, output directory count, file count, and content size;<a name="line.279"></a>
+<span class="sourceLineNo">280</span>   * if qOption is true, output quota and remaining quota as well.<a name="line.280"></a>
+<span class="sourceLineNo">281</span>   * <a name="line.281"></a>
+<span class="sourceLineNo">282</span>   * @param qOption a flag indicating if quota needs to be printed or not<a name="line.282"></a>
+<span class="sourceLineNo">283</span>   * @return the header of the output<a name="line.283"></a>
+<span class="sourceLineNo">284</span>   */<a name="line.284"></a>
+<span class="sourceLineNo">285</span>  public static String getHeader(boolean qOption) {<a name="line.285"></a>
+<span class="sourceLineNo">286</span>    return qOption ? QUOTA_HEADER : HEADER;<a name="line.286"></a>
+<span class="sourceLineNo">287</span>  }<a name="line.287"></a>
+<span class="sourceLineNo">288</span><a name="line.288"></a>
+<span class="sourceLineNo">289</span>  /**<a name="line.289"></a>
+<span class="sourceLineNo">290</span>   * return the header of with the StorageTypes<a name="line.290"></a>
+<span class="sourceLineNo">291</span>   *<a name="line.291"></a>
+<span class="sourceLineNo">292</span>   * @param storageTypes<a name="line.292"></a>
+<span class="sourceLineNo">293</span>   * @return storage header string<a name="line.293"></a>
+<span class="sourceLineNo">294</span>   */<a name="line.294"></a>
+<span class="sourceLineNo">295</span>  public static String getStorageTypeHeader(List&lt;StorageType&gt; storageTypes) {<a name="line.295"></a>
+<span class="sourceLineNo">296</span>    StringBuffer header = new StringBuffer();<a name="line.296"></a>
+<span class="sourceLineNo">297</span><a name="line.297"></a>
+<span class="sourceLineNo">298</span>    for (StorageType st : storageTypes) {<a name="line.298"></a>
+<span class="sourceLineNo">299</span>      /* the field length is 13/17 for quota and remain quota<a name="line.299"></a>
+<span class="sourceLineNo">300</span>       * as the max length for quota name is ARCHIVE_QUOTA<a name="line.300"></a>
+<span class="sourceLineNo">301</span>        * and remain quota name REM_ARCHIVE_QUOTA */<a name="line.301"></a>
+<span class="sourceLineNo">302</span>      String storageName = st.toString();<a name="line.302"></a>
+<span class="sourceLineNo">303</span>      header.append(String.format(STORAGE_TYPE_SUMMARY_FORMAT, storageName + "_QUOTA",<a name="line.303"></a>
+<span class="sourceLineNo">304</span>          "REM_" + storageName + "_QUOTA"));<a name="line.304"></a>
+<span class="sourceLineNo">305</span>    }<a name="line.305"></a>
+<span class="sourceLineNo">306</span>    return header.toString();<a name="line.306"></a>
+<span class="sourceLineNo">307</span>  }<a name="line.307"></a>
+<span class="sourceLineNo">308</span><a name="line.308"></a>
+<span class="sourceLineNo">309</span>  /**<a name="line.309"></a>
+<span class="sourceLineNo">310</span>   * Returns the names of the fields from the summary header.<a name="line.310"></a>
+<span class="sourceLineNo">311</span>   * <a name="line.311"></a>
+<span class="sourceLineNo">312</span>   * @return names of fields as displayed in the header<a name="line.312"></a>
+<span class="sourceLineNo">313</span>   */<a name="line.313"></a>
+<span class="sourceLineNo">314</span>  public static String[] getHeaderFields() {<a name="line.314"></a>
+<span class="sourceLineNo">315</span>    return HEADER_FIELDS;<a name="line.315"></a>
+<span class="sourceLineNo">316</span>  }<a name="line.316"></a>
+<span class="sourceLineNo">317</span><a name="line.317"></a>
+<span class="sourceLineNo">318</span>  /**<a name="line.318"></a>
+<span class="sourceLineNo">319</span>   * Returns the names of the fields used in the quota summary.<a name="line.319"></a>
+<span class="sourceLineNo">320</span>   * <a name="line.320"></a>
+<span class="sourceLineNo">321</span>   * @return names of quota fields as displayed in the header<a name="line.321"></a>
+<span class="sourceLineNo">322</span>   */<a name="line.322"></a>
+<span class="sourceLineNo">323</span>  public static String[] getQuotaHeaderFields() {<a name="line.323"></a>
+<span class="sourceLineNo">324</span>    return QUOTA_HEADER_FIELDS;<a name="line.324"></a>
+<span class="sourceLineNo">325</span>  }<a name="line.325"></a>
+<span class="sourceLineNo">326</span><a name="line.326"></a>
+<span class="sourceLineNo">327</span>  @Override<a name="line.327"></a>
+<span class="sourceLineNo">328</span>  public String toString() {<a name="line.328"></a>
+<span class="sourceLineNo">329</span>    return toString(true);<a name="line.329"></a>
+<span class="sourceLineNo">330</span>  }<a name="line.330"></a>
+<span class="sourceLineNo">331</span><a name="line.331"></a>
+<span class="sourceLineNo">332</span>  /** Return the string representation of the object in the output format.<a name="line.332"></a>
+<span class="sourceLineNo">333</span>   * if qOption is false, output directory count, file count, and content size;<a name="line.333"></a>
+<span class="sourceLineNo">334</span>   * if qOption is true, output quota and remaining quota as well.<a name="line.334"></a>
+<span class="sourceLineNo">335</span>   *<a name="line.335"></a>
+<span class="sourceLineNo">336</span>   * @param qOption a flag indicating if quota needs to be printed or not<a name="line.336"></a>
+<span class="sourceLineNo">337</span>   * @return the string representation of the object<a name="line.337"></a>
+<span class="sourceLineNo">338</span>  */<a name="line.338"></a>
+<span class="sourceLineNo">339</span>  public String toString(boolean qOption) {<a name="line.339"></a>
+<span class="sourceLineNo">340</span>    return toString(qOption, false);<a name="line.340"></a>
+<span class="sourceLineNo">341</span>  }<a name="line.341"></a>
+<span class="sourceLineNo">342</span><a name="line.342"></a>
+<span class="sourceLineNo">343</span>  /** Return the string representation of the object in the output format.<a name="line.343"></a>
+<span class="sourceLineNo">344</span>   * if qOption is false, output directory count, file count, and content size;<a name="line.344"></a>
+<span class="sourceLineNo">345</span>   * if qOption is true, output quota and remaining quota as well.<a name="line.345"></a>
+<span class="sourceLineNo">346</span>   * if hOption is false file sizes are returned in bytes<a name="line.346"></a>
+<span class="sourceLineNo">347</span>   * if hOption is true file sizes are returned in human readable <a name="line.347"></a>
+<span class="sourceLineNo">348</span>   * <a name="line.348"></a>
+<span class="sourceLineNo">349</span>   * @param qOption a flag indicating if quota needs to be printed or not<a name="line.349"></a>
+<span class="sourceLineNo">350</span>   * @param hOption a flag indicating if human readable output if to be used<a name="line.350"></a>
+<span class="sourceLineNo">351</span>   * @return the string representation of the object<a name="line.351"></a>
+<span class="sourceLineNo">352</span>   */<a name="line.352"></a>
+<span class="sourceLineNo">353</span>  public String toString(boolean qOption, boolean hOption) {<a name="line.353"></a>
+<span class="sourceLineNo">354</span>    return toString(qOption, hOption, false, null);<a name="line.354"></a>
+<span class="sourceLineNo">355</span>  }<a name="line.355"></a>
+<span class="sourceLineNo">356</span><a name="line.356"></a>
+<span class="sourceLineNo">357</span>  /**<a name="line.357"></a>
+<span class="sourceLineNo">358</span>   * Return the string representation of the object in the output format.<a name="line.358"></a>
+<span class="sourceLineNo">359</span>   * if tOption is true, display the quota by storage types,<a name="line.359"></a>
+<span class="sourceLineNo">360</span>   * Otherwise, same logic with #toString(boolean,boolean)<a name="line.360"></a>
+<span class="sourceLineNo">361</span>   *<a name="line.361"></a>
+<span class="sourceLineNo">362</span>   * @param qOption a flag indicating if quota needs to be printed or not<a name="line.362"></a>
+<span class="sourceLineNo">363</span>   * @param hOption a flag indicating if human readable output if to be used<a name="line.363"></a>
+<span class="sourceLineNo">364</span>   * @param tOption a flag indicating if display quota by storage types<a name="line.364"></a>
+<span class="sourceLineNo">365</span>   * @param types Storage types to display<a name="line.365"></a>
+<span class="sourceLineNo">366</span>   * @return the string representation of the object<a name="line.366"></a>
+<span class="sourceLineNo">367</span>   */<a name="line.367"></a>
+<span class="sourceLineNo">368</span>  public String toString(boolean qOption, boolean hOption,<a name="line.368"></a>
+<span class="sourceLineNo">369</span>                         boolean tOption, List&lt;StorageType&gt; types) {<a name="line.369"></a>
+<span class="sourceLineNo">370</span>    String prefix = "";<a name="line.370"></a>
+<span class="sourceLineNo">371</span><a name="line.371"></a>
+<span class="sourceLineNo">372</span>    if (tOption) {<a name="line.372"></a>
+<span class="sourceLineNo">373</span>      StringBuffer content = new StringBuffer();<a name="line.373"></a>
+<span class="sourceLineNo">374</span>      for (StorageType st : types) {<a name="line.374"></a>
+<span class="sourceLineNo">375</span>        long typeQuota = getTypeQuota(st);<a name="line.375"></a>
+<span class="sourceLineNo">376</span>        long typeConsumed = getTypeConsumed(st);<a name="line.376"></a>
+<span class="sourceLineNo">377</span>        String quotaStr = QUOTA_NONE;<a name="line.377"></a>
+<span class="sourceLineNo">378</span>        String quotaRem = QUOTA_INF;<a name="line.378"></a>
+<span class="sourceLineNo">379</span><a name="line.379"></a>
+<span class="sourceLineNo">380</span>        if (typeQuota &gt; 0) {<a name="line.380"></a>
+<span class="sourceLineNo">381</span>          quotaStr = formatSize(typeQuota, hOption);<a name="line.381"></a>
+<span class="sourceLineNo">382</span>          quotaRem = formatSize(typeQuota - typeConsumed, hOption);<a name="line.382"></a>
+<span class="sourceLineNo">383</span>        }<a name="line.383"></a>
+<span class="sourceLineNo">384</span><a name="line.384"></a>
+<span class="sourceLineNo">385</span>        content.append(String.format(STORAGE_TYPE_SUMMARY_FORMAT,<a name="line.385"></a>
+<span class="sourceLineNo">386</span>            quotaStr, quotaRem));<a name="line.386"></a>
+<span class="sourceLineNo">387</span>      }<a name="line.387"></a>
+<span class="sourceLineNo">388</span>      return content.toString();<a name="line.388"></a>
+<span class="sourceLineNo">389</span>    }<a name="line.389"></a>
+<span class="sourceLineNo">390</span><a name="line.390"></a>
+<span class="sourceLineNo">391</span>    if (qOption) {<a name="line.391"></a>
+<span class="sourceLineNo">392</span>      String quotaStr = QUOTA_NONE;<a name="line.392"></a>
+<span class="sourceLineNo">393</span>      String quotaRem = QUOTA_INF;<a name="line.393"></a>
+<span class="sourceLineNo">394</span>      String spaceQuotaStr = QUOTA_NONE;<a name="line.394"></a>
+<span class="sourceLineNo">395</span>      String spaceQuotaRem = QUOTA_INF;<a name="line.395"></a>
+<span class="sourceLineNo">396</span><a name="line.396"></a>
+<span class="sourceLineNo">397</span>      if (quota&gt;0) {<a name="line.397"></a>
+<span class="sourceLineNo">398</span>        quotaStr = formatSize(quota, hOption);<a name="line.398"></a>
+<span class="sourceLineNo">399</span>        quotaRem = formatSize(quota-(directoryCount+fileCount), hOption);<a name="line.399"></a>
+<span class="sourceLineNo">400</span>      }<a name="line.400"></a>
+<span class="sourceLineNo">401</span>      if (spaceQuota&gt;0) {<a name="line.401"></a>
+<span class="sourceLineNo">402</span>        spaceQuotaStr = formatSize(spaceQuota, hOption);<a name="line.402"></a>
+<span class="sourceLineNo">403</span>        spaceQuotaRem = formatSize(spaceQuota - spaceConsumed, hOption);<a name="line.403"></a>
+<span class="sourceLineNo">404</span>      }<a name="line.404"></a>
+<span class="sourceLineNo">405</span><a name="line.405"></a>
+<span class="sourceLineNo">406</span>      prefix = String.format(QUOTA_SUMMARY_FORMAT + SPACE_QUOTA_SUMMARY_FORMAT,<a name="line.406"></a>
+<span class="sourceLineNo">407</span>          quotaStr, quotaRem, spaceQuotaStr, spaceQuotaRem);<a name="line.407"></a>
+<span class="sourceLineNo">408</span>    }<a name="line.408"></a>
+<span class="sourceLineNo">409</span><a name="line.409"></a>
+<span class="sourceLineNo">410</span>    return prefix + String.format(SUMMARY_FORMAT,<a name="line.410"></a>
+<span class="sourceLineNo">411</span>        formatSize(directoryCount, hOption),<a name="line.411"></a>
+<span class="sourceLineNo">412</span>        formatSize(fileCount, hOption),<a name="line.412"></a>
+<span class="sourceLineNo">413</span>        formatSize(length, hOption));<a name="line.413"></a>
+<span class="sourceLineNo">414</span>  }<a name="line.414"></a>
+<span class="sourceLineNo">415</span><a name="line.415"></a>
+<span class="sourceLineNo">416</span>  /**<a name="line.416"></a>
+<span class="sourceLineNo">417</span>   * Formats a size to be human readable or in bytes<a name="line.417"></a>
+<span class="sourceLineNo">418</span>   * @param size value to be formatted<a name="line.418"></a>
+<span class="sourceLineNo">419</span>   * @param humanReadable flag indicating human readable or not<a name="line.419"></a>
+<span class="sourceLineNo">420</span>   * @return String representation of the size<a name="line.420"></a>
+<span class="sourceLineNo">421</span>  */<a name="line.421"></a>
+<span class="sourceLineNo">422</span>  private String formatSize(long size, boolean humanReadable) {<a name="line.422"></a>
+<span class="sourceLineNo">423</span>    return humanReadable<a name="line.423"></a>
+<span class="sourceLineNo">424</span>      ? StringUtils.TraditionalBinaryPrefix.long2String(size, "", 1)<a name="line.424"></a>
+<span class="sourceLineNo">425</span>      : String.valueOf(size);<a name="line.425"></a>
+<span class="sourceLineNo">426</span>  }<a name="line.426"></a>
+<span class="sourceLineNo">427</span>}<a name="line.427"></a>
 
 
 
