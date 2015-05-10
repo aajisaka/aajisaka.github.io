@@ -496,7 +496,7 @@
 <span class="sourceLineNo">488</span>    // Memory ask has to be a multiple of min and less than max. <a name="line.488"></a>
 <span class="sourceLineNo">489</span>    // Dump out information about cluster capability as seen by the resource manager<a name="line.489"></a>
 <span class="sourceLineNo">490</span>    int maxMem = appResponse.getMaximumResourceCapability().getMemory();<a name="line.490"></a>
-<span class="sourceLineNo">491</span>    LOG.info("Max mem capabililty of resources in this cluster " + maxMem);<a name="line.491"></a>
+<span class="sourceLineNo">491</span>    LOG.info("Max mem capability of resources in this cluster " + maxMem);<a name="line.491"></a>
 <span class="sourceLineNo">492</span><a name="line.492"></a>
 <span class="sourceLineNo">493</span>    // A resource ask cannot exceed the max. <a name="line.493"></a>
 <span class="sourceLineNo">494</span>    if (amMemory &gt; maxMem) {<a name="line.494"></a>
@@ -507,7 +507,7 @@
 <span class="sourceLineNo">499</span>    }                           <a name="line.499"></a>
 <span class="sourceLineNo">500</span><a name="line.500"></a>
 <span class="sourceLineNo">501</span>    int maxVCores = appResponse.getMaximumResourceCapability().getVirtualCores();<a name="line.501"></a>
-<span class="sourceLineNo">502</span>    LOG.info("Max virtual cores capabililty of resources in this cluster " + maxVCores);<a name="line.502"></a>
+<span class="sourceLineNo">502</span>    LOG.info("Max virtual cores capability of resources in this cluster " + maxVCores);<a name="line.502"></a>
 <span class="sourceLineNo">503</span>    <a name="line.503"></a>
 <span class="sourceLineNo">504</span>    if (amVCores &gt; maxVCores) {<a name="line.504"></a>
 <span class="sourceLineNo">505</span>      LOG.info("AM virtual cores specified above max threshold of cluster. " <a name="line.505"></a>

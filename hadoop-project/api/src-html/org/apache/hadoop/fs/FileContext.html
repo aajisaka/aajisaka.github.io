@@ -2572,7 +2572,108 @@
 <span class="sourceLineNo">2564</span>      }<a name="line.2564"></a>
 <span class="sourceLineNo">2565</span>    }.resolve(this, absF);<a name="line.2565"></a>
 <span class="sourceLineNo">2566</span>  }<a name="line.2566"></a>
-<span class="sourceLineNo">2567</span>}<a name="line.2567"></a>
+<span class="sourceLineNo">2567</span><a name="line.2567"></a>
+<span class="sourceLineNo">2568</span>  /**<a name="line.2568"></a>
+<span class="sourceLineNo">2569</span>   * Create a snapshot with a default name.<a name="line.2569"></a>
+<span class="sourceLineNo">2570</span>   *<a name="line.2570"></a>
+<span class="sourceLineNo">2571</span>   * @param path The directory where snapshots will be taken.<a name="line.2571"></a>
+<span class="sourceLineNo">2572</span>   * @return the snapshot path.<a name="line.2572"></a>
+<span class="sourceLineNo">2573</span>   *<a name="line.2573"></a>
+<span class="sourceLineNo">2574</span>   * @throws IOException If an I/O error occurred<a name="line.2574"></a>
+<span class="sourceLineNo">2575</span>   *<a name="line.2575"></a>
+<span class="sourceLineNo">2576</span>   * &lt;p&gt;Exceptions applicable to file systems accessed over RPC:<a name="line.2576"></a>
+<span class="sourceLineNo">2577</span>   * @throws RpcClientException If an exception occurred in the RPC client<a name="line.2577"></a>
+<span class="sourceLineNo">2578</span>   * @throws RpcServerException If an exception occurred in the RPC server<a name="line.2578"></a>
+<span class="sourceLineNo">2579</span>   * @throws UnexpectedServerException If server implementation throws<a name="line.2579"></a>
+<span class="sourceLineNo">2580</span>   *           undeclared exception to RPC server<a name="line.2580"></a>
+<span class="sourceLineNo">2581</span>   */<a name="line.2581"></a>
+<span class="sourceLineNo">2582</span>  public final Path createSnapshot(Path path) throws IOException {<a name="line.2582"></a>
+<span class="sourceLineNo">2583</span>    return createSnapshot(path, null);<a name="line.2583"></a>
+<span class="sourceLineNo">2584</span>  }<a name="line.2584"></a>
+<span class="sourceLineNo">2585</span><a name="line.2585"></a>
+<span class="sourceLineNo">2586</span>  /**<a name="line.2586"></a>
+<span class="sourceLineNo">2587</span>   * Create a snapshot.<a name="line.2587"></a>
+<span class="sourceLineNo">2588</span>   *<a name="line.2588"></a>
+<span class="sourceLineNo">2589</span>   * @param path The directory where snapshots will be taken.<a name="line.2589"></a>
+<span class="sourceLineNo">2590</span>   * @param snapshotName The name of the snapshot<a name="line.2590"></a>
+<span class="sourceLineNo">2591</span>   * @return the snapshot path.<a name="line.2591"></a>
+<span class="sourceLineNo">2592</span>   *<a name="line.2592"></a>
+<span class="sourceLineNo">2593</span>   * @throws IOException If an I/O error occurred<a name="line.2593"></a>
+<span class="sourceLineNo">2594</span>   *<a name="line.2594"></a>
+<span class="sourceLineNo">2595</span>   * &lt;p&gt;Exceptions applicable to file systems accessed over RPC:<a name="line.2595"></a>
+<span class="sourceLineNo">2596</span>   * @throws RpcClientException If an exception occurred in the RPC client<a name="line.2596"></a>
+<span class="sourceLineNo">2597</span>   * @throws RpcServerException If an exception occurred in the RPC server<a name="line.2597"></a>
+<span class="sourceLineNo">2598</span>   * @throws UnexpectedServerException If server implementation throws<a name="line.2598"></a>
+<span class="sourceLineNo">2599</span>   *           undeclared exception to RPC server<a name="line.2599"></a>
+<span class="sourceLineNo">2600</span>   */<a name="line.2600"></a>
+<span class="sourceLineNo">2601</span>  public Path createSnapshot(final Path path, final String snapshotName)<a name="line.2601"></a>
+<span class="sourceLineNo">2602</span>      throws IOException {<a name="line.2602"></a>
+<span class="sourceLineNo">2603</span>    final Path absF = fixRelativePart(path);<a name="line.2603"></a>
+<span class="sourceLineNo">2604</span>    return new FSLinkResolver&lt;Path&gt;() {<a name="line.2604"></a>
+<span class="sourceLineNo">2605</span><a name="line.2605"></a>
+<span class="sourceLineNo">2606</span>      @Override<a name="line.2606"></a>
+<span class="sourceLineNo">2607</span>      public Path next(final AbstractFileSystem fs, final Path p)<a name="line.2607"></a>
+<span class="sourceLineNo">2608</span>          throws IOException {<a name="line.2608"></a>
+<span class="sourceLineNo">2609</span>        return fs.createSnapshot(p, snapshotName);<a name="line.2609"></a>
+<span class="sourceLineNo">2610</span>      }<a name="line.2610"></a>
+<span class="sourceLineNo">2611</span>    }.resolve(this, absF);<a name="line.2611"></a>
+<span class="sourceLineNo">2612</span>  }<a name="line.2612"></a>
+<span class="sourceLineNo">2613</span><a name="line.2613"></a>
+<span class="sourceLineNo">2614</span>  /**<a name="line.2614"></a>
+<span class="sourceLineNo">2615</span>   * Rename a snapshot.<a name="line.2615"></a>
+<span class="sourceLineNo">2616</span>   *<a name="line.2616"></a>
+<span class="sourceLineNo">2617</span>   * @param path The directory path where the snapshot was taken<a name="line.2617"></a>
+<span class="sourceLineNo">2618</span>   * @param snapshotOldName Old name of the snapshot<a name="line.2618"></a>
+<span class="sourceLineNo">2619</span>   * @param snapshotNewName New name of the snapshot<a name="line.2619"></a>
+<span class="sourceLineNo">2620</span>   *<a name="line.2620"></a>
+<span class="sourceLineNo">2621</span>   * @throws IOException If an I/O error occurred<a name="line.2621"></a>
+<span class="sourceLineNo">2622</span>   *<a name="line.2622"></a>
+<span class="sourceLineNo">2623</span>   * &lt;p&gt;Exceptions applicable to file systems accessed over RPC:<a name="line.2623"></a>
+<span class="sourceLineNo">2624</span>   * @throws RpcClientException If an exception occurred in the RPC client<a name="line.2624"></a>
+<span class="sourceLineNo">2625</span>   * @throws RpcServerException If an exception occurred in the RPC server<a name="line.2625"></a>
+<span class="sourceLineNo">2626</span>   * @throws UnexpectedServerException If server implementation throws<a name="line.2626"></a>
+<span class="sourceLineNo">2627</span>   *           undeclared exception to RPC server<a name="line.2627"></a>
+<span class="sourceLineNo">2628</span>   */<a name="line.2628"></a>
+<span class="sourceLineNo">2629</span>  public void renameSnapshot(final Path path, final String snapshotOldName,<a name="line.2629"></a>
+<span class="sourceLineNo">2630</span>      final String snapshotNewName) throws IOException {<a name="line.2630"></a>
+<span class="sourceLineNo">2631</span>    final Path absF = fixRelativePart(path);<a name="line.2631"></a>
+<span class="sourceLineNo">2632</span>    new FSLinkResolver&lt;Void&gt;() {<a name="line.2632"></a>
+<span class="sourceLineNo">2633</span>      @Override<a name="line.2633"></a>
+<span class="sourceLineNo">2634</span>      public Void next(final AbstractFileSystem fs, final Path p)<a name="line.2634"></a>
+<span class="sourceLineNo">2635</span>          throws IOException {<a name="line.2635"></a>
+<span class="sourceLineNo">2636</span>        fs.renameSnapshot(p, snapshotOldName, snapshotNewName);<a name="line.2636"></a>
+<span class="sourceLineNo">2637</span>        return null;<a name="line.2637"></a>
+<span class="sourceLineNo">2638</span>      }<a name="line.2638"></a>
+<span class="sourceLineNo">2639</span>    }.resolve(this, absF);<a name="line.2639"></a>
+<span class="sourceLineNo">2640</span>  }<a name="line.2640"></a>
+<span class="sourceLineNo">2641</span><a name="line.2641"></a>
+<span class="sourceLineNo">2642</span>  /**<a name="line.2642"></a>
+<span class="sourceLineNo">2643</span>   * Delete a snapshot of a directory.<a name="line.2643"></a>
+<span class="sourceLineNo">2644</span>   *<a name="line.2644"></a>
+<span class="sourceLineNo">2645</span>   * @param path The directory that the to-be-deleted snapshot belongs to<a name="line.2645"></a>
+<span class="sourceLineNo">2646</span>   * @param snapshotName The name of the snapshot<a name="line.2646"></a>
+<span class="sourceLineNo">2647</span>   *<a name="line.2647"></a>
+<span class="sourceLineNo">2648</span>   * @throws IOException If an I/O error occurred<a name="line.2648"></a>
+<span class="sourceLineNo">2649</span>   *<a name="line.2649"></a>
+<span class="sourceLineNo">2650</span>   * &lt;p&gt;Exceptions applicable to file systems accessed over RPC:<a name="line.2650"></a>
+<span class="sourceLineNo">2651</span>   * @throws RpcClientException If an exception occurred in the RPC client<a name="line.2651"></a>
+<span class="sourceLineNo">2652</span>   * @throws RpcServerException If an exception occurred in the RPC server<a name="line.2652"></a>
+<span class="sourceLineNo">2653</span>   * @throws UnexpectedServerException If server implementation throws<a name="line.2653"></a>
+<span class="sourceLineNo">2654</span>   *           undeclared exception to RPC server<a name="line.2654"></a>
+<span class="sourceLineNo">2655</span>   */<a name="line.2655"></a>
+<span class="sourceLineNo">2656</span>  public void deleteSnapshot(final Path path, final String snapshotName)<a name="line.2656"></a>
+<span class="sourceLineNo">2657</span>      throws IOException {<a name="line.2657"></a>
+<span class="sourceLineNo">2658</span>    final Path absF = fixRelativePart(path);<a name="line.2658"></a>
+<span class="sourceLineNo">2659</span>    new FSLinkResolver&lt;Void&gt;() {<a name="line.2659"></a>
+<span class="sourceLineNo">2660</span>      @Override<a name="line.2660"></a>
+<span class="sourceLineNo">2661</span>      public Void next(final AbstractFileSystem fs, final Path p)<a name="line.2661"></a>
+<span class="sourceLineNo">2662</span>          throws IOException {<a name="line.2662"></a>
+<span class="sourceLineNo">2663</span>        fs.deleteSnapshot(p, snapshotName);<a name="line.2663"></a>
+<span class="sourceLineNo">2664</span>        return null;<a name="line.2664"></a>
+<span class="sourceLineNo">2665</span>      }<a name="line.2665"></a>
+<span class="sourceLineNo">2666</span>    }.resolve(this, absF);<a name="line.2666"></a>
+<span class="sourceLineNo">2667</span>  }<a name="line.2667"></a>
+<span class="sourceLineNo">2668</span>}<a name="line.2668"></a>
 
 
 

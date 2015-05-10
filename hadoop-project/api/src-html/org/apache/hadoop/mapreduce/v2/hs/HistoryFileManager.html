@@ -748,342 +748,347 @@
 <span class="sourceLineNo">740</span>    }<a name="line.740"></a>
 <span class="sourceLineNo">741</span>  }<a name="line.741"></a>
 <span class="sourceLineNo">742</span><a name="line.742"></a>
-<span class="sourceLineNo">743</span>  private static List&lt;FileStatus&gt; scanDirectory(Path path, FileContext fc,<a name="line.743"></a>
-<span class="sourceLineNo">744</span>      PathFilter pathFilter) throws IOException {<a name="line.744"></a>
-<span class="sourceLineNo">745</span>    path = fc.makeQualified(path);<a name="line.745"></a>
-<span class="sourceLineNo">746</span>    List&lt;FileStatus&gt; jhStatusList = new ArrayList&lt;FileStatus&gt;();<a name="line.746"></a>
-<span class="sourceLineNo">747</span>    RemoteIterator&lt;FileStatus&gt; fileStatusIter = fc.listStatus(path);<a name="line.747"></a>
-<span class="sourceLineNo">748</span>    while (fileStatusIter.hasNext()) {<a name="line.748"></a>
-<span class="sourceLineNo">749</span>      FileStatus fileStatus = fileStatusIter.next();<a name="line.749"></a>
-<span class="sourceLineNo">750</span>      Path filePath = fileStatus.getPath();<a name="line.750"></a>
-<span class="sourceLineNo">751</span>      if (fileStatus.isFile() &amp;&amp; pathFilter.accept(filePath)) {<a name="line.751"></a>
-<span class="sourceLineNo">752</span>        jhStatusList.add(fileStatus);<a name="line.752"></a>
-<span class="sourceLineNo">753</span>      }<a name="line.753"></a>
-<span class="sourceLineNo">754</span>    }<a name="line.754"></a>
-<span class="sourceLineNo">755</span>    return jhStatusList;<a name="line.755"></a>
-<span class="sourceLineNo">756</span>  }<a name="line.756"></a>
-<span class="sourceLineNo">757</span><a name="line.757"></a>
-<span class="sourceLineNo">758</span>  protected List&lt;FileStatus&gt; scanDirectoryForHistoryFiles(Path path,<a name="line.758"></a>
-<span class="sourceLineNo">759</span>      FileContext fc) throws IOException {<a name="line.759"></a>
-<span class="sourceLineNo">760</span>    return scanDirectory(path, fc, JobHistoryUtils.getHistoryFileFilter());<a name="line.760"></a>
+<span class="sourceLineNo">743</span>  @VisibleForTesting<a name="line.743"></a>
+<span class="sourceLineNo">744</span>  protected static List&lt;FileStatus&gt; scanDirectory(Path path, FileContext fc,<a name="line.744"></a>
+<span class="sourceLineNo">745</span>      PathFilter pathFilter) throws IOException {<a name="line.745"></a>
+<span class="sourceLineNo">746</span>    path = fc.makeQualified(path);<a name="line.746"></a>
+<span class="sourceLineNo">747</span>    List&lt;FileStatus&gt; jhStatusList = new ArrayList&lt;FileStatus&gt;();<a name="line.747"></a>
+<span class="sourceLineNo">748</span>    try {<a name="line.748"></a>
+<span class="sourceLineNo">749</span>      RemoteIterator&lt;FileStatus&gt; fileStatusIter = fc.listStatus(path);<a name="line.749"></a>
+<span class="sourceLineNo">750</span>      while (fileStatusIter.hasNext()) {<a name="line.750"></a>
+<span class="sourceLineNo">751</span>        FileStatus fileStatus = fileStatusIter.next();<a name="line.751"></a>
+<span class="sourceLineNo">752</span>        Path filePath = fileStatus.getPath();<a name="line.752"></a>
+<span class="sourceLineNo">753</span>        if (fileStatus.isFile() &amp;&amp; pathFilter.accept(filePath)) {<a name="line.753"></a>
+<span class="sourceLineNo">754</span>          jhStatusList.add(fileStatus);<a name="line.754"></a>
+<span class="sourceLineNo">755</span>        }<a name="line.755"></a>
+<span class="sourceLineNo">756</span>      }<a name="line.756"></a>
+<span class="sourceLineNo">757</span>    } catch (FileNotFoundException fe) {<a name="line.757"></a>
+<span class="sourceLineNo">758</span>      LOG.error("Error while scanning directory " + path, fe);<a name="line.758"></a>
+<span class="sourceLineNo">759</span>    }<a name="line.759"></a>
+<span class="sourceLineNo">760</span>    return jhStatusList;<a name="line.760"></a>
 <span class="sourceLineNo">761</span>  }<a name="line.761"></a>
-<span class="sourceLineNo">762</span>  <a name="line.762"></a>
-<span class="sourceLineNo">763</span>  /**<a name="line.763"></a>
-<span class="sourceLineNo">764</span>   * Finds all history directories with a timestamp component by scanning the<a name="line.764"></a>
-<span class="sourceLineNo">765</span>   * filesystem. Used when the JobHistory server is started.<a name="line.765"></a>
-<span class="sourceLineNo">766</span>   * <a name="line.766"></a>
-<span class="sourceLineNo">767</span>   * @return list of history directories<a name="line.767"></a>
-<span class="sourceLineNo">768</span>   */<a name="line.768"></a>
-<span class="sourceLineNo">769</span>  protected List&lt;FileStatus&gt; findTimestampedDirectories() throws IOException {<a name="line.769"></a>
-<span class="sourceLineNo">770</span>    List&lt;FileStatus&gt; fsList = JobHistoryUtils.localGlobber(doneDirFc,<a name="line.770"></a>
-<span class="sourceLineNo">771</span>        doneDirPrefixPath, DONE_BEFORE_SERIAL_TAIL);<a name="line.771"></a>
-<span class="sourceLineNo">772</span>    return fsList;<a name="line.772"></a>
-<span class="sourceLineNo">773</span>  }<a name="line.773"></a>
-<span class="sourceLineNo">774</span><a name="line.774"></a>
-<span class="sourceLineNo">775</span>  /**<a name="line.775"></a>
-<span class="sourceLineNo">776</span>   * Scans the intermediate directory to find user directories. Scans these for<a name="line.776"></a>
-<span class="sourceLineNo">777</span>   * history files if the modification time for the directory has changed. Once<a name="line.777"></a>
-<span class="sourceLineNo">778</span>   * it finds history files it starts the process of moving them to the done <a name="line.778"></a>
-<span class="sourceLineNo">779</span>   * directory.<a name="line.779"></a>
-<span class="sourceLineNo">780</span>   * <a name="line.780"></a>
-<span class="sourceLineNo">781</span>   * @throws IOException<a name="line.781"></a>
-<span class="sourceLineNo">782</span>   *           if there was a error while scanning<a name="line.782"></a>
-<span class="sourceLineNo">783</span>   */<a name="line.783"></a>
-<span class="sourceLineNo">784</span>  void scanIntermediateDirectory() throws IOException {<a name="line.784"></a>
-<span class="sourceLineNo">785</span>    // TODO it would be great to limit how often this happens, except in the<a name="line.785"></a>
-<span class="sourceLineNo">786</span>    // case where we are looking for a particular job.<a name="line.786"></a>
-<span class="sourceLineNo">787</span>    List&lt;FileStatus&gt; userDirList = JobHistoryUtils.localGlobber(<a name="line.787"></a>
-<span class="sourceLineNo">788</span>        intermediateDoneDirFc, intermediateDoneDirPath, "");<a name="line.788"></a>
-<span class="sourceLineNo">789</span>    LOG.debug("Scanning intermediate dirs");<a name="line.789"></a>
-<span class="sourceLineNo">790</span>    for (FileStatus userDir : userDirList) {<a name="line.790"></a>
-<span class="sourceLineNo">791</span>      String name = userDir.getPath().getName();<a name="line.791"></a>
-<span class="sourceLineNo">792</span>      UserLogDir dir = userDirModificationTimeMap.get(name);<a name="line.792"></a>
-<span class="sourceLineNo">793</span>      if(dir == null) {<a name="line.793"></a>
-<span class="sourceLineNo">794</span>        dir = new UserLogDir();<a name="line.794"></a>
-<span class="sourceLineNo">795</span>        UserLogDir old = userDirModificationTimeMap.putIfAbsent(name, dir);<a name="line.795"></a>
-<span class="sourceLineNo">796</span>        if(old != null) {<a name="line.796"></a>
-<span class="sourceLineNo">797</span>          dir = old;<a name="line.797"></a>
-<span class="sourceLineNo">798</span>        }<a name="line.798"></a>
-<span class="sourceLineNo">799</span>      }<a name="line.799"></a>
-<span class="sourceLineNo">800</span>      dir.scanIfNeeded(userDir);<a name="line.800"></a>
-<span class="sourceLineNo">801</span>    }<a name="line.801"></a>
-<span class="sourceLineNo">802</span>  }<a name="line.802"></a>
-<span class="sourceLineNo">803</span><a name="line.803"></a>
-<span class="sourceLineNo">804</span>  /**<a name="line.804"></a>
-<span class="sourceLineNo">805</span>   * Scans the specified path and populates the intermediate cache.<a name="line.805"></a>
-<span class="sourceLineNo">806</span>   * <a name="line.806"></a>
-<span class="sourceLineNo">807</span>   * @param absPath<a name="line.807"></a>
-<span class="sourceLineNo">808</span>   * @throws IOException<a name="line.808"></a>
-<span class="sourceLineNo">809</span>   */<a name="line.809"></a>
-<span class="sourceLineNo">810</span>  private void scanIntermediateDirectory(final Path absPath) throws IOException {<a name="line.810"></a>
-<span class="sourceLineNo">811</span>    if (LOG.isDebugEnabled()) {<a name="line.811"></a>
-<span class="sourceLineNo">812</span>      LOG.debug("Scanning intermediate dir " + absPath);<a name="line.812"></a>
-<span class="sourceLineNo">813</span>    }<a name="line.813"></a>
-<span class="sourceLineNo">814</span>    List&lt;FileStatus&gt; fileStatusList = scanDirectoryForHistoryFiles(absPath,<a name="line.814"></a>
-<span class="sourceLineNo">815</span>        intermediateDoneDirFc);<a name="line.815"></a>
+<span class="sourceLineNo">762</span><a name="line.762"></a>
+<span class="sourceLineNo">763</span>  protected List&lt;FileStatus&gt; scanDirectoryForHistoryFiles(Path path,<a name="line.763"></a>
+<span class="sourceLineNo">764</span>      FileContext fc) throws IOException {<a name="line.764"></a>
+<span class="sourceLineNo">765</span>    return scanDirectory(path, fc, JobHistoryUtils.getHistoryFileFilter());<a name="line.765"></a>
+<span class="sourceLineNo">766</span>  }<a name="line.766"></a>
+<span class="sourceLineNo">767</span>  <a name="line.767"></a>
+<span class="sourceLineNo">768</span>  /**<a name="line.768"></a>
+<span class="sourceLineNo">769</span>   * Finds all history directories with a timestamp component by scanning the<a name="line.769"></a>
+<span class="sourceLineNo">770</span>   * filesystem. Used when the JobHistory server is started.<a name="line.770"></a>
+<span class="sourceLineNo">771</span>   * <a name="line.771"></a>
+<span class="sourceLineNo">772</span>   * @return list of history directories<a name="line.772"></a>
+<span class="sourceLineNo">773</span>   */<a name="line.773"></a>
+<span class="sourceLineNo">774</span>  protected List&lt;FileStatus&gt; findTimestampedDirectories() throws IOException {<a name="line.774"></a>
+<span class="sourceLineNo">775</span>    List&lt;FileStatus&gt; fsList = JobHistoryUtils.localGlobber(doneDirFc,<a name="line.775"></a>
+<span class="sourceLineNo">776</span>        doneDirPrefixPath, DONE_BEFORE_SERIAL_TAIL);<a name="line.776"></a>
+<span class="sourceLineNo">777</span>    return fsList;<a name="line.777"></a>
+<span class="sourceLineNo">778</span>  }<a name="line.778"></a>
+<span class="sourceLineNo">779</span><a name="line.779"></a>
+<span class="sourceLineNo">780</span>  /**<a name="line.780"></a>
+<span class="sourceLineNo">781</span>   * Scans the intermediate directory to find user directories. Scans these for<a name="line.781"></a>
+<span class="sourceLineNo">782</span>   * history files if the modification time for the directory has changed. Once<a name="line.782"></a>
+<span class="sourceLineNo">783</span>   * it finds history files it starts the process of moving them to the done <a name="line.783"></a>
+<span class="sourceLineNo">784</span>   * directory.<a name="line.784"></a>
+<span class="sourceLineNo">785</span>   * <a name="line.785"></a>
+<span class="sourceLineNo">786</span>   * @throws IOException<a name="line.786"></a>
+<span class="sourceLineNo">787</span>   *           if there was a error while scanning<a name="line.787"></a>
+<span class="sourceLineNo">788</span>   */<a name="line.788"></a>
+<span class="sourceLineNo">789</span>  void scanIntermediateDirectory() throws IOException {<a name="line.789"></a>
+<span class="sourceLineNo">790</span>    // TODO it would be great to limit how often this happens, except in the<a name="line.790"></a>
+<span class="sourceLineNo">791</span>    // case where we are looking for a particular job.<a name="line.791"></a>
+<span class="sourceLineNo">792</span>    List&lt;FileStatus&gt; userDirList = JobHistoryUtils.localGlobber(<a name="line.792"></a>
+<span class="sourceLineNo">793</span>        intermediateDoneDirFc, intermediateDoneDirPath, "");<a name="line.793"></a>
+<span class="sourceLineNo">794</span>    LOG.debug("Scanning intermediate dirs");<a name="line.794"></a>
+<span class="sourceLineNo">795</span>    for (FileStatus userDir : userDirList) {<a name="line.795"></a>
+<span class="sourceLineNo">796</span>      String name = userDir.getPath().getName();<a name="line.796"></a>
+<span class="sourceLineNo">797</span>      UserLogDir dir = userDirModificationTimeMap.get(name);<a name="line.797"></a>
+<span class="sourceLineNo">798</span>      if(dir == null) {<a name="line.798"></a>
+<span class="sourceLineNo">799</span>        dir = new UserLogDir();<a name="line.799"></a>
+<span class="sourceLineNo">800</span>        UserLogDir old = userDirModificationTimeMap.putIfAbsent(name, dir);<a name="line.800"></a>
+<span class="sourceLineNo">801</span>        if(old != null) {<a name="line.801"></a>
+<span class="sourceLineNo">802</span>          dir = old;<a name="line.802"></a>
+<span class="sourceLineNo">803</span>        }<a name="line.803"></a>
+<span class="sourceLineNo">804</span>      }<a name="line.804"></a>
+<span class="sourceLineNo">805</span>      dir.scanIfNeeded(userDir);<a name="line.805"></a>
+<span class="sourceLineNo">806</span>    }<a name="line.806"></a>
+<span class="sourceLineNo">807</span>  }<a name="line.807"></a>
+<span class="sourceLineNo">808</span><a name="line.808"></a>
+<span class="sourceLineNo">809</span>  /**<a name="line.809"></a>
+<span class="sourceLineNo">810</span>   * Scans the specified path and populates the intermediate cache.<a name="line.810"></a>
+<span class="sourceLineNo">811</span>   * <a name="line.811"></a>
+<span class="sourceLineNo">812</span>   * @param absPath<a name="line.812"></a>
+<span class="sourceLineNo">813</span>   * @throws IOException<a name="line.813"></a>
+<span class="sourceLineNo">814</span>   */<a name="line.814"></a>
+<span class="sourceLineNo">815</span>  private void scanIntermediateDirectory(final Path absPath) throws IOException {<a name="line.815"></a>
 <span class="sourceLineNo">816</span>    if (LOG.isDebugEnabled()) {<a name="line.816"></a>
-<span class="sourceLineNo">817</span>      LOG.debug("Found " + fileStatusList.size() + " files");<a name="line.817"></a>
+<span class="sourceLineNo">817</span>      LOG.debug("Scanning intermediate dir " + absPath);<a name="line.817"></a>
 <span class="sourceLineNo">818</span>    }<a name="line.818"></a>
-<span class="sourceLineNo">819</span>    for (FileStatus fs : fileStatusList) {<a name="line.819"></a>
-<span class="sourceLineNo">820</span>      if (LOG.isDebugEnabled()) {<a name="line.820"></a>
-<span class="sourceLineNo">821</span>        LOG.debug("scanning file: "+ fs.getPath());<a name="line.821"></a>
-<span class="sourceLineNo">822</span>      }<a name="line.822"></a>
-<span class="sourceLineNo">823</span>      JobIndexInfo jobIndexInfo = FileNameIndexUtils.getIndexInfo(fs.getPath()<a name="line.823"></a>
-<span class="sourceLineNo">824</span>          .getName());<a name="line.824"></a>
-<span class="sourceLineNo">825</span>      String confFileName = JobHistoryUtils<a name="line.825"></a>
-<span class="sourceLineNo">826</span>          .getIntermediateConfFileName(jobIndexInfo.getJobId());<a name="line.826"></a>
-<span class="sourceLineNo">827</span>      String summaryFileName = JobHistoryUtils<a name="line.827"></a>
-<span class="sourceLineNo">828</span>          .getIntermediateSummaryFileName(jobIndexInfo.getJobId());<a name="line.828"></a>
-<span class="sourceLineNo">829</span>      HistoryFileInfo fileInfo = new HistoryFileInfo(fs.getPath(), new Path(fs<a name="line.829"></a>
-<span class="sourceLineNo">830</span>          .getPath().getParent(), confFileName), new Path(fs.getPath()<a name="line.830"></a>
-<span class="sourceLineNo">831</span>          .getParent(), summaryFileName), jobIndexInfo, false);<a name="line.831"></a>
-<span class="sourceLineNo">832</span><a name="line.832"></a>
-<span class="sourceLineNo">833</span>      final HistoryFileInfo old = jobListCache.addIfAbsent(fileInfo);<a name="line.833"></a>
-<span class="sourceLineNo">834</span>      if (old == null || old.didMoveFail()) {<a name="line.834"></a>
-<span class="sourceLineNo">835</span>        final HistoryFileInfo found = (old == null) ? fileInfo : old;<a name="line.835"></a>
-<span class="sourceLineNo">836</span>        long cutoff = System.currentTimeMillis() - maxHistoryAge;<a name="line.836"></a>
-<span class="sourceLineNo">837</span>        if(found.getJobIndexInfo().getFinishTime() &lt;= cutoff) {<a name="line.837"></a>
-<span class="sourceLineNo">838</span>          try {<a name="line.838"></a>
-<span class="sourceLineNo">839</span>            found.delete();<a name="line.839"></a>
-<span class="sourceLineNo">840</span>          } catch (IOException e) {<a name="line.840"></a>
-<span class="sourceLineNo">841</span>            LOG.warn("Error cleaning up a HistoryFile that is out of date.", e);<a name="line.841"></a>
-<span class="sourceLineNo">842</span>          }<a name="line.842"></a>
-<span class="sourceLineNo">843</span>        } else {<a name="line.843"></a>
-<span class="sourceLineNo">844</span>          if (LOG.isDebugEnabled()) {<a name="line.844"></a>
-<span class="sourceLineNo">845</span>            LOG.debug("Scheduling move to done of " +found);<a name="line.845"></a>
-<span class="sourceLineNo">846</span>          }<a name="line.846"></a>
-<span class="sourceLineNo">847</span>          moveToDoneExecutor.execute(new Runnable() {<a name="line.847"></a>
-<span class="sourceLineNo">848</span>            @Override<a name="line.848"></a>
-<span class="sourceLineNo">849</span>            public void run() {<a name="line.849"></a>
-<span class="sourceLineNo">850</span>              try {<a name="line.850"></a>
-<span class="sourceLineNo">851</span>                found.moveToDone();<a name="line.851"></a>
-<span class="sourceLineNo">852</span>              } catch (IOException e) {<a name="line.852"></a>
-<span class="sourceLineNo">853</span>                LOG.info("Failed to process fileInfo for job: " + <a name="line.853"></a>
-<span class="sourceLineNo">854</span>                    found.getJobId(), e);<a name="line.854"></a>
-<span class="sourceLineNo">855</span>              }<a name="line.855"></a>
-<span class="sourceLineNo">856</span>            }<a name="line.856"></a>
-<span class="sourceLineNo">857</span>          });<a name="line.857"></a>
-<span class="sourceLineNo">858</span>        }<a name="line.858"></a>
-<span class="sourceLineNo">859</span>      } else if (!old.isMovePending()) {<a name="line.859"></a>
-<span class="sourceLineNo">860</span>        //This is a duplicate so just delete it<a name="line.860"></a>
-<span class="sourceLineNo">861</span>        if (LOG.isDebugEnabled()) {<a name="line.861"></a>
-<span class="sourceLineNo">862</span>          LOG.debug("Duplicate: deleting");<a name="line.862"></a>
+<span class="sourceLineNo">819</span>    List&lt;FileStatus&gt; fileStatusList = scanDirectoryForHistoryFiles(absPath,<a name="line.819"></a>
+<span class="sourceLineNo">820</span>        intermediateDoneDirFc);<a name="line.820"></a>
+<span class="sourceLineNo">821</span>    if (LOG.isDebugEnabled()) {<a name="line.821"></a>
+<span class="sourceLineNo">822</span>      LOG.debug("Found " + fileStatusList.size() + " files");<a name="line.822"></a>
+<span class="sourceLineNo">823</span>    }<a name="line.823"></a>
+<span class="sourceLineNo">824</span>    for (FileStatus fs : fileStatusList) {<a name="line.824"></a>
+<span class="sourceLineNo">825</span>      if (LOG.isDebugEnabled()) {<a name="line.825"></a>
+<span class="sourceLineNo">826</span>        LOG.debug("scanning file: "+ fs.getPath());<a name="line.826"></a>
+<span class="sourceLineNo">827</span>      }<a name="line.827"></a>
+<span class="sourceLineNo">828</span>      JobIndexInfo jobIndexInfo = FileNameIndexUtils.getIndexInfo(fs.getPath()<a name="line.828"></a>
+<span class="sourceLineNo">829</span>          .getName());<a name="line.829"></a>
+<span class="sourceLineNo">830</span>      String confFileName = JobHistoryUtils<a name="line.830"></a>
+<span class="sourceLineNo">831</span>          .getIntermediateConfFileName(jobIndexInfo.getJobId());<a name="line.831"></a>
+<span class="sourceLineNo">832</span>      String summaryFileName = JobHistoryUtils<a name="line.832"></a>
+<span class="sourceLineNo">833</span>          .getIntermediateSummaryFileName(jobIndexInfo.getJobId());<a name="line.833"></a>
+<span class="sourceLineNo">834</span>      HistoryFileInfo fileInfo = new HistoryFileInfo(fs.getPath(), new Path(fs<a name="line.834"></a>
+<span class="sourceLineNo">835</span>          .getPath().getParent(), confFileName), new Path(fs.getPath()<a name="line.835"></a>
+<span class="sourceLineNo">836</span>          .getParent(), summaryFileName), jobIndexInfo, false);<a name="line.836"></a>
+<span class="sourceLineNo">837</span><a name="line.837"></a>
+<span class="sourceLineNo">838</span>      final HistoryFileInfo old = jobListCache.addIfAbsent(fileInfo);<a name="line.838"></a>
+<span class="sourceLineNo">839</span>      if (old == null || old.didMoveFail()) {<a name="line.839"></a>
+<span class="sourceLineNo">840</span>        final HistoryFileInfo found = (old == null) ? fileInfo : old;<a name="line.840"></a>
+<span class="sourceLineNo">841</span>        long cutoff = System.currentTimeMillis() - maxHistoryAge;<a name="line.841"></a>
+<span class="sourceLineNo">842</span>        if(found.getJobIndexInfo().getFinishTime() &lt;= cutoff) {<a name="line.842"></a>
+<span class="sourceLineNo">843</span>          try {<a name="line.843"></a>
+<span class="sourceLineNo">844</span>            found.delete();<a name="line.844"></a>
+<span class="sourceLineNo">845</span>          } catch (IOException e) {<a name="line.845"></a>
+<span class="sourceLineNo">846</span>            LOG.warn("Error cleaning up a HistoryFile that is out of date.", e);<a name="line.846"></a>
+<span class="sourceLineNo">847</span>          }<a name="line.847"></a>
+<span class="sourceLineNo">848</span>        } else {<a name="line.848"></a>
+<span class="sourceLineNo">849</span>          if (LOG.isDebugEnabled()) {<a name="line.849"></a>
+<span class="sourceLineNo">850</span>            LOG.debug("Scheduling move to done of " +found);<a name="line.850"></a>
+<span class="sourceLineNo">851</span>          }<a name="line.851"></a>
+<span class="sourceLineNo">852</span>          moveToDoneExecutor.execute(new Runnable() {<a name="line.852"></a>
+<span class="sourceLineNo">853</span>            @Override<a name="line.853"></a>
+<span class="sourceLineNo">854</span>            public void run() {<a name="line.854"></a>
+<span class="sourceLineNo">855</span>              try {<a name="line.855"></a>
+<span class="sourceLineNo">856</span>                found.moveToDone();<a name="line.856"></a>
+<span class="sourceLineNo">857</span>              } catch (IOException e) {<a name="line.857"></a>
+<span class="sourceLineNo">858</span>                LOG.info("Failed to process fileInfo for job: " + <a name="line.858"></a>
+<span class="sourceLineNo">859</span>                    found.getJobId(), e);<a name="line.859"></a>
+<span class="sourceLineNo">860</span>              }<a name="line.860"></a>
+<span class="sourceLineNo">861</span>            }<a name="line.861"></a>
+<span class="sourceLineNo">862</span>          });<a name="line.862"></a>
 <span class="sourceLineNo">863</span>        }<a name="line.863"></a>
-<span class="sourceLineNo">864</span>        fileInfo.delete();<a name="line.864"></a>
-<span class="sourceLineNo">865</span>      }<a name="line.865"></a>
-<span class="sourceLineNo">866</span>    }<a name="line.866"></a>
-<span class="sourceLineNo">867</span>  }<a name="line.867"></a>
-<span class="sourceLineNo">868</span><a name="line.868"></a>
-<span class="sourceLineNo">869</span>  /**<a name="line.869"></a>
-<span class="sourceLineNo">870</span>   * Searches the job history file FileStatus list for the specified JobId.<a name="line.870"></a>
-<span class="sourceLineNo">871</span>   * <a name="line.871"></a>
-<span class="sourceLineNo">872</span>   * @param fileStatusList<a name="line.872"></a>
-<span class="sourceLineNo">873</span>   *          fileStatus list of Job History Files.<a name="line.873"></a>
-<span class="sourceLineNo">874</span>   * @param jobId<a name="line.874"></a>
-<span class="sourceLineNo">875</span>   *          The JobId to find.<a name="line.875"></a>
-<span class="sourceLineNo">876</span>   * @return A FileInfo object for the jobId, null if not found.<a name="line.876"></a>
-<span class="sourceLineNo">877</span>   * @throws IOException<a name="line.877"></a>
-<span class="sourceLineNo">878</span>   */<a name="line.878"></a>
-<span class="sourceLineNo">879</span>  private HistoryFileInfo getJobFileInfo(List&lt;FileStatus&gt; fileStatusList,<a name="line.879"></a>
-<span class="sourceLineNo">880</span>      JobId jobId) throws IOException {<a name="line.880"></a>
-<span class="sourceLineNo">881</span>    for (FileStatus fs : fileStatusList) {<a name="line.881"></a>
-<span class="sourceLineNo">882</span>      JobIndexInfo jobIndexInfo = FileNameIndexUtils.getIndexInfo(fs.getPath()<a name="line.882"></a>
-<span class="sourceLineNo">883</span>          .getName());<a name="line.883"></a>
-<span class="sourceLineNo">884</span>      if (jobIndexInfo.getJobId().equals(jobId)) {<a name="line.884"></a>
-<span class="sourceLineNo">885</span>        String confFileName = JobHistoryUtils<a name="line.885"></a>
-<span class="sourceLineNo">886</span>            .getIntermediateConfFileName(jobIndexInfo.getJobId());<a name="line.886"></a>
-<span class="sourceLineNo">887</span>        String summaryFileName = JobHistoryUtils<a name="line.887"></a>
-<span class="sourceLineNo">888</span>            .getIntermediateSummaryFileName(jobIndexInfo.getJobId());<a name="line.888"></a>
-<span class="sourceLineNo">889</span>        HistoryFileInfo fileInfo = new HistoryFileInfo(fs.getPath(), new Path(<a name="line.889"></a>
-<span class="sourceLineNo">890</span>            fs.getPath().getParent(), confFileName), new Path(fs.getPath()<a name="line.890"></a>
-<span class="sourceLineNo">891</span>            .getParent(), summaryFileName), jobIndexInfo, true);<a name="line.891"></a>
-<span class="sourceLineNo">892</span>        return fileInfo;<a name="line.892"></a>
-<span class="sourceLineNo">893</span>      }<a name="line.893"></a>
-<span class="sourceLineNo">894</span>    }<a name="line.894"></a>
-<span class="sourceLineNo">895</span>    return null;<a name="line.895"></a>
-<span class="sourceLineNo">896</span>  }<a name="line.896"></a>
-<span class="sourceLineNo">897</span><a name="line.897"></a>
-<span class="sourceLineNo">898</span>  /**<a name="line.898"></a>
-<span class="sourceLineNo">899</span>   * Scans old directories known by the idToDateString map for the specified<a name="line.899"></a>
-<span class="sourceLineNo">900</span>   * jobId. If the number of directories is higher than the supported size of<a name="line.900"></a>
-<span class="sourceLineNo">901</span>   * the idToDateString cache, the jobId will not be found.<a name="line.901"></a>
-<span class="sourceLineNo">902</span>   * <a name="line.902"></a>
-<span class="sourceLineNo">903</span>   * @param jobId<a name="line.903"></a>
-<span class="sourceLineNo">904</span>   *          the jobId.<a name="line.904"></a>
-<span class="sourceLineNo">905</span>   * @return<a name="line.905"></a>
-<span class="sourceLineNo">906</span>   * @throws IOException<a name="line.906"></a>
-<span class="sourceLineNo">907</span>   */<a name="line.907"></a>
-<span class="sourceLineNo">908</span>  private HistoryFileInfo scanOldDirsForJob(JobId jobId) throws IOException {<a name="line.908"></a>
-<span class="sourceLineNo">909</span>    String boxedSerialNumber = JobHistoryUtils.serialNumberDirectoryComponent(<a name="line.909"></a>
-<span class="sourceLineNo">910</span>        jobId, serialNumberFormat);<a name="line.910"></a>
-<span class="sourceLineNo">911</span>    Set&lt;String&gt; dateStringSet = serialNumberIndex.get(boxedSerialNumber);<a name="line.911"></a>
-<span class="sourceLineNo">912</span>    if (dateStringSet == null) {<a name="line.912"></a>
-<span class="sourceLineNo">913</span>      return null;<a name="line.913"></a>
-<span class="sourceLineNo">914</span>    }<a name="line.914"></a>
-<span class="sourceLineNo">915</span>    for (String timestampPart : dateStringSet) {<a name="line.915"></a>
-<span class="sourceLineNo">916</span>      Path logDir = canonicalHistoryLogPath(jobId, timestampPart);<a name="line.916"></a>
-<span class="sourceLineNo">917</span>      List&lt;FileStatus&gt; fileStatusList = scanDirectoryForHistoryFiles(logDir,<a name="line.917"></a>
-<span class="sourceLineNo">918</span>          doneDirFc);<a name="line.918"></a>
-<span class="sourceLineNo">919</span>      HistoryFileInfo fileInfo = getJobFileInfo(fileStatusList, jobId);<a name="line.919"></a>
-<span class="sourceLineNo">920</span>      if (fileInfo != null) {<a name="line.920"></a>
-<span class="sourceLineNo">921</span>        return fileInfo;<a name="line.921"></a>
-<span class="sourceLineNo">922</span>      }<a name="line.922"></a>
-<span class="sourceLineNo">923</span>    }<a name="line.923"></a>
-<span class="sourceLineNo">924</span>    return null;<a name="line.924"></a>
-<span class="sourceLineNo">925</span>  }<a name="line.925"></a>
-<span class="sourceLineNo">926</span><a name="line.926"></a>
-<span class="sourceLineNo">927</span>  public Collection&lt;HistoryFileInfo&gt; getAllFileInfo() throws IOException {<a name="line.927"></a>
-<span class="sourceLineNo">928</span>    scanIntermediateDirectory();<a name="line.928"></a>
-<span class="sourceLineNo">929</span>    return jobListCache.values();<a name="line.929"></a>
+<span class="sourceLineNo">864</span>      } else if (!old.isMovePending()) {<a name="line.864"></a>
+<span class="sourceLineNo">865</span>        //This is a duplicate so just delete it<a name="line.865"></a>
+<span class="sourceLineNo">866</span>        if (LOG.isDebugEnabled()) {<a name="line.866"></a>
+<span class="sourceLineNo">867</span>          LOG.debug("Duplicate: deleting");<a name="line.867"></a>
+<span class="sourceLineNo">868</span>        }<a name="line.868"></a>
+<span class="sourceLineNo">869</span>        fileInfo.delete();<a name="line.869"></a>
+<span class="sourceLineNo">870</span>      }<a name="line.870"></a>
+<span class="sourceLineNo">871</span>    }<a name="line.871"></a>
+<span class="sourceLineNo">872</span>  }<a name="line.872"></a>
+<span class="sourceLineNo">873</span><a name="line.873"></a>
+<span class="sourceLineNo">874</span>  /**<a name="line.874"></a>
+<span class="sourceLineNo">875</span>   * Searches the job history file FileStatus list for the specified JobId.<a name="line.875"></a>
+<span class="sourceLineNo">876</span>   * <a name="line.876"></a>
+<span class="sourceLineNo">877</span>   * @param fileStatusList<a name="line.877"></a>
+<span class="sourceLineNo">878</span>   *          fileStatus list of Job History Files.<a name="line.878"></a>
+<span class="sourceLineNo">879</span>   * @param jobId<a name="line.879"></a>
+<span class="sourceLineNo">880</span>   *          The JobId to find.<a name="line.880"></a>
+<span class="sourceLineNo">881</span>   * @return A FileInfo object for the jobId, null if not found.<a name="line.881"></a>
+<span class="sourceLineNo">882</span>   * @throws IOException<a name="line.882"></a>
+<span class="sourceLineNo">883</span>   */<a name="line.883"></a>
+<span class="sourceLineNo">884</span>  private HistoryFileInfo getJobFileInfo(List&lt;FileStatus&gt; fileStatusList,<a name="line.884"></a>
+<span class="sourceLineNo">885</span>      JobId jobId) throws IOException {<a name="line.885"></a>
+<span class="sourceLineNo">886</span>    for (FileStatus fs : fileStatusList) {<a name="line.886"></a>
+<span class="sourceLineNo">887</span>      JobIndexInfo jobIndexInfo = FileNameIndexUtils.getIndexInfo(fs.getPath()<a name="line.887"></a>
+<span class="sourceLineNo">888</span>          .getName());<a name="line.888"></a>
+<span class="sourceLineNo">889</span>      if (jobIndexInfo.getJobId().equals(jobId)) {<a name="line.889"></a>
+<span class="sourceLineNo">890</span>        String confFileName = JobHistoryUtils<a name="line.890"></a>
+<span class="sourceLineNo">891</span>            .getIntermediateConfFileName(jobIndexInfo.getJobId());<a name="line.891"></a>
+<span class="sourceLineNo">892</span>        String summaryFileName = JobHistoryUtils<a name="line.892"></a>
+<span class="sourceLineNo">893</span>            .getIntermediateSummaryFileName(jobIndexInfo.getJobId());<a name="line.893"></a>
+<span class="sourceLineNo">894</span>        HistoryFileInfo fileInfo = new HistoryFileInfo(fs.getPath(), new Path(<a name="line.894"></a>
+<span class="sourceLineNo">895</span>            fs.getPath().getParent(), confFileName), new Path(fs.getPath()<a name="line.895"></a>
+<span class="sourceLineNo">896</span>            .getParent(), summaryFileName), jobIndexInfo, true);<a name="line.896"></a>
+<span class="sourceLineNo">897</span>        return fileInfo;<a name="line.897"></a>
+<span class="sourceLineNo">898</span>      }<a name="line.898"></a>
+<span class="sourceLineNo">899</span>    }<a name="line.899"></a>
+<span class="sourceLineNo">900</span>    return null;<a name="line.900"></a>
+<span class="sourceLineNo">901</span>  }<a name="line.901"></a>
+<span class="sourceLineNo">902</span><a name="line.902"></a>
+<span class="sourceLineNo">903</span>  /**<a name="line.903"></a>
+<span class="sourceLineNo">904</span>   * Scans old directories known by the idToDateString map for the specified<a name="line.904"></a>
+<span class="sourceLineNo">905</span>   * jobId. If the number of directories is higher than the supported size of<a name="line.905"></a>
+<span class="sourceLineNo">906</span>   * the idToDateString cache, the jobId will not be found.<a name="line.906"></a>
+<span class="sourceLineNo">907</span>   * <a name="line.907"></a>
+<span class="sourceLineNo">908</span>   * @param jobId<a name="line.908"></a>
+<span class="sourceLineNo">909</span>   *          the jobId.<a name="line.909"></a>
+<span class="sourceLineNo">910</span>   * @return<a name="line.910"></a>
+<span class="sourceLineNo">911</span>   * @throws IOException<a name="line.911"></a>
+<span class="sourceLineNo">912</span>   */<a name="line.912"></a>
+<span class="sourceLineNo">913</span>  private HistoryFileInfo scanOldDirsForJob(JobId jobId) throws IOException {<a name="line.913"></a>
+<span class="sourceLineNo">914</span>    String boxedSerialNumber = JobHistoryUtils.serialNumberDirectoryComponent(<a name="line.914"></a>
+<span class="sourceLineNo">915</span>        jobId, serialNumberFormat);<a name="line.915"></a>
+<span class="sourceLineNo">916</span>    Set&lt;String&gt; dateStringSet = serialNumberIndex.get(boxedSerialNumber);<a name="line.916"></a>
+<span class="sourceLineNo">917</span>    if (dateStringSet == null) {<a name="line.917"></a>
+<span class="sourceLineNo">918</span>      return null;<a name="line.918"></a>
+<span class="sourceLineNo">919</span>    }<a name="line.919"></a>
+<span class="sourceLineNo">920</span>    for (String timestampPart : dateStringSet) {<a name="line.920"></a>
+<span class="sourceLineNo">921</span>      Path logDir = canonicalHistoryLogPath(jobId, timestampPart);<a name="line.921"></a>
+<span class="sourceLineNo">922</span>      List&lt;FileStatus&gt; fileStatusList = scanDirectoryForHistoryFiles(logDir,<a name="line.922"></a>
+<span class="sourceLineNo">923</span>          doneDirFc);<a name="line.923"></a>
+<span class="sourceLineNo">924</span>      HistoryFileInfo fileInfo = getJobFileInfo(fileStatusList, jobId);<a name="line.924"></a>
+<span class="sourceLineNo">925</span>      if (fileInfo != null) {<a name="line.925"></a>
+<span class="sourceLineNo">926</span>        return fileInfo;<a name="line.926"></a>
+<span class="sourceLineNo">927</span>      }<a name="line.927"></a>
+<span class="sourceLineNo">928</span>    }<a name="line.928"></a>
+<span class="sourceLineNo">929</span>    return null;<a name="line.929"></a>
 <span class="sourceLineNo">930</span>  }<a name="line.930"></a>
 <span class="sourceLineNo">931</span><a name="line.931"></a>
-<span class="sourceLineNo">932</span>  public HistoryFileInfo getFileInfo(JobId jobId) throws IOException {<a name="line.932"></a>
-<span class="sourceLineNo">933</span>    // FileInfo available in cache.<a name="line.933"></a>
-<span class="sourceLineNo">934</span>    HistoryFileInfo fileInfo = jobListCache.get(jobId);<a name="line.934"></a>
-<span class="sourceLineNo">935</span>    if (fileInfo != null) {<a name="line.935"></a>
-<span class="sourceLineNo">936</span>      return fileInfo;<a name="line.936"></a>
-<span class="sourceLineNo">937</span>    }<a name="line.937"></a>
-<span class="sourceLineNo">938</span>    // OK so scan the intermediate to be sure we did not lose it that way<a name="line.938"></a>
-<span class="sourceLineNo">939</span>    scanIntermediateDirectory();<a name="line.939"></a>
-<span class="sourceLineNo">940</span>    fileInfo = jobListCache.get(jobId);<a name="line.940"></a>
-<span class="sourceLineNo">941</span>    if (fileInfo != null) {<a name="line.941"></a>
-<span class="sourceLineNo">942</span>      return fileInfo;<a name="line.942"></a>
-<span class="sourceLineNo">943</span>    }<a name="line.943"></a>
-<span class="sourceLineNo">944</span><a name="line.944"></a>
-<span class="sourceLineNo">945</span>    // Intermediate directory does not contain job. Search through older ones.<a name="line.945"></a>
-<span class="sourceLineNo">946</span>    fileInfo = scanOldDirsForJob(jobId);<a name="line.946"></a>
-<span class="sourceLineNo">947</span>    if (fileInfo != null) {<a name="line.947"></a>
-<span class="sourceLineNo">948</span>      return fileInfo;<a name="line.948"></a>
-<span class="sourceLineNo">949</span>    }<a name="line.949"></a>
-<span class="sourceLineNo">950</span>    return null;<a name="line.950"></a>
-<span class="sourceLineNo">951</span>  }<a name="line.951"></a>
-<span class="sourceLineNo">952</span><a name="line.952"></a>
-<span class="sourceLineNo">953</span>  private void moveToDoneNow(final Path src, final Path target)<a name="line.953"></a>
-<span class="sourceLineNo">954</span>      throws IOException {<a name="line.954"></a>
-<span class="sourceLineNo">955</span>    LOG.info("Moving " + src.toString() + " to " + target.toString());<a name="line.955"></a>
-<span class="sourceLineNo">956</span>    intermediateDoneDirFc.rename(src, target, Options.Rename.NONE);<a name="line.956"></a>
-<span class="sourceLineNo">957</span>  }<a name="line.957"></a>
-<span class="sourceLineNo">958</span><a name="line.958"></a>
-<span class="sourceLineNo">959</span>  private String getJobSummary(FileContext fc, Path path) throws IOException {<a name="line.959"></a>
-<span class="sourceLineNo">960</span>    Path qPath = fc.makeQualified(path);<a name="line.960"></a>
-<span class="sourceLineNo">961</span>    FSDataInputStream in = fc.open(qPath);<a name="line.961"></a>
-<span class="sourceLineNo">962</span>    String jobSummaryString = in.readUTF();<a name="line.962"></a>
-<span class="sourceLineNo">963</span>    in.close();<a name="line.963"></a>
-<span class="sourceLineNo">964</span>    return jobSummaryString;<a name="line.964"></a>
-<span class="sourceLineNo">965</span>  }<a name="line.965"></a>
-<span class="sourceLineNo">966</span><a name="line.966"></a>
-<span class="sourceLineNo">967</span>  private void makeDoneSubdir(Path path) throws IOException {<a name="line.967"></a>
-<span class="sourceLineNo">968</span>    try {<a name="line.968"></a>
-<span class="sourceLineNo">969</span>      doneDirFc.getFileStatus(path);<a name="line.969"></a>
-<span class="sourceLineNo">970</span>      existingDoneSubdirs.add(path);<a name="line.970"></a>
-<span class="sourceLineNo">971</span>    } catch (FileNotFoundException fnfE) {<a name="line.971"></a>
-<span class="sourceLineNo">972</span>      try {<a name="line.972"></a>
-<span class="sourceLineNo">973</span>        FsPermission fsp = new FsPermission(<a name="line.973"></a>
-<span class="sourceLineNo">974</span>            JobHistoryUtils.HISTORY_DONE_DIR_PERMISSION);<a name="line.974"></a>
-<span class="sourceLineNo">975</span>        doneDirFc.mkdir(path, fsp, true);<a name="line.975"></a>
-<span class="sourceLineNo">976</span>        FileStatus fsStatus = doneDirFc.getFileStatus(path);<a name="line.976"></a>
-<span class="sourceLineNo">977</span>        LOG.info("Perms after creating " + fsStatus.getPermission().toShort()<a name="line.977"></a>
-<span class="sourceLineNo">978</span>            + ", Expected: " + fsp.toShort());<a name="line.978"></a>
-<span class="sourceLineNo">979</span>        if (fsStatus.getPermission().toShort() != fsp.toShort()) {<a name="line.979"></a>
-<span class="sourceLineNo">980</span>          LOG.info("Explicitly setting permissions to : " + fsp.toShort()<a name="line.980"></a>
-<span class="sourceLineNo">981</span>              + ", " + fsp);<a name="line.981"></a>
-<span class="sourceLineNo">982</span>          doneDirFc.setPermission(path, fsp);<a name="line.982"></a>
-<span class="sourceLineNo">983</span>        }<a name="line.983"></a>
-<span class="sourceLineNo">984</span>        existingDoneSubdirs.add(path);<a name="line.984"></a>
-<span class="sourceLineNo">985</span>      } catch (FileAlreadyExistsException faeE) { // Nothing to do.<a name="line.985"></a>
-<span class="sourceLineNo">986</span>      }<a name="line.986"></a>
-<span class="sourceLineNo">987</span>    }<a name="line.987"></a>
-<span class="sourceLineNo">988</span>  }<a name="line.988"></a>
-<span class="sourceLineNo">989</span><a name="line.989"></a>
-<span class="sourceLineNo">990</span>  private Path canonicalHistoryLogPath(JobId id, String timestampComponent) {<a name="line.990"></a>
-<span class="sourceLineNo">991</span>    return new Path(doneDirPrefixPath, JobHistoryUtils.historyLogSubdirectory(<a name="line.991"></a>
-<span class="sourceLineNo">992</span>        id, timestampComponent, serialNumberFormat));<a name="line.992"></a>
+<span class="sourceLineNo">932</span>  public Collection&lt;HistoryFileInfo&gt; getAllFileInfo() throws IOException {<a name="line.932"></a>
+<span class="sourceLineNo">933</span>    scanIntermediateDirectory();<a name="line.933"></a>
+<span class="sourceLineNo">934</span>    return jobListCache.values();<a name="line.934"></a>
+<span class="sourceLineNo">935</span>  }<a name="line.935"></a>
+<span class="sourceLineNo">936</span><a name="line.936"></a>
+<span class="sourceLineNo">937</span>  public HistoryFileInfo getFileInfo(JobId jobId) throws IOException {<a name="line.937"></a>
+<span class="sourceLineNo">938</span>    // FileInfo available in cache.<a name="line.938"></a>
+<span class="sourceLineNo">939</span>    HistoryFileInfo fileInfo = jobListCache.get(jobId);<a name="line.939"></a>
+<span class="sourceLineNo">940</span>    if (fileInfo != null) {<a name="line.940"></a>
+<span class="sourceLineNo">941</span>      return fileInfo;<a name="line.941"></a>
+<span class="sourceLineNo">942</span>    }<a name="line.942"></a>
+<span class="sourceLineNo">943</span>    // OK so scan the intermediate to be sure we did not lose it that way<a name="line.943"></a>
+<span class="sourceLineNo">944</span>    scanIntermediateDirectory();<a name="line.944"></a>
+<span class="sourceLineNo">945</span>    fileInfo = jobListCache.get(jobId);<a name="line.945"></a>
+<span class="sourceLineNo">946</span>    if (fileInfo != null) {<a name="line.946"></a>
+<span class="sourceLineNo">947</span>      return fileInfo;<a name="line.947"></a>
+<span class="sourceLineNo">948</span>    }<a name="line.948"></a>
+<span class="sourceLineNo">949</span><a name="line.949"></a>
+<span class="sourceLineNo">950</span>    // Intermediate directory does not contain job. Search through older ones.<a name="line.950"></a>
+<span class="sourceLineNo">951</span>    fileInfo = scanOldDirsForJob(jobId);<a name="line.951"></a>
+<span class="sourceLineNo">952</span>    if (fileInfo != null) {<a name="line.952"></a>
+<span class="sourceLineNo">953</span>      return fileInfo;<a name="line.953"></a>
+<span class="sourceLineNo">954</span>    }<a name="line.954"></a>
+<span class="sourceLineNo">955</span>    return null;<a name="line.955"></a>
+<span class="sourceLineNo">956</span>  }<a name="line.956"></a>
+<span class="sourceLineNo">957</span><a name="line.957"></a>
+<span class="sourceLineNo">958</span>  private void moveToDoneNow(final Path src, final Path target)<a name="line.958"></a>
+<span class="sourceLineNo">959</span>      throws IOException {<a name="line.959"></a>
+<span class="sourceLineNo">960</span>    LOG.info("Moving " + src.toString() + " to " + target.toString());<a name="line.960"></a>
+<span class="sourceLineNo">961</span>    intermediateDoneDirFc.rename(src, target, Options.Rename.NONE);<a name="line.961"></a>
+<span class="sourceLineNo">962</span>  }<a name="line.962"></a>
+<span class="sourceLineNo">963</span><a name="line.963"></a>
+<span class="sourceLineNo">964</span>  private String getJobSummary(FileContext fc, Path path) throws IOException {<a name="line.964"></a>
+<span class="sourceLineNo">965</span>    Path qPath = fc.makeQualified(path);<a name="line.965"></a>
+<span class="sourceLineNo">966</span>    FSDataInputStream in = fc.open(qPath);<a name="line.966"></a>
+<span class="sourceLineNo">967</span>    String jobSummaryString = in.readUTF();<a name="line.967"></a>
+<span class="sourceLineNo">968</span>    in.close();<a name="line.968"></a>
+<span class="sourceLineNo">969</span>    return jobSummaryString;<a name="line.969"></a>
+<span class="sourceLineNo">970</span>  }<a name="line.970"></a>
+<span class="sourceLineNo">971</span><a name="line.971"></a>
+<span class="sourceLineNo">972</span>  private void makeDoneSubdir(Path path) throws IOException {<a name="line.972"></a>
+<span class="sourceLineNo">973</span>    try {<a name="line.973"></a>
+<span class="sourceLineNo">974</span>      doneDirFc.getFileStatus(path);<a name="line.974"></a>
+<span class="sourceLineNo">975</span>      existingDoneSubdirs.add(path);<a name="line.975"></a>
+<span class="sourceLineNo">976</span>    } catch (FileNotFoundException fnfE) {<a name="line.976"></a>
+<span class="sourceLineNo">977</span>      try {<a name="line.977"></a>
+<span class="sourceLineNo">978</span>        FsPermission fsp = new FsPermission(<a name="line.978"></a>
+<span class="sourceLineNo">979</span>            JobHistoryUtils.HISTORY_DONE_DIR_PERMISSION);<a name="line.979"></a>
+<span class="sourceLineNo">980</span>        doneDirFc.mkdir(path, fsp, true);<a name="line.980"></a>
+<span class="sourceLineNo">981</span>        FileStatus fsStatus = doneDirFc.getFileStatus(path);<a name="line.981"></a>
+<span class="sourceLineNo">982</span>        LOG.info("Perms after creating " + fsStatus.getPermission().toShort()<a name="line.982"></a>
+<span class="sourceLineNo">983</span>            + ", Expected: " + fsp.toShort());<a name="line.983"></a>
+<span class="sourceLineNo">984</span>        if (fsStatus.getPermission().toShort() != fsp.toShort()) {<a name="line.984"></a>
+<span class="sourceLineNo">985</span>          LOG.info("Explicitly setting permissions to : " + fsp.toShort()<a name="line.985"></a>
+<span class="sourceLineNo">986</span>              + ", " + fsp);<a name="line.986"></a>
+<span class="sourceLineNo">987</span>          doneDirFc.setPermission(path, fsp);<a name="line.987"></a>
+<span class="sourceLineNo">988</span>        }<a name="line.988"></a>
+<span class="sourceLineNo">989</span>        existingDoneSubdirs.add(path);<a name="line.989"></a>
+<span class="sourceLineNo">990</span>      } catch (FileAlreadyExistsException faeE) { // Nothing to do.<a name="line.990"></a>
+<span class="sourceLineNo">991</span>      }<a name="line.991"></a>
+<span class="sourceLineNo">992</span>    }<a name="line.992"></a>
 <span class="sourceLineNo">993</span>  }<a name="line.993"></a>
 <span class="sourceLineNo">994</span><a name="line.994"></a>
-<span class="sourceLineNo">995</span>  private Path canonicalHistoryLogPath(JobId id, long millisecondTime) {<a name="line.995"></a>
-<span class="sourceLineNo">996</span>    String timestampComponent = JobHistoryUtils<a name="line.996"></a>
-<span class="sourceLineNo">997</span>        .timestampDirectoryComponent(millisecondTime);<a name="line.997"></a>
-<span class="sourceLineNo">998</span>    return new Path(doneDirPrefixPath, JobHistoryUtils.historyLogSubdirectory(<a name="line.998"></a>
-<span class="sourceLineNo">999</span>        id, timestampComponent, serialNumberFormat));<a name="line.999"></a>
-<span class="sourceLineNo">1000</span>  }<a name="line.1000"></a>
-<span class="sourceLineNo">1001</span><a name="line.1001"></a>
-<span class="sourceLineNo">1002</span>  private long getEffectiveTimestamp(long finishTime, FileStatus fileStatus) {<a name="line.1002"></a>
-<span class="sourceLineNo">1003</span>    if (finishTime == 0) {<a name="line.1003"></a>
-<span class="sourceLineNo">1004</span>      return fileStatus.getModificationTime();<a name="line.1004"></a>
-<span class="sourceLineNo">1005</span>    }<a name="line.1005"></a>
-<span class="sourceLineNo">1006</span>    return finishTime;<a name="line.1006"></a>
-<span class="sourceLineNo">1007</span>  }<a name="line.1007"></a>
-<span class="sourceLineNo">1008</span><a name="line.1008"></a>
-<span class="sourceLineNo">1009</span>  private void deleteJobFromDone(HistoryFileInfo fileInfo) throws IOException {<a name="line.1009"></a>
-<span class="sourceLineNo">1010</span>    jobListCache.delete(fileInfo);<a name="line.1010"></a>
-<span class="sourceLineNo">1011</span>    fileInfo.delete();<a name="line.1011"></a>
+<span class="sourceLineNo">995</span>  private Path canonicalHistoryLogPath(JobId id, String timestampComponent) {<a name="line.995"></a>
+<span class="sourceLineNo">996</span>    return new Path(doneDirPrefixPath, JobHistoryUtils.historyLogSubdirectory(<a name="line.996"></a>
+<span class="sourceLineNo">997</span>        id, timestampComponent, serialNumberFormat));<a name="line.997"></a>
+<span class="sourceLineNo">998</span>  }<a name="line.998"></a>
+<span class="sourceLineNo">999</span><a name="line.999"></a>
+<span class="sourceLineNo">1000</span>  private Path canonicalHistoryLogPath(JobId id, long millisecondTime) {<a name="line.1000"></a>
+<span class="sourceLineNo">1001</span>    String timestampComponent = JobHistoryUtils<a name="line.1001"></a>
+<span class="sourceLineNo">1002</span>        .timestampDirectoryComponent(millisecondTime);<a name="line.1002"></a>
+<span class="sourceLineNo">1003</span>    return new Path(doneDirPrefixPath, JobHistoryUtils.historyLogSubdirectory(<a name="line.1003"></a>
+<span class="sourceLineNo">1004</span>        id, timestampComponent, serialNumberFormat));<a name="line.1004"></a>
+<span class="sourceLineNo">1005</span>  }<a name="line.1005"></a>
+<span class="sourceLineNo">1006</span><a name="line.1006"></a>
+<span class="sourceLineNo">1007</span>  private long getEffectiveTimestamp(long finishTime, FileStatus fileStatus) {<a name="line.1007"></a>
+<span class="sourceLineNo">1008</span>    if (finishTime == 0) {<a name="line.1008"></a>
+<span class="sourceLineNo">1009</span>      return fileStatus.getModificationTime();<a name="line.1009"></a>
+<span class="sourceLineNo">1010</span>    }<a name="line.1010"></a>
+<span class="sourceLineNo">1011</span>    return finishTime;<a name="line.1011"></a>
 <span class="sourceLineNo">1012</span>  }<a name="line.1012"></a>
 <span class="sourceLineNo">1013</span><a name="line.1013"></a>
-<span class="sourceLineNo">1014</span>  List&lt;FileStatus&gt; getHistoryDirsForCleaning(long cutoff) throws IOException {<a name="line.1014"></a>
-<span class="sourceLineNo">1015</span>      return JobHistoryUtils.<a name="line.1015"></a>
-<span class="sourceLineNo">1016</span>        getHistoryDirsForCleaning(doneDirFc, doneDirPrefixPath, cutoff);<a name="line.1016"></a>
+<span class="sourceLineNo">1014</span>  private void deleteJobFromDone(HistoryFileInfo fileInfo) throws IOException {<a name="line.1014"></a>
+<span class="sourceLineNo">1015</span>    jobListCache.delete(fileInfo);<a name="line.1015"></a>
+<span class="sourceLineNo">1016</span>    fileInfo.delete();<a name="line.1016"></a>
 <span class="sourceLineNo">1017</span>  }<a name="line.1017"></a>
 <span class="sourceLineNo">1018</span><a name="line.1018"></a>
-<span class="sourceLineNo">1019</span>  /**<a name="line.1019"></a>
-<span class="sourceLineNo">1020</span>   * Clean up older history files.<a name="line.1020"></a>
-<span class="sourceLineNo">1021</span>   * <a name="line.1021"></a>
-<span class="sourceLineNo">1022</span>   * @throws IOException<a name="line.1022"></a>
-<span class="sourceLineNo">1023</span>   *           on any error trying to remove the entries.<a name="line.1023"></a>
-<span class="sourceLineNo">1024</span>   */<a name="line.1024"></a>
-<span class="sourceLineNo">1025</span>  @SuppressWarnings("unchecked")<a name="line.1025"></a>
-<span class="sourceLineNo">1026</span>  void clean() throws IOException {<a name="line.1026"></a>
-<span class="sourceLineNo">1027</span>    long cutoff = System.currentTimeMillis() - maxHistoryAge;<a name="line.1027"></a>
-<span class="sourceLineNo">1028</span>    boolean halted = false;<a name="line.1028"></a>
-<span class="sourceLineNo">1029</span>    List&lt;FileStatus&gt; serialDirList = getHistoryDirsForCleaning(cutoff);<a name="line.1029"></a>
-<span class="sourceLineNo">1030</span>    // Sort in ascending order. Relies on YYYY/MM/DD/Serial<a name="line.1030"></a>
-<span class="sourceLineNo">1031</span>    Collections.sort(serialDirList);<a name="line.1031"></a>
-<span class="sourceLineNo">1032</span>    for (FileStatus serialDir : serialDirList) {<a name="line.1032"></a>
-<span class="sourceLineNo">1033</span>      List&lt;FileStatus&gt; historyFileList = scanDirectoryForHistoryFiles(<a name="line.1033"></a>
-<span class="sourceLineNo">1034</span>          serialDir.getPath(), doneDirFc);<a name="line.1034"></a>
-<span class="sourceLineNo">1035</span>      for (FileStatus historyFile : historyFileList) {<a name="line.1035"></a>
-<span class="sourceLineNo">1036</span>        JobIndexInfo jobIndexInfo = FileNameIndexUtils.getIndexInfo(historyFile<a name="line.1036"></a>
-<span class="sourceLineNo">1037</span>            .getPath().getName());<a name="line.1037"></a>
-<span class="sourceLineNo">1038</span>        long effectiveTimestamp = getEffectiveTimestamp(<a name="line.1038"></a>
-<span class="sourceLineNo">1039</span>            jobIndexInfo.getFinishTime(), historyFile);<a name="line.1039"></a>
-<span class="sourceLineNo">1040</span>        if (effectiveTimestamp &lt;= cutoff) {<a name="line.1040"></a>
-<span class="sourceLineNo">1041</span>          HistoryFileInfo fileInfo = this.jobListCache.get(jobIndexInfo<a name="line.1041"></a>
-<span class="sourceLineNo">1042</span>              .getJobId());<a name="line.1042"></a>
-<span class="sourceLineNo">1043</span>          if (fileInfo == null) {<a name="line.1043"></a>
-<span class="sourceLineNo">1044</span>            String confFileName = JobHistoryUtils<a name="line.1044"></a>
-<span class="sourceLineNo">1045</span>                .getIntermediateConfFileName(jobIndexInfo.getJobId());<a name="line.1045"></a>
-<span class="sourceLineNo">1046</span><a name="line.1046"></a>
-<span class="sourceLineNo">1047</span>            fileInfo = new HistoryFileInfo(historyFile.getPath(), new Path(<a name="line.1047"></a>
-<span class="sourceLineNo">1048</span>                historyFile.getPath().getParent(), confFileName), null,<a name="line.1048"></a>
-<span class="sourceLineNo">1049</span>                jobIndexInfo, true);<a name="line.1049"></a>
-<span class="sourceLineNo">1050</span>          }<a name="line.1050"></a>
-<span class="sourceLineNo">1051</span>          deleteJobFromDone(fileInfo);<a name="line.1051"></a>
-<span class="sourceLineNo">1052</span>        } else {<a name="line.1052"></a>
-<span class="sourceLineNo">1053</span>          halted = true;<a name="line.1053"></a>
-<span class="sourceLineNo">1054</span>          break;<a name="line.1054"></a>
-<span class="sourceLineNo">1055</span>        }<a name="line.1055"></a>
-<span class="sourceLineNo">1056</span>      }<a name="line.1056"></a>
-<span class="sourceLineNo">1057</span>      if (!halted) {<a name="line.1057"></a>
-<span class="sourceLineNo">1058</span>        deleteDir(serialDir);<a name="line.1058"></a>
-<span class="sourceLineNo">1059</span>        removeDirectoryFromSerialNumberIndex(serialDir.getPath());<a name="line.1059"></a>
-<span class="sourceLineNo">1060</span>        existingDoneSubdirs.remove(serialDir.getPath());<a name="line.1060"></a>
-<span class="sourceLineNo">1061</span>      } else {<a name="line.1061"></a>
-<span class="sourceLineNo">1062</span>        break; // Don't scan any more directories.<a name="line.1062"></a>
-<span class="sourceLineNo">1063</span>      }<a name="line.1063"></a>
-<span class="sourceLineNo">1064</span>    }<a name="line.1064"></a>
-<span class="sourceLineNo">1065</span>  }<a name="line.1065"></a>
-<span class="sourceLineNo">1066</span>  <a name="line.1066"></a>
-<span class="sourceLineNo">1067</span>  protected boolean deleteDir(FileStatus serialDir)<a name="line.1067"></a>
-<span class="sourceLineNo">1068</span>      throws AccessControlException, FileNotFoundException,<a name="line.1068"></a>
-<span class="sourceLineNo">1069</span>      UnsupportedFileSystemException, IOException {<a name="line.1069"></a>
-<span class="sourceLineNo">1070</span>    return doneDirFc.delete(doneDirFc.makeQualified(serialDir.getPath()), true);<a name="line.1070"></a>
-<span class="sourceLineNo">1071</span>  }<a name="line.1071"></a>
-<span class="sourceLineNo">1072</span><a name="line.1072"></a>
-<span class="sourceLineNo">1073</span>  // for test<a name="line.1073"></a>
-<span class="sourceLineNo">1074</span>  @VisibleForTesting<a name="line.1074"></a>
-<span class="sourceLineNo">1075</span>  void setMaxHistoryAge(long newValue){<a name="line.1075"></a>
-<span class="sourceLineNo">1076</span>    maxHistoryAge=newValue;<a name="line.1076"></a>
-<span class="sourceLineNo">1077</span>  } <a name="line.1077"></a>
-<span class="sourceLineNo">1078</span>}<a name="line.1078"></a>
+<span class="sourceLineNo">1019</span>  List&lt;FileStatus&gt; getHistoryDirsForCleaning(long cutoff) throws IOException {<a name="line.1019"></a>
+<span class="sourceLineNo">1020</span>      return JobHistoryUtils.<a name="line.1020"></a>
+<span class="sourceLineNo">1021</span>        getHistoryDirsForCleaning(doneDirFc, doneDirPrefixPath, cutoff);<a name="line.1021"></a>
+<span class="sourceLineNo">1022</span>  }<a name="line.1022"></a>
+<span class="sourceLineNo">1023</span><a name="line.1023"></a>
+<span class="sourceLineNo">1024</span>  /**<a name="line.1024"></a>
+<span class="sourceLineNo">1025</span>   * Clean up older history files.<a name="line.1025"></a>
+<span class="sourceLineNo">1026</span>   * <a name="line.1026"></a>
+<span class="sourceLineNo">1027</span>   * @throws IOException<a name="line.1027"></a>
+<span class="sourceLineNo">1028</span>   *           on any error trying to remove the entries.<a name="line.1028"></a>
+<span class="sourceLineNo">1029</span>   */<a name="line.1029"></a>
+<span class="sourceLineNo">1030</span>  @SuppressWarnings("unchecked")<a name="line.1030"></a>
+<span class="sourceLineNo">1031</span>  void clean() throws IOException {<a name="line.1031"></a>
+<span class="sourceLineNo">1032</span>    long cutoff = System.currentTimeMillis() - maxHistoryAge;<a name="line.1032"></a>
+<span class="sourceLineNo">1033</span>    boolean halted = false;<a name="line.1033"></a>
+<span class="sourceLineNo">1034</span>    List&lt;FileStatus&gt; serialDirList = getHistoryDirsForCleaning(cutoff);<a name="line.1034"></a>
+<span class="sourceLineNo">1035</span>    // Sort in ascending order. Relies on YYYY/MM/DD/Serial<a name="line.1035"></a>
+<span class="sourceLineNo">1036</span>    Collections.sort(serialDirList);<a name="line.1036"></a>
+<span class="sourceLineNo">1037</span>    for (FileStatus serialDir : serialDirList) {<a name="line.1037"></a>
+<span class="sourceLineNo">1038</span>      List&lt;FileStatus&gt; historyFileList = scanDirectoryForHistoryFiles(<a name="line.1038"></a>
+<span class="sourceLineNo">1039</span>          serialDir.getPath(), doneDirFc);<a name="line.1039"></a>
+<span class="sourceLineNo">1040</span>      for (FileStatus historyFile : historyFileList) {<a name="line.1040"></a>
+<span class="sourceLineNo">1041</span>        JobIndexInfo jobIndexInfo = FileNameIndexUtils.getIndexInfo(historyFile<a name="line.1041"></a>
+<span class="sourceLineNo">1042</span>            .getPath().getName());<a name="line.1042"></a>
+<span class="sourceLineNo">1043</span>        long effectiveTimestamp = getEffectiveTimestamp(<a name="line.1043"></a>
+<span class="sourceLineNo">1044</span>            jobIndexInfo.getFinishTime(), historyFile);<a name="line.1044"></a>
+<span class="sourceLineNo">1045</span>        if (effectiveTimestamp &lt;= cutoff) {<a name="line.1045"></a>
+<span class="sourceLineNo">1046</span>          HistoryFileInfo fileInfo = this.jobListCache.get(jobIndexInfo<a name="line.1046"></a>
+<span class="sourceLineNo">1047</span>              .getJobId());<a name="line.1047"></a>
+<span class="sourceLineNo">1048</span>          if (fileInfo == null) {<a name="line.1048"></a>
+<span class="sourceLineNo">1049</span>            String confFileName = JobHistoryUtils<a name="line.1049"></a>
+<span class="sourceLineNo">1050</span>                .getIntermediateConfFileName(jobIndexInfo.getJobId());<a name="line.1050"></a>
+<span class="sourceLineNo">1051</span><a name="line.1051"></a>
+<span class="sourceLineNo">1052</span>            fileInfo = new HistoryFileInfo(historyFile.getPath(), new Path(<a name="line.1052"></a>
+<span class="sourceLineNo">1053</span>                historyFile.getPath().getParent(), confFileName), null,<a name="line.1053"></a>
+<span class="sourceLineNo">1054</span>                jobIndexInfo, true);<a name="line.1054"></a>
+<span class="sourceLineNo">1055</span>          }<a name="line.1055"></a>
+<span class="sourceLineNo">1056</span>          deleteJobFromDone(fileInfo);<a name="line.1056"></a>
+<span class="sourceLineNo">1057</span>        } else {<a name="line.1057"></a>
+<span class="sourceLineNo">1058</span>          halted = true;<a name="line.1058"></a>
+<span class="sourceLineNo">1059</span>          break;<a name="line.1059"></a>
+<span class="sourceLineNo">1060</span>        }<a name="line.1060"></a>
+<span class="sourceLineNo">1061</span>      }<a name="line.1061"></a>
+<span class="sourceLineNo">1062</span>      if (!halted) {<a name="line.1062"></a>
+<span class="sourceLineNo">1063</span>        deleteDir(serialDir);<a name="line.1063"></a>
+<span class="sourceLineNo">1064</span>        removeDirectoryFromSerialNumberIndex(serialDir.getPath());<a name="line.1064"></a>
+<span class="sourceLineNo">1065</span>        existingDoneSubdirs.remove(serialDir.getPath());<a name="line.1065"></a>
+<span class="sourceLineNo">1066</span>      } else {<a name="line.1066"></a>
+<span class="sourceLineNo">1067</span>        break; // Don't scan any more directories.<a name="line.1067"></a>
+<span class="sourceLineNo">1068</span>      }<a name="line.1068"></a>
+<span class="sourceLineNo">1069</span>    }<a name="line.1069"></a>
+<span class="sourceLineNo">1070</span>  }<a name="line.1070"></a>
+<span class="sourceLineNo">1071</span>  <a name="line.1071"></a>
+<span class="sourceLineNo">1072</span>  protected boolean deleteDir(FileStatus serialDir)<a name="line.1072"></a>
+<span class="sourceLineNo">1073</span>      throws AccessControlException, FileNotFoundException,<a name="line.1073"></a>
+<span class="sourceLineNo">1074</span>      UnsupportedFileSystemException, IOException {<a name="line.1074"></a>
+<span class="sourceLineNo">1075</span>    return doneDirFc.delete(doneDirFc.makeQualified(serialDir.getPath()), true);<a name="line.1075"></a>
+<span class="sourceLineNo">1076</span>  }<a name="line.1076"></a>
+<span class="sourceLineNo">1077</span><a name="line.1077"></a>
+<span class="sourceLineNo">1078</span>  // for test<a name="line.1078"></a>
+<span class="sourceLineNo">1079</span>  @VisibleForTesting<a name="line.1079"></a>
+<span class="sourceLineNo">1080</span>  void setMaxHistoryAge(long newValue){<a name="line.1080"></a>
+<span class="sourceLineNo">1081</span>    maxHistoryAge=newValue;<a name="line.1081"></a>
+<span class="sourceLineNo">1082</span>  } <a name="line.1082"></a>
+<span class="sourceLineNo">1083</span>}<a name="line.1083"></a>
 
 
 

@@ -585,10 +585,10 @@
 <span class="sourceLineNo">577</span>    // Dump out information about cluster capability as seen by the<a name="line.577"></a>
 <span class="sourceLineNo">578</span>    // resource manager<a name="line.578"></a>
 <span class="sourceLineNo">579</span>    int maxMem = response.getMaximumResourceCapability().getMemory();<a name="line.579"></a>
-<span class="sourceLineNo">580</span>    LOG.info("Max mem capabililty of resources in this cluster " + maxMem);<a name="line.580"></a>
+<span class="sourceLineNo">580</span>    LOG.info("Max mem capability of resources in this cluster " + maxMem);<a name="line.580"></a>
 <span class="sourceLineNo">581</span>    <a name="line.581"></a>
 <span class="sourceLineNo">582</span>    int maxVCores = response.getMaximumResourceCapability().getVirtualCores();<a name="line.582"></a>
-<span class="sourceLineNo">583</span>    LOG.info("Max vcores capabililty of resources in this cluster " + maxVCores);<a name="line.583"></a>
+<span class="sourceLineNo">583</span>    LOG.info("Max vcores capability of resources in this cluster " + maxVCores);<a name="line.583"></a>
 <span class="sourceLineNo">584</span><a name="line.584"></a>
 <span class="sourceLineNo">585</span>    // A resource ask cannot exceed the max.<a name="line.585"></a>
 <span class="sourceLineNo">586</span>    if (containerMemory &gt; maxMem) {<a name="line.586"></a>

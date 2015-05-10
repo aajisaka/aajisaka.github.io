@@ -2088,28 +2088,28 @@
 <span class="sourceLineNo">2080</span>    // Find the last matching -Xmx following word boundaries<a name="line.2080"></a>
 <span class="sourceLineNo">2081</span>    Matcher m = JAVA_OPTS_XMX_PATTERN.matcher(javaOpts);<a name="line.2081"></a>
 <span class="sourceLineNo">2082</span>    if (m.matches()) {<a name="line.2082"></a>
-<span class="sourceLineNo">2083</span>      int size = Integer.parseInt(m.group(1));<a name="line.2083"></a>
+<span class="sourceLineNo">2083</span>      long size = Long.parseLong(m.group(1));<a name="line.2083"></a>
 <span class="sourceLineNo">2084</span>      if (size &lt;= 0) {<a name="line.2084"></a>
 <span class="sourceLineNo">2085</span>        return -1;<a name="line.2085"></a>
 <span class="sourceLineNo">2086</span>      }<a name="line.2086"></a>
 <span class="sourceLineNo">2087</span>      if (m.group(2).isEmpty()) {<a name="line.2087"></a>
 <span class="sourceLineNo">2088</span>        // -Xmx specified in bytes<a name="line.2088"></a>
-<span class="sourceLineNo">2089</span>        return size / (1024 * 1024);<a name="line.2089"></a>
+<span class="sourceLineNo">2089</span>        return (int) (size / (1024 * 1024));<a name="line.2089"></a>
 <span class="sourceLineNo">2090</span>      }<a name="line.2090"></a>
 <span class="sourceLineNo">2091</span>      char unit = m.group(2).charAt(0);<a name="line.2091"></a>
 <span class="sourceLineNo">2092</span>      switch (unit) {<a name="line.2092"></a>
 <span class="sourceLineNo">2093</span>        case 'g':<a name="line.2093"></a>
 <span class="sourceLineNo">2094</span>        case 'G':<a name="line.2094"></a>
 <span class="sourceLineNo">2095</span>          // -Xmx specified in GB<a name="line.2095"></a>
-<span class="sourceLineNo">2096</span>          return size * 1024;<a name="line.2096"></a>
+<span class="sourceLineNo">2096</span>          return (int) (size * 1024);<a name="line.2096"></a>
 <span class="sourceLineNo">2097</span>        case 'm':<a name="line.2097"></a>
 <span class="sourceLineNo">2098</span>        case 'M':<a name="line.2098"></a>
 <span class="sourceLineNo">2099</span>          // -Xmx specified in MB<a name="line.2099"></a>
-<span class="sourceLineNo">2100</span>          return size;<a name="line.2100"></a>
+<span class="sourceLineNo">2100</span>          return (int) size;<a name="line.2100"></a>
 <span class="sourceLineNo">2101</span>        case 'k':<a name="line.2101"></a>
 <span class="sourceLineNo">2102</span>        case 'K':<a name="line.2102"></a>
 <span class="sourceLineNo">2103</span>          // -Xmx specified in KB<a name="line.2103"></a>
-<span class="sourceLineNo">2104</span>          return size / 1024;<a name="line.2104"></a>
+<span class="sourceLineNo">2104</span>          return (int) (size / 1024);<a name="line.2104"></a>
 <span class="sourceLineNo">2105</span>      }<a name="line.2105"></a>
 <span class="sourceLineNo">2106</span>    }<a name="line.2106"></a>
 <span class="sourceLineNo">2107</span>    // -Xmx not specified<a name="line.2107"></a>
