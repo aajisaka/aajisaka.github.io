@@ -26,7 +26,7 @@
 <span class="sourceLineNo">018</span>package org.apache.hadoop.yarn.api.records.timeline;<a name="line.18"></a>
 <span class="sourceLineNo">019</span><a name="line.19"></a>
 <span class="sourceLineNo">020</span>import org.apache.hadoop.classification.InterfaceAudience.Public;<a name="line.20"></a>
-<span class="sourceLineNo">021</span>import org.apache.hadoop.classification.InterfaceStability.Unstable;<a name="line.21"></a>
+<span class="sourceLineNo">021</span>import org.apache.hadoop.classification.InterfaceStability.Evolving;<a name="line.21"></a>
 <span class="sourceLineNo">022</span><a name="line.22"></a>
 <span class="sourceLineNo">023</span>import javax.xml.bind.annotation.XmlAccessType;<a name="line.23"></a>
 <span class="sourceLineNo">024</span>import javax.xml.bind.annotation.XmlAccessorType;<a name="line.24"></a>
@@ -44,7 +44,7 @@
 <span class="sourceLineNo">036</span>@XmlRootElement(name = "response")<a name="line.36"></a>
 <span class="sourceLineNo">037</span>@XmlAccessorType(XmlAccessType.NONE)<a name="line.37"></a>
 <span class="sourceLineNo">038</span>@Public<a name="line.38"></a>
-<span class="sourceLineNo">039</span>@Unstable<a name="line.39"></a>
+<span class="sourceLineNo">039</span>@Evolving<a name="line.39"></a>
 <span class="sourceLineNo">040</span>public class TimelinePutResponse {<a name="line.40"></a>
 <span class="sourceLineNo">041</span><a name="line.41"></a>
 <span class="sourceLineNo">042</span>  private List&lt;TimelinePutError&gt; errors = new ArrayList&lt;TimelinePutError&gt;();<a name="line.42"></a>
@@ -100,7 +100,7 @@
 <span class="sourceLineNo">092</span>  @XmlRootElement(name = "error")<a name="line.92"></a>
 <span class="sourceLineNo">093</span>  @XmlAccessorType(XmlAccessType.NONE)<a name="line.93"></a>
 <span class="sourceLineNo">094</span>  @Public<a name="line.94"></a>
-<span class="sourceLineNo">095</span>  @Unstable<a name="line.95"></a>
+<span class="sourceLineNo">095</span>  @Evolving<a name="line.95"></a>
 <span class="sourceLineNo">096</span>  public static class TimelinePutError {<a name="line.96"></a>
 <span class="sourceLineNo">097</span><a name="line.97"></a>
 <span class="sourceLineNo">098</span>    /**<a name="line.98"></a>

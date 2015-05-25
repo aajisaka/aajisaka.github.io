@@ -232,35 +232,36 @@
 <span class="sourceLineNo">224</span>          failoverSleepBaseMs, failoverSleepMaxMs);<a name="line.224"></a>
 <span class="sourceLineNo">225</span>    }<a name="line.225"></a>
 <span class="sourceLineNo">226</span><a name="line.226"></a>
-<span class="sourceLineNo">227</span>    if (waitForEver) {<a name="line.227"></a>
-<span class="sourceLineNo">228</span>      return RetryPolicies.RETRY_FOREVER;<a name="line.228"></a>
-<span class="sourceLineNo">229</span>    }<a name="line.229"></a>
-<span class="sourceLineNo">230</span><a name="line.230"></a>
-<span class="sourceLineNo">231</span>    if (rmConnectionRetryIntervalMS &lt; 0) {<a name="line.231"></a>
-<span class="sourceLineNo">232</span>      throw new YarnRuntimeException("Invalid Configuration. " +<a name="line.232"></a>
-<span class="sourceLineNo">233</span>          YarnConfiguration.RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS +<a name="line.233"></a>
-<span class="sourceLineNo">234</span>          " should not be negative.");<a name="line.234"></a>
-<span class="sourceLineNo">235</span>    }<a name="line.235"></a>
-<span class="sourceLineNo">236</span><a name="line.236"></a>
-<span class="sourceLineNo">237</span>    RetryPolicy retryPolicy =<a name="line.237"></a>
-<span class="sourceLineNo">238</span>        RetryPolicies.retryUpToMaximumTimeWithFixedSleep(rmConnectWaitMS,<a name="line.238"></a>
-<span class="sourceLineNo">239</span>            rmConnectionRetryIntervalMS, TimeUnit.MILLISECONDS);<a name="line.239"></a>
-<span class="sourceLineNo">240</span><a name="line.240"></a>
-<span class="sourceLineNo">241</span>    Map&lt;Class&lt;? extends Exception&gt;, RetryPolicy&gt; exceptionToPolicyMap =<a name="line.241"></a>
-<span class="sourceLineNo">242</span>        new HashMap&lt;Class&lt;? extends Exception&gt;, RetryPolicy&gt;();<a name="line.242"></a>
-<span class="sourceLineNo">243</span><a name="line.243"></a>
-<span class="sourceLineNo">244</span>    exceptionToPolicyMap.put(EOFException.class, retryPolicy);<a name="line.244"></a>
-<span class="sourceLineNo">245</span>    exceptionToPolicyMap.put(ConnectException.class, retryPolicy);<a name="line.245"></a>
-<span class="sourceLineNo">246</span>    exceptionToPolicyMap.put(NoRouteToHostException.class, retryPolicy);<a name="line.246"></a>
-<span class="sourceLineNo">247</span>    exceptionToPolicyMap.put(UnknownHostException.class, retryPolicy);<a name="line.247"></a>
-<span class="sourceLineNo">248</span>    exceptionToPolicyMap.put(ConnectTimeoutException.class, retryPolicy);<a name="line.248"></a>
-<span class="sourceLineNo">249</span>    exceptionToPolicyMap.put(RetriableException.class, retryPolicy);<a name="line.249"></a>
-<span class="sourceLineNo">250</span>    exceptionToPolicyMap.put(SocketException.class, retryPolicy);<a name="line.250"></a>
-<span class="sourceLineNo">251</span><a name="line.251"></a>
-<span class="sourceLineNo">252</span>    return RetryPolicies.retryByException(<a name="line.252"></a>
-<span class="sourceLineNo">253</span>        RetryPolicies.TRY_ONCE_THEN_FAIL, exceptionToPolicyMap);<a name="line.253"></a>
-<span class="sourceLineNo">254</span>  }<a name="line.254"></a>
-<span class="sourceLineNo">255</span>}<a name="line.255"></a>
+<span class="sourceLineNo">227</span>    if (rmConnectionRetryIntervalMS &lt; 0) {<a name="line.227"></a>
+<span class="sourceLineNo">228</span>      throw new YarnRuntimeException("Invalid Configuration. " +<a name="line.228"></a>
+<span class="sourceLineNo">229</span>          YarnConfiguration.RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS +<a name="line.229"></a>
+<span class="sourceLineNo">230</span>          " should not be negative.");<a name="line.230"></a>
+<span class="sourceLineNo">231</span>    }<a name="line.231"></a>
+<span class="sourceLineNo">232</span><a name="line.232"></a>
+<span class="sourceLineNo">233</span>    RetryPolicy retryPolicy = null;<a name="line.233"></a>
+<span class="sourceLineNo">234</span>    if (waitForEver) {<a name="line.234"></a>
+<span class="sourceLineNo">235</span>      retryPolicy = RetryPolicies.RETRY_FOREVER;<a name="line.235"></a>
+<span class="sourceLineNo">236</span>    } else {<a name="line.236"></a>
+<span class="sourceLineNo">237</span>      retryPolicy =<a name="line.237"></a>
+<span class="sourceLineNo">238</span>          RetryPolicies.retryUpToMaximumTimeWithFixedSleep(rmConnectWaitMS,<a name="line.238"></a>
+<span class="sourceLineNo">239</span>              rmConnectionRetryIntervalMS, TimeUnit.MILLISECONDS);<a name="line.239"></a>
+<span class="sourceLineNo">240</span>    }<a name="line.240"></a>
+<span class="sourceLineNo">241</span><a name="line.241"></a>
+<span class="sourceLineNo">242</span>    Map&lt;Class&lt;? extends Exception&gt;, RetryPolicy&gt; exceptionToPolicyMap =<a name="line.242"></a>
+<span class="sourceLineNo">243</span>        new HashMap&lt;Class&lt;? extends Exception&gt;, RetryPolicy&gt;();<a name="line.243"></a>
+<span class="sourceLineNo">244</span><a name="line.244"></a>
+<span class="sourceLineNo">245</span>    exceptionToPolicyMap.put(EOFException.class, retryPolicy);<a name="line.245"></a>
+<span class="sourceLineNo">246</span>    exceptionToPolicyMap.put(ConnectException.class, retryPolicy);<a name="line.246"></a>
+<span class="sourceLineNo">247</span>    exceptionToPolicyMap.put(NoRouteToHostException.class, retryPolicy);<a name="line.247"></a>
+<span class="sourceLineNo">248</span>    exceptionToPolicyMap.put(UnknownHostException.class, retryPolicy);<a name="line.248"></a>
+<span class="sourceLineNo">249</span>    exceptionToPolicyMap.put(ConnectTimeoutException.class, retryPolicy);<a name="line.249"></a>
+<span class="sourceLineNo">250</span>    exceptionToPolicyMap.put(RetriableException.class, retryPolicy);<a name="line.250"></a>
+<span class="sourceLineNo">251</span>    exceptionToPolicyMap.put(SocketException.class, retryPolicy);<a name="line.251"></a>
+<span class="sourceLineNo">252</span><a name="line.252"></a>
+<span class="sourceLineNo">253</span>    return RetryPolicies.retryByException(<a name="line.253"></a>
+<span class="sourceLineNo">254</span>        RetryPolicies.TRY_ONCE_THEN_FAIL, exceptionToPolicyMap);<a name="line.254"></a>
+<span class="sourceLineNo">255</span>  }<a name="line.255"></a>
+<span class="sourceLineNo">256</span>}<a name="line.256"></a>
 
 
 

@@ -2085,6 +2085,15 @@
 </property>
 
 <property>
+  <name>dfs.namenode.audit.log.debug.cmdlist</name>
+  <value></value>
+  <description>
+    A comma separated list of NameNode commands that are written to the HDFS
+    namenode audit log only if the audit log level is debug.
+  </description>
+</property>
+
+<property>
   <name>dfs.client.use.legacy.blockreader.local</name>
   <value>false</value>
   <description>
@@ -2331,6 +2340,17 @@
   <description>
     The class name of the HTrace SpanReceiver for the HDFS client. You do not
     need to enable this if your client program has been modified to use HTrace.
+  </description>
+</property>
+
+<property>
+  <name>dfs.ha.zkfc.nn.http.timeout.ms</name>
+  <value>20000</value>
+  <description>
+    The HTTP connection and read timeout value (unit is ms ) when DFS ZKFC
+    tries to get local NN thread dump after local NN becomes
+    SERVICE_NOT_RESPONDING or SERVICE_UNHEALTHY.
+    If it is set to zero, DFS ZKFC won't get local NN thread dump.
   </description>
 </property>
 
