@@ -54,12 +54,16 @@
 <span class="sourceLineNo">046</span>  REBOOTED,<a name="line.46"></a>
 <span class="sourceLineNo">047</span><a name="line.47"></a>
 <span class="sourceLineNo">048</span>  /** Node decommission is in progress */<a name="line.48"></a>
-<span class="sourceLineNo">049</span>  DECOMMISSIONING;<a name="line.49"></a>
-<span class="sourceLineNo">050</span>  <a name="line.50"></a>
-<span class="sourceLineNo">051</span>  public boolean isUnusable() {<a name="line.51"></a>
-<span class="sourceLineNo">052</span>    return (this == UNHEALTHY || this == DECOMMISSIONED || this == LOST);<a name="line.52"></a>
-<span class="sourceLineNo">053</span>  }<a name="line.53"></a>
-<span class="sourceLineNo">054</span>}<a name="line.54"></a>
+<span class="sourceLineNo">049</span>  DECOMMISSIONING,<a name="line.49"></a>
+<span class="sourceLineNo">050</span><a name="line.50"></a>
+<span class="sourceLineNo">051</span>  /** Node has shutdown gracefully. */<a name="line.51"></a>
+<span class="sourceLineNo">052</span>  SHUTDOWN;<a name="line.52"></a>
+<span class="sourceLineNo">053</span><a name="line.53"></a>
+<span class="sourceLineNo">054</span>  public boolean isUnusable() {<a name="line.54"></a>
+<span class="sourceLineNo">055</span>    return (this == UNHEALTHY || this == DECOMMISSIONED<a name="line.55"></a>
+<span class="sourceLineNo">056</span>        || this == LOST || this == SHUTDOWN);<a name="line.56"></a>
+<span class="sourceLineNo">057</span>  }<a name="line.57"></a>
+<span class="sourceLineNo">058</span>}<a name="line.58"></a>
 
 
 

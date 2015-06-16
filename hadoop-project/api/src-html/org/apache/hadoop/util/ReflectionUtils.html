@@ -272,7 +272,7 @@
 <span class="sourceLineNo">264</span>  /**<a name="line.264"></a>
 <span class="sourceLineNo">265</span>   * Allocate a buffer for each thread that tries to clone objects.<a name="line.265"></a>
 <span class="sourceLineNo">266</span>   */<a name="line.266"></a>
-<span class="sourceLineNo">267</span>  private static ThreadLocal&lt;CopyInCopyOutBuffer&gt; cloneBuffers<a name="line.267"></a>
+<span class="sourceLineNo">267</span>  private static final ThreadLocal&lt;CopyInCopyOutBuffer&gt; CLONE_BUFFERS<a name="line.267"></a>
 <span class="sourceLineNo">268</span>      = new ThreadLocal&lt;CopyInCopyOutBuffer&gt;() {<a name="line.268"></a>
 <span class="sourceLineNo">269</span>      @Override<a name="line.269"></a>
 <span class="sourceLineNo">270</span>      protected synchronized CopyInCopyOutBuffer initialValue() {<a name="line.270"></a>
@@ -297,7 +297,7 @@
 <span class="sourceLineNo">289</span>  @SuppressWarnings("unchecked")<a name="line.289"></a>
 <span class="sourceLineNo">290</span>  public static &lt;T&gt; T copy(Configuration conf, <a name="line.290"></a>
 <span class="sourceLineNo">291</span>                                T src, T dst) throws IOException {<a name="line.291"></a>
-<span class="sourceLineNo">292</span>    CopyInCopyOutBuffer buffer = cloneBuffers.get();<a name="line.292"></a>
+<span class="sourceLineNo">292</span>    CopyInCopyOutBuffer buffer = CLONE_BUFFERS.get();<a name="line.292"></a>
 <span class="sourceLineNo">293</span>    buffer.outBuffer.reset();<a name="line.293"></a>
 <span class="sourceLineNo">294</span>    SerializationFactory factory = getFactory(conf);<a name="line.294"></a>
 <span class="sourceLineNo">295</span>    Class&lt;T&gt; cls = (Class&lt;T&gt;) src.getClass();<a name="line.295"></a>
@@ -314,7 +314,7 @@
 <span class="sourceLineNo">306</span>  @Deprecated<a name="line.306"></a>
 <span class="sourceLineNo">307</span>  public static void cloneWritableInto(Writable dst, <a name="line.307"></a>
 <span class="sourceLineNo">308</span>                                       Writable src) throws IOException {<a name="line.308"></a>
-<span class="sourceLineNo">309</span>    CopyInCopyOutBuffer buffer = cloneBuffers.get();<a name="line.309"></a>
+<span class="sourceLineNo">309</span>    CopyInCopyOutBuffer buffer = CLONE_BUFFERS.get();<a name="line.309"></a>
 <span class="sourceLineNo">310</span>    buffer.outBuffer.reset();<a name="line.310"></a>
 <span class="sourceLineNo">311</span>    src.write(buffer.outBuffer);<a name="line.311"></a>
 <span class="sourceLineNo">312</span>    buffer.moveData();<a name="line.312"></a>
