@@ -2743,14 +2743,14 @@
 <span class="sourceLineNo">2735</span>      to.put(entry.getKey(), entry.getValue());<a name="line.2735"></a>
 <span class="sourceLineNo">2736</span>    }<a name="line.2736"></a>
 <span class="sourceLineNo">2737</span>  }<a name="line.2737"></a>
-<span class="sourceLineNo">2738</span>  <a name="line.2738"></a>
+<span class="sourceLineNo">2738</span><a name="line.2738"></a>
 <span class="sourceLineNo">2739</span>  private void loadProperty(Properties properties, String name, String attr,<a name="line.2739"></a>
 <span class="sourceLineNo">2740</span>      String value, boolean finalParameter, String[] source) {<a name="line.2740"></a>
 <span class="sourceLineNo">2741</span>    if (value != null || allowNullValueProperties) {<a name="line.2741"></a>
-<span class="sourceLineNo">2742</span>      if (!finalParameters.contains(attr)) {<a name="line.2742"></a>
-<span class="sourceLineNo">2743</span>        if (value==null &amp;&amp; allowNullValueProperties) {<a name="line.2743"></a>
-<span class="sourceLineNo">2744</span>          value = DEFAULT_STRING_CHECK;<a name="line.2744"></a>
-<span class="sourceLineNo">2745</span>        }<a name="line.2745"></a>
+<span class="sourceLineNo">2742</span>      if (value == null) {<a name="line.2742"></a>
+<span class="sourceLineNo">2743</span>        value = DEFAULT_STRING_CHECK;<a name="line.2743"></a>
+<span class="sourceLineNo">2744</span>      }<a name="line.2744"></a>
+<span class="sourceLineNo">2745</span>      if (!finalParameters.contains(attr)) {<a name="line.2745"></a>
 <span class="sourceLineNo">2746</span>        properties.setProperty(attr, value);<a name="line.2746"></a>
 <span class="sourceLineNo">2747</span>        if(source != null) {<a name="line.2747"></a>
 <span class="sourceLineNo">2748</span>          updatingResource.put(attr, source);<a name="line.2748"></a>

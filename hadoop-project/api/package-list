@@ -27,6 +27,7 @@ org.apache.hadoop.fs.permission
 org.apache.hadoop.fs.s3
 org.apache.hadoop.fs.s3a
 org.apache.hadoop.fs.s3native
+org.apache.hadoop.fs.sftp
 org.apache.hadoop.fs.shell.find
 org.apache.hadoop.fs.swift.auth
 org.apache.hadoop.fs.swift.auth.entities
@@ -95,7 +96,6 @@ org.apache.hadoop.io.serializer.avro
 org.apache.hadoop.ipc.proto
 org.apache.hadoop.ipc.protobuf
 org.apache.hadoop.ipc.protocolPB
-org.apache.hadoop.jmx
 org.apache.hadoop.lib.lang
 org.apache.hadoop.lib.server
 org.apache.hadoop.lib.service

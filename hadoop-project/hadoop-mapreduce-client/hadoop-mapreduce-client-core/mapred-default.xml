@@ -1326,7 +1326,7 @@
   <value>2</value>
   <description>The file output committer algorithm version
   valid algorithm version number: 1 or 2
-  default to 1, which is the original algorithm
+  default to 2, which is the original algorithm
 
   In algorithm version 1,
 
@@ -1711,6 +1711,15 @@
   <description>
      Number of characters allowed for job name in Job History Server web page.
   </description>
+</property>
+
+<property>
+  <description>
+  File format the AM will use when generating the .jhist file.  Valid
+  values are "json" for text output and "binary" for faster parsing.
+  </description>
+  <name>mapreduce.jobhistory.jhist.format</name>
+  <value>json</value>
 </property>
 
 <property>

@@ -383,16 +383,13 @@
 <span class="sourceLineNo">375</span>    public ImmutableFsPermission(short permission) {<a name="line.375"></a>
 <span class="sourceLineNo">376</span>      super(permission);<a name="line.376"></a>
 <span class="sourceLineNo">377</span>    }<a name="line.377"></a>
-<span class="sourceLineNo">378</span>    @Override<a name="line.378"></a>
-<span class="sourceLineNo">379</span>    public FsPermission applyUMask(FsPermission umask) {<a name="line.379"></a>
-<span class="sourceLineNo">380</span>      throw new UnsupportedOperationException();<a name="line.380"></a>
-<span class="sourceLineNo">381</span>    }<a name="line.381"></a>
-<span class="sourceLineNo">382</span>    @Override<a name="line.382"></a>
-<span class="sourceLineNo">383</span>    public void readFields(DataInput in) throws IOException {<a name="line.383"></a>
-<span class="sourceLineNo">384</span>      throw new UnsupportedOperationException();<a name="line.384"></a>
-<span class="sourceLineNo">385</span>    }    <a name="line.385"></a>
-<span class="sourceLineNo">386</span>  }<a name="line.386"></a>
-<span class="sourceLineNo">387</span>}<a name="line.387"></a>
+<span class="sourceLineNo">378</span><a name="line.378"></a>
+<span class="sourceLineNo">379</span>    @Override<a name="line.379"></a>
+<span class="sourceLineNo">380</span>    public void readFields(DataInput in) throws IOException {<a name="line.380"></a>
+<span class="sourceLineNo">381</span>      throw new UnsupportedOperationException();<a name="line.381"></a>
+<span class="sourceLineNo">382</span>    }<a name="line.382"></a>
+<span class="sourceLineNo">383</span>  }<a name="line.383"></a>
+<span class="sourceLineNo">384</span>}<a name="line.384"></a>
 
 
 
