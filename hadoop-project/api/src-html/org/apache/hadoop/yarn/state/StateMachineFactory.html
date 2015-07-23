@@ -297,7 +297,7 @@
 <span class="sourceLineNo">289</span>   */<a name="line.289"></a>
 <span class="sourceLineNo">290</span>  private STATE doTransition<a name="line.290"></a>
 <span class="sourceLineNo">291</span>           (OPERAND operand, STATE oldState, EVENTTYPE eventType, EVENT event)<a name="line.291"></a>
-<span class="sourceLineNo">292</span>      throws InvalidStateTransitonException {<a name="line.292"></a>
+<span class="sourceLineNo">292</span>      throws InvalidStateTransitionException {<a name="line.292"></a>
 <span class="sourceLineNo">293</span>    // We can assume that stateMachineTable is non-null because we call<a name="line.293"></a>
 <span class="sourceLineNo">294</span>    //  maybeMakeStateMachineTable() when we build an InnerStateMachine ,<a name="line.294"></a>
 <span class="sourceLineNo">295</span>    //  and this code only gets called from inside a working InnerStateMachine .<a name="line.295"></a>
@@ -310,7 +310,7 @@
 <span class="sourceLineNo">302</span>        return transition.doTransition(operand, oldState, event, eventType);<a name="line.302"></a>
 <span class="sourceLineNo">303</span>      }<a name="line.303"></a>
 <span class="sourceLineNo">304</span>    }<a name="line.304"></a>
-<span class="sourceLineNo">305</span>    throw new InvalidStateTransitonException(oldState, eventType);<a name="line.305"></a>
+<span class="sourceLineNo">305</span>    throw new InvalidStateTransitionException(oldState, eventType);<a name="line.305"></a>
 <span class="sourceLineNo">306</span>  }<a name="line.306"></a>
 <span class="sourceLineNo">307</span><a name="line.307"></a>
 <span class="sourceLineNo">308</span>  private synchronized void maybeMakeStateMachineTable() {<a name="line.308"></a>
@@ -389,11 +389,11 @@
 <span class="sourceLineNo">381</span>    @Override<a name="line.381"></a>
 <span class="sourceLineNo">382</span>    public STATE doTransition(OPERAND operand, STATE oldState,<a name="line.382"></a>
 <span class="sourceLineNo">383</span>                              EVENT event, EVENTTYPE eventType)<a name="line.383"></a>
-<span class="sourceLineNo">384</span>        throws InvalidStateTransitonException {<a name="line.384"></a>
+<span class="sourceLineNo">384</span>        throws InvalidStateTransitionException {<a name="line.384"></a>
 <span class="sourceLineNo">385</span>      STATE postState = hook.transition(operand, event);<a name="line.385"></a>
 <span class="sourceLineNo">386</span><a name="line.386"></a>
 <span class="sourceLineNo">387</span>      if (!validPostStates.contains(postState)) {<a name="line.387"></a>
-<span class="sourceLineNo">388</span>        throw new InvalidStateTransitonException(oldState, eventType);<a name="line.388"></a>
+<span class="sourceLineNo">388</span>        throw new InvalidStateTransitionException(oldState, eventType);<a name="line.388"></a>
 <span class="sourceLineNo">389</span>      }<a name="line.389"></a>
 <span class="sourceLineNo">390</span>      return postState;<a name="line.390"></a>
 <span class="sourceLineNo">391</span>    }<a name="line.391"></a>
@@ -452,7 +452,7 @@
 <span class="sourceLineNo">444</span><a name="line.444"></a>
 <span class="sourceLineNo">445</span>    @Override<a name="line.445"></a>
 <span class="sourceLineNo">446</span>    public synchronized STATE doTransition(EVENTTYPE eventType, EVENT event)<a name="line.446"></a>
-<span class="sourceLineNo">447</span>         throws InvalidStateTransitonException  {<a name="line.447"></a>
+<span class="sourceLineNo">447</span>         throws InvalidStateTransitionException  {<a name="line.447"></a>
 <span class="sourceLineNo">448</span>      currentState = StateMachineFactory.this.doTransition<a name="line.448"></a>
 <span class="sourceLineNo">449</span>          (operand, currentState, eventType, event);<a name="line.449"></a>
 <span class="sourceLineNo">450</span>      return currentState;<a name="line.450"></a>

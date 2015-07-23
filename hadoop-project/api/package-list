@@ -200,6 +200,7 @@ org.apache.hadoop.security.authentication.util
 org.apache.hadoop.security.proto
 org.apache.hadoop.security.protocolPB
 org.apache.hadoop.security.ssl
+org.apache.hadoop.security.token
 org.apache.hadoop.security.token.delegation.web
 org.apache.hadoop.service
 org.apache.hadoop.streaming
