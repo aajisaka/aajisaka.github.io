@@ -1245,30 +1245,43 @@
 <span class="sourceLineNo">1237</span>  }<a name="line.1237"></a>
 <span class="sourceLineNo">1238</span><a name="line.1238"></a>
 <span class="sourceLineNo">1239</span>  /**<a name="line.1239"></a>
-<span class="sourceLineNo">1240</span>   * Retrieve all the storage policies supported by this file system.<a name="line.1240"></a>
+<span class="sourceLineNo">1240</span>   * Retrieve the storage policy for a given file or directory.<a name="line.1240"></a>
 <span class="sourceLineNo">1241</span>   *<a name="line.1241"></a>
-<span class="sourceLineNo">1242</span>   * @return all storage policies supported by this filesystem.<a name="line.1242"></a>
-<span class="sourceLineNo">1243</span>   * @throws IOException<a name="line.1243"></a>
-<span class="sourceLineNo">1244</span>   */<a name="line.1244"></a>
-<span class="sourceLineNo">1245</span>  public Collection&lt;? extends BlockStoragePolicySpi&gt; getAllStoragePolicies()<a name="line.1245"></a>
-<span class="sourceLineNo">1246</span>      throws IOException {<a name="line.1246"></a>
-<span class="sourceLineNo">1247</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1247"></a>
-<span class="sourceLineNo">1248</span>        + " doesn't support getAllStoragePolicies");<a name="line.1248"></a>
-<span class="sourceLineNo">1249</span>  }<a name="line.1249"></a>
-<span class="sourceLineNo">1250</span><a name="line.1250"></a>
-<span class="sourceLineNo">1251</span>  @Override //Object<a name="line.1251"></a>
-<span class="sourceLineNo">1252</span>  public int hashCode() {<a name="line.1252"></a>
-<span class="sourceLineNo">1253</span>    return myUri.hashCode();<a name="line.1253"></a>
-<span class="sourceLineNo">1254</span>  }<a name="line.1254"></a>
-<span class="sourceLineNo">1255</span>  <a name="line.1255"></a>
-<span class="sourceLineNo">1256</span>  @Override //Object<a name="line.1256"></a>
-<span class="sourceLineNo">1257</span>  public boolean equals(Object other) {<a name="line.1257"></a>
-<span class="sourceLineNo">1258</span>    if (other == null || !(other instanceof AbstractFileSystem)) {<a name="line.1258"></a>
-<span class="sourceLineNo">1259</span>      return false;<a name="line.1259"></a>
-<span class="sourceLineNo">1260</span>    }<a name="line.1260"></a>
-<span class="sourceLineNo">1261</span>    return myUri.equals(((AbstractFileSystem) other).myUri);<a name="line.1261"></a>
+<span class="sourceLineNo">1242</span>   * @param src file or directory path.<a name="line.1242"></a>
+<span class="sourceLineNo">1243</span>   * @return storage policy for give file.<a name="line.1243"></a>
+<span class="sourceLineNo">1244</span>   * @throws IOException<a name="line.1244"></a>
+<span class="sourceLineNo">1245</span>   */<a name="line.1245"></a>
+<span class="sourceLineNo">1246</span>  public BlockStoragePolicySpi getStoragePolicy(final Path src)<a name="line.1246"></a>
+<span class="sourceLineNo">1247</span>      throws IOException {<a name="line.1247"></a>
+<span class="sourceLineNo">1248</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1248"></a>
+<span class="sourceLineNo">1249</span>        + " doesn't support getStoragePolicy");<a name="line.1249"></a>
+<span class="sourceLineNo">1250</span>  }<a name="line.1250"></a>
+<span class="sourceLineNo">1251</span><a name="line.1251"></a>
+<span class="sourceLineNo">1252</span>  /**<a name="line.1252"></a>
+<span class="sourceLineNo">1253</span>   * Retrieve all the storage policies supported by this file system.<a name="line.1253"></a>
+<span class="sourceLineNo">1254</span>   *<a name="line.1254"></a>
+<span class="sourceLineNo">1255</span>   * @return all storage policies supported by this filesystem.<a name="line.1255"></a>
+<span class="sourceLineNo">1256</span>   * @throws IOException<a name="line.1256"></a>
+<span class="sourceLineNo">1257</span>   */<a name="line.1257"></a>
+<span class="sourceLineNo">1258</span>  public Collection&lt;? extends BlockStoragePolicySpi&gt; getAllStoragePolicies()<a name="line.1258"></a>
+<span class="sourceLineNo">1259</span>      throws IOException {<a name="line.1259"></a>
+<span class="sourceLineNo">1260</span>    throw new UnsupportedOperationException(getClass().getSimpleName()<a name="line.1260"></a>
+<span class="sourceLineNo">1261</span>        + " doesn't support getAllStoragePolicies");<a name="line.1261"></a>
 <span class="sourceLineNo">1262</span>  }<a name="line.1262"></a>
-<span class="sourceLineNo">1263</span>}<a name="line.1263"></a>
+<span class="sourceLineNo">1263</span><a name="line.1263"></a>
+<span class="sourceLineNo">1264</span>  @Override //Object<a name="line.1264"></a>
+<span class="sourceLineNo">1265</span>  public int hashCode() {<a name="line.1265"></a>
+<span class="sourceLineNo">1266</span>    return myUri.hashCode();<a name="line.1266"></a>
+<span class="sourceLineNo">1267</span>  }<a name="line.1267"></a>
+<span class="sourceLineNo">1268</span>  <a name="line.1268"></a>
+<span class="sourceLineNo">1269</span>  @Override //Object<a name="line.1269"></a>
+<span class="sourceLineNo">1270</span>  public boolean equals(Object other) {<a name="line.1270"></a>
+<span class="sourceLineNo">1271</span>    if (other == null || !(other instanceof AbstractFileSystem)) {<a name="line.1271"></a>
+<span class="sourceLineNo">1272</span>      return false;<a name="line.1272"></a>
+<span class="sourceLineNo">1273</span>    }<a name="line.1273"></a>
+<span class="sourceLineNo">1274</span>    return myUri.equals(((AbstractFileSystem) other).myUri);<a name="line.1274"></a>
+<span class="sourceLineNo">1275</span>  }<a name="line.1275"></a>
+<span class="sourceLineNo">1276</span>}<a name="line.1276"></a>
 
 
 

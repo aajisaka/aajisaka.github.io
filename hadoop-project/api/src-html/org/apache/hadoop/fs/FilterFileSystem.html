@@ -636,11 +636,17 @@
 <span class="sourceLineNo">628</span>  }<a name="line.628"></a>
 <span class="sourceLineNo">629</span><a name="line.629"></a>
 <span class="sourceLineNo">630</span>  @Override<a name="line.630"></a>
-<span class="sourceLineNo">631</span>  public Collection&lt;? extends BlockStoragePolicySpi&gt; getAllStoragePolicies()<a name="line.631"></a>
+<span class="sourceLineNo">631</span>  public BlockStoragePolicySpi getStoragePolicy(final Path src)<a name="line.631"></a>
 <span class="sourceLineNo">632</span>      throws IOException {<a name="line.632"></a>
-<span class="sourceLineNo">633</span>    return fs.getAllStoragePolicies();<a name="line.633"></a>
+<span class="sourceLineNo">633</span>    return fs.getStoragePolicy(src);<a name="line.633"></a>
 <span class="sourceLineNo">634</span>  }<a name="line.634"></a>
-<span class="sourceLineNo">635</span>}<a name="line.635"></a>
+<span class="sourceLineNo">635</span><a name="line.635"></a>
+<span class="sourceLineNo">636</span>  @Override<a name="line.636"></a>
+<span class="sourceLineNo">637</span>  public Collection&lt;? extends BlockStoragePolicySpi&gt; getAllStoragePolicies()<a name="line.637"></a>
+<span class="sourceLineNo">638</span>      throws IOException {<a name="line.638"></a>
+<span class="sourceLineNo">639</span>    return fs.getAllStoragePolicies();<a name="line.639"></a>
+<span class="sourceLineNo">640</span>  }<a name="line.640"></a>
+<span class="sourceLineNo">641</span>}<a name="line.641"></a>
 
 
 
