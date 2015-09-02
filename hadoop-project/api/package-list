@@ -86,6 +86,7 @@ org.apache.hadoop.hdfs.tools.offlineImageViewer
 org.apache.hadoop.hdfs.tools.snapshot
 org.apache.hadoop.hdfs.util
 org.apache.hadoop.hdfs.web
+org.apache.hadoop.hdfs.web.oauth2
 org.apache.hadoop.hdfs.web.resources
 org.apache.hadoop.http.lib
 org.apache.hadoop.io

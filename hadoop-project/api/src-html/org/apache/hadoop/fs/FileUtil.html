@@ -750,15 +750,15 @@
 <span class="sourceLineNo">742</span><a name="line.742"></a>
 <span class="sourceLineNo">743</span>    int count;<a name="line.743"></a>
 <span class="sourceLineNo">744</span>    byte data[] = new byte[2048];<a name="line.744"></a>
-<span class="sourceLineNo">745</span>    BufferedOutputStream outputStream = new BufferedOutputStream(<a name="line.745"></a>
-<span class="sourceLineNo">746</span>        new FileOutputStream(outputFile));<a name="line.746"></a>
+<span class="sourceLineNo">745</span>    try (BufferedOutputStream outputStream = new BufferedOutputStream(<a name="line.745"></a>
+<span class="sourceLineNo">746</span>        new FileOutputStream(outputFile));) {<a name="line.746"></a>
 <span class="sourceLineNo">747</span><a name="line.747"></a>
-<span class="sourceLineNo">748</span>    while ((count = tis.read(data)) != -1) {<a name="line.748"></a>
-<span class="sourceLineNo">749</span>      outputStream.write(data, 0, count);<a name="line.749"></a>
-<span class="sourceLineNo">750</span>    }<a name="line.750"></a>
+<span class="sourceLineNo">748</span>      while ((count = tis.read(data)) != -1) {<a name="line.748"></a>
+<span class="sourceLineNo">749</span>        outputStream.write(data, 0, count);<a name="line.749"></a>
+<span class="sourceLineNo">750</span>      }<a name="line.750"></a>
 <span class="sourceLineNo">751</span><a name="line.751"></a>
-<span class="sourceLineNo">752</span>    outputStream.flush();<a name="line.752"></a>
-<span class="sourceLineNo">753</span>    outputStream.close();<a name="line.753"></a>
+<span class="sourceLineNo">752</span>      outputStream.flush();<a name="line.752"></a>
+<span class="sourceLineNo">753</span>    }<a name="line.753"></a>
 <span class="sourceLineNo">754</span>  }<a name="line.754"></a>
 <span class="sourceLineNo">755</span><a name="line.755"></a>
 <span class="sourceLineNo">756</span>  /**<a name="line.756"></a>

@@ -2205,7 +2205,9 @@
   <name>dfs.namenode.fs-limits.max-xattr-size</name>
   <value>16384</value>
   <description>
-    The maximum combined size of the name and value of an extended attribute in bytes.
+    The maximum combined size of the name and value of an extended attribute
+    in bytes. It should be larger than 0, and less than or equal to maximum
+    size hard limit which is 32768.
   </description>
 </property>
 
@@ -2397,6 +2399,16 @@
     tries to get local NN thread dump after local NN becomes
     SERVICE_NOT_RESPONDING or SERVICE_UNHEALTHY.
     If it is set to zero, DFS ZKFC won't get local NN thread dump.
+  </description>
+</property>
+
+<property>
+  <name>dfs.namenode.quota.init-threads</name>
+  <value>4</value>
+  <description>
+    The number of concurrent threads to be used in quota initialization. The
+    speed of quota initialization also affects the namenode fail-over latency.
+    If the size of name space is big, try increasing this.
   </description>
 </property>
 
