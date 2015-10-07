@@ -62,6 +62,7 @@ org.apache.hadoop.hdfs.server.balancer
 org.apache.hadoop.hdfs.server.blockmanagement
 org.apache.hadoop.hdfs.server.common
 org.apache.hadoop.hdfs.server.datanode
+org.apache.hadoop.hdfs.server.datanode.erasurecode
 org.apache.hadoop.hdfs.server.datanode.fsdataset
 org.apache.hadoop.hdfs.server.datanode.fsdataset.impl
 org.apache.hadoop.hdfs.server.datanode.metrics
@@ -81,6 +82,7 @@ org.apache.hadoop.hdfs.server.namenode.web.resources
 org.apache.hadoop.hdfs.server.protocol
 org.apache.hadoop.hdfs.shortcircuit
 org.apache.hadoop.hdfs.tools
+org.apache.hadoop.hdfs.tools.erasurecode
 org.apache.hadoop.hdfs.tools.offlineEditsViewer
 org.apache.hadoop.hdfs.tools.offlineImageViewer
 org.apache.hadoop.hdfs.tools.snapshot
@@ -91,6 +93,12 @@ org.apache.hadoop.hdfs.web.resources
 org.apache.hadoop.http.lib
 org.apache.hadoop.io
 org.apache.hadoop.io.compress
+org.apache.hadoop.io.erasurecode
+org.apache.hadoop.io.erasurecode.codec
+org.apache.hadoop.io.erasurecode.coder
+org.apache.hadoop.io.erasurecode.grouper
+org.apache.hadoop.io.erasurecode.rawcoder
+org.apache.hadoop.io.erasurecode.rawcoder.util
 org.apache.hadoop.io.file.tfile
 org.apache.hadoop.io.serializer
 org.apache.hadoop.io.serializer.avro

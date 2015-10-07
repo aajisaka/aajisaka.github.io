@@ -225,19 +225,28 @@
 </property>
 
  <property>
-  <name>dfs.datanode.dns.interface</name>
-  <value>default</value>
-  <description>The name of the Network Interface from which a data node should 
-  report its IP address.
-  </description>
+   <name>dfs.datanode.dns.interface</name>
+   <value>default</value>
+   <description>
+     The name of the Network Interface from which a data node should
+     report its IP address. e.g. eth2. This setting may be required for some
+     multi-homed nodes where the DataNodes are assigned multiple hostnames
+     and it is desirable for the DataNodes to use a non-default hostname.
+
+     Prefer using hadoop.security.dns.interface over
+     dfs.datanode.dns.interface.
+   </description>
  </property>
  
 <property>
   <name>dfs.datanode.dns.nameserver</name>
   <value>default</value>
-  <description>The host name or IP address of the name server (DNS)
-  which a DataNode should use to determine the host name used by the
-  NameNode for communication and display purposes.
+  <description>
+    The host name or IP address of the name server (DNS) which a DataNode
+    should use to determine its own host name.
+
+    Prefer using hadoop.security.dns.nameserver over
+    dfs.datanode.dns.nameserver.
   </description>
  </property>
  
@@ -470,6 +479,18 @@
 </property>
 
 <property>
+  <name>dfs.namenode.safemode.replication.min</name>
+  <value></value>
+  <description>
+      a separate minimum replication factor for calculating safe block count.
+      This is an expert level setting.
+      Setting this lower than the dfs.namenode.replication.min
+      is not recommend and/or dangerous for production setups.
+      When it's not set it takes value from dfs.namenode.replication.min
+  </description>
+</property>
+
+<property>
   <name>dfs.blocksize</name>
   <value>134217728</value>
   <description>
@@ -611,6 +632,26 @@
   <value>1</value>
   <description>How many threads should the threadpool used to compile reports
   for volumes in parallel have.
+  </description>
+</property>
+
+<property>
+  <name>dfs.datanode.directoryscan.throttle.limit.ms.per.sec</name>
+  <value>0</value>
+  <description>The report compilation threads are limited to only running for
+  a given number of milliseconds per second, as configured by the
+  property. The limit is taken per thread, not in aggregate, e.g. setting
+  a limit of 100ms for 4 compiler threads will result in each thread being
+  limited to 100ms, not 25ms.
+
+  Note that the throttle does not interrupt the report compiler threads, so the
+  actual running time of the threads per second will typically be somewhat
+  higher than the throttle limit, usually by no more than 20%.
+
+  Setting this limit to 1000 disables compiler thread throttling. Only
+  values between 1 and 1000 are valid. Setting an invalid value will result
+  in the throttle being disbled and an error message being logged. 1000 is
+  the default setting.
   </description>
 </property>
 
@@ -1588,6 +1629,18 @@
 </property>
 
 <property>
+  <name>dfs.datanode.metrics.logger.period.seconds</name>
+  <value>600</value>
+  <description>
+    This setting controls how frequently the DataNode logs its metrics. The
+    logging configuration must also define one or more appenders for
+    DataNodeMetricsLog for the metrics to be logged.
+    DataNode metrics logging is disabled if this value is set to zero or
+    less than zero.
+  </description>
+</property>
+
+<property>
   <name>dfs.metrics.percentiles.intervals</name>
   <value></value>
   <description>
@@ -2360,34 +2413,17 @@
   </description>
 </property>
 
-  <property>
-    <name>dfs.datanode.block-pinning.enabled</name>
-    <value>false</value>
-    <description>Whether pin blocks on favored DataNode.</description>
-  </property>
+<property>
+  <name>dfs.datanode.block-pinning.enabled</name>
+  <value>false</value>
+  <description>Whether pin blocks on favored DataNode.</description>
+</property>
 
 <property>
   <name>dfs.client.block.write.locateFollowingBlock.initial.delay.ms</name>
   <value>400</value>
   <description>The initial delay (unit is ms) for locateFollowingBlock,
     the delay time will increase exponentially(double) for each retry.
-  </description>
-</property>
-
-<property>
-  <name>dfs.htrace.spanreceiver.classes</name>
-  <value></value>
-  <description>
-    The class name of the HTrace SpanReceiver for the NameNode and DataNode.
-  </description>
-</property>
-
-<property>
-  <name>dfs.client.htrace.spanreceiver.classes</name>
-  <value></value>
-  <description>
-    The class name of the HTrace SpanReceiver for the HDFS client. You do not
-    need to enable this if your client program has been modified to use HTrace.
   </description>
 </property>
 
@@ -2403,12 +2439,55 @@
 </property>
 
 <property>
+  <name>dfs.datanode.stripedread.timeout.millis</name>
+  <value>5000</value>
+  <description>Datanode striped read timeout in milliseconds.
+  </description>
+</property>
+
+<property>
+  <name>dfs.datanode.stripedread.threads</name>
+  <value>20</value>
+  <description>Number of threads used by the Datanode for background recovery work.
+  </description>
+</property>
+
+<property>
+  <name>dfs.datanode.stripedread.buffer.size</name>
+  <value>262144</value>
+  <description>Datanode striped read buffer size.
+  </description>
+</property>
+
+<property>
   <name>dfs.namenode.quota.init-threads</name>
   <value>4</value>
   <description>
     The number of concurrent threads to be used in quota initialization. The
     speed of quota initialization also affects the namenode fail-over latency.
     If the size of name space is big, try increasing this.
+  </description>
+</property>
+
+<property>
+  <name>dfs.datanode.transfer.socket.send.buffer.size</name>
+  <value>131072</value>
+  <description>
+    Socket send buffer size for DataXceiver (mirroring packets to downstream
+    in pipeline). This may affect TCP connection throughput.
+    If it is set to zero or negative value, no buffer size will be set
+    explicitly, thus enable tcp auto-tuning on some system.
+  </description>
+</property>
+
+<property>
+  <name>dfs.datanode.transfer.socket.recv.buffer.size</name>
+  <value>131072</value>
+  <description>
+    Socket receive buffer size for DataXceiver (receiving packets from client
+    during block writing). This may affect TCP connection throughput.
+    If it is set to zero or negative value, no buffer size will be set
+    explicitly, thus enable tcp auto-tuning on some system.
   </description>
 </property>
 
