@@ -91,17 +91,28 @@
   </description>
 </property>
 
-<property>
-  <name>mapreduce.job.reducer.preempt.delay.sec</name>
-  <value>0</value>
-  <description>The threshold in terms of seconds after which an unsatisfied mapper 
-  request triggers reducer preemption to free space. Default 0 implies that the 
-  reduces should be preempted immediately after allocation if there is currently no
-  room for newly allocated mappers.
-  </description>
-</property>
+  <property>
+    <name>mapreduce.job.reducer.preempt.delay.sec</name>
+    <value>0</value>
+    <description>The threshold (in seconds) after which an unsatisfied
+      mapper request triggers reducer preemption when there is no anticipated
+      headroom. If set to 0 or a negative value, the reducer is preempted as
+      soon as lack of headroom is detected. Default is 0.
+    </description>
+  </property>
 
-<property>
+  <property>
+    <name>mapreduce.job.reducer.unconditional-preempt.delay.sec</name>
+    <value>300</value>
+    <description>The threshold (in seconds) after which an unsatisfied
+      mapper request triggers a forced reducer preemption irrespective of the
+      anticipated headroom. By default, it is set to 5 mins. Setting it to 0
+      leads to immediate reducer preemption. Setting to -1 disables this
+      preemption altogether.
+    </description>
+  </property>
+
+  <property>
     <name>mapreduce.job.max.split.locations</name>
     <value>10</value>
     <description>The max number of block locations to store for each split for 
@@ -1778,6 +1789,18 @@
   <value>128</value>
   <description>Buffer size for intermediate encrypt data in kb
   default is 128</description>
+</property>
+
+<property>
+  <name>mapreduce.task.local-fs.write-limit.bytes</name>
+  <value>-1</value>
+  <description>Limit on the byte written to the local file system by each task.
+  This limit only applies to writes that go through the Hadoop filesystem APIs
+  within the task process (i.e.: writes that will update the local filesystem's
+  BYTES_WRITTEN counter). It does not cover other writes such as logging,
+  sideband writes from subprocesses (e.g.: streaming jobs), etc.
+  Negative values disable the limit.
+  default is -1</description>
 </property>
 
 </configuration>

@@ -206,6 +206,8 @@ org.apache.hadoop.security.authentication.client
 org.apache.hadoop.security.authentication.examples
 org.apache.hadoop.security.authentication.server
 org.apache.hadoop.security.authentication.util
+org.apache.hadoop.security.authorize
+org.apache.hadoop.security.http
 org.apache.hadoop.security.proto
 org.apache.hadoop.security.protocolPB
 org.apache.hadoop.security.ssl
@@ -215,6 +217,7 @@ org.apache.hadoop.service
 org.apache.hadoop.streaming
 org.apache.hadoop.streaming.io
 org.apache.hadoop.streaming.mapreduce
+org.apache.hadoop.tools
 org.apache.hadoop.tools.mapred
 org.apache.hadoop.tools.mapred.lib
 org.apache.hadoop.tools.proto

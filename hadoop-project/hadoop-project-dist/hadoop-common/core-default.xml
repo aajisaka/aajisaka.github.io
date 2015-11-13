@@ -843,15 +843,9 @@ for ldap providers in the same way as above does.
 
 <property>
   <name>fs.s3a.threads.max</name>
-  <value>256</value>
+  <value>10</value>
   <description> Maximum number of concurrent active (part)uploads,
     which each use a thread from the threadpool.</description>
-</property>
-
-<property>
-  <name>fs.s3a.threads.core</name>
-  <value>15</value>
-  <description>Number of core threads in the threadpool.</description>
 </property>
 
 <property>
@@ -863,7 +857,7 @@ for ldap providers in the same way as above does.
 
 <property>
   <name>fs.s3a.max.total.tasks</name>
-  <value>1000</value>
+  <value>5</value>
   <description>Number of (part)uploads allowed to the queue before
     blocking additional uploads.</description>
 </property>
@@ -1402,6 +1396,42 @@ for ldap providers in the same way as above does.
     Location of the keytab file with the credentials for the principal.
     Referring to the same keytab file Oozie uses for its Kerberos credentials for Hadoop.
   </description>
+</property>
+
+<!-- HTTP CORS support -->
+<property>
+  <description>Enable/disable the cross-origin (CORS) filter.</description>
+  <name>hadoop.http.cross-origin.enabled</name>
+  <value>false</value>
+</property>
+
+<property>
+  <description>Comma separated list of origins that are allowed for web
+    services needing cross-origin (CORS) support. Wildcards (*) and patterns
+    allowed</description>
+  <name>hadoop.http.cross-origin.allowed-origins</name>
+  <value>*</value>
+</property>
+
+<property>
+  <description>Comma separated list of methods that are allowed for web
+    services needing cross-origin (CORS) support.</description>
+  <name>hadoop.http.cross-origin.allowed-methods</name>
+  <value>GET,POST,HEAD</value>
+</property>
+
+<property>
+  <description>Comma separated list of headers that are allowed for web
+    services needing cross-origin (CORS) support.</description>
+  <name>hadoop.http.cross-origin.allowed-headers</name>
+  <value>X-Requested-With,Content-Type,Accept,Origin</value>
+</property>
+
+<property>
+  <description>The number of seconds a pre-flighted request can be cached
+    for web services needing cross-origin (CORS) support.</description>
+  <name>hadoop.http.cross-origin.max-age</name>
+  <value>1800</value>
 </property>
 
 <property>

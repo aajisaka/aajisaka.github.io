@@ -258,11 +258,13 @@
 <span class="sourceLineNo">250</span>    exceptionToPolicyMap.put(ConnectTimeoutException.class, retryPolicy);<a name="line.250"></a>
 <span class="sourceLineNo">251</span>    exceptionToPolicyMap.put(RetriableException.class, retryPolicy);<a name="line.251"></a>
 <span class="sourceLineNo">252</span>    exceptionToPolicyMap.put(SocketException.class, retryPolicy);<a name="line.252"></a>
-<span class="sourceLineNo">253</span><a name="line.253"></a>
-<span class="sourceLineNo">254</span>    return RetryPolicies.retryByException(<a name="line.254"></a>
-<span class="sourceLineNo">255</span>        RetryPolicies.TRY_ONCE_THEN_FAIL, exceptionToPolicyMap);<a name="line.255"></a>
-<span class="sourceLineNo">256</span>  }<a name="line.256"></a>
-<span class="sourceLineNo">257</span>}<a name="line.257"></a>
+<span class="sourceLineNo">253</span>    // YARN-4288: local IOException is also possible.<a name="line.253"></a>
+<span class="sourceLineNo">254</span>    exceptionToPolicyMap.put(IOException.class, retryPolicy);<a name="line.254"></a>
+<span class="sourceLineNo">255</span>    // Not retry on remote IO exception.<a name="line.255"></a>
+<span class="sourceLineNo">256</span>    return RetryPolicies.retryOtherThanRemoteException(<a name="line.256"></a>
+<span class="sourceLineNo">257</span>        RetryPolicies.TRY_ONCE_THEN_FAIL, exceptionToPolicyMap);<a name="line.257"></a>
+<span class="sourceLineNo">258</span>  }<a name="line.258"></a>
+<span class="sourceLineNo">259</span>}<a name="line.259"></a>
 
 
 
