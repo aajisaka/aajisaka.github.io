@@ -31,15 +31,19 @@
 <span class="sourceLineNo">023</span>/**<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * Implementation of {@link Clock} that gives the current time from the system<a name="line.24"></a>
 <span class="sourceLineNo">025</span> * clock in milliseconds.<a name="line.25"></a>
-<span class="sourceLineNo">026</span> */<a name="line.26"></a>
-<span class="sourceLineNo">027</span>@Public<a name="line.27"></a>
-<span class="sourceLineNo">028</span>@Stable<a name="line.28"></a>
-<span class="sourceLineNo">029</span>public class SystemClock implements Clock {<a name="line.29"></a>
-<span class="sourceLineNo">030</span><a name="line.30"></a>
-<span class="sourceLineNo">031</span>  public long getTime() {<a name="line.31"></a>
-<span class="sourceLineNo">032</span>    return System.currentTimeMillis();<a name="line.32"></a>
-<span class="sourceLineNo">033</span>  }<a name="line.33"></a>
-<span class="sourceLineNo">034</span>}<a name="line.34"></a>
+<span class="sourceLineNo">026</span> * <a name="line.26"></a>
+<span class="sourceLineNo">027</span> * NOTE: Do not use this to calculate a duration of expire or interval to sleep,<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * because it will be broken by settimeofday. Please use {@link MonotonicClock}<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * instead.<a name="line.29"></a>
+<span class="sourceLineNo">030</span> */<a name="line.30"></a>
+<span class="sourceLineNo">031</span>@Public<a name="line.31"></a>
+<span class="sourceLineNo">032</span>@Stable<a name="line.32"></a>
+<span class="sourceLineNo">033</span>public class SystemClock implements Clock {<a name="line.33"></a>
+<span class="sourceLineNo">034</span><a name="line.34"></a>
+<span class="sourceLineNo">035</span>  public long getTime() {<a name="line.35"></a>
+<span class="sourceLineNo">036</span>    return System.currentTimeMillis();<a name="line.36"></a>
+<span class="sourceLineNo">037</span>  }<a name="line.37"></a>
+<span class="sourceLineNo">038</span>}<a name="line.38"></a>
 
 
 
