@@ -1148,88 +1148,107 @@
 <span class="sourceLineNo">1140</span>      ugi.doAs(new PrivilegedExceptionAction&lt;TimelinePutResponse&gt;() {<a name="line.1140"></a>
 <span class="sourceLineNo">1141</span>        @Override<a name="line.1141"></a>
 <span class="sourceLineNo">1142</span>        public TimelinePutResponse run() throws Exception {<a name="line.1142"></a>
-<span class="sourceLineNo">1143</span>          return timelineClient.putEntities(entity);<a name="line.1143"></a>
-<span class="sourceLineNo">1144</span>        }<a name="line.1144"></a>
-<span class="sourceLineNo">1145</span>      });<a name="line.1145"></a>
-<span class="sourceLineNo">1146</span>    } catch (Exception e) {<a name="line.1146"></a>
-<span class="sourceLineNo">1147</span>      LOG.error("Container start event could not be published for "<a name="line.1147"></a>
-<span class="sourceLineNo">1148</span>          + container.getId().toString(),<a name="line.1148"></a>
-<span class="sourceLineNo">1149</span>          e instanceof UndeclaredThrowableException ? e.getCause() : e);<a name="line.1149"></a>
-<span class="sourceLineNo">1150</span>    }<a name="line.1150"></a>
-<span class="sourceLineNo">1151</span>  }<a name="line.1151"></a>
-<span class="sourceLineNo">1152</span><a name="line.1152"></a>
-<span class="sourceLineNo">1153</span>  private static void publishContainerEndEvent(<a name="line.1153"></a>
-<span class="sourceLineNo">1154</span>      final TimelineClient timelineClient, ContainerStatus container,<a name="line.1154"></a>
-<span class="sourceLineNo">1155</span>      String domainId, UserGroupInformation ugi) {<a name="line.1155"></a>
-<span class="sourceLineNo">1156</span>    final TimelineEntity entity = new TimelineEntity();<a name="line.1156"></a>
-<span class="sourceLineNo">1157</span>    entity.setEntityId(container.getContainerId().toString());<a name="line.1157"></a>
-<span class="sourceLineNo">1158</span>    entity.setEntityType(DSEntity.DS_CONTAINER.toString());<a name="line.1158"></a>
-<span class="sourceLineNo">1159</span>    entity.setDomainId(domainId);<a name="line.1159"></a>
-<span class="sourceLineNo">1160</span>    entity.addPrimaryFilter("user", ugi.getShortUserName());<a name="line.1160"></a>
-<span class="sourceLineNo">1161</span>    TimelineEvent event = new TimelineEvent();<a name="line.1161"></a>
-<span class="sourceLineNo">1162</span>    event.setTimestamp(System.currentTimeMillis());<a name="line.1162"></a>
-<span class="sourceLineNo">1163</span>    event.setEventType(DSEvent.DS_CONTAINER_END.toString());<a name="line.1163"></a>
-<span class="sourceLineNo">1164</span>    event.addEventInfo("State", container.getState().name());<a name="line.1164"></a>
-<span class="sourceLineNo">1165</span>    event.addEventInfo("Exit Status", container.getExitStatus());<a name="line.1165"></a>
-<span class="sourceLineNo">1166</span>    entity.addEvent(event);<a name="line.1166"></a>
-<span class="sourceLineNo">1167</span>    try {<a name="line.1167"></a>
-<span class="sourceLineNo">1168</span>      timelineClient.putEntities(entity);<a name="line.1168"></a>
-<span class="sourceLineNo">1169</span>    } catch (YarnException | IOException e) {<a name="line.1169"></a>
-<span class="sourceLineNo">1170</span>      LOG.error("Container end event could not be published for "<a name="line.1170"></a>
-<span class="sourceLineNo">1171</span>          + container.getContainerId().toString(), e);<a name="line.1171"></a>
-<span class="sourceLineNo">1172</span>    }<a name="line.1172"></a>
-<span class="sourceLineNo">1173</span>  }<a name="line.1173"></a>
-<span class="sourceLineNo">1174</span><a name="line.1174"></a>
-<span class="sourceLineNo">1175</span>  private static void publishApplicationAttemptEvent(<a name="line.1175"></a>
-<span class="sourceLineNo">1176</span>      final TimelineClient timelineClient, String appAttemptId,<a name="line.1176"></a>
-<span class="sourceLineNo">1177</span>      DSEvent appEvent, String domainId, UserGroupInformation ugi) {<a name="line.1177"></a>
-<span class="sourceLineNo">1178</span>    final TimelineEntity entity = new TimelineEntity();<a name="line.1178"></a>
-<span class="sourceLineNo">1179</span>    entity.setEntityId(appAttemptId);<a name="line.1179"></a>
-<span class="sourceLineNo">1180</span>    entity.setEntityType(DSEntity.DS_APP_ATTEMPT.toString());<a name="line.1180"></a>
-<span class="sourceLineNo">1181</span>    entity.setDomainId(domainId);<a name="line.1181"></a>
-<span class="sourceLineNo">1182</span>    entity.addPrimaryFilter("user", ugi.getShortUserName());<a name="line.1182"></a>
-<span class="sourceLineNo">1183</span>    TimelineEvent event = new TimelineEvent();<a name="line.1183"></a>
-<span class="sourceLineNo">1184</span>    event.setEventType(appEvent.toString());<a name="line.1184"></a>
-<span class="sourceLineNo">1185</span>    event.setTimestamp(System.currentTimeMillis());<a name="line.1185"></a>
-<span class="sourceLineNo">1186</span>    entity.addEvent(event);<a name="line.1186"></a>
-<span class="sourceLineNo">1187</span>    try {<a name="line.1187"></a>
-<span class="sourceLineNo">1188</span>      timelineClient.putEntities(entity);<a name="line.1188"></a>
-<span class="sourceLineNo">1189</span>    } catch (YarnException | IOException e) {<a name="line.1189"></a>
-<span class="sourceLineNo">1190</span>      LOG.error("App Attempt "<a name="line.1190"></a>
-<span class="sourceLineNo">1191</span>          + (appEvent.equals(DSEvent.DS_APP_ATTEMPT_START) ? "start" : "end")<a name="line.1191"></a>
-<span class="sourceLineNo">1192</span>          + " event could not be published for "<a name="line.1192"></a>
-<span class="sourceLineNo">1193</span>          + appAttemptId.toString(), e);<a name="line.1193"></a>
-<span class="sourceLineNo">1194</span>    }<a name="line.1194"></a>
-<span class="sourceLineNo">1195</span>  }<a name="line.1195"></a>
-<span class="sourceLineNo">1196</span><a name="line.1196"></a>
-<span class="sourceLineNo">1197</span>  RMCallbackHandler getRMCallbackHandler() {<a name="line.1197"></a>
-<span class="sourceLineNo">1198</span>    return new RMCallbackHandler();<a name="line.1198"></a>
-<span class="sourceLineNo">1199</span>  }<a name="line.1199"></a>
-<span class="sourceLineNo">1200</span><a name="line.1200"></a>
-<span class="sourceLineNo">1201</span>  @VisibleForTesting<a name="line.1201"></a>
-<span class="sourceLineNo">1202</span>  void setAmRMClient(AMRMClientAsync client) {<a name="line.1202"></a>
-<span class="sourceLineNo">1203</span>    this.amRMClient = client;<a name="line.1203"></a>
-<span class="sourceLineNo">1204</span>  }<a name="line.1204"></a>
-<span class="sourceLineNo">1205</span><a name="line.1205"></a>
-<span class="sourceLineNo">1206</span>  @VisibleForTesting<a name="line.1206"></a>
-<span class="sourceLineNo">1207</span>  int getNumCompletedContainers() {<a name="line.1207"></a>
-<span class="sourceLineNo">1208</span>    return numCompletedContainers.get();<a name="line.1208"></a>
-<span class="sourceLineNo">1209</span>  }<a name="line.1209"></a>
-<span class="sourceLineNo">1210</span><a name="line.1210"></a>
-<span class="sourceLineNo">1211</span>  @VisibleForTesting<a name="line.1211"></a>
-<span class="sourceLineNo">1212</span>  boolean getDone() {<a name="line.1212"></a>
-<span class="sourceLineNo">1213</span>    return done;<a name="line.1213"></a>
+<span class="sourceLineNo">1143</span>          return processTimelineResponseErrors(<a name="line.1143"></a>
+<span class="sourceLineNo">1144</span>              timelineClient.putEntities(entity));<a name="line.1144"></a>
+<span class="sourceLineNo">1145</span>        }<a name="line.1145"></a>
+<span class="sourceLineNo">1146</span>      });<a name="line.1146"></a>
+<span class="sourceLineNo">1147</span>    } catch (Exception e) {<a name="line.1147"></a>
+<span class="sourceLineNo">1148</span>      LOG.error("Container start event could not be published for "<a name="line.1148"></a>
+<span class="sourceLineNo">1149</span>          + container.getId().toString(),<a name="line.1149"></a>
+<span class="sourceLineNo">1150</span>          e instanceof UndeclaredThrowableException ? e.getCause() : e);<a name="line.1150"></a>
+<span class="sourceLineNo">1151</span>    }<a name="line.1151"></a>
+<span class="sourceLineNo">1152</span>  }<a name="line.1152"></a>
+<span class="sourceLineNo">1153</span><a name="line.1153"></a>
+<span class="sourceLineNo">1154</span>  private static void publishContainerEndEvent(<a name="line.1154"></a>
+<span class="sourceLineNo">1155</span>      final TimelineClient timelineClient, ContainerStatus container,<a name="line.1155"></a>
+<span class="sourceLineNo">1156</span>      String domainId, UserGroupInformation ugi) {<a name="line.1156"></a>
+<span class="sourceLineNo">1157</span>    final TimelineEntity entity = new TimelineEntity();<a name="line.1157"></a>
+<span class="sourceLineNo">1158</span>    entity.setEntityId(container.getContainerId().toString());<a name="line.1158"></a>
+<span class="sourceLineNo">1159</span>    entity.setEntityType(DSEntity.DS_CONTAINER.toString());<a name="line.1159"></a>
+<span class="sourceLineNo">1160</span>    entity.setDomainId(domainId);<a name="line.1160"></a>
+<span class="sourceLineNo">1161</span>    entity.addPrimaryFilter("user", ugi.getShortUserName());<a name="line.1161"></a>
+<span class="sourceLineNo">1162</span>    TimelineEvent event = new TimelineEvent();<a name="line.1162"></a>
+<span class="sourceLineNo">1163</span>    event.setTimestamp(System.currentTimeMillis());<a name="line.1163"></a>
+<span class="sourceLineNo">1164</span>    event.setEventType(DSEvent.DS_CONTAINER_END.toString());<a name="line.1164"></a>
+<span class="sourceLineNo">1165</span>    event.addEventInfo("State", container.getState().name());<a name="line.1165"></a>
+<span class="sourceLineNo">1166</span>    event.addEventInfo("Exit Status", container.getExitStatus());<a name="line.1166"></a>
+<span class="sourceLineNo">1167</span>    entity.addEvent(event);<a name="line.1167"></a>
+<span class="sourceLineNo">1168</span>    try {<a name="line.1168"></a>
+<span class="sourceLineNo">1169</span>      TimelinePutResponse response = timelineClient.putEntities(entity);<a name="line.1169"></a>
+<span class="sourceLineNo">1170</span>      processTimelineResponseErrors(response);<a name="line.1170"></a>
+<span class="sourceLineNo">1171</span>    } catch (YarnException | IOException e) {<a name="line.1171"></a>
+<span class="sourceLineNo">1172</span>      LOG.error("Container end event could not be published for "<a name="line.1172"></a>
+<span class="sourceLineNo">1173</span>          + container.getContainerId().toString(), e);<a name="line.1173"></a>
+<span class="sourceLineNo">1174</span>    }<a name="line.1174"></a>
+<span class="sourceLineNo">1175</span>  }<a name="line.1175"></a>
+<span class="sourceLineNo">1176</span><a name="line.1176"></a>
+<span class="sourceLineNo">1177</span>  private static void publishApplicationAttemptEvent(<a name="line.1177"></a>
+<span class="sourceLineNo">1178</span>      final TimelineClient timelineClient, String appAttemptId,<a name="line.1178"></a>
+<span class="sourceLineNo">1179</span>      DSEvent appEvent, String domainId, UserGroupInformation ugi) {<a name="line.1179"></a>
+<span class="sourceLineNo">1180</span>    final TimelineEntity entity = new TimelineEntity();<a name="line.1180"></a>
+<span class="sourceLineNo">1181</span>    entity.setEntityId(appAttemptId);<a name="line.1181"></a>
+<span class="sourceLineNo">1182</span>    entity.setEntityType(DSEntity.DS_APP_ATTEMPT.toString());<a name="line.1182"></a>
+<span class="sourceLineNo">1183</span>    entity.setDomainId(domainId);<a name="line.1183"></a>
+<span class="sourceLineNo">1184</span>    entity.addPrimaryFilter("user", ugi.getShortUserName());<a name="line.1184"></a>
+<span class="sourceLineNo">1185</span>    TimelineEvent event = new TimelineEvent();<a name="line.1185"></a>
+<span class="sourceLineNo">1186</span>    event.setEventType(appEvent.toString());<a name="line.1186"></a>
+<span class="sourceLineNo">1187</span>    event.setTimestamp(System.currentTimeMillis());<a name="line.1187"></a>
+<span class="sourceLineNo">1188</span>    entity.addEvent(event);<a name="line.1188"></a>
+<span class="sourceLineNo">1189</span>    try {<a name="line.1189"></a>
+<span class="sourceLineNo">1190</span>      TimelinePutResponse response = timelineClient.putEntities(entity);<a name="line.1190"></a>
+<span class="sourceLineNo">1191</span>      processTimelineResponseErrors(response);<a name="line.1191"></a>
+<span class="sourceLineNo">1192</span>    } catch (YarnException | IOException e) {<a name="line.1192"></a>
+<span class="sourceLineNo">1193</span>      LOG.error("App Attempt "<a name="line.1193"></a>
+<span class="sourceLineNo">1194</span>          + (appEvent.equals(DSEvent.DS_APP_ATTEMPT_START) ? "start" : "end")<a name="line.1194"></a>
+<span class="sourceLineNo">1195</span>          + " event could not be published for "<a name="line.1195"></a>
+<span class="sourceLineNo">1196</span>          + appAttemptId.toString(), e);<a name="line.1196"></a>
+<span class="sourceLineNo">1197</span>    }<a name="line.1197"></a>
+<span class="sourceLineNo">1198</span>  }<a name="line.1198"></a>
+<span class="sourceLineNo">1199</span><a name="line.1199"></a>
+<span class="sourceLineNo">1200</span>  private static TimelinePutResponse processTimelineResponseErrors(<a name="line.1200"></a>
+<span class="sourceLineNo">1201</span>      TimelinePutResponse response) {<a name="line.1201"></a>
+<span class="sourceLineNo">1202</span>    List&lt;TimelinePutResponse.TimelinePutError&gt; errors = response.getErrors();<a name="line.1202"></a>
+<span class="sourceLineNo">1203</span>    if (errors.size() == 0) {<a name="line.1203"></a>
+<span class="sourceLineNo">1204</span>      LOG.debug("Timeline entities are successfully put");<a name="line.1204"></a>
+<span class="sourceLineNo">1205</span>    } else {<a name="line.1205"></a>
+<span class="sourceLineNo">1206</span>      for (TimelinePutResponse.TimelinePutError error : errors) {<a name="line.1206"></a>
+<span class="sourceLineNo">1207</span>        LOG.error(<a name="line.1207"></a>
+<span class="sourceLineNo">1208</span>            "Error when publishing entity [" + error.getEntityType() + ","<a name="line.1208"></a>
+<span class="sourceLineNo">1209</span>                + error.getEntityId() + "], server side error code: "<a name="line.1209"></a>
+<span class="sourceLineNo">1210</span>                + error.getErrorCode());<a name="line.1210"></a>
+<span class="sourceLineNo">1211</span>      }<a name="line.1211"></a>
+<span class="sourceLineNo">1212</span>    }<a name="line.1212"></a>
+<span class="sourceLineNo">1213</span>    return response;<a name="line.1213"></a>
 <span class="sourceLineNo">1214</span>  }<a name="line.1214"></a>
 <span class="sourceLineNo">1215</span><a name="line.1215"></a>
-<span class="sourceLineNo">1216</span>  @VisibleForTesting<a name="line.1216"></a>
-<span class="sourceLineNo">1217</span>  Thread createLaunchContainerThread(Container allocatedContainer,<a name="line.1217"></a>
-<span class="sourceLineNo">1218</span>      String shellId) {<a name="line.1218"></a>
-<span class="sourceLineNo">1219</span>    LaunchContainerRunnable runnableLaunchContainer =<a name="line.1219"></a>
-<span class="sourceLineNo">1220</span>        new LaunchContainerRunnable(allocatedContainer, containerListener,<a name="line.1220"></a>
-<span class="sourceLineNo">1221</span>            shellId);<a name="line.1221"></a>
-<span class="sourceLineNo">1222</span>    return new Thread(runnableLaunchContainer);<a name="line.1222"></a>
+<span class="sourceLineNo">1216</span>  RMCallbackHandler getRMCallbackHandler() {<a name="line.1216"></a>
+<span class="sourceLineNo">1217</span>    return new RMCallbackHandler();<a name="line.1217"></a>
+<span class="sourceLineNo">1218</span>  }<a name="line.1218"></a>
+<span class="sourceLineNo">1219</span><a name="line.1219"></a>
+<span class="sourceLineNo">1220</span>  @VisibleForTesting<a name="line.1220"></a>
+<span class="sourceLineNo">1221</span>  void setAmRMClient(AMRMClientAsync client) {<a name="line.1221"></a>
+<span class="sourceLineNo">1222</span>    this.amRMClient = client;<a name="line.1222"></a>
 <span class="sourceLineNo">1223</span>  }<a name="line.1223"></a>
-<span class="sourceLineNo">1224</span>}<a name="line.1224"></a>
+<span class="sourceLineNo">1224</span><a name="line.1224"></a>
+<span class="sourceLineNo">1225</span>  @VisibleForTesting<a name="line.1225"></a>
+<span class="sourceLineNo">1226</span>  int getNumCompletedContainers() {<a name="line.1226"></a>
+<span class="sourceLineNo">1227</span>    return numCompletedContainers.get();<a name="line.1227"></a>
+<span class="sourceLineNo">1228</span>  }<a name="line.1228"></a>
+<span class="sourceLineNo">1229</span><a name="line.1229"></a>
+<span class="sourceLineNo">1230</span>  @VisibleForTesting<a name="line.1230"></a>
+<span class="sourceLineNo">1231</span>  boolean getDone() {<a name="line.1231"></a>
+<span class="sourceLineNo">1232</span>    return done;<a name="line.1232"></a>
+<span class="sourceLineNo">1233</span>  }<a name="line.1233"></a>
+<span class="sourceLineNo">1234</span><a name="line.1234"></a>
+<span class="sourceLineNo">1235</span>  @VisibleForTesting<a name="line.1235"></a>
+<span class="sourceLineNo">1236</span>  Thread createLaunchContainerThread(Container allocatedContainer,<a name="line.1236"></a>
+<span class="sourceLineNo">1237</span>      String shellId) {<a name="line.1237"></a>
+<span class="sourceLineNo">1238</span>    LaunchContainerRunnable runnableLaunchContainer =<a name="line.1238"></a>
+<span class="sourceLineNo">1239</span>        new LaunchContainerRunnable(allocatedContainer, containerListener,<a name="line.1239"></a>
+<span class="sourceLineNo">1240</span>            shellId);<a name="line.1240"></a>
+<span class="sourceLineNo">1241</span>    return new Thread(runnableLaunchContainer);<a name="line.1241"></a>
+<span class="sourceLineNo">1242</span>  }<a name="line.1242"></a>
+<span class="sourceLineNo">1243</span>}<a name="line.1243"></a>
 
 
 

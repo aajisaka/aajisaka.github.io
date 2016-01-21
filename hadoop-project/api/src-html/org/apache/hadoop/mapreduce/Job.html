@@ -1266,7 +1266,7 @@
 <span class="sourceLineNo">1258</span>  /**<a name="line.1258"></a>
 <span class="sourceLineNo">1259</span>   * Default to the new APIs unless they are explicitly set or the old mapper or<a name="line.1259"></a>
 <span class="sourceLineNo">1260</span>   * reduce attributes are used.<a name="line.1260"></a>
-<span class="sourceLineNo">1261</span>   * @throws IOException if the configuration is inconsistant<a name="line.1261"></a>
+<span class="sourceLineNo">1261</span>   * @throws IOException if the configuration is inconsistent<a name="line.1261"></a>
 <span class="sourceLineNo">1262</span>   */<a name="line.1262"></a>
 <span class="sourceLineNo">1263</span>  private void setUseNewAPI() throws IOException {<a name="line.1263"></a>
 <span class="sourceLineNo">1264</span>    int numReduces = conf.getNumReduceTasks();<a name="line.1264"></a>
@@ -1284,7 +1284,7 @@
 <span class="sourceLineNo">1276</span>        ensureNotSet("mapred.output.format.class", mode);<a name="line.1276"></a>
 <span class="sourceLineNo">1277</span>      }      <a name="line.1277"></a>
 <span class="sourceLineNo">1278</span>    } else {<a name="line.1278"></a>
-<span class="sourceLineNo">1279</span>      String mode = "map compatability";<a name="line.1279"></a>
+<span class="sourceLineNo">1279</span>      String mode = "map compatibility";<a name="line.1279"></a>
 <span class="sourceLineNo">1280</span>      ensureNotSet(INPUT_FORMAT_CLASS_ATTR, mode);<a name="line.1280"></a>
 <span class="sourceLineNo">1281</span>      ensureNotSet(MAP_CLASS_ATTR, mode);<a name="line.1281"></a>
 <span class="sourceLineNo">1282</span>      if (numReduces != 0) {<a name="line.1282"></a>
@@ -1301,7 +1301,7 @@
 <span class="sourceLineNo">1293</span>        ensureNotSet("mapred.output.format.class", mode);<a name="line.1293"></a>
 <span class="sourceLineNo">1294</span>        ensureNotSet(oldReduceClass, mode);   <a name="line.1294"></a>
 <span class="sourceLineNo">1295</span>      } else {<a name="line.1295"></a>
-<span class="sourceLineNo">1296</span>        String mode = "reduce compatability";<a name="line.1296"></a>
+<span class="sourceLineNo">1296</span>        String mode = "reduce compatibility";<a name="line.1296"></a>
 <span class="sourceLineNo">1297</span>        ensureNotSet(OUTPUT_FORMAT_CLASS_ATTR, mode);<a name="line.1297"></a>
 <span class="sourceLineNo">1298</span>        ensureNotSet(REDUCE_CLASS_ATTR, mode);   <a name="line.1298"></a>
 <span class="sourceLineNo">1299</span>      }<a name="line.1299"></a>

@@ -543,7 +543,30 @@
 <span class="sourceLineNo">535</span>  @Public<a name="line.535"></a>
 <span class="sourceLineNo">536</span>  @Unstable<a name="line.536"></a>
 <span class="sourceLineNo">537</span>  public abstract void setReservationID(ReservationId reservationID);<a name="line.537"></a>
-<span class="sourceLineNo">538</span>}<a name="line.538"></a>
+<span class="sourceLineNo">538</span><a name="line.538"></a>
+<span class="sourceLineNo">539</span>  /**<a name="line.539"></a>
+<span class="sourceLineNo">540</span>   * Get AM Blacklisting request object to know whether application needs any<a name="line.540"></a>
+<span class="sourceLineNo">541</span>   * specific blacklisting for AM Nodes.<a name="line.541"></a>
+<span class="sourceLineNo">542</span>   *<a name="line.542"></a>
+<span class="sourceLineNo">543</span>   * @return AMBlackListingRequest object which has blacklisting information.<a name="line.543"></a>
+<span class="sourceLineNo">544</span>   */<a name="line.544"></a>
+<span class="sourceLineNo">545</span>  @Public<a name="line.545"></a>
+<span class="sourceLineNo">546</span>  @Unstable<a name="line.546"></a>
+<span class="sourceLineNo">547</span>  public abstract AMBlackListingRequest getAMBlackListRequest();<a name="line.547"></a>
+<span class="sourceLineNo">548</span><a name="line.548"></a>
+<span class="sourceLineNo">549</span>  /**<a name="line.549"></a>
+<span class="sourceLineNo">550</span>   * Get AM Blacklisting request object to know whether application needs any<a name="line.550"></a>
+<span class="sourceLineNo">551</span>   * specific blacklisting for AM Nodes.<a name="line.551"></a>
+<span class="sourceLineNo">552</span>   *<a name="line.552"></a>
+<span class="sourceLineNo">553</span>   * @param blackListRequest<a name="line.553"></a>
+<span class="sourceLineNo">554</span>   *          object which has blacklisting information such as<a name="line.554"></a>
+<span class="sourceLineNo">555</span>   *          "enable/disable AM blacklisting" and "disable failure threshold".<a name="line.555"></a>
+<span class="sourceLineNo">556</span>   */<a name="line.556"></a>
+<span class="sourceLineNo">557</span>  @Public<a name="line.557"></a>
+<span class="sourceLineNo">558</span>  @Unstable<a name="line.558"></a>
+<span class="sourceLineNo">559</span>  public abstract void setAMBlackListRequest(<a name="line.559"></a>
+<span class="sourceLineNo">560</span>      AMBlackListingRequest blackListRequest);<a name="line.560"></a>
+<span class="sourceLineNo">561</span>}<a name="line.561"></a>
 
 
 

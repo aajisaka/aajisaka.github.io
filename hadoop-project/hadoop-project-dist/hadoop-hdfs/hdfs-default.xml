@@ -414,17 +414,24 @@
 <property>
   <name>dfs.permissions.superusergroup</name>
   <value>supergroup</value>
-  <description>The name of the group of super-users.</description>
+  <description>The name of the group of super-users.
+    The value should be a single group name.
+  </description>
 </property>
-<!--
+
 <property>
    <name>dfs.cluster.administrators</name>
-   <value>ACL for the admins</value>
-   <description>This configuration is used to control who can access the
-                default servlets in the namenode, etc.
+   <value></value>
+   <description>ACL for the admins, this configuration is used to control
+     who can access the default servlets in the namenode, etc. The value
+     should be a comma separated list of users and groups. The user list
+     comes first and is separated by a space followed by the group list,
+     e.g. "user1,user2 group1,group2". Both users and groups are optional,
+     so "user1", " group1", "", "user1 group1", "user1,user2 group1,group2"
+     are all valid (note the leading space in " group1"). '*' grants access
+     to all users and groups, e.g. '*', '* ' and ' *' are all valid.
    </description>
 </property>
--->
 
 <property>
   <name>dfs.namenode.acls.enabled</name>
@@ -2718,6 +2725,29 @@
   <value>8019</value>
   <description>
     RPC port for Zookeeper Failover Controller.
+  </description>
+</property>
+
+<property>
+  <name>dfs.datanode.bp-ready.timeout</name>
+  <value>20</value>
+  <description>
+    The maximum wait time for datanode to be ready before failing the
+    received request. Setting this to 0 fails requests right away if the
+    datanode is not yet registered with the namenode. This wait time
+    reduces initial request failures after datanode restart.
+  </description>
+</property>
+
+<property>
+  <name>dfs.datanode.cached-dfsused.check.interval.ms</name>
+  <value>600000</value>
+  <description>
+    The interval check time of loading DU_CACHE_FILE in each volume.
+    When the cluster doing the rolling upgrade operations, it will
+    usually lead dfsUsed cache file of each volume expired and redo the
+    du operations in datanode and that makes datanode start slowly. Adjust
+    this property can make cache file be available for the time as you want.
   </description>
 </property>
 
