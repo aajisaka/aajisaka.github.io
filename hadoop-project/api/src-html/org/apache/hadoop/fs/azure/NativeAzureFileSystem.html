@@ -566,13 +566,13 @@
 <span class="sourceLineNo">558</span>        throws IOException {<a name="line.558"></a>
 <span class="sourceLineNo">559</span>      Path srcFile = fullPath(srcKey, fileName);<a name="line.559"></a>
 <span class="sourceLineNo">560</span>      Path dstFile = fullPath(dstKey, fileName);<a name="line.560"></a>
-<span class="sourceLineNo">561</span>      boolean srcExists = fs.exists(srcFile);<a name="line.561"></a>
-<span class="sourceLineNo">562</span>      boolean dstExists = fs.exists(dstFile);<a name="line.562"></a>
-<span class="sourceLineNo">563</span>      if(srcExists) {<a name="line.563"></a>
-<span class="sourceLineNo">564</span>        // Rename gets exclusive access (via a lease) for HBase write-ahead log<a name="line.564"></a>
-<span class="sourceLineNo">565</span>        // (WAL) file processing correctness.  See the rename code for details.<a name="line.565"></a>
-<span class="sourceLineNo">566</span>        String srcName = fs.pathToKey(srcFile);<a name="line.566"></a>
-<span class="sourceLineNo">567</span>        String dstName = fs.pathToKey(dstFile);<a name="line.567"></a>
+<span class="sourceLineNo">561</span>      String srcName = fs.pathToKey(srcFile);<a name="line.561"></a>
+<span class="sourceLineNo">562</span>      String dstName = fs.pathToKey(dstFile);<a name="line.562"></a>
+<span class="sourceLineNo">563</span>      boolean srcExists = fs.getStoreInterface().explicitFileExists(srcName);<a name="line.563"></a>
+<span class="sourceLineNo">564</span>      boolean dstExists = fs.getStoreInterface().explicitFileExists(dstName);<a name="line.564"></a>
+<span class="sourceLineNo">565</span>      if(srcExists) {<a name="line.565"></a>
+<span class="sourceLineNo">566</span>        // Rename gets exclusive access (via a lease) for HBase write-ahead log<a name="line.566"></a>
+<span class="sourceLineNo">567</span>        // (WAL) file processing correctness.  See the rename code for details.<a name="line.567"></a>
 <span class="sourceLineNo">568</span>        fs.getStoreInterface().rename(srcName, dstName, true, null);<a name="line.568"></a>
 <span class="sourceLineNo">569</span>      } else if (!srcExists &amp;&amp; dstExists) {<a name="line.569"></a>
 <span class="sourceLineNo">570</span>        // The rename already finished, so do nothing.<a name="line.570"></a>

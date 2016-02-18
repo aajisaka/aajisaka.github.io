@@ -769,7 +769,7 @@
 <span class="sourceLineNo">761</span>      @Override<a name="line.761"></a>
 <span class="sourceLineNo">762</span>      public Boolean next(final AbstractFileSystem fs, final Path p) <a name="line.762"></a>
 <span class="sourceLineNo">763</span>        throws IOException, UnresolvedLinkException {<a name="line.763"></a>
-<span class="sourceLineNo">764</span>        return Boolean.valueOf(fs.delete(p, recursive));<a name="line.764"></a>
+<span class="sourceLineNo">764</span>        return fs.delete(p, recursive);<a name="line.764"></a>
 <span class="sourceLineNo">765</span>      }<a name="line.765"></a>
 <span class="sourceLineNo">766</span>    }.resolve(this, absF);<a name="line.766"></a>
 <span class="sourceLineNo">767</span>  }<a name="line.767"></a>
@@ -903,7 +903,7 @@
 <span class="sourceLineNo">895</span>      @Override<a name="line.895"></a>
 <span class="sourceLineNo">896</span>      public Boolean next(final AbstractFileSystem fs, final Path p) <a name="line.896"></a>
 <span class="sourceLineNo">897</span>        throws IOException, UnresolvedLinkException {<a name="line.897"></a>
-<span class="sourceLineNo">898</span>        return Boolean.valueOf(fs.setReplication(p, replication));<a name="line.898"></a>
+<span class="sourceLineNo">898</span>        return fs.setReplication(p, replication);<a name="line.898"></a>
 <span class="sourceLineNo">899</span>      }<a name="line.899"></a>
 <span class="sourceLineNo">900</span>    }.resolve(this, absF);<a name="line.900"></a>
 <span class="sourceLineNo">901</span>  }<a name="line.901"></a>

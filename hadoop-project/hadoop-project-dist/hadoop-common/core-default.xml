@@ -428,8 +428,8 @@ for ldap providers in the same way as above does.
 </property>
 
 <property>
-  <name>hadoop.work.around.non.threadsafe.getpwuid</name>
-  <value>false</value>
+  <name>hadoop.workaround.non.threadsafe.getpwuid</name>
+  <value>true</value>
   <description>Some operating systems or authentication modules are known to
   have broken implementations of getpwuid_r and getpwgid_r, such that these
   calls are not thread-safe. Symptoms of this problem include JVM crashes
@@ -464,6 +464,12 @@ for ldap providers in the same way as above does.
   <name>hadoop.security.auth_to_local</name>
   <value></value>
   <description>Maps kerberos principals to local user names</description>
+</property>
+
+<property>
+  <name>hadoop.token.files</name>
+  <value></value>
+  <description>List of token cache files that have delegation tokens for hadoop service</description>
 </property>
 
 <!-- i/o properties -->
@@ -879,6 +885,15 @@ for ldap providers in the same way as above does.
   <name>fs.s3a.multipart.threshold</name>
   <value>2147483647</value>
   <description>Threshold before uploads or copies use parallel multipart operations.</description>
+</property>
+
+<property>
+  <name>fs.s3a.multiobjectdelete.enable</name>
+  <value>true</value>
+  <description>When enabled, multiple single-object delete requests are replaced by
+    a single 'delete multiple objects'-request, reducing the number of requests.
+    Beware: legacy S3-compatible object stores might not support this request.
+  </description>
 </property>
 
 <property>
@@ -1629,9 +1644,9 @@ for ldap providers in the same way as above does.
 
 <property>
   <name>hadoop.ssl.enabled.protocols</name>
-  <value>TLSv1</value>
+  <value>TLSv1,SSLv2Hello,TLSv1.1,TLSv1.2</value>
   <description>
-    Protocols supported by the ssl.
+    The supported SSL protocols.
   </description>
 </property>
 

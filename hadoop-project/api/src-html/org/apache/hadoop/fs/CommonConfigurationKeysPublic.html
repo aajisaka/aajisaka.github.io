@@ -319,107 +319,110 @@
 <span class="sourceLineNo">311</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.311"></a>
 <span class="sourceLineNo">312</span>  public static final String HADOOP_SECURITY_DNS_NAMESERVER_KEY =<a name="line.312"></a>
 <span class="sourceLineNo">313</span>    "hadoop.security.dns.nameserver";<a name="line.313"></a>
-<span class="sourceLineNo">314</span><a name="line.314"></a>
-<span class="sourceLineNo">315</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.315"></a>
-<span class="sourceLineNo">316</span>  public static final String HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN =<a name="line.316"></a>
-<span class="sourceLineNo">317</span>          "hadoop.kerberos.min.seconds.before.relogin";<a name="line.317"></a>
-<span class="sourceLineNo">318</span>  /** Default value for HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN */<a name="line.318"></a>
-<span class="sourceLineNo">319</span>  public static final int HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN_DEFAULT =<a name="line.319"></a>
-<span class="sourceLineNo">320</span>          60;<a name="line.320"></a>
-<span class="sourceLineNo">321</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.321"></a>
-<span class="sourceLineNo">322</span>  public static final String  HADOOP_RPC_PROTECTION =<a name="line.322"></a>
-<span class="sourceLineNo">323</span>    "hadoop.rpc.protection";<a name="line.323"></a>
-<span class="sourceLineNo">324</span>  /** Class to override Sasl Properties for a connection */<a name="line.324"></a>
-<span class="sourceLineNo">325</span>  public static final String  HADOOP_SECURITY_SASL_PROPS_RESOLVER_CLASS =<a name="line.325"></a>
-<span class="sourceLineNo">326</span>    "hadoop.security.saslproperties.resolver.class";<a name="line.326"></a>
-<span class="sourceLineNo">327</span>  public static final String HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX = <a name="line.327"></a>
-<span class="sourceLineNo">328</span>    "hadoop.security.crypto.codec.classes";<a name="line.328"></a>
-<span class="sourceLineNo">329</span>  public static final String<a name="line.329"></a>
-<span class="sourceLineNo">330</span>      HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_AES_CTR_NOPADDING_KEY =<a name="line.330"></a>
-<span class="sourceLineNo">331</span>      HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX<a name="line.331"></a>
-<span class="sourceLineNo">332</span>          + CipherSuite.AES_CTR_NOPADDING.getConfigSuffix();<a name="line.332"></a>
-<span class="sourceLineNo">333</span>  public static final String<a name="line.333"></a>
-<span class="sourceLineNo">334</span>      HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_AES_CTR_NOPADDING_DEFAULT =<a name="line.334"></a>
-<span class="sourceLineNo">335</span>      OpensslAesCtrCryptoCodec.class.getName() + "," +<a name="line.335"></a>
-<span class="sourceLineNo">336</span>          JceAesCtrCryptoCodec.class.getName();<a name="line.336"></a>
-<span class="sourceLineNo">337</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.337"></a>
-<span class="sourceLineNo">338</span>  public static final String HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_KEY =<a name="line.338"></a>
-<span class="sourceLineNo">339</span>    "hadoop.security.crypto.cipher.suite";<a name="line.339"></a>
-<span class="sourceLineNo">340</span>  public static final String HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_DEFAULT = <a name="line.340"></a>
-<span class="sourceLineNo">341</span>    "AES/CTR/NoPadding";<a name="line.341"></a>
-<span class="sourceLineNo">342</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.342"></a>
-<span class="sourceLineNo">343</span>  public static final String HADOOP_SECURITY_CRYPTO_JCE_PROVIDER_KEY =<a name="line.343"></a>
-<span class="sourceLineNo">344</span>    "hadoop.security.crypto.jce.provider";<a name="line.344"></a>
+<span class="sourceLineNo">314</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.314"></a>
+<span class="sourceLineNo">315</span>  public static final String HADOOP_TOKEN_FILES =<a name="line.315"></a>
+<span class="sourceLineNo">316</span>      "hadoop.token.files";<a name="line.316"></a>
+<span class="sourceLineNo">317</span><a name="line.317"></a>
+<span class="sourceLineNo">318</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.318"></a>
+<span class="sourceLineNo">319</span>  public static final String HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN =<a name="line.319"></a>
+<span class="sourceLineNo">320</span>          "hadoop.kerberos.min.seconds.before.relogin";<a name="line.320"></a>
+<span class="sourceLineNo">321</span>  /** Default value for HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN */<a name="line.321"></a>
+<span class="sourceLineNo">322</span>  public static final int HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN_DEFAULT =<a name="line.322"></a>
+<span class="sourceLineNo">323</span>          60;<a name="line.323"></a>
+<span class="sourceLineNo">324</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.324"></a>
+<span class="sourceLineNo">325</span>  public static final String  HADOOP_RPC_PROTECTION =<a name="line.325"></a>
+<span class="sourceLineNo">326</span>    "hadoop.rpc.protection";<a name="line.326"></a>
+<span class="sourceLineNo">327</span>  /** Class to override Sasl Properties for a connection */<a name="line.327"></a>
+<span class="sourceLineNo">328</span>  public static final String  HADOOP_SECURITY_SASL_PROPS_RESOLVER_CLASS =<a name="line.328"></a>
+<span class="sourceLineNo">329</span>    "hadoop.security.saslproperties.resolver.class";<a name="line.329"></a>
+<span class="sourceLineNo">330</span>  public static final String HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX = <a name="line.330"></a>
+<span class="sourceLineNo">331</span>    "hadoop.security.crypto.codec.classes";<a name="line.331"></a>
+<span class="sourceLineNo">332</span>  public static final String<a name="line.332"></a>
+<span class="sourceLineNo">333</span>      HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_AES_CTR_NOPADDING_KEY =<a name="line.333"></a>
+<span class="sourceLineNo">334</span>      HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX<a name="line.334"></a>
+<span class="sourceLineNo">335</span>          + CipherSuite.AES_CTR_NOPADDING.getConfigSuffix();<a name="line.335"></a>
+<span class="sourceLineNo">336</span>  public static final String<a name="line.336"></a>
+<span class="sourceLineNo">337</span>      HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_AES_CTR_NOPADDING_DEFAULT =<a name="line.337"></a>
+<span class="sourceLineNo">338</span>      OpensslAesCtrCryptoCodec.class.getName() + "," +<a name="line.338"></a>
+<span class="sourceLineNo">339</span>          JceAesCtrCryptoCodec.class.getName();<a name="line.339"></a>
+<span class="sourceLineNo">340</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.340"></a>
+<span class="sourceLineNo">341</span>  public static final String HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_KEY =<a name="line.341"></a>
+<span class="sourceLineNo">342</span>    "hadoop.security.crypto.cipher.suite";<a name="line.342"></a>
+<span class="sourceLineNo">343</span>  public static final String HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_DEFAULT = <a name="line.343"></a>
+<span class="sourceLineNo">344</span>    "AES/CTR/NoPadding";<a name="line.344"></a>
 <span class="sourceLineNo">345</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.345"></a>
-<span class="sourceLineNo">346</span>  public static final String HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY = <a name="line.346"></a>
-<span class="sourceLineNo">347</span>    "hadoop.security.crypto.buffer.size";<a name="line.347"></a>
-<span class="sourceLineNo">348</span>  /** Defalt value for HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY */<a name="line.348"></a>
-<span class="sourceLineNo">349</span>  public static final int HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_DEFAULT = 8192;<a name="line.349"></a>
-<span class="sourceLineNo">350</span>  /** Class to override Impersonation provider */<a name="line.350"></a>
-<span class="sourceLineNo">351</span>  public static final String  HADOOP_SECURITY_IMPERSONATION_PROVIDER_CLASS =<a name="line.351"></a>
-<span class="sourceLineNo">352</span>    "hadoop.security.impersonation.provider.class";<a name="line.352"></a>
-<span class="sourceLineNo">353</span><a name="line.353"></a>
-<span class="sourceLineNo">354</span>  //  &lt;!-- KMSClientProvider configurations --&gt;<a name="line.354"></a>
-<span class="sourceLineNo">355</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.355"></a>
-<span class="sourceLineNo">356</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_SIZE =<a name="line.356"></a>
-<span class="sourceLineNo">357</span>      "hadoop.security.kms.client.encrypted.key.cache.size";<a name="line.357"></a>
-<span class="sourceLineNo">358</span>  /** Default value for KMS_CLIENT_ENC_KEY_CACHE_SIZE */<a name="line.358"></a>
-<span class="sourceLineNo">359</span>  public static final int KMS_CLIENT_ENC_KEY_CACHE_SIZE_DEFAULT = 500;<a name="line.359"></a>
-<span class="sourceLineNo">360</span><a name="line.360"></a>
-<span class="sourceLineNo">361</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.361"></a>
-<span class="sourceLineNo">362</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK =<a name="line.362"></a>
-<span class="sourceLineNo">363</span>      "hadoop.security.kms.client.encrypted.key.cache.low-watermark";<a name="line.363"></a>
-<span class="sourceLineNo">364</span>  /** Default value for KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK */<a name="line.364"></a>
-<span class="sourceLineNo">365</span>  public static final float KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK_DEFAULT =<a name="line.365"></a>
-<span class="sourceLineNo">366</span>      0.3f;<a name="line.366"></a>
-<span class="sourceLineNo">367</span><a name="line.367"></a>
-<span class="sourceLineNo">368</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.368"></a>
-<span class="sourceLineNo">369</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_NUM_REFILL_THREADS =<a name="line.369"></a>
-<span class="sourceLineNo">370</span>      "hadoop.security.kms.client.encrypted.key.cache.num.refill.threads";<a name="line.370"></a>
-<span class="sourceLineNo">371</span>  /** Default value for KMS_CLIENT_ENC_KEY_NUM_REFILL_THREADS */<a name="line.371"></a>
-<span class="sourceLineNo">372</span>  public static final int KMS_CLIENT_ENC_KEY_CACHE_NUM_REFILL_THREADS_DEFAULT =<a name="line.372"></a>
-<span class="sourceLineNo">373</span>      2;<a name="line.373"></a>
-<span class="sourceLineNo">374</span><a name="line.374"></a>
-<span class="sourceLineNo">375</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.375"></a>
-<span class="sourceLineNo">376</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_EXPIRY_MS =<a name="line.376"></a>
-<span class="sourceLineNo">377</span>      "hadoop.security.kms.client.encrypted.key.cache.expiry";<a name="line.377"></a>
-<span class="sourceLineNo">378</span>  /** Default value for KMS_CLIENT_ENC_KEY_CACHE_EXPIRY (12 hrs)*/<a name="line.378"></a>
-<span class="sourceLineNo">379</span>  public static final int KMS_CLIENT_ENC_KEY_CACHE_EXPIRY_DEFAULT = 43200000;<a name="line.379"></a>
-<span class="sourceLineNo">380</span><a name="line.380"></a>
-<span class="sourceLineNo">381</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.381"></a>
-<span class="sourceLineNo">382</span>  public static final String HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY = <a name="line.382"></a>
-<span class="sourceLineNo">383</span>    "hadoop.security.java.secure.random.algorithm";<a name="line.383"></a>
-<span class="sourceLineNo">384</span>  /** Defalt value for HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY */<a name="line.384"></a>
-<span class="sourceLineNo">385</span>  public static final String HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_DEFAULT = <a name="line.385"></a>
-<span class="sourceLineNo">386</span>    "SHA1PRNG";<a name="line.386"></a>
-<span class="sourceLineNo">387</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.387"></a>
-<span class="sourceLineNo">388</span>  public static final String HADOOP_SECURITY_SECURE_RANDOM_IMPL_KEY = <a name="line.388"></a>
-<span class="sourceLineNo">389</span>    "hadoop.security.secure.random.impl";<a name="line.389"></a>
+<span class="sourceLineNo">346</span>  public static final String HADOOP_SECURITY_CRYPTO_JCE_PROVIDER_KEY =<a name="line.346"></a>
+<span class="sourceLineNo">347</span>    "hadoop.security.crypto.jce.provider";<a name="line.347"></a>
+<span class="sourceLineNo">348</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.348"></a>
+<span class="sourceLineNo">349</span>  public static final String HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY = <a name="line.349"></a>
+<span class="sourceLineNo">350</span>    "hadoop.security.crypto.buffer.size";<a name="line.350"></a>
+<span class="sourceLineNo">351</span>  /** Defalt value for HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY */<a name="line.351"></a>
+<span class="sourceLineNo">352</span>  public static final int HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_DEFAULT = 8192;<a name="line.352"></a>
+<span class="sourceLineNo">353</span>  /** Class to override Impersonation provider */<a name="line.353"></a>
+<span class="sourceLineNo">354</span>  public static final String  HADOOP_SECURITY_IMPERSONATION_PROVIDER_CLASS =<a name="line.354"></a>
+<span class="sourceLineNo">355</span>    "hadoop.security.impersonation.provider.class";<a name="line.355"></a>
+<span class="sourceLineNo">356</span><a name="line.356"></a>
+<span class="sourceLineNo">357</span>  //  &lt;!-- KMSClientProvider configurations --&gt;<a name="line.357"></a>
+<span class="sourceLineNo">358</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.358"></a>
+<span class="sourceLineNo">359</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_SIZE =<a name="line.359"></a>
+<span class="sourceLineNo">360</span>      "hadoop.security.kms.client.encrypted.key.cache.size";<a name="line.360"></a>
+<span class="sourceLineNo">361</span>  /** Default value for KMS_CLIENT_ENC_KEY_CACHE_SIZE */<a name="line.361"></a>
+<span class="sourceLineNo">362</span>  public static final int KMS_CLIENT_ENC_KEY_CACHE_SIZE_DEFAULT = 500;<a name="line.362"></a>
+<span class="sourceLineNo">363</span><a name="line.363"></a>
+<span class="sourceLineNo">364</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.364"></a>
+<span class="sourceLineNo">365</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK =<a name="line.365"></a>
+<span class="sourceLineNo">366</span>      "hadoop.security.kms.client.encrypted.key.cache.low-watermark";<a name="line.366"></a>
+<span class="sourceLineNo">367</span>  /** Default value for KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK */<a name="line.367"></a>
+<span class="sourceLineNo">368</span>  public static final float KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK_DEFAULT =<a name="line.368"></a>
+<span class="sourceLineNo">369</span>      0.3f;<a name="line.369"></a>
+<span class="sourceLineNo">370</span><a name="line.370"></a>
+<span class="sourceLineNo">371</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.371"></a>
+<span class="sourceLineNo">372</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_NUM_REFILL_THREADS =<a name="line.372"></a>
+<span class="sourceLineNo">373</span>      "hadoop.security.kms.client.encrypted.key.cache.num.refill.threads";<a name="line.373"></a>
+<span class="sourceLineNo">374</span>  /** Default value for KMS_CLIENT_ENC_KEY_NUM_REFILL_THREADS */<a name="line.374"></a>
+<span class="sourceLineNo">375</span>  public static final int KMS_CLIENT_ENC_KEY_CACHE_NUM_REFILL_THREADS_DEFAULT =<a name="line.375"></a>
+<span class="sourceLineNo">376</span>      2;<a name="line.376"></a>
+<span class="sourceLineNo">377</span><a name="line.377"></a>
+<span class="sourceLineNo">378</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.378"></a>
+<span class="sourceLineNo">379</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_EXPIRY_MS =<a name="line.379"></a>
+<span class="sourceLineNo">380</span>      "hadoop.security.kms.client.encrypted.key.cache.expiry";<a name="line.380"></a>
+<span class="sourceLineNo">381</span>  /** Default value for KMS_CLIENT_ENC_KEY_CACHE_EXPIRY (12 hrs)*/<a name="line.381"></a>
+<span class="sourceLineNo">382</span>  public static final int KMS_CLIENT_ENC_KEY_CACHE_EXPIRY_DEFAULT = 43200000;<a name="line.382"></a>
+<span class="sourceLineNo">383</span><a name="line.383"></a>
+<span class="sourceLineNo">384</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.384"></a>
+<span class="sourceLineNo">385</span>  public static final String HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY = <a name="line.385"></a>
+<span class="sourceLineNo">386</span>    "hadoop.security.java.secure.random.algorithm";<a name="line.386"></a>
+<span class="sourceLineNo">387</span>  /** Defalt value for HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY */<a name="line.387"></a>
+<span class="sourceLineNo">388</span>  public static final String HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_DEFAULT = <a name="line.388"></a>
+<span class="sourceLineNo">389</span>    "SHA1PRNG";<a name="line.389"></a>
 <span class="sourceLineNo">390</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.390"></a>
-<span class="sourceLineNo">391</span>  public static final String HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_KEY = <a name="line.391"></a>
-<span class="sourceLineNo">392</span>    "hadoop.security.random.device.file.path";<a name="line.392"></a>
-<span class="sourceLineNo">393</span>  public static final String HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_DEFAULT = <a name="line.393"></a>
-<span class="sourceLineNo">394</span>    "/dev/urandom";<a name="line.394"></a>
-<span class="sourceLineNo">395</span><a name="line.395"></a>
-<span class="sourceLineNo">396</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.396"></a>
-<span class="sourceLineNo">397</span>  public static final String HADOOP_SHELL_MISSING_DEFAULT_FS_WARNING_KEY =<a name="line.397"></a>
-<span class="sourceLineNo">398</span>      "hadoop.shell.missing.defaultFs.warning";<a name="line.398"></a>
-<span class="sourceLineNo">399</span>  public static final boolean HADOOP_SHELL_MISSING_DEFAULT_FS_WARNING_DEFAULT =<a name="line.399"></a>
-<span class="sourceLineNo">400</span>      false;<a name="line.400"></a>
-<span class="sourceLineNo">401</span><a name="line.401"></a>
-<span class="sourceLineNo">402</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.402"></a>
-<span class="sourceLineNo">403</span>  public static final String HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES =<a name="line.403"></a>
-<span class="sourceLineNo">404</span>      "hadoop.shell.safely.delete.limit.num.files";<a name="line.404"></a>
-<span class="sourceLineNo">405</span>  public static final long HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES_DEFAULT =<a name="line.405"></a>
-<span class="sourceLineNo">406</span>      100;<a name="line.406"></a>
-<span class="sourceLineNo">407</span><a name="line.407"></a>
-<span class="sourceLineNo">408</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.408"></a>
-<span class="sourceLineNo">409</span>  public static final String HADOOP_HTTP_LOGS_ENABLED =<a name="line.409"></a>
-<span class="sourceLineNo">410</span>      "hadoop.http.logs.enabled";<a name="line.410"></a>
-<span class="sourceLineNo">411</span>  /** Defalt value for HADOOP_HTTP_LOGS_ENABLED */<a name="line.411"></a>
-<span class="sourceLineNo">412</span>  public static final boolean HADOOP_HTTP_LOGS_ENABLED_DEFAULT = true;<a name="line.412"></a>
-<span class="sourceLineNo">413</span>}<a name="line.413"></a>
-<span class="sourceLineNo">414</span><a name="line.414"></a>
+<span class="sourceLineNo">391</span>  public static final String HADOOP_SECURITY_SECURE_RANDOM_IMPL_KEY = <a name="line.391"></a>
+<span class="sourceLineNo">392</span>    "hadoop.security.secure.random.impl";<a name="line.392"></a>
+<span class="sourceLineNo">393</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.393"></a>
+<span class="sourceLineNo">394</span>  public static final String HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_KEY = <a name="line.394"></a>
+<span class="sourceLineNo">395</span>    "hadoop.security.random.device.file.path";<a name="line.395"></a>
+<span class="sourceLineNo">396</span>  public static final String HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_DEFAULT = <a name="line.396"></a>
+<span class="sourceLineNo">397</span>    "/dev/urandom";<a name="line.397"></a>
+<span class="sourceLineNo">398</span><a name="line.398"></a>
+<span class="sourceLineNo">399</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.399"></a>
+<span class="sourceLineNo">400</span>  public static final String HADOOP_SHELL_MISSING_DEFAULT_FS_WARNING_KEY =<a name="line.400"></a>
+<span class="sourceLineNo">401</span>      "hadoop.shell.missing.defaultFs.warning";<a name="line.401"></a>
+<span class="sourceLineNo">402</span>  public static final boolean HADOOP_SHELL_MISSING_DEFAULT_FS_WARNING_DEFAULT =<a name="line.402"></a>
+<span class="sourceLineNo">403</span>      false;<a name="line.403"></a>
+<span class="sourceLineNo">404</span><a name="line.404"></a>
+<span class="sourceLineNo">405</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.405"></a>
+<span class="sourceLineNo">406</span>  public static final String HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES =<a name="line.406"></a>
+<span class="sourceLineNo">407</span>      "hadoop.shell.safely.delete.limit.num.files";<a name="line.407"></a>
+<span class="sourceLineNo">408</span>  public static final long HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES_DEFAULT =<a name="line.408"></a>
+<span class="sourceLineNo">409</span>      100;<a name="line.409"></a>
+<span class="sourceLineNo">410</span><a name="line.410"></a>
+<span class="sourceLineNo">411</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.411"></a>
+<span class="sourceLineNo">412</span>  public static final String HADOOP_HTTP_LOGS_ENABLED =<a name="line.412"></a>
+<span class="sourceLineNo">413</span>      "hadoop.http.logs.enabled";<a name="line.413"></a>
+<span class="sourceLineNo">414</span>  /** Defalt value for HADOOP_HTTP_LOGS_ENABLED */<a name="line.414"></a>
+<span class="sourceLineNo">415</span>  public static final boolean HADOOP_HTTP_LOGS_ENABLED_DEFAULT = true;<a name="line.415"></a>
+<span class="sourceLineNo">416</span>}<a name="line.416"></a>
+<span class="sourceLineNo">417</span><a name="line.417"></a>
 
 
 
