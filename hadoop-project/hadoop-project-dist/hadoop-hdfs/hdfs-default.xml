@@ -815,7 +815,11 @@
   <description>
         Specifies the maximum amount of bandwidth that each datanode
         can utilize for the balancing purpose in term of
-        the number of bytes per second.
+        the number of bytes per second. You can use the following
+        suffix (case insensitive):
+        k(kilo), m(mega), g(giga), t(tera), p(peta), e(exa)to specify the size
+        (such as 128k, 512m, 1g, etc.).
+        Or provide complete size in bytes (such as 134217728 for 128 MB).
   </description>
 </property>
 
@@ -1500,7 +1504,7 @@
   <value></value>
   <description>
     The NameNode service principal. This is typically set to
-    nn/_HOST@REALM.TLD. Each NameNode will subsitute _HOST with its
+    nn/_HOST@REALM.TLD. Each NameNode will substitute _HOST with its
     own fully qualified hostname at startup. The _HOST placeholder
     allows using the same configuration setting on both NameNodes
     in an HA setup.
@@ -1522,7 +1526,7 @@
   <value></value>
   <description>
     The DataNode service principal. This is typically set to
-    dn/_HOST@REALM.TLD. Each DataNode will subsitute _HOST with its
+    dn/_HOST@REALM.TLD. Each DataNode will substitute _HOST with its
     own fully qualified hostname at startup. The _HOST placeholder
     allows using the same configuration setting on all DataNodes.
   </description>
@@ -1543,7 +1547,7 @@
   <value></value>
   <description>
     The JournalNode service principal. This is typically set to
-    jn/_HOST@REALM.TLD. Each JournalNode will subsitute _HOST with its
+    jn/_HOST@REALM.TLD. Each JournalNode will substitute _HOST with its
     own fully qualified hostname at startup. The _HOST placeholder
     allows using the same configuration setting on all JournalNodes.
   </description>
@@ -2314,6 +2318,33 @@
 </property>
 
 <property>
+  <name>dfs.webhdfs.socket.connect-timeout</name>
+  <value>60s</value>
+  <description>
+    Socket timeout for connecting to WebHDFS servers. This prevents a
+    WebHDFS client from hanging if the server hostname is
+    misconfigured, or the server does not response before the timeout
+    expires. Value is followed by a unit specifier: ns, us, ms, s, m,
+    h, d for nanoseconds, microseconds, milliseconds, seconds,
+    minutes, hours, days respectively. Values should provide units,
+    but milliseconds are assumed.
+  </description>
+</property>
+
+<property>
+  <name>dfs.webhdfs.socket.read-timeout</name>
+  <value>60s</value>
+  <description>
+    Socket timeout for reading data from WebHDFS servers. This
+    prevents a WebHDFS client from hanging if the server stops sending
+    data. Value is followed by a unit specifier: ns, us, ms, s, m, h,
+    d for nanoseconds, microseconds, milliseconds, seconds, minutes,
+    hours, days respectively. Values should provide units,
+    but milliseconds are assumed.
+  </description>
+</property>
+
+<property>
   <name>dfs.client.context</name>
   <value>default</value>
   <description>
@@ -2824,6 +2855,108 @@
     the prevention is not enforced.  This helps achieve backwards-compatibility
     with existing automation that has not been updated to send the CSRF
     prevention header.
+  </description>
+</property>
+
+<property>
+  <name>dfs.balancer.keytab.enabled</name>
+  <value>false</value>
+  <description>
+    Set to true to enable login using a keytab for Kerberized Hadoop.
+  </description>
+</property>
+
+<property>
+  <name>dfs.balancer.address</name>
+  <value>0.0.0.0:0</value>
+  <description>
+    The hostname used for a keytab based Kerberos login. Keytab based login
+    can be enabled with dfs.balancer.keytab.enabled.
+  </description>
+</property>
+
+<property>
+  <name>dfs.balancer.keytab.file</name>
+  <value></value>
+  <description>
+    The keytab file used by the Balancer to login as its
+    service principal. The principal name is configured with
+    dfs.balancer.kerberos.principal. Keytab based login can be
+    enabled with dfs.balancer.keytab.enabled.
+  </description>
+</property>
+
+<property>
+  <name>dfs.balancer.kerberos.principal</name>
+  <value></value>
+  <description>
+    The Balancer principal. This is typically set to
+    balancer/_HOST@REALM.TLD. The Balancer will substitute _HOST with its
+    own fully qualified hostname at startup. The _HOST placeholder
+    allows using the same configuration setting on different servers.
+    Keytab based login can be enabled with dfs.balancer.keytab.enabled.
+  </description>
+</property>
+
+<property>
+  <name>dfs.http.client.retry.policy.enabled</name>
+  <value>false</value>
+  <description>
+    If "true", enable the retry policy of WebHDFS client.
+    If "false", retry policy is turned off.
+    Enabling the retry policy can be quite useful while using WebHDFS to
+    copy large files between clusters that could timeout, or
+    copy files between HA clusters that could failover during the copy.
+  </description>
+</property>
+
+<property>
+  <name>dfs.http.client.retry.policy.spec</name>
+  <value>10000,6,60000,10</value>
+  <description>
+    Specify a policy of multiple linear random retry for WebHDFS client,
+    e.g. given pairs of number of retries and sleep time (n0, t0), (n1, t1),
+    ..., the first n0 retries sleep t0 milliseconds on average,
+    the following n1 retries sleep t1 milliseconds on average, and so on.
+  </description>
+</property>
+
+<property>
+  <name>dfs.http.client.failover.max.attempts</name>
+  <value>15</value>
+  <description>
+    Specify the max number of failover attempts for WebHDFS client
+    in case of network exception.
+  </description>
+</property>
+
+<property>
+  <name>dfs.http.client.retry.max.attempts</name>
+  <value>10</value>
+  <description>
+    Specify the max number of retry attempts for WebHDFS client,
+    if the difference between retried attempts and failovered attempts is
+    larger than the max number of retry attempts, there will be no more
+    retries.
+  </description>
+</property>
+
+<property>
+  <name>dfs.http.client.failover.sleep.base.millis</name>
+  <value>500</value>
+  <description>
+    Specify the base amount of time in milliseconds upon which the
+    exponentially increased sleep time between retries or failovers
+    is calculated for WebHDFS client.
+  </description>
+</property>
+
+<property>
+  <name>dfs.http.client.failover.sleep.max.millis</name>
+  <value>15000</value>
+  <description>
+    Specify the upper bound of sleep time in milliseconds between
+    retries or failovers for WebHDFS client.
   </description>
 </property>
 </configuration>

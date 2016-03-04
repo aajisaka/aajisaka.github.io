@@ -1073,6 +1073,16 @@
   </property>
 
   <property>
+    <description>
+      The permissions settings used for the creation of container
+      directories when using DefaultContainerExecutor.  This follows
+      standard user/group/all permissions format.
+    </description>
+    <name>yarn.nodemanager.default-container-executor.log-dirs.permissions</name>
+    <value>710</value>
+  </property>
+
+  <property>
     <description>Whether to enable log aggregation. Log aggregation collects
       each container's logs and moves these logs onto a file-system, for e.g.
       HDFS, after the application completes. Users can configure the
@@ -1224,6 +1234,14 @@
     </description>
     <name>yarn.nodemanager.resource.pcores-vcores-multiplier</name>
     <value>1.0</value>
+  </property>
+
+  <property>
+    <description>
+    Thread pool size for LogAggregationService in Node Manager.
+    </description>
+    <name>yarn.nodemanager.logaggregation.threadpool-size-max</name>
+    <value>100</value>
   </property>
 
   <property>
@@ -2048,6 +2066,45 @@
       Read cache size for the leveldb cache storage in ATS v1.5 plugin storage.
     </description>
     <value>10485760</value>
+  </property>
+
+  <property>
+    <name>yarn.timeline-service.client.fd-flush-interval-secs</name>
+    <description>
+      Flush interval for ATS v1.5 writer. This value controls how frequent
+      the writer will flush the HDFS FSStream for the entity/domain.
+    </description>
+    <value>10</value>
+  </property>
+
+  <property>
+    <name>yarn.timeline-service.client.fd-clean-interval-secs</name>
+    <description>
+      Scan interval for ATS v1.5 writer. This value controls how frequent
+      the writer will scan the HDFS FSStream for the entity/domain.
+      If the FSStream is stale for a long time, this FSStream will be close.
+    </description>
+    <value>60</value>
+  </property>
+
+  <property>
+    <name>yarn.timeline-service.client.fd-retain-secs</name>
+    <description>
+      How long the ATS v1.5 writer will keep a FSStream open.
+      If this fsstream does not write anything for this configured time,
+      it will be close.
+    </description>
+    <value>300</value>
+  </property>
+
+  <property>
+    <name>yarn.timeline-service.client.internal-timers-ttl-secs</name>
+    <description>
+      How long the internal Timer Tasks can be alive in writer. If there is no
+      write operation for this configured time, the internal timer tasks will
+      be close.
+    </description>
+    <value>420</value>
   </property>
 
   <!--  Shared Cache Configuration -->

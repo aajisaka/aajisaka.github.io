@@ -99,7 +99,6 @@ org.apache.hadoop.io.erasurecode.coder
 org.apache.hadoop.io.erasurecode.coder.util
 org.apache.hadoop.io.erasurecode.grouper
 org.apache.hadoop.io.erasurecode.rawcoder
-org.apache.hadoop.io.erasurecode.rawcoder.util
 org.apache.hadoop.io.file.tfile
 org.apache.hadoop.io.serializer
 org.apache.hadoop.io.serializer.avro
