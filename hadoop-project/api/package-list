@@ -62,7 +62,6 @@ org.apache.hadoop.hdfs.server.balancer
 org.apache.hadoop.hdfs.server.blockmanagement
 org.apache.hadoop.hdfs.server.common
 org.apache.hadoop.hdfs.server.datanode
-org.apache.hadoop.hdfs.server.datanode.erasurecode
 org.apache.hadoop.hdfs.server.datanode.fsdataset
 org.apache.hadoop.hdfs.server.datanode.fsdataset.impl
 org.apache.hadoop.hdfs.server.datanode.metrics

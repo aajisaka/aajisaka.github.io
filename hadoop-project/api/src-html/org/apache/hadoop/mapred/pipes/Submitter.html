@@ -323,7 +323,7 @@
 <span class="sourceLineNo">315</span>    // &lt;path&gt;#&lt;executable&gt;<a name="line.315"></a>
 <span class="sourceLineNo">316</span>    if (exec.contains("#")) {<a name="line.316"></a>
 <span class="sourceLineNo">317</span>      // set default gdb commands for map and reduce task <a name="line.317"></a>
-<span class="sourceLineNo">318</span>      String defScript = "$HADOOP_PREFIX/src/c++/pipes/debug/pipes-default-script";<a name="line.318"></a>
+<span class="sourceLineNo">318</span>      String defScript = "$HADOOP_HOME/src/c++/pipes/debug/pipes-default-script";<a name="line.318"></a>
 <span class="sourceLineNo">319</span>      setIfUnset(conf, MRJobConfig.MAP_DEBUG_SCRIPT,defScript);<a name="line.319"></a>
 <span class="sourceLineNo">320</span>      setIfUnset(conf, MRJobConfig.REDUCE_DEBUG_SCRIPT,defScript);<a name="line.320"></a>
 <span class="sourceLineNo">321</span>    }<a name="line.321"></a>

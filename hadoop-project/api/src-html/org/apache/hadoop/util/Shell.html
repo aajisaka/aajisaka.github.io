@@ -725,543 +725,551 @@
 <span class="sourceLineNo">717</span>    } catch (IOException ioe) {<a name="line.717"></a>
 <span class="sourceLineNo">718</span>      LOG.warn("Bash is not supported by the OS", ioe);<a name="line.718"></a>
 <span class="sourceLineNo">719</span>      supported = false;<a name="line.719"></a>
-<span class="sourceLineNo">720</span>    }<a name="line.720"></a>
-<span class="sourceLineNo">721</span><a name="line.721"></a>
-<span class="sourceLineNo">722</span>    return supported;<a name="line.722"></a>
-<span class="sourceLineNo">723</span>  }<a name="line.723"></a>
-<span class="sourceLineNo">724</span><a name="line.724"></a>
-<span class="sourceLineNo">725</span>  /**<a name="line.725"></a>
-<span class="sourceLineNo">726</span>   * Flag which is true if setsid exists.<a name="line.726"></a>
-<span class="sourceLineNo">727</span>   */<a name="line.727"></a>
-<span class="sourceLineNo">728</span>  public static final boolean isSetsidAvailable = isSetsidSupported();<a name="line.728"></a>
-<span class="sourceLineNo">729</span><a name="line.729"></a>
-<span class="sourceLineNo">730</span>  /**<a name="line.730"></a>
-<span class="sourceLineNo">731</span>   * Look for &lt;code&gt;setsid&lt;/code&gt;.<a name="line.731"></a>
-<span class="sourceLineNo">732</span>   * @return true if &lt;code&gt;setsid&lt;/code&gt; was present<a name="line.732"></a>
-<span class="sourceLineNo">733</span>   */<a name="line.733"></a>
-<span class="sourceLineNo">734</span>  private static boolean isSetsidSupported() {<a name="line.734"></a>
-<span class="sourceLineNo">735</span>    if (Shell.WINDOWS) {<a name="line.735"></a>
-<span class="sourceLineNo">736</span>      return false;<a name="line.736"></a>
-<span class="sourceLineNo">737</span>    }<a name="line.737"></a>
-<span class="sourceLineNo">738</span>    ShellCommandExecutor shexec = null;<a name="line.738"></a>
-<span class="sourceLineNo">739</span>    boolean setsidSupported = true;<a name="line.739"></a>
-<span class="sourceLineNo">740</span>    try {<a name="line.740"></a>
-<span class="sourceLineNo">741</span>      String[] args = {"setsid", "bash", "-c", "echo $$"};<a name="line.741"></a>
-<span class="sourceLineNo">742</span>      shexec = new ShellCommandExecutor(args);<a name="line.742"></a>
-<span class="sourceLineNo">743</span>      shexec.execute();<a name="line.743"></a>
-<span class="sourceLineNo">744</span>    } catch (IOException ioe) {<a name="line.744"></a>
-<span class="sourceLineNo">745</span>      LOG.debug("setsid is not available on this machine. So not using it.");<a name="line.745"></a>
-<span class="sourceLineNo">746</span>      setsidSupported = false;<a name="line.746"></a>
-<span class="sourceLineNo">747</span>    }  catch (Error err) {<a name="line.747"></a>
-<span class="sourceLineNo">748</span>      if (err.getMessage() != null<a name="line.748"></a>
-<span class="sourceLineNo">749</span>          &amp;&amp; err.getMessage().contains("posix_spawn is not " +<a name="line.749"></a>
-<span class="sourceLineNo">750</span>          "a supported process launch mechanism")<a name="line.750"></a>
-<span class="sourceLineNo">751</span>          &amp;&amp; (Shell.FREEBSD || Shell.MAC)) {<a name="line.751"></a>
-<span class="sourceLineNo">752</span>        // HADOOP-11924: This is a workaround to avoid failure of class init<a name="line.752"></a>
-<span class="sourceLineNo">753</span>        // by JDK issue on TR locale(JDK-8047340).<a name="line.753"></a>
-<span class="sourceLineNo">754</span>        LOG.info("Avoiding JDK-8047340 on BSD-based systems.", err);<a name="line.754"></a>
-<span class="sourceLineNo">755</span>        setsidSupported = false;<a name="line.755"></a>
-<span class="sourceLineNo">756</span>      }<a name="line.756"></a>
-<span class="sourceLineNo">757</span>    }  finally { // handle the exit code<a name="line.757"></a>
-<span class="sourceLineNo">758</span>      if (LOG.isDebugEnabled()) {<a name="line.758"></a>
-<span class="sourceLineNo">759</span>        LOG.debug("setsid exited with exit code "<a name="line.759"></a>
-<span class="sourceLineNo">760</span>                 + (shexec != null ? shexec.getExitCode() : "(null executor)"));<a name="line.760"></a>
-<span class="sourceLineNo">761</span>      }<a name="line.761"></a>
-<span class="sourceLineNo">762</span>    }<a name="line.762"></a>
-<span class="sourceLineNo">763</span>    return setsidSupported;<a name="line.763"></a>
-<span class="sourceLineNo">764</span>  }<a name="line.764"></a>
-<span class="sourceLineNo">765</span><a name="line.765"></a>
-<span class="sourceLineNo">766</span>  /** Token separator regex used to parse Shell tool outputs. */<a name="line.766"></a>
-<span class="sourceLineNo">767</span>  public static final String TOKEN_SEPARATOR_REGEX<a name="line.767"></a>
-<span class="sourceLineNo">768</span>                = WINDOWS ? "[|\n\r]" : "[ \t\n\r\f]";<a name="line.768"></a>
-<span class="sourceLineNo">769</span><a name="line.769"></a>
-<span class="sourceLineNo">770</span>  private long interval;   // refresh interval in msec<a name="line.770"></a>
-<span class="sourceLineNo">771</span>  private long lastTime;   // last time the command was performed<a name="line.771"></a>
-<span class="sourceLineNo">772</span>  private final boolean redirectErrorStream; // merge stdout and stderr<a name="line.772"></a>
-<span class="sourceLineNo">773</span>  private Map&lt;String, String&gt; environment; // env for the command execution<a name="line.773"></a>
-<span class="sourceLineNo">774</span>  private File dir;<a name="line.774"></a>
-<span class="sourceLineNo">775</span>  private Process process; // sub process used to execute the command<a name="line.775"></a>
-<span class="sourceLineNo">776</span>  private int exitCode;<a name="line.776"></a>
+<span class="sourceLineNo">720</span>    } catch (SecurityException se) {<a name="line.720"></a>
+<span class="sourceLineNo">721</span>      LOG.info("Bash execution is not allowed by the JVM " +<a name="line.721"></a>
+<span class="sourceLineNo">722</span>          "security manager.Considering it not supported.");<a name="line.722"></a>
+<span class="sourceLineNo">723</span>      supported = false;<a name="line.723"></a>
+<span class="sourceLineNo">724</span>    }<a name="line.724"></a>
+<span class="sourceLineNo">725</span><a name="line.725"></a>
+<span class="sourceLineNo">726</span>    return supported;<a name="line.726"></a>
+<span class="sourceLineNo">727</span>  }<a name="line.727"></a>
+<span class="sourceLineNo">728</span><a name="line.728"></a>
+<span class="sourceLineNo">729</span>  /**<a name="line.729"></a>
+<span class="sourceLineNo">730</span>   * Flag which is true if setsid exists.<a name="line.730"></a>
+<span class="sourceLineNo">731</span>   */<a name="line.731"></a>
+<span class="sourceLineNo">732</span>  public static final boolean isSetsidAvailable = isSetsidSupported();<a name="line.732"></a>
+<span class="sourceLineNo">733</span><a name="line.733"></a>
+<span class="sourceLineNo">734</span>  /**<a name="line.734"></a>
+<span class="sourceLineNo">735</span>   * Look for &lt;code&gt;setsid&lt;/code&gt;.<a name="line.735"></a>
+<span class="sourceLineNo">736</span>   * @return true if &lt;code&gt;setsid&lt;/code&gt; was present<a name="line.736"></a>
+<span class="sourceLineNo">737</span>   */<a name="line.737"></a>
+<span class="sourceLineNo">738</span>  private static boolean isSetsidSupported() {<a name="line.738"></a>
+<span class="sourceLineNo">739</span>    if (Shell.WINDOWS) {<a name="line.739"></a>
+<span class="sourceLineNo">740</span>      return false;<a name="line.740"></a>
+<span class="sourceLineNo">741</span>    }<a name="line.741"></a>
+<span class="sourceLineNo">742</span>    ShellCommandExecutor shexec = null;<a name="line.742"></a>
+<span class="sourceLineNo">743</span>    boolean setsidSupported = true;<a name="line.743"></a>
+<span class="sourceLineNo">744</span>    try {<a name="line.744"></a>
+<span class="sourceLineNo">745</span>      String[] args = {"setsid", "bash", "-c", "echo $$"};<a name="line.745"></a>
+<span class="sourceLineNo">746</span>      shexec = new ShellCommandExecutor(args);<a name="line.746"></a>
+<span class="sourceLineNo">747</span>      shexec.execute();<a name="line.747"></a>
+<span class="sourceLineNo">748</span>    } catch (IOException ioe) {<a name="line.748"></a>
+<span class="sourceLineNo">749</span>      LOG.debug("setsid is not available on this machine. So not using it.");<a name="line.749"></a>
+<span class="sourceLineNo">750</span>      setsidSupported = false;<a name="line.750"></a>
+<span class="sourceLineNo">751</span>    } catch (SecurityException se) {<a name="line.751"></a>
+<span class="sourceLineNo">752</span>      LOG.debug("setsid is not allowed to run by the JVM "+<a name="line.752"></a>
+<span class="sourceLineNo">753</span>          "security manager. So not using it.");<a name="line.753"></a>
+<span class="sourceLineNo">754</span>      setsidSupported = false;<a name="line.754"></a>
+<span class="sourceLineNo">755</span>    } catch (Error err) {<a name="line.755"></a>
+<span class="sourceLineNo">756</span>      if (err.getMessage() != null<a name="line.756"></a>
+<span class="sourceLineNo">757</span>          &amp;&amp; err.getMessage().contains("posix_spawn is not " +<a name="line.757"></a>
+<span class="sourceLineNo">758</span>          "a supported process launch mechanism")<a name="line.758"></a>
+<span class="sourceLineNo">759</span>          &amp;&amp; (Shell.FREEBSD || Shell.MAC)) {<a name="line.759"></a>
+<span class="sourceLineNo">760</span>        // HADOOP-11924: This is a workaround to avoid failure of class init<a name="line.760"></a>
+<span class="sourceLineNo">761</span>        // by JDK issue on TR locale(JDK-8047340).<a name="line.761"></a>
+<span class="sourceLineNo">762</span>        LOG.info("Avoiding JDK-8047340 on BSD-based systems.", err);<a name="line.762"></a>
+<span class="sourceLineNo">763</span>        setsidSupported = false;<a name="line.763"></a>
+<span class="sourceLineNo">764</span>      }<a name="line.764"></a>
+<span class="sourceLineNo">765</span>    }  finally { // handle the exit code<a name="line.765"></a>
+<span class="sourceLineNo">766</span>      if (LOG.isDebugEnabled()) {<a name="line.766"></a>
+<span class="sourceLineNo">767</span>        LOG.debug("setsid exited with exit code "<a name="line.767"></a>
+<span class="sourceLineNo">768</span>                 + (shexec != null ? shexec.getExitCode() : "(null executor)"));<a name="line.768"></a>
+<span class="sourceLineNo">769</span>      }<a name="line.769"></a>
+<span class="sourceLineNo">770</span>    }<a name="line.770"></a>
+<span class="sourceLineNo">771</span>    return setsidSupported;<a name="line.771"></a>
+<span class="sourceLineNo">772</span>  }<a name="line.772"></a>
+<span class="sourceLineNo">773</span><a name="line.773"></a>
+<span class="sourceLineNo">774</span>  /** Token separator regex used to parse Shell tool outputs. */<a name="line.774"></a>
+<span class="sourceLineNo">775</span>  public static final String TOKEN_SEPARATOR_REGEX<a name="line.775"></a>
+<span class="sourceLineNo">776</span>                = WINDOWS ? "[|\n\r]" : "[ \t\n\r\f]";<a name="line.776"></a>
 <span class="sourceLineNo">777</span><a name="line.777"></a>
-<span class="sourceLineNo">778</span>  /** Flag to indicate whether or not the script has finished executing. */<a name="line.778"></a>
-<span class="sourceLineNo">779</span>  private final AtomicBoolean completed = new AtomicBoolean(false);<a name="line.779"></a>
-<span class="sourceLineNo">780</span><a name="line.780"></a>
-<span class="sourceLineNo">781</span>  /**<a name="line.781"></a>
-<span class="sourceLineNo">782</span>   * Create an instance with no minimum interval between runs; stderr is<a name="line.782"></a>
-<span class="sourceLineNo">783</span>   * not merged with stdout.<a name="line.783"></a>
-<span class="sourceLineNo">784</span>   */<a name="line.784"></a>
-<span class="sourceLineNo">785</span>  protected Shell() {<a name="line.785"></a>
-<span class="sourceLineNo">786</span>    this(0L);<a name="line.786"></a>
-<span class="sourceLineNo">787</span>  }<a name="line.787"></a>
+<span class="sourceLineNo">778</span>  private long interval;   // refresh interval in msec<a name="line.778"></a>
+<span class="sourceLineNo">779</span>  private long lastTime;   // last time the command was performed<a name="line.779"></a>
+<span class="sourceLineNo">780</span>  private final boolean redirectErrorStream; // merge stdout and stderr<a name="line.780"></a>
+<span class="sourceLineNo">781</span>  private Map&lt;String, String&gt; environment; // env for the command execution<a name="line.781"></a>
+<span class="sourceLineNo">782</span>  private File dir;<a name="line.782"></a>
+<span class="sourceLineNo">783</span>  private Process process; // sub process used to execute the command<a name="line.783"></a>
+<span class="sourceLineNo">784</span>  private int exitCode;<a name="line.784"></a>
+<span class="sourceLineNo">785</span><a name="line.785"></a>
+<span class="sourceLineNo">786</span>  /** Flag to indicate whether or not the script has finished executing. */<a name="line.786"></a>
+<span class="sourceLineNo">787</span>  private final AtomicBoolean completed = new AtomicBoolean(false);<a name="line.787"></a>
 <span class="sourceLineNo">788</span><a name="line.788"></a>
 <span class="sourceLineNo">789</span>  /**<a name="line.789"></a>
-<span class="sourceLineNo">790</span>   * Create an instance with a minimum interval between executions; stderr is<a name="line.790"></a>
+<span class="sourceLineNo">790</span>   * Create an instance with no minimum interval between runs; stderr is<a name="line.790"></a>
 <span class="sourceLineNo">791</span>   * not merged with stdout.<a name="line.791"></a>
-<span class="sourceLineNo">792</span>   * @param interval interval in milliseconds between command executions.<a name="line.792"></a>
-<span class="sourceLineNo">793</span>   */<a name="line.793"></a>
-<span class="sourceLineNo">794</span>  protected Shell(long interval) {<a name="line.794"></a>
-<span class="sourceLineNo">795</span>    this(interval, false);<a name="line.795"></a>
-<span class="sourceLineNo">796</span>  }<a name="line.796"></a>
-<span class="sourceLineNo">797</span><a name="line.797"></a>
-<span class="sourceLineNo">798</span>  /**<a name="line.798"></a>
-<span class="sourceLineNo">799</span>   * Create a shell instance which can be re-executed when the {@link #run()}<a name="line.799"></a>
-<span class="sourceLineNo">800</span>   * method is invoked with a given elapsed time between calls.<a name="line.800"></a>
-<span class="sourceLineNo">801</span>   *<a name="line.801"></a>
-<span class="sourceLineNo">802</span>   * @param interval the minimum duration in milliseconds to wait before<a name="line.802"></a>
-<span class="sourceLineNo">803</span>   *        re-executing the command. If set to 0, there is no minimum.<a name="line.803"></a>
-<span class="sourceLineNo">804</span>   * @param redirectErrorStream should the error stream be merged with<a name="line.804"></a>
-<span class="sourceLineNo">805</span>   *        the normal output stream?<a name="line.805"></a>
-<span class="sourceLineNo">806</span>   */<a name="line.806"></a>
-<span class="sourceLineNo">807</span>  protected Shell(long interval, boolean redirectErrorStream) {<a name="line.807"></a>
-<span class="sourceLineNo">808</span>    this.interval = interval;<a name="line.808"></a>
-<span class="sourceLineNo">809</span>    this.lastTime = (interval &lt; 0) ? 0 : -interval;<a name="line.809"></a>
-<span class="sourceLineNo">810</span>    this.redirectErrorStream = redirectErrorStream;<a name="line.810"></a>
-<span class="sourceLineNo">811</span>  }<a name="line.811"></a>
-<span class="sourceLineNo">812</span><a name="line.812"></a>
-<span class="sourceLineNo">813</span>  /**<a name="line.813"></a>
-<span class="sourceLineNo">814</span>   * Set the environment for the command.<a name="line.814"></a>
-<span class="sourceLineNo">815</span>   * @param env Mapping of environment variables<a name="line.815"></a>
-<span class="sourceLineNo">816</span>   */<a name="line.816"></a>
-<span class="sourceLineNo">817</span>  protected void setEnvironment(Map&lt;String, String&gt; env) {<a name="line.817"></a>
-<span class="sourceLineNo">818</span>    this.environment = env;<a name="line.818"></a>
+<span class="sourceLineNo">792</span>   */<a name="line.792"></a>
+<span class="sourceLineNo">793</span>  protected Shell() {<a name="line.793"></a>
+<span class="sourceLineNo">794</span>    this(0L);<a name="line.794"></a>
+<span class="sourceLineNo">795</span>  }<a name="line.795"></a>
+<span class="sourceLineNo">796</span><a name="line.796"></a>
+<span class="sourceLineNo">797</span>  /**<a name="line.797"></a>
+<span class="sourceLineNo">798</span>   * Create an instance with a minimum interval between executions; stderr is<a name="line.798"></a>
+<span class="sourceLineNo">799</span>   * not merged with stdout.<a name="line.799"></a>
+<span class="sourceLineNo">800</span>   * @param interval interval in milliseconds between command executions.<a name="line.800"></a>
+<span class="sourceLineNo">801</span>   */<a name="line.801"></a>
+<span class="sourceLineNo">802</span>  protected Shell(long interval) {<a name="line.802"></a>
+<span class="sourceLineNo">803</span>    this(interval, false);<a name="line.803"></a>
+<span class="sourceLineNo">804</span>  }<a name="line.804"></a>
+<span class="sourceLineNo">805</span><a name="line.805"></a>
+<span class="sourceLineNo">806</span>  /**<a name="line.806"></a>
+<span class="sourceLineNo">807</span>   * Create a shell instance which can be re-executed when the {@link #run()}<a name="line.807"></a>
+<span class="sourceLineNo">808</span>   * method is invoked with a given elapsed time between calls.<a name="line.808"></a>
+<span class="sourceLineNo">809</span>   *<a name="line.809"></a>
+<span class="sourceLineNo">810</span>   * @param interval the minimum duration in milliseconds to wait before<a name="line.810"></a>
+<span class="sourceLineNo">811</span>   *        re-executing the command. If set to 0, there is no minimum.<a name="line.811"></a>
+<span class="sourceLineNo">812</span>   * @param redirectErrorStream should the error stream be merged with<a name="line.812"></a>
+<span class="sourceLineNo">813</span>   *        the normal output stream?<a name="line.813"></a>
+<span class="sourceLineNo">814</span>   */<a name="line.814"></a>
+<span class="sourceLineNo">815</span>  protected Shell(long interval, boolean redirectErrorStream) {<a name="line.815"></a>
+<span class="sourceLineNo">816</span>    this.interval = interval;<a name="line.816"></a>
+<span class="sourceLineNo">817</span>    this.lastTime = (interval &lt; 0) ? 0 : -interval;<a name="line.817"></a>
+<span class="sourceLineNo">818</span>    this.redirectErrorStream = redirectErrorStream;<a name="line.818"></a>
 <span class="sourceLineNo">819</span>  }<a name="line.819"></a>
 <span class="sourceLineNo">820</span><a name="line.820"></a>
 <span class="sourceLineNo">821</span>  /**<a name="line.821"></a>
-<span class="sourceLineNo">822</span>   * Set the working directory.<a name="line.822"></a>
-<span class="sourceLineNo">823</span>   * @param dir The directory where the command will be executed<a name="line.823"></a>
+<span class="sourceLineNo">822</span>   * Set the environment for the command.<a name="line.822"></a>
+<span class="sourceLineNo">823</span>   * @param env Mapping of environment variables<a name="line.823"></a>
 <span class="sourceLineNo">824</span>   */<a name="line.824"></a>
-<span class="sourceLineNo">825</span>  protected void setWorkingDirectory(File dir) {<a name="line.825"></a>
-<span class="sourceLineNo">826</span>    this.dir = dir;<a name="line.826"></a>
+<span class="sourceLineNo">825</span>  protected void setEnvironment(Map&lt;String, String&gt; env) {<a name="line.825"></a>
+<span class="sourceLineNo">826</span>    this.environment = env;<a name="line.826"></a>
 <span class="sourceLineNo">827</span>  }<a name="line.827"></a>
 <span class="sourceLineNo">828</span><a name="line.828"></a>
-<span class="sourceLineNo">829</span>  /** Check to see if a command needs to be executed and execute if needed. */<a name="line.829"></a>
-<span class="sourceLineNo">830</span>  protected void run() throws IOException {<a name="line.830"></a>
-<span class="sourceLineNo">831</span>    if (lastTime + interval &gt; Time.monotonicNow()) {<a name="line.831"></a>
-<span class="sourceLineNo">832</span>      return;<a name="line.832"></a>
-<span class="sourceLineNo">833</span>    }<a name="line.833"></a>
-<span class="sourceLineNo">834</span>    exitCode = 0; // reset for next run<a name="line.834"></a>
-<span class="sourceLineNo">835</span>    if (Shell.MAC) {<a name="line.835"></a>
-<span class="sourceLineNo">836</span>      System.setProperty("jdk.lang.Process.launchMechanism", "POSIX_SPAWN");<a name="line.836"></a>
-<span class="sourceLineNo">837</span>    }<a name="line.837"></a>
-<span class="sourceLineNo">838</span>    runCommand();<a name="line.838"></a>
-<span class="sourceLineNo">839</span>  }<a name="line.839"></a>
-<span class="sourceLineNo">840</span><a name="line.840"></a>
-<span class="sourceLineNo">841</span>  /** Run the command. */<a name="line.841"></a>
-<span class="sourceLineNo">842</span>  private void runCommand() throws IOException { <a name="line.842"></a>
-<span class="sourceLineNo">843</span>    ProcessBuilder builder = new ProcessBuilder(getExecString());<a name="line.843"></a>
-<span class="sourceLineNo">844</span>    Timer timeOutTimer = null;<a name="line.844"></a>
-<span class="sourceLineNo">845</span>    ShellTimeoutTimerTask timeoutTimerTask = null;<a name="line.845"></a>
-<span class="sourceLineNo">846</span>    timedOut.set(false);<a name="line.846"></a>
-<span class="sourceLineNo">847</span>    completed.set(false);<a name="line.847"></a>
+<span class="sourceLineNo">829</span>  /**<a name="line.829"></a>
+<span class="sourceLineNo">830</span>   * Set the working directory.<a name="line.830"></a>
+<span class="sourceLineNo">831</span>   * @param dir The directory where the command will be executed<a name="line.831"></a>
+<span class="sourceLineNo">832</span>   */<a name="line.832"></a>
+<span class="sourceLineNo">833</span>  protected void setWorkingDirectory(File dir) {<a name="line.833"></a>
+<span class="sourceLineNo">834</span>    this.dir = dir;<a name="line.834"></a>
+<span class="sourceLineNo">835</span>  }<a name="line.835"></a>
+<span class="sourceLineNo">836</span><a name="line.836"></a>
+<span class="sourceLineNo">837</span>  /** Check to see if a command needs to be executed and execute if needed. */<a name="line.837"></a>
+<span class="sourceLineNo">838</span>  protected void run() throws IOException {<a name="line.838"></a>
+<span class="sourceLineNo">839</span>    if (lastTime + interval &gt; Time.monotonicNow()) {<a name="line.839"></a>
+<span class="sourceLineNo">840</span>      return;<a name="line.840"></a>
+<span class="sourceLineNo">841</span>    }<a name="line.841"></a>
+<span class="sourceLineNo">842</span>    exitCode = 0; // reset for next run<a name="line.842"></a>
+<span class="sourceLineNo">843</span>    if (Shell.MAC) {<a name="line.843"></a>
+<span class="sourceLineNo">844</span>      System.setProperty("jdk.lang.Process.launchMechanism", "POSIX_SPAWN");<a name="line.844"></a>
+<span class="sourceLineNo">845</span>    }<a name="line.845"></a>
+<span class="sourceLineNo">846</span>    runCommand();<a name="line.846"></a>
+<span class="sourceLineNo">847</span>  }<a name="line.847"></a>
 <span class="sourceLineNo">848</span><a name="line.848"></a>
-<span class="sourceLineNo">849</span>    if (environment != null) {<a name="line.849"></a>
-<span class="sourceLineNo">850</span>      builder.environment().putAll(this.environment);<a name="line.850"></a>
-<span class="sourceLineNo">851</span>    }<a name="line.851"></a>
-<span class="sourceLineNo">852</span>    if (dir != null) {<a name="line.852"></a>
-<span class="sourceLineNo">853</span>      builder.directory(this.dir);<a name="line.853"></a>
-<span class="sourceLineNo">854</span>    }<a name="line.854"></a>
-<span class="sourceLineNo">855</span><a name="line.855"></a>
-<span class="sourceLineNo">856</span>    builder.redirectErrorStream(redirectErrorStream);<a name="line.856"></a>
-<span class="sourceLineNo">857</span>    <a name="line.857"></a>
-<span class="sourceLineNo">858</span>    if (Shell.WINDOWS) {<a name="line.858"></a>
-<span class="sourceLineNo">859</span>      synchronized (WindowsProcessLaunchLock) {<a name="line.859"></a>
-<span class="sourceLineNo">860</span>        // To workaround the race condition issue with child processes<a name="line.860"></a>
-<span class="sourceLineNo">861</span>        // inheriting unintended handles during process launch that can<a name="line.861"></a>
-<span class="sourceLineNo">862</span>        // lead to hangs on reading output and error streams, we<a name="line.862"></a>
-<span class="sourceLineNo">863</span>        // serialize process creation. More info available at:<a name="line.863"></a>
-<span class="sourceLineNo">864</span>        // http://support.microsoft.com/kb/315939<a name="line.864"></a>
-<span class="sourceLineNo">865</span>        process = builder.start();<a name="line.865"></a>
-<span class="sourceLineNo">866</span>      }<a name="line.866"></a>
-<span class="sourceLineNo">867</span>    } else {<a name="line.867"></a>
-<span class="sourceLineNo">868</span>      process = builder.start();<a name="line.868"></a>
-<span class="sourceLineNo">869</span>    }<a name="line.869"></a>
-<span class="sourceLineNo">870</span><a name="line.870"></a>
-<span class="sourceLineNo">871</span>    if (timeOutInterval &gt; 0) {<a name="line.871"></a>
-<span class="sourceLineNo">872</span>      timeOutTimer = new Timer("Shell command timeout");<a name="line.872"></a>
-<span class="sourceLineNo">873</span>      timeoutTimerTask = new ShellTimeoutTimerTask(<a name="line.873"></a>
-<span class="sourceLineNo">874</span>          this);<a name="line.874"></a>
-<span class="sourceLineNo">875</span>      //One time scheduling.<a name="line.875"></a>
-<span class="sourceLineNo">876</span>      timeOutTimer.schedule(timeoutTimerTask, timeOutInterval);<a name="line.876"></a>
+<span class="sourceLineNo">849</span>  /** Run the command. */<a name="line.849"></a>
+<span class="sourceLineNo">850</span>  private void runCommand() throws IOException { <a name="line.850"></a>
+<span class="sourceLineNo">851</span>    ProcessBuilder builder = new ProcessBuilder(getExecString());<a name="line.851"></a>
+<span class="sourceLineNo">852</span>    Timer timeOutTimer = null;<a name="line.852"></a>
+<span class="sourceLineNo">853</span>    ShellTimeoutTimerTask timeoutTimerTask = null;<a name="line.853"></a>
+<span class="sourceLineNo">854</span>    timedOut.set(false);<a name="line.854"></a>
+<span class="sourceLineNo">855</span>    completed.set(false);<a name="line.855"></a>
+<span class="sourceLineNo">856</span><a name="line.856"></a>
+<span class="sourceLineNo">857</span>    if (environment != null) {<a name="line.857"></a>
+<span class="sourceLineNo">858</span>      builder.environment().putAll(this.environment);<a name="line.858"></a>
+<span class="sourceLineNo">859</span>    }<a name="line.859"></a>
+<span class="sourceLineNo">860</span>    if (dir != null) {<a name="line.860"></a>
+<span class="sourceLineNo">861</span>      builder.directory(this.dir);<a name="line.861"></a>
+<span class="sourceLineNo">862</span>    }<a name="line.862"></a>
+<span class="sourceLineNo">863</span><a name="line.863"></a>
+<span class="sourceLineNo">864</span>    builder.redirectErrorStream(redirectErrorStream);<a name="line.864"></a>
+<span class="sourceLineNo">865</span>    <a name="line.865"></a>
+<span class="sourceLineNo">866</span>    if (Shell.WINDOWS) {<a name="line.866"></a>
+<span class="sourceLineNo">867</span>      synchronized (WindowsProcessLaunchLock) {<a name="line.867"></a>
+<span class="sourceLineNo">868</span>        // To workaround the race condition issue with child processes<a name="line.868"></a>
+<span class="sourceLineNo">869</span>        // inheriting unintended handles during process launch that can<a name="line.869"></a>
+<span class="sourceLineNo">870</span>        // lead to hangs on reading output and error streams, we<a name="line.870"></a>
+<span class="sourceLineNo">871</span>        // serialize process creation. More info available at:<a name="line.871"></a>
+<span class="sourceLineNo">872</span>        // http://support.microsoft.com/kb/315939<a name="line.872"></a>
+<span class="sourceLineNo">873</span>        process = builder.start();<a name="line.873"></a>
+<span class="sourceLineNo">874</span>      }<a name="line.874"></a>
+<span class="sourceLineNo">875</span>    } else {<a name="line.875"></a>
+<span class="sourceLineNo">876</span>      process = builder.start();<a name="line.876"></a>
 <span class="sourceLineNo">877</span>    }<a name="line.877"></a>
-<span class="sourceLineNo">878</span>    final BufferedReader errReader = <a name="line.878"></a>
-<span class="sourceLineNo">879</span>            new BufferedReader(new InputStreamReader(<a name="line.879"></a>
-<span class="sourceLineNo">880</span>                process.getErrorStream(), Charset.defaultCharset()));<a name="line.880"></a>
-<span class="sourceLineNo">881</span>    BufferedReader inReader =<a name="line.881"></a>
-<span class="sourceLineNo">882</span>            new BufferedReader(new InputStreamReader(<a name="line.882"></a>
-<span class="sourceLineNo">883</span>                process.getInputStream(), Charset.defaultCharset()));<a name="line.883"></a>
-<span class="sourceLineNo">884</span>    final StringBuffer errMsg = new StringBuffer();<a name="line.884"></a>
-<span class="sourceLineNo">885</span><a name="line.885"></a>
-<span class="sourceLineNo">886</span>    // read error and input streams as this would free up the buffers<a name="line.886"></a>
-<span class="sourceLineNo">887</span>    // free the error stream buffer<a name="line.887"></a>
-<span class="sourceLineNo">888</span>    Thread errThread = new Thread() {<a name="line.888"></a>
-<span class="sourceLineNo">889</span>      @Override<a name="line.889"></a>
-<span class="sourceLineNo">890</span>      public void run() {<a name="line.890"></a>
-<span class="sourceLineNo">891</span>        try {<a name="line.891"></a>
-<span class="sourceLineNo">892</span>          String line = errReader.readLine();<a name="line.892"></a>
-<span class="sourceLineNo">893</span>          while((line != null) &amp;&amp; !isInterrupted()) {<a name="line.893"></a>
-<span class="sourceLineNo">894</span>            errMsg.append(line);<a name="line.894"></a>
-<span class="sourceLineNo">895</span>            errMsg.append(System.getProperty("line.separator"));<a name="line.895"></a>
-<span class="sourceLineNo">896</span>            line = errReader.readLine();<a name="line.896"></a>
-<span class="sourceLineNo">897</span>          }<a name="line.897"></a>
-<span class="sourceLineNo">898</span>        } catch(IOException ioe) {<a name="line.898"></a>
-<span class="sourceLineNo">899</span>          LOG.warn("Error reading the error stream", ioe);<a name="line.899"></a>
-<span class="sourceLineNo">900</span>        }<a name="line.900"></a>
-<span class="sourceLineNo">901</span>      }<a name="line.901"></a>
-<span class="sourceLineNo">902</span>    };<a name="line.902"></a>
-<span class="sourceLineNo">903</span>    try {<a name="line.903"></a>
-<span class="sourceLineNo">904</span>      errThread.start();<a name="line.904"></a>
-<span class="sourceLineNo">905</span>    } catch (IllegalStateException ise) {<a name="line.905"></a>
-<span class="sourceLineNo">906</span>    } catch (OutOfMemoryError oe) {<a name="line.906"></a>
-<span class="sourceLineNo">907</span>      LOG.error("Caught " + oe + ". One possible reason is that ulimit"<a name="line.907"></a>
-<span class="sourceLineNo">908</span>          + " setting of 'max user processes' is too low. If so, do"<a name="line.908"></a>
-<span class="sourceLineNo">909</span>          + " 'ulimit -u &lt;largerNum&gt;' and try again.");<a name="line.909"></a>
-<span class="sourceLineNo">910</span>      throw oe;<a name="line.910"></a>
-<span class="sourceLineNo">911</span>    }<a name="line.911"></a>
-<span class="sourceLineNo">912</span>    try {<a name="line.912"></a>
-<span class="sourceLineNo">913</span>      parseExecResult(inReader); // parse the output<a name="line.913"></a>
-<span class="sourceLineNo">914</span>      // clear the input stream buffer<a name="line.914"></a>
-<span class="sourceLineNo">915</span>      String line = inReader.readLine();<a name="line.915"></a>
-<span class="sourceLineNo">916</span>      while(line != null) { <a name="line.916"></a>
-<span class="sourceLineNo">917</span>        line = inReader.readLine();<a name="line.917"></a>
-<span class="sourceLineNo">918</span>      }<a name="line.918"></a>
-<span class="sourceLineNo">919</span>      // wait for the process to finish and check the exit code<a name="line.919"></a>
-<span class="sourceLineNo">920</span>      exitCode  = process.waitFor();<a name="line.920"></a>
-<span class="sourceLineNo">921</span>      // make sure that the error thread exits<a name="line.921"></a>
-<span class="sourceLineNo">922</span>      joinThread(errThread);<a name="line.922"></a>
-<span class="sourceLineNo">923</span>      completed.set(true);<a name="line.923"></a>
-<span class="sourceLineNo">924</span>      //the timeout thread handling<a name="line.924"></a>
-<span class="sourceLineNo">925</span>      //taken care in finally block<a name="line.925"></a>
-<span class="sourceLineNo">926</span>      if (exitCode != 0) {<a name="line.926"></a>
-<span class="sourceLineNo">927</span>        throw new ExitCodeException(exitCode, errMsg.toString());<a name="line.927"></a>
-<span class="sourceLineNo">928</span>      }<a name="line.928"></a>
-<span class="sourceLineNo">929</span>    } catch (InterruptedException ie) {<a name="line.929"></a>
-<span class="sourceLineNo">930</span>      InterruptedIOException iie = new InterruptedIOException(ie.toString());<a name="line.930"></a>
-<span class="sourceLineNo">931</span>      iie.initCause(ie);<a name="line.931"></a>
-<span class="sourceLineNo">932</span>      throw iie;<a name="line.932"></a>
-<span class="sourceLineNo">933</span>    } finally {<a name="line.933"></a>
-<span class="sourceLineNo">934</span>      if (timeOutTimer != null) {<a name="line.934"></a>
-<span class="sourceLineNo">935</span>        timeOutTimer.cancel();<a name="line.935"></a>
+<span class="sourceLineNo">878</span><a name="line.878"></a>
+<span class="sourceLineNo">879</span>    if (timeOutInterval &gt; 0) {<a name="line.879"></a>
+<span class="sourceLineNo">880</span>      timeOutTimer = new Timer("Shell command timeout");<a name="line.880"></a>
+<span class="sourceLineNo">881</span>      timeoutTimerTask = new ShellTimeoutTimerTask(<a name="line.881"></a>
+<span class="sourceLineNo">882</span>          this);<a name="line.882"></a>
+<span class="sourceLineNo">883</span>      //One time scheduling.<a name="line.883"></a>
+<span class="sourceLineNo">884</span>      timeOutTimer.schedule(timeoutTimerTask, timeOutInterval);<a name="line.884"></a>
+<span class="sourceLineNo">885</span>    }<a name="line.885"></a>
+<span class="sourceLineNo">886</span>    final BufferedReader errReader = <a name="line.886"></a>
+<span class="sourceLineNo">887</span>            new BufferedReader(new InputStreamReader(<a name="line.887"></a>
+<span class="sourceLineNo">888</span>                process.getErrorStream(), Charset.defaultCharset()));<a name="line.888"></a>
+<span class="sourceLineNo">889</span>    BufferedReader inReader =<a name="line.889"></a>
+<span class="sourceLineNo">890</span>            new BufferedReader(new InputStreamReader(<a name="line.890"></a>
+<span class="sourceLineNo">891</span>                process.getInputStream(), Charset.defaultCharset()));<a name="line.891"></a>
+<span class="sourceLineNo">892</span>    final StringBuffer errMsg = new StringBuffer();<a name="line.892"></a>
+<span class="sourceLineNo">893</span><a name="line.893"></a>
+<span class="sourceLineNo">894</span>    // read error and input streams as this would free up the buffers<a name="line.894"></a>
+<span class="sourceLineNo">895</span>    // free the error stream buffer<a name="line.895"></a>
+<span class="sourceLineNo">896</span>    Thread errThread = new Thread() {<a name="line.896"></a>
+<span class="sourceLineNo">897</span>      @Override<a name="line.897"></a>
+<span class="sourceLineNo">898</span>      public void run() {<a name="line.898"></a>
+<span class="sourceLineNo">899</span>        try {<a name="line.899"></a>
+<span class="sourceLineNo">900</span>          String line = errReader.readLine();<a name="line.900"></a>
+<span class="sourceLineNo">901</span>          while((line != null) &amp;&amp; !isInterrupted()) {<a name="line.901"></a>
+<span class="sourceLineNo">902</span>            errMsg.append(line);<a name="line.902"></a>
+<span class="sourceLineNo">903</span>            errMsg.append(System.getProperty("line.separator"));<a name="line.903"></a>
+<span class="sourceLineNo">904</span>            line = errReader.readLine();<a name="line.904"></a>
+<span class="sourceLineNo">905</span>          }<a name="line.905"></a>
+<span class="sourceLineNo">906</span>        } catch(IOException ioe) {<a name="line.906"></a>
+<span class="sourceLineNo">907</span>          LOG.warn("Error reading the error stream", ioe);<a name="line.907"></a>
+<span class="sourceLineNo">908</span>        }<a name="line.908"></a>
+<span class="sourceLineNo">909</span>      }<a name="line.909"></a>
+<span class="sourceLineNo">910</span>    };<a name="line.910"></a>
+<span class="sourceLineNo">911</span>    try {<a name="line.911"></a>
+<span class="sourceLineNo">912</span>      errThread.start();<a name="line.912"></a>
+<span class="sourceLineNo">913</span>    } catch (IllegalStateException ise) {<a name="line.913"></a>
+<span class="sourceLineNo">914</span>    } catch (OutOfMemoryError oe) {<a name="line.914"></a>
+<span class="sourceLineNo">915</span>      LOG.error("Caught " + oe + ". One possible reason is that ulimit"<a name="line.915"></a>
+<span class="sourceLineNo">916</span>          + " setting of 'max user processes' is too low. If so, do"<a name="line.916"></a>
+<span class="sourceLineNo">917</span>          + " 'ulimit -u &lt;largerNum&gt;' and try again.");<a name="line.917"></a>
+<span class="sourceLineNo">918</span>      throw oe;<a name="line.918"></a>
+<span class="sourceLineNo">919</span>    }<a name="line.919"></a>
+<span class="sourceLineNo">920</span>    try {<a name="line.920"></a>
+<span class="sourceLineNo">921</span>      parseExecResult(inReader); // parse the output<a name="line.921"></a>
+<span class="sourceLineNo">922</span>      // clear the input stream buffer<a name="line.922"></a>
+<span class="sourceLineNo">923</span>      String line = inReader.readLine();<a name="line.923"></a>
+<span class="sourceLineNo">924</span>      while(line != null) { <a name="line.924"></a>
+<span class="sourceLineNo">925</span>        line = inReader.readLine();<a name="line.925"></a>
+<span class="sourceLineNo">926</span>      }<a name="line.926"></a>
+<span class="sourceLineNo">927</span>      // wait for the process to finish and check the exit code<a name="line.927"></a>
+<span class="sourceLineNo">928</span>      exitCode  = process.waitFor();<a name="line.928"></a>
+<span class="sourceLineNo">929</span>      // make sure that the error thread exits<a name="line.929"></a>
+<span class="sourceLineNo">930</span>      joinThread(errThread);<a name="line.930"></a>
+<span class="sourceLineNo">931</span>      completed.set(true);<a name="line.931"></a>
+<span class="sourceLineNo">932</span>      //the timeout thread handling<a name="line.932"></a>
+<span class="sourceLineNo">933</span>      //taken care in finally block<a name="line.933"></a>
+<span class="sourceLineNo">934</span>      if (exitCode != 0) {<a name="line.934"></a>
+<span class="sourceLineNo">935</span>        throw new ExitCodeException(exitCode, errMsg.toString());<a name="line.935"></a>
 <span class="sourceLineNo">936</span>      }<a name="line.936"></a>
-<span class="sourceLineNo">937</span>      // close the input stream<a name="line.937"></a>
-<span class="sourceLineNo">938</span>      try {<a name="line.938"></a>
-<span class="sourceLineNo">939</span>        // JDK 7 tries to automatically drain the input streams for us<a name="line.939"></a>
-<span class="sourceLineNo">940</span>        // when the process exits, but since close is not synchronized,<a name="line.940"></a>
-<span class="sourceLineNo">941</span>        // it creates a race if we close the stream first and the same<a name="line.941"></a>
-<span class="sourceLineNo">942</span>        // fd is recycled.  the stream draining thread will attempt to<a name="line.942"></a>
-<span class="sourceLineNo">943</span>        // drain that fd!!  it may block, OOM, or cause bizarre behavior<a name="line.943"></a>
-<span class="sourceLineNo">944</span>        // see: https://bugs.openjdk.java.net/browse/JDK-8024521<a name="line.944"></a>
-<span class="sourceLineNo">945</span>        //      issue is fixed in build 7u60<a name="line.945"></a>
-<span class="sourceLineNo">946</span>        InputStream stdout = process.getInputStream();<a name="line.946"></a>
-<span class="sourceLineNo">947</span>        synchronized (stdout) {<a name="line.947"></a>
-<span class="sourceLineNo">948</span>          inReader.close();<a name="line.948"></a>
-<span class="sourceLineNo">949</span>        }<a name="line.949"></a>
-<span class="sourceLineNo">950</span>      } catch (IOException ioe) {<a name="line.950"></a>
-<span class="sourceLineNo">951</span>        LOG.warn("Error while closing the input stream", ioe);<a name="line.951"></a>
-<span class="sourceLineNo">952</span>      }<a name="line.952"></a>
-<span class="sourceLineNo">953</span>      if (!completed.get()) {<a name="line.953"></a>
-<span class="sourceLineNo">954</span>        errThread.interrupt();<a name="line.954"></a>
-<span class="sourceLineNo">955</span>        joinThread(errThread);<a name="line.955"></a>
-<span class="sourceLineNo">956</span>      }<a name="line.956"></a>
-<span class="sourceLineNo">957</span>      try {<a name="line.957"></a>
-<span class="sourceLineNo">958</span>        InputStream stderr = process.getErrorStream();<a name="line.958"></a>
-<span class="sourceLineNo">959</span>        synchronized (stderr) {<a name="line.959"></a>
-<span class="sourceLineNo">960</span>          errReader.close();<a name="line.960"></a>
-<span class="sourceLineNo">961</span>        }<a name="line.961"></a>
-<span class="sourceLineNo">962</span>      } catch (IOException ioe) {<a name="line.962"></a>
-<span class="sourceLineNo">963</span>        LOG.warn("Error while closing the error stream", ioe);<a name="line.963"></a>
+<span class="sourceLineNo">937</span>    } catch (InterruptedException ie) {<a name="line.937"></a>
+<span class="sourceLineNo">938</span>      InterruptedIOException iie = new InterruptedIOException(ie.toString());<a name="line.938"></a>
+<span class="sourceLineNo">939</span>      iie.initCause(ie);<a name="line.939"></a>
+<span class="sourceLineNo">940</span>      throw iie;<a name="line.940"></a>
+<span class="sourceLineNo">941</span>    } finally {<a name="line.941"></a>
+<span class="sourceLineNo">942</span>      if (timeOutTimer != null) {<a name="line.942"></a>
+<span class="sourceLineNo">943</span>        timeOutTimer.cancel();<a name="line.943"></a>
+<span class="sourceLineNo">944</span>      }<a name="line.944"></a>
+<span class="sourceLineNo">945</span>      // close the input stream<a name="line.945"></a>
+<span class="sourceLineNo">946</span>      try {<a name="line.946"></a>
+<span class="sourceLineNo">947</span>        // JDK 7 tries to automatically drain the input streams for us<a name="line.947"></a>
+<span class="sourceLineNo">948</span>        // when the process exits, but since close is not synchronized,<a name="line.948"></a>
+<span class="sourceLineNo">949</span>        // it creates a race if we close the stream first and the same<a name="line.949"></a>
+<span class="sourceLineNo">950</span>        // fd is recycled.  the stream draining thread will attempt to<a name="line.950"></a>
+<span class="sourceLineNo">951</span>        // drain that fd!!  it may block, OOM, or cause bizarre behavior<a name="line.951"></a>
+<span class="sourceLineNo">952</span>        // see: https://bugs.openjdk.java.net/browse/JDK-8024521<a name="line.952"></a>
+<span class="sourceLineNo">953</span>        //      issue is fixed in build 7u60<a name="line.953"></a>
+<span class="sourceLineNo">954</span>        InputStream stdout = process.getInputStream();<a name="line.954"></a>
+<span class="sourceLineNo">955</span>        synchronized (stdout) {<a name="line.955"></a>
+<span class="sourceLineNo">956</span>          inReader.close();<a name="line.956"></a>
+<span class="sourceLineNo">957</span>        }<a name="line.957"></a>
+<span class="sourceLineNo">958</span>      } catch (IOException ioe) {<a name="line.958"></a>
+<span class="sourceLineNo">959</span>        LOG.warn("Error while closing the input stream", ioe);<a name="line.959"></a>
+<span class="sourceLineNo">960</span>      }<a name="line.960"></a>
+<span class="sourceLineNo">961</span>      if (!completed.get()) {<a name="line.961"></a>
+<span class="sourceLineNo">962</span>        errThread.interrupt();<a name="line.962"></a>
+<span class="sourceLineNo">963</span>        joinThread(errThread);<a name="line.963"></a>
 <span class="sourceLineNo">964</span>      }<a name="line.964"></a>
-<span class="sourceLineNo">965</span>      process.destroy();<a name="line.965"></a>
-<span class="sourceLineNo">966</span>      lastTime = Time.monotonicNow();<a name="line.966"></a>
-<span class="sourceLineNo">967</span>    }<a name="line.967"></a>
-<span class="sourceLineNo">968</span>  }<a name="line.968"></a>
-<span class="sourceLineNo">969</span><a name="line.969"></a>
-<span class="sourceLineNo">970</span>  private static void joinThread(Thread t) {<a name="line.970"></a>
-<span class="sourceLineNo">971</span>    while (t.isAlive()) {<a name="line.971"></a>
-<span class="sourceLineNo">972</span>      try {<a name="line.972"></a>
-<span class="sourceLineNo">973</span>        t.join();<a name="line.973"></a>
-<span class="sourceLineNo">974</span>      } catch (InterruptedException ie) {<a name="line.974"></a>
-<span class="sourceLineNo">975</span>        if (LOG.isWarnEnabled()) {<a name="line.975"></a>
-<span class="sourceLineNo">976</span>          LOG.warn("Interrupted while joining on: " + t, ie);<a name="line.976"></a>
-<span class="sourceLineNo">977</span>        }<a name="line.977"></a>
-<span class="sourceLineNo">978</span>        t.interrupt(); // propagate interrupt<a name="line.978"></a>
-<span class="sourceLineNo">979</span>      }<a name="line.979"></a>
-<span class="sourceLineNo">980</span>    }<a name="line.980"></a>
-<span class="sourceLineNo">981</span>  }<a name="line.981"></a>
-<span class="sourceLineNo">982</span><a name="line.982"></a>
-<span class="sourceLineNo">983</span>  /** return an array containing the command name and its parameters. */<a name="line.983"></a>
-<span class="sourceLineNo">984</span>  protected abstract String[] getExecString();<a name="line.984"></a>
-<span class="sourceLineNo">985</span><a name="line.985"></a>
-<span class="sourceLineNo">986</span>  /** Parse the execution result */<a name="line.986"></a>
-<span class="sourceLineNo">987</span>  protected abstract void parseExecResult(BufferedReader lines)<a name="line.987"></a>
-<span class="sourceLineNo">988</span>  throws IOException;<a name="line.988"></a>
-<span class="sourceLineNo">989</span><a name="line.989"></a>
-<span class="sourceLineNo">990</span>  /**<a name="line.990"></a>
-<span class="sourceLineNo">991</span>   * Get an environment variable.<a name="line.991"></a>
-<span class="sourceLineNo">992</span>   * @param env the environment var<a name="line.992"></a>
-<span class="sourceLineNo">993</span>   * @return the value or null if it was unset.<a name="line.993"></a>
-<span class="sourceLineNo">994</span>   */<a name="line.994"></a>
-<span class="sourceLineNo">995</span>  public String getEnvironment(String env) {<a name="line.995"></a>
-<span class="sourceLineNo">996</span>    return environment.get(env);<a name="line.996"></a>
-<span class="sourceLineNo">997</span>  }<a name="line.997"></a>
-<span class="sourceLineNo">998</span><a name="line.998"></a>
-<span class="sourceLineNo">999</span>  /** get the current sub-process executing the given command.<a name="line.999"></a>
-<span class="sourceLineNo">1000</span>   * @return process executing the command<a name="line.1000"></a>
-<span class="sourceLineNo">1001</span>   */<a name="line.1001"></a>
-<span class="sourceLineNo">1002</span>  public Process getProcess() {<a name="line.1002"></a>
-<span class="sourceLineNo">1003</span>    return process;<a name="line.1003"></a>
-<span class="sourceLineNo">1004</span>  }<a name="line.1004"></a>
-<span class="sourceLineNo">1005</span><a name="line.1005"></a>
-<span class="sourceLineNo">1006</span>  /** get the exit code.<a name="line.1006"></a>
-<span class="sourceLineNo">1007</span>   * @return the exit code of the process<a name="line.1007"></a>
-<span class="sourceLineNo">1008</span>   */<a name="line.1008"></a>
-<span class="sourceLineNo">1009</span>  public int getExitCode() {<a name="line.1009"></a>
-<span class="sourceLineNo">1010</span>    return exitCode;<a name="line.1010"></a>
-<span class="sourceLineNo">1011</span>  }<a name="line.1011"></a>
-<span class="sourceLineNo">1012</span><a name="line.1012"></a>
-<span class="sourceLineNo">1013</span>  /**<a name="line.1013"></a>
-<span class="sourceLineNo">1014</span>   * This is an IOException with exit code added.<a name="line.1014"></a>
-<span class="sourceLineNo">1015</span>   */<a name="line.1015"></a>
-<span class="sourceLineNo">1016</span>  public static class ExitCodeException extends IOException {<a name="line.1016"></a>
-<span class="sourceLineNo">1017</span>    private final int exitCode;<a name="line.1017"></a>
-<span class="sourceLineNo">1018</span><a name="line.1018"></a>
-<span class="sourceLineNo">1019</span>    public ExitCodeException(int exitCode, String message) {<a name="line.1019"></a>
-<span class="sourceLineNo">1020</span>      super(message);<a name="line.1020"></a>
-<span class="sourceLineNo">1021</span>      this.exitCode = exitCode;<a name="line.1021"></a>
-<span class="sourceLineNo">1022</span>    }<a name="line.1022"></a>
-<span class="sourceLineNo">1023</span><a name="line.1023"></a>
-<span class="sourceLineNo">1024</span>    public int getExitCode() {<a name="line.1024"></a>
-<span class="sourceLineNo">1025</span>      return exitCode;<a name="line.1025"></a>
-<span class="sourceLineNo">1026</span>    }<a name="line.1026"></a>
-<span class="sourceLineNo">1027</span><a name="line.1027"></a>
-<span class="sourceLineNo">1028</span>    @Override<a name="line.1028"></a>
-<span class="sourceLineNo">1029</span>    public String toString() {<a name="line.1029"></a>
-<span class="sourceLineNo">1030</span>      final StringBuilder sb =<a name="line.1030"></a>
-<span class="sourceLineNo">1031</span>          new StringBuilder("ExitCodeException ");<a name="line.1031"></a>
-<span class="sourceLineNo">1032</span>      sb.append("exitCode=").append(exitCode)<a name="line.1032"></a>
-<span class="sourceLineNo">1033</span>        .append(": ");<a name="line.1033"></a>
-<span class="sourceLineNo">1034</span>      sb.append(super.getMessage());<a name="line.1034"></a>
-<span class="sourceLineNo">1035</span>      return sb.toString();<a name="line.1035"></a>
-<span class="sourceLineNo">1036</span>    }<a name="line.1036"></a>
-<span class="sourceLineNo">1037</span>  }<a name="line.1037"></a>
-<span class="sourceLineNo">1038</span><a name="line.1038"></a>
-<span class="sourceLineNo">1039</span>  public interface CommandExecutor {<a name="line.1039"></a>
-<span class="sourceLineNo">1040</span><a name="line.1040"></a>
-<span class="sourceLineNo">1041</span>    void execute() throws IOException;<a name="line.1041"></a>
-<span class="sourceLineNo">1042</span><a name="line.1042"></a>
-<span class="sourceLineNo">1043</span>    int getExitCode() throws IOException;<a name="line.1043"></a>
-<span class="sourceLineNo">1044</span><a name="line.1044"></a>
-<span class="sourceLineNo">1045</span>    String getOutput() throws IOException;<a name="line.1045"></a>
+<span class="sourceLineNo">965</span>      try {<a name="line.965"></a>
+<span class="sourceLineNo">966</span>        InputStream stderr = process.getErrorStream();<a name="line.966"></a>
+<span class="sourceLineNo">967</span>        synchronized (stderr) {<a name="line.967"></a>
+<span class="sourceLineNo">968</span>          errReader.close();<a name="line.968"></a>
+<span class="sourceLineNo">969</span>        }<a name="line.969"></a>
+<span class="sourceLineNo">970</span>      } catch (IOException ioe) {<a name="line.970"></a>
+<span class="sourceLineNo">971</span>        LOG.warn("Error while closing the error stream", ioe);<a name="line.971"></a>
+<span class="sourceLineNo">972</span>      }<a name="line.972"></a>
+<span class="sourceLineNo">973</span>      process.destroy();<a name="line.973"></a>
+<span class="sourceLineNo">974</span>      lastTime = Time.monotonicNow();<a name="line.974"></a>
+<span class="sourceLineNo">975</span>    }<a name="line.975"></a>
+<span class="sourceLineNo">976</span>  }<a name="line.976"></a>
+<span class="sourceLineNo">977</span><a name="line.977"></a>
+<span class="sourceLineNo">978</span>  private static void joinThread(Thread t) {<a name="line.978"></a>
+<span class="sourceLineNo">979</span>    while (t.isAlive()) {<a name="line.979"></a>
+<span class="sourceLineNo">980</span>      try {<a name="line.980"></a>
+<span class="sourceLineNo">981</span>        t.join();<a name="line.981"></a>
+<span class="sourceLineNo">982</span>      } catch (InterruptedException ie) {<a name="line.982"></a>
+<span class="sourceLineNo">983</span>        if (LOG.isWarnEnabled()) {<a name="line.983"></a>
+<span class="sourceLineNo">984</span>          LOG.warn("Interrupted while joining on: " + t, ie);<a name="line.984"></a>
+<span class="sourceLineNo">985</span>        }<a name="line.985"></a>
+<span class="sourceLineNo">986</span>        t.interrupt(); // propagate interrupt<a name="line.986"></a>
+<span class="sourceLineNo">987</span>      }<a name="line.987"></a>
+<span class="sourceLineNo">988</span>    }<a name="line.988"></a>
+<span class="sourceLineNo">989</span>  }<a name="line.989"></a>
+<span class="sourceLineNo">990</span><a name="line.990"></a>
+<span class="sourceLineNo">991</span>  /** return an array containing the command name and its parameters. */<a name="line.991"></a>
+<span class="sourceLineNo">992</span>  protected abstract String[] getExecString();<a name="line.992"></a>
+<span class="sourceLineNo">993</span><a name="line.993"></a>
+<span class="sourceLineNo">994</span>  /** Parse the execution result */<a name="line.994"></a>
+<span class="sourceLineNo">995</span>  protected abstract void parseExecResult(BufferedReader lines)<a name="line.995"></a>
+<span class="sourceLineNo">996</span>  throws IOException;<a name="line.996"></a>
+<span class="sourceLineNo">997</span><a name="line.997"></a>
+<span class="sourceLineNo">998</span>  /**<a name="line.998"></a>
+<span class="sourceLineNo">999</span>   * Get an environment variable.<a name="line.999"></a>
+<span class="sourceLineNo">1000</span>   * @param env the environment var<a name="line.1000"></a>
+<span class="sourceLineNo">1001</span>   * @return the value or null if it was unset.<a name="line.1001"></a>
+<span class="sourceLineNo">1002</span>   */<a name="line.1002"></a>
+<span class="sourceLineNo">1003</span>  public String getEnvironment(String env) {<a name="line.1003"></a>
+<span class="sourceLineNo">1004</span>    return environment.get(env);<a name="line.1004"></a>
+<span class="sourceLineNo">1005</span>  }<a name="line.1005"></a>
+<span class="sourceLineNo">1006</span><a name="line.1006"></a>
+<span class="sourceLineNo">1007</span>  /** get the current sub-process executing the given command.<a name="line.1007"></a>
+<span class="sourceLineNo">1008</span>   * @return process executing the command<a name="line.1008"></a>
+<span class="sourceLineNo">1009</span>   */<a name="line.1009"></a>
+<span class="sourceLineNo">1010</span>  public Process getProcess() {<a name="line.1010"></a>
+<span class="sourceLineNo">1011</span>    return process;<a name="line.1011"></a>
+<span class="sourceLineNo">1012</span>  }<a name="line.1012"></a>
+<span class="sourceLineNo">1013</span><a name="line.1013"></a>
+<span class="sourceLineNo">1014</span>  /** get the exit code.<a name="line.1014"></a>
+<span class="sourceLineNo">1015</span>   * @return the exit code of the process<a name="line.1015"></a>
+<span class="sourceLineNo">1016</span>   */<a name="line.1016"></a>
+<span class="sourceLineNo">1017</span>  public int getExitCode() {<a name="line.1017"></a>
+<span class="sourceLineNo">1018</span>    return exitCode;<a name="line.1018"></a>
+<span class="sourceLineNo">1019</span>  }<a name="line.1019"></a>
+<span class="sourceLineNo">1020</span><a name="line.1020"></a>
+<span class="sourceLineNo">1021</span>  /**<a name="line.1021"></a>
+<span class="sourceLineNo">1022</span>   * This is an IOException with exit code added.<a name="line.1022"></a>
+<span class="sourceLineNo">1023</span>   */<a name="line.1023"></a>
+<span class="sourceLineNo">1024</span>  public static class ExitCodeException extends IOException {<a name="line.1024"></a>
+<span class="sourceLineNo">1025</span>    private final int exitCode;<a name="line.1025"></a>
+<span class="sourceLineNo">1026</span><a name="line.1026"></a>
+<span class="sourceLineNo">1027</span>    public ExitCodeException(int exitCode, String message) {<a name="line.1027"></a>
+<span class="sourceLineNo">1028</span>      super(message);<a name="line.1028"></a>
+<span class="sourceLineNo">1029</span>      this.exitCode = exitCode;<a name="line.1029"></a>
+<span class="sourceLineNo">1030</span>    }<a name="line.1030"></a>
+<span class="sourceLineNo">1031</span><a name="line.1031"></a>
+<span class="sourceLineNo">1032</span>    public int getExitCode() {<a name="line.1032"></a>
+<span class="sourceLineNo">1033</span>      return exitCode;<a name="line.1033"></a>
+<span class="sourceLineNo">1034</span>    }<a name="line.1034"></a>
+<span class="sourceLineNo">1035</span><a name="line.1035"></a>
+<span class="sourceLineNo">1036</span>    @Override<a name="line.1036"></a>
+<span class="sourceLineNo">1037</span>    public String toString() {<a name="line.1037"></a>
+<span class="sourceLineNo">1038</span>      final StringBuilder sb =<a name="line.1038"></a>
+<span class="sourceLineNo">1039</span>          new StringBuilder("ExitCodeException ");<a name="line.1039"></a>
+<span class="sourceLineNo">1040</span>      sb.append("exitCode=").append(exitCode)<a name="line.1040"></a>
+<span class="sourceLineNo">1041</span>        .append(": ");<a name="line.1041"></a>
+<span class="sourceLineNo">1042</span>      sb.append(super.getMessage());<a name="line.1042"></a>
+<span class="sourceLineNo">1043</span>      return sb.toString();<a name="line.1043"></a>
+<span class="sourceLineNo">1044</span>    }<a name="line.1044"></a>
+<span class="sourceLineNo">1045</span>  }<a name="line.1045"></a>
 <span class="sourceLineNo">1046</span><a name="line.1046"></a>
-<span class="sourceLineNo">1047</span>    void close();<a name="line.1047"></a>
+<span class="sourceLineNo">1047</span>  public interface CommandExecutor {<a name="line.1047"></a>
 <span class="sourceLineNo">1048</span><a name="line.1048"></a>
-<span class="sourceLineNo">1049</span>  }<a name="line.1049"></a>
+<span class="sourceLineNo">1049</span>    void execute() throws IOException;<a name="line.1049"></a>
 <span class="sourceLineNo">1050</span><a name="line.1050"></a>
-<span class="sourceLineNo">1051</span>  /**<a name="line.1051"></a>
-<span class="sourceLineNo">1052</span>   * A simple shell command executor.<a name="line.1052"></a>
-<span class="sourceLineNo">1053</span>   * <a name="line.1053"></a>
-<span class="sourceLineNo">1054</span>   * &lt;code&gt;ShellCommandExecutor&lt;/code&gt;should be used in cases where the output<a name="line.1054"></a>
-<span class="sourceLineNo">1055</span>   * of the command needs no explicit parsing and where the command, working<a name="line.1055"></a>
-<span class="sourceLineNo">1056</span>   * directory and the environment remains unchanged. The output of the command<a name="line.1056"></a>
-<span class="sourceLineNo">1057</span>   * is stored as-is and is expected to be small.<a name="line.1057"></a>
-<span class="sourceLineNo">1058</span>   */<a name="line.1058"></a>
-<span class="sourceLineNo">1059</span>  public static class ShellCommandExecutor extends Shell <a name="line.1059"></a>
-<span class="sourceLineNo">1060</span>      implements CommandExecutor {<a name="line.1060"></a>
-<span class="sourceLineNo">1061</span><a name="line.1061"></a>
-<span class="sourceLineNo">1062</span>    private String[] command;<a name="line.1062"></a>
-<span class="sourceLineNo">1063</span>    private StringBuffer output;<a name="line.1063"></a>
-<span class="sourceLineNo">1064</span><a name="line.1064"></a>
-<span class="sourceLineNo">1065</span><a name="line.1065"></a>
-<span class="sourceLineNo">1066</span>    public ShellCommandExecutor(String[] execString) {<a name="line.1066"></a>
-<span class="sourceLineNo">1067</span>      this(execString, null);<a name="line.1067"></a>
-<span class="sourceLineNo">1068</span>    }<a name="line.1068"></a>
+<span class="sourceLineNo">1051</span>    int getExitCode() throws IOException;<a name="line.1051"></a>
+<span class="sourceLineNo">1052</span><a name="line.1052"></a>
+<span class="sourceLineNo">1053</span>    String getOutput() throws IOException;<a name="line.1053"></a>
+<span class="sourceLineNo">1054</span><a name="line.1054"></a>
+<span class="sourceLineNo">1055</span>    void close();<a name="line.1055"></a>
+<span class="sourceLineNo">1056</span><a name="line.1056"></a>
+<span class="sourceLineNo">1057</span>  }<a name="line.1057"></a>
+<span class="sourceLineNo">1058</span><a name="line.1058"></a>
+<span class="sourceLineNo">1059</span>  /**<a name="line.1059"></a>
+<span class="sourceLineNo">1060</span>   * A simple shell command executor.<a name="line.1060"></a>
+<span class="sourceLineNo">1061</span>   * <a name="line.1061"></a>
+<span class="sourceLineNo">1062</span>   * &lt;code&gt;ShellCommandExecutor&lt;/code&gt;should be used in cases where the output<a name="line.1062"></a>
+<span class="sourceLineNo">1063</span>   * of the command needs no explicit parsing and where the command, working<a name="line.1063"></a>
+<span class="sourceLineNo">1064</span>   * directory and the environment remains unchanged. The output of the command<a name="line.1064"></a>
+<span class="sourceLineNo">1065</span>   * is stored as-is and is expected to be small.<a name="line.1065"></a>
+<span class="sourceLineNo">1066</span>   */<a name="line.1066"></a>
+<span class="sourceLineNo">1067</span>  public static class ShellCommandExecutor extends Shell <a name="line.1067"></a>
+<span class="sourceLineNo">1068</span>      implements CommandExecutor {<a name="line.1068"></a>
 <span class="sourceLineNo">1069</span><a name="line.1069"></a>
-<span class="sourceLineNo">1070</span>    public ShellCommandExecutor(String[] execString, File dir) {<a name="line.1070"></a>
-<span class="sourceLineNo">1071</span>      this(execString, dir, null);<a name="line.1071"></a>
-<span class="sourceLineNo">1072</span>    }<a name="line.1072"></a>
+<span class="sourceLineNo">1070</span>    private String[] command;<a name="line.1070"></a>
+<span class="sourceLineNo">1071</span>    private StringBuffer output;<a name="line.1071"></a>
+<span class="sourceLineNo">1072</span><a name="line.1072"></a>
 <span class="sourceLineNo">1073</span><a name="line.1073"></a>
-<span class="sourceLineNo">1074</span>    public ShellCommandExecutor(String[] execString, File dir,<a name="line.1074"></a>
-<span class="sourceLineNo">1075</span>                                 Map&lt;String, String&gt; env) {<a name="line.1075"></a>
-<span class="sourceLineNo">1076</span>      this(execString, dir, env , 0L);<a name="line.1076"></a>
-<span class="sourceLineNo">1077</span>    }<a name="line.1077"></a>
-<span class="sourceLineNo">1078</span><a name="line.1078"></a>
-<span class="sourceLineNo">1079</span>    /**<a name="line.1079"></a>
-<span class="sourceLineNo">1080</span>     * Create a new instance of the ShellCommandExecutor to execute a command.<a name="line.1080"></a>
-<span class="sourceLineNo">1081</span>     * <a name="line.1081"></a>
-<span class="sourceLineNo">1082</span>     * @param execString The command to execute with arguments<a name="line.1082"></a>
-<span class="sourceLineNo">1083</span>     * @param dir If not-null, specifies the directory which should be set<a name="line.1083"></a>
-<span class="sourceLineNo">1084</span>     *            as the current working directory for the command.<a name="line.1084"></a>
-<span class="sourceLineNo">1085</span>     *            If null, the current working directory is not modified.<a name="line.1085"></a>
-<span class="sourceLineNo">1086</span>     * @param env If not-null, environment of the command will include the<a name="line.1086"></a>
-<span class="sourceLineNo">1087</span>     *            key-value pairs specified in the map. If null, the current<a name="line.1087"></a>
-<span class="sourceLineNo">1088</span>     *            environment is not modified.<a name="line.1088"></a>
-<span class="sourceLineNo">1089</span>     * @param timeout Specifies the time in milliseconds, after which the<a name="line.1089"></a>
-<span class="sourceLineNo">1090</span>     *                command will be killed and the status marked as timed-out.<a name="line.1090"></a>
-<span class="sourceLineNo">1091</span>     *                If 0, the command will not be timed out. <a name="line.1091"></a>
-<span class="sourceLineNo">1092</span>     */<a name="line.1092"></a>
-<span class="sourceLineNo">1093</span>    public ShellCommandExecutor(String[] execString, File dir, <a name="line.1093"></a>
-<span class="sourceLineNo">1094</span>        Map&lt;String, String&gt; env, long timeout) {<a name="line.1094"></a>
-<span class="sourceLineNo">1095</span>      command = execString.clone();<a name="line.1095"></a>
-<span class="sourceLineNo">1096</span>      if (dir != null) {<a name="line.1096"></a>
-<span class="sourceLineNo">1097</span>        setWorkingDirectory(dir);<a name="line.1097"></a>
-<span class="sourceLineNo">1098</span>      }<a name="line.1098"></a>
-<span class="sourceLineNo">1099</span>      if (env != null) {<a name="line.1099"></a>
-<span class="sourceLineNo">1100</span>        setEnvironment(env);<a name="line.1100"></a>
-<span class="sourceLineNo">1101</span>      }<a name="line.1101"></a>
-<span class="sourceLineNo">1102</span>      timeOutInterval = timeout;<a name="line.1102"></a>
-<span class="sourceLineNo">1103</span>    }<a name="line.1103"></a>
-<span class="sourceLineNo">1104</span><a name="line.1104"></a>
-<span class="sourceLineNo">1105</span>    /**<a name="line.1105"></a>
-<span class="sourceLineNo">1106</span>     * Execute the shell command.<a name="line.1106"></a>
-<span class="sourceLineNo">1107</span>     * @throws IOException if the command fails, or if the command is<a name="line.1107"></a>
-<span class="sourceLineNo">1108</span>     * not well constructed.<a name="line.1108"></a>
-<span class="sourceLineNo">1109</span>     */<a name="line.1109"></a>
-<span class="sourceLineNo">1110</span>    public void execute() throws IOException {<a name="line.1110"></a>
-<span class="sourceLineNo">1111</span>      for (String s : command) {<a name="line.1111"></a>
-<span class="sourceLineNo">1112</span>        if (s == null) {<a name="line.1112"></a>
-<span class="sourceLineNo">1113</span>          throw new IOException("(null) entry in command string: "<a name="line.1113"></a>
-<span class="sourceLineNo">1114</span>              + StringUtils.join(" ", command));<a name="line.1114"></a>
-<span class="sourceLineNo">1115</span>        }<a name="line.1115"></a>
-<span class="sourceLineNo">1116</span>      }<a name="line.1116"></a>
-<span class="sourceLineNo">1117</span>      this.run();    <a name="line.1117"></a>
-<span class="sourceLineNo">1118</span>    }<a name="line.1118"></a>
-<span class="sourceLineNo">1119</span><a name="line.1119"></a>
-<span class="sourceLineNo">1120</span>    @Override<a name="line.1120"></a>
-<span class="sourceLineNo">1121</span>    public String[] getExecString() {<a name="line.1121"></a>
-<span class="sourceLineNo">1122</span>      return command;<a name="line.1122"></a>
-<span class="sourceLineNo">1123</span>    }<a name="line.1123"></a>
-<span class="sourceLineNo">1124</span><a name="line.1124"></a>
-<span class="sourceLineNo">1125</span>    @Override<a name="line.1125"></a>
-<span class="sourceLineNo">1126</span>    protected void parseExecResult(BufferedReader lines) throws IOException {<a name="line.1126"></a>
-<span class="sourceLineNo">1127</span>      output = new StringBuffer();<a name="line.1127"></a>
-<span class="sourceLineNo">1128</span>      char[] buf = new char[512];<a name="line.1128"></a>
-<span class="sourceLineNo">1129</span>      int nRead;<a name="line.1129"></a>
-<span class="sourceLineNo">1130</span>      while ( (nRead = lines.read(buf, 0, buf.length)) &gt; 0 ) {<a name="line.1130"></a>
-<span class="sourceLineNo">1131</span>        output.append(buf, 0, nRead);<a name="line.1131"></a>
-<span class="sourceLineNo">1132</span>      }<a name="line.1132"></a>
-<span class="sourceLineNo">1133</span>    }<a name="line.1133"></a>
-<span class="sourceLineNo">1134</span><a name="line.1134"></a>
-<span class="sourceLineNo">1135</span>    /** Get the output of the shell command. */<a name="line.1135"></a>
-<span class="sourceLineNo">1136</span>    public String getOutput() {<a name="line.1136"></a>
-<span class="sourceLineNo">1137</span>      return (output == null) ? "" : output.toString();<a name="line.1137"></a>
-<span class="sourceLineNo">1138</span>    }<a name="line.1138"></a>
-<span class="sourceLineNo">1139</span><a name="line.1139"></a>
-<span class="sourceLineNo">1140</span>    /**<a name="line.1140"></a>
-<span class="sourceLineNo">1141</span>     * Returns the commands of this instance.<a name="line.1141"></a>
-<span class="sourceLineNo">1142</span>     * Arguments with spaces in are presented with quotes round; other<a name="line.1142"></a>
-<span class="sourceLineNo">1143</span>     * arguments are presented raw<a name="line.1143"></a>
-<span class="sourceLineNo">1144</span>     *<a name="line.1144"></a>
-<span class="sourceLineNo">1145</span>     * @return a string representation of the object.<a name="line.1145"></a>
-<span class="sourceLineNo">1146</span>     */<a name="line.1146"></a>
-<span class="sourceLineNo">1147</span>    @Override<a name="line.1147"></a>
-<span class="sourceLineNo">1148</span>    public String toString() {<a name="line.1148"></a>
-<span class="sourceLineNo">1149</span>      StringBuilder builder = new StringBuilder();<a name="line.1149"></a>
-<span class="sourceLineNo">1150</span>      String[] args = getExecString();<a name="line.1150"></a>
-<span class="sourceLineNo">1151</span>      for (String s : args) {<a name="line.1151"></a>
-<span class="sourceLineNo">1152</span>        if (s.indexOf(' ') &gt;= 0) {<a name="line.1152"></a>
-<span class="sourceLineNo">1153</span>          builder.append('"').append(s).append('"');<a name="line.1153"></a>
-<span class="sourceLineNo">1154</span>        } else {<a name="line.1154"></a>
-<span class="sourceLineNo">1155</span>          builder.append(s);<a name="line.1155"></a>
-<span class="sourceLineNo">1156</span>        }<a name="line.1156"></a>
-<span class="sourceLineNo">1157</span>        builder.append(' ');<a name="line.1157"></a>
-<span class="sourceLineNo">1158</span>      }<a name="line.1158"></a>
-<span class="sourceLineNo">1159</span>      return builder.toString();<a name="line.1159"></a>
-<span class="sourceLineNo">1160</span>    }<a name="line.1160"></a>
-<span class="sourceLineNo">1161</span><a name="line.1161"></a>
-<span class="sourceLineNo">1162</span>    @Override<a name="line.1162"></a>
-<span class="sourceLineNo">1163</span>    public void close() {<a name="line.1163"></a>
-<span class="sourceLineNo">1164</span>    }<a name="line.1164"></a>
-<span class="sourceLineNo">1165</span>  }<a name="line.1165"></a>
-<span class="sourceLineNo">1166</span><a name="line.1166"></a>
-<span class="sourceLineNo">1167</span>  /**<a name="line.1167"></a>
-<span class="sourceLineNo">1168</span>   * To check if the passed script to shell command executor timed out or<a name="line.1168"></a>
-<span class="sourceLineNo">1169</span>   * not.<a name="line.1169"></a>
-<span class="sourceLineNo">1170</span>   * <a name="line.1170"></a>
-<span class="sourceLineNo">1171</span>   * @return if the script timed out.<a name="line.1171"></a>
-<span class="sourceLineNo">1172</span>   */<a name="line.1172"></a>
-<span class="sourceLineNo">1173</span>  public boolean isTimedOut() {<a name="line.1173"></a>
-<span class="sourceLineNo">1174</span>    return timedOut.get();<a name="line.1174"></a>
-<span class="sourceLineNo">1175</span>  }<a name="line.1175"></a>
-<span class="sourceLineNo">1176</span><a name="line.1176"></a>
-<span class="sourceLineNo">1177</span>  /**<a name="line.1177"></a>
-<span class="sourceLineNo">1178</span>   * Declare that the command has timed out.<a name="line.1178"></a>
-<span class="sourceLineNo">1179</span>   * <a name="line.1179"></a>
+<span class="sourceLineNo">1074</span>    public ShellCommandExecutor(String[] execString) {<a name="line.1074"></a>
+<span class="sourceLineNo">1075</span>      this(execString, null);<a name="line.1075"></a>
+<span class="sourceLineNo">1076</span>    }<a name="line.1076"></a>
+<span class="sourceLineNo">1077</span><a name="line.1077"></a>
+<span class="sourceLineNo">1078</span>    public ShellCommandExecutor(String[] execString, File dir) {<a name="line.1078"></a>
+<span class="sourceLineNo">1079</span>      this(execString, dir, null);<a name="line.1079"></a>
+<span class="sourceLineNo">1080</span>    }<a name="line.1080"></a>
+<span class="sourceLineNo">1081</span><a name="line.1081"></a>
+<span class="sourceLineNo">1082</span>    public ShellCommandExecutor(String[] execString, File dir,<a name="line.1082"></a>
+<span class="sourceLineNo">1083</span>                                 Map&lt;String, String&gt; env) {<a name="line.1083"></a>
+<span class="sourceLineNo">1084</span>      this(execString, dir, env , 0L);<a name="line.1084"></a>
+<span class="sourceLineNo">1085</span>    }<a name="line.1085"></a>
+<span class="sourceLineNo">1086</span><a name="line.1086"></a>
+<span class="sourceLineNo">1087</span>    /**<a name="line.1087"></a>
+<span class="sourceLineNo">1088</span>     * Create a new instance of the ShellCommandExecutor to execute a command.<a name="line.1088"></a>
+<span class="sourceLineNo">1089</span>     * <a name="line.1089"></a>
+<span class="sourceLineNo">1090</span>     * @param execString The command to execute with arguments<a name="line.1090"></a>
+<span class="sourceLineNo">1091</span>     * @param dir If not-null, specifies the directory which should be set<a name="line.1091"></a>
+<span class="sourceLineNo">1092</span>     *            as the current working directory for the command.<a name="line.1092"></a>
+<span class="sourceLineNo">1093</span>     *            If null, the current working directory is not modified.<a name="line.1093"></a>
+<span class="sourceLineNo">1094</span>     * @param env If not-null, environment of the command will include the<a name="line.1094"></a>
+<span class="sourceLineNo">1095</span>     *            key-value pairs specified in the map. If null, the current<a name="line.1095"></a>
+<span class="sourceLineNo">1096</span>     *            environment is not modified.<a name="line.1096"></a>
+<span class="sourceLineNo">1097</span>     * @param timeout Specifies the time in milliseconds, after which the<a name="line.1097"></a>
+<span class="sourceLineNo">1098</span>     *                command will be killed and the status marked as timed-out.<a name="line.1098"></a>
+<span class="sourceLineNo">1099</span>     *                If 0, the command will not be timed out. <a name="line.1099"></a>
+<span class="sourceLineNo">1100</span>     */<a name="line.1100"></a>
+<span class="sourceLineNo">1101</span>    public ShellCommandExecutor(String[] execString, File dir, <a name="line.1101"></a>
+<span class="sourceLineNo">1102</span>        Map&lt;String, String&gt; env, long timeout) {<a name="line.1102"></a>
+<span class="sourceLineNo">1103</span>      command = execString.clone();<a name="line.1103"></a>
+<span class="sourceLineNo">1104</span>      if (dir != null) {<a name="line.1104"></a>
+<span class="sourceLineNo">1105</span>        setWorkingDirectory(dir);<a name="line.1105"></a>
+<span class="sourceLineNo">1106</span>      }<a name="line.1106"></a>
+<span class="sourceLineNo">1107</span>      if (env != null) {<a name="line.1107"></a>
+<span class="sourceLineNo">1108</span>        setEnvironment(env);<a name="line.1108"></a>
+<span class="sourceLineNo">1109</span>      }<a name="line.1109"></a>
+<span class="sourceLineNo">1110</span>      timeOutInterval = timeout;<a name="line.1110"></a>
+<span class="sourceLineNo">1111</span>    }<a name="line.1111"></a>
+<span class="sourceLineNo">1112</span><a name="line.1112"></a>
+<span class="sourceLineNo">1113</span>    /**<a name="line.1113"></a>
+<span class="sourceLineNo">1114</span>     * Execute the shell command.<a name="line.1114"></a>
+<span class="sourceLineNo">1115</span>     * @throws IOException if the command fails, or if the command is<a name="line.1115"></a>
+<span class="sourceLineNo">1116</span>     * not well constructed.<a name="line.1116"></a>
+<span class="sourceLineNo">1117</span>     */<a name="line.1117"></a>
+<span class="sourceLineNo">1118</span>    public void execute() throws IOException {<a name="line.1118"></a>
+<span class="sourceLineNo">1119</span>      for (String s : command) {<a name="line.1119"></a>
+<span class="sourceLineNo">1120</span>        if (s == null) {<a name="line.1120"></a>
+<span class="sourceLineNo">1121</span>          throw new IOException("(null) entry in command string: "<a name="line.1121"></a>
+<span class="sourceLineNo">1122</span>              + StringUtils.join(" ", command));<a name="line.1122"></a>
+<span class="sourceLineNo">1123</span>        }<a name="line.1123"></a>
+<span class="sourceLineNo">1124</span>      }<a name="line.1124"></a>
+<span class="sourceLineNo">1125</span>      this.run();    <a name="line.1125"></a>
+<span class="sourceLineNo">1126</span>    }<a name="line.1126"></a>
+<span class="sourceLineNo">1127</span><a name="line.1127"></a>
+<span class="sourceLineNo">1128</span>    @Override<a name="line.1128"></a>
+<span class="sourceLineNo">1129</span>    public String[] getExecString() {<a name="line.1129"></a>
+<span class="sourceLineNo">1130</span>      return command;<a name="line.1130"></a>
+<span class="sourceLineNo">1131</span>    }<a name="line.1131"></a>
+<span class="sourceLineNo">1132</span><a name="line.1132"></a>
+<span class="sourceLineNo">1133</span>    @Override<a name="line.1133"></a>
+<span class="sourceLineNo">1134</span>    protected void parseExecResult(BufferedReader lines) throws IOException {<a name="line.1134"></a>
+<span class="sourceLineNo">1135</span>      output = new StringBuffer();<a name="line.1135"></a>
+<span class="sourceLineNo">1136</span>      char[] buf = new char[512];<a name="line.1136"></a>
+<span class="sourceLineNo">1137</span>      int nRead;<a name="line.1137"></a>
+<span class="sourceLineNo">1138</span>      while ( (nRead = lines.read(buf, 0, buf.length)) &gt; 0 ) {<a name="line.1138"></a>
+<span class="sourceLineNo">1139</span>        output.append(buf, 0, nRead);<a name="line.1139"></a>
+<span class="sourceLineNo">1140</span>      }<a name="line.1140"></a>
+<span class="sourceLineNo">1141</span>    }<a name="line.1141"></a>
+<span class="sourceLineNo">1142</span><a name="line.1142"></a>
+<span class="sourceLineNo">1143</span>    /** Get the output of the shell command. */<a name="line.1143"></a>
+<span class="sourceLineNo">1144</span>    public String getOutput() {<a name="line.1144"></a>
+<span class="sourceLineNo">1145</span>      return (output == null) ? "" : output.toString();<a name="line.1145"></a>
+<span class="sourceLineNo">1146</span>    }<a name="line.1146"></a>
+<span class="sourceLineNo">1147</span><a name="line.1147"></a>
+<span class="sourceLineNo">1148</span>    /**<a name="line.1148"></a>
+<span class="sourceLineNo">1149</span>     * Returns the commands of this instance.<a name="line.1149"></a>
+<span class="sourceLineNo">1150</span>     * Arguments with spaces in are presented with quotes round; other<a name="line.1150"></a>
+<span class="sourceLineNo">1151</span>     * arguments are presented raw<a name="line.1151"></a>
+<span class="sourceLineNo">1152</span>     *<a name="line.1152"></a>
+<span class="sourceLineNo">1153</span>     * @return a string representation of the object.<a name="line.1153"></a>
+<span class="sourceLineNo">1154</span>     */<a name="line.1154"></a>
+<span class="sourceLineNo">1155</span>    @Override<a name="line.1155"></a>
+<span class="sourceLineNo">1156</span>    public String toString() {<a name="line.1156"></a>
+<span class="sourceLineNo">1157</span>      StringBuilder builder = new StringBuilder();<a name="line.1157"></a>
+<span class="sourceLineNo">1158</span>      String[] args = getExecString();<a name="line.1158"></a>
+<span class="sourceLineNo">1159</span>      for (String s : args) {<a name="line.1159"></a>
+<span class="sourceLineNo">1160</span>        if (s.indexOf(' ') &gt;= 0) {<a name="line.1160"></a>
+<span class="sourceLineNo">1161</span>          builder.append('"').append(s).append('"');<a name="line.1161"></a>
+<span class="sourceLineNo">1162</span>        } else {<a name="line.1162"></a>
+<span class="sourceLineNo">1163</span>          builder.append(s);<a name="line.1163"></a>
+<span class="sourceLineNo">1164</span>        }<a name="line.1164"></a>
+<span class="sourceLineNo">1165</span>        builder.append(' ');<a name="line.1165"></a>
+<span class="sourceLineNo">1166</span>      }<a name="line.1166"></a>
+<span class="sourceLineNo">1167</span>      return builder.toString();<a name="line.1167"></a>
+<span class="sourceLineNo">1168</span>    }<a name="line.1168"></a>
+<span class="sourceLineNo">1169</span><a name="line.1169"></a>
+<span class="sourceLineNo">1170</span>    @Override<a name="line.1170"></a>
+<span class="sourceLineNo">1171</span>    public void close() {<a name="line.1171"></a>
+<span class="sourceLineNo">1172</span>    }<a name="line.1172"></a>
+<span class="sourceLineNo">1173</span>  }<a name="line.1173"></a>
+<span class="sourceLineNo">1174</span><a name="line.1174"></a>
+<span class="sourceLineNo">1175</span>  /**<a name="line.1175"></a>
+<span class="sourceLineNo">1176</span>   * To check if the passed script to shell command executor timed out or<a name="line.1176"></a>
+<span class="sourceLineNo">1177</span>   * not.<a name="line.1177"></a>
+<span class="sourceLineNo">1178</span>   * <a name="line.1178"></a>
+<span class="sourceLineNo">1179</span>   * @return if the script timed out.<a name="line.1179"></a>
 <span class="sourceLineNo">1180</span>   */<a name="line.1180"></a>
-<span class="sourceLineNo">1181</span>  private void setTimedOut() {<a name="line.1181"></a>
-<span class="sourceLineNo">1182</span>    this.timedOut.set(true);<a name="line.1182"></a>
+<span class="sourceLineNo">1181</span>  public boolean isTimedOut() {<a name="line.1181"></a>
+<span class="sourceLineNo">1182</span>    return timedOut.get();<a name="line.1182"></a>
 <span class="sourceLineNo">1183</span>  }<a name="line.1183"></a>
 <span class="sourceLineNo">1184</span><a name="line.1184"></a>
-<span class="sourceLineNo">1185</span>  /** <a name="line.1185"></a>
-<span class="sourceLineNo">1186</span>   * Static method to execute a shell command. <a name="line.1186"></a>
-<span class="sourceLineNo">1187</span>   * Covers most of the simple cases without requiring the user to implement  <a name="line.1187"></a>
-<span class="sourceLineNo">1188</span>   * the &lt;code&gt;Shell&lt;/code&gt; interface.<a name="line.1188"></a>
-<span class="sourceLineNo">1189</span>   * @param cmd shell command to execute.<a name="line.1189"></a>
-<span class="sourceLineNo">1190</span>   * @return the output of the executed command.<a name="line.1190"></a>
-<span class="sourceLineNo">1191</span>   */<a name="line.1191"></a>
-<span class="sourceLineNo">1192</span>  public static String execCommand(String ... cmd) throws IOException {<a name="line.1192"></a>
-<span class="sourceLineNo">1193</span>    return execCommand(null, cmd, 0L);<a name="line.1193"></a>
-<span class="sourceLineNo">1194</span>  }<a name="line.1194"></a>
-<span class="sourceLineNo">1195</span><a name="line.1195"></a>
-<span class="sourceLineNo">1196</span>  /**<a name="line.1196"></a>
-<span class="sourceLineNo">1197</span>   * Static method to execute a shell command.<a name="line.1197"></a>
-<span class="sourceLineNo">1198</span>   * Covers most of the simple cases without requiring the user to implement<a name="line.1198"></a>
-<span class="sourceLineNo">1199</span>   * the &lt;code&gt;Shell&lt;/code&gt; interface.<a name="line.1199"></a>
-<span class="sourceLineNo">1200</span>   * @param env the map of environment key=value<a name="line.1200"></a>
-<span class="sourceLineNo">1201</span>   * @param cmd shell command to execute.<a name="line.1201"></a>
-<span class="sourceLineNo">1202</span>   * @param timeout time in milliseconds after which script should be marked timeout<a name="line.1202"></a>
-<span class="sourceLineNo">1203</span>   * @return the output of the executed command.<a name="line.1203"></a>
-<span class="sourceLineNo">1204</span>   * @throws IOException on any problem.<a name="line.1204"></a>
-<span class="sourceLineNo">1205</span>   */<a name="line.1205"></a>
-<span class="sourceLineNo">1206</span><a name="line.1206"></a>
-<span class="sourceLineNo">1207</span>  public static String execCommand(Map&lt;String, String&gt; env, String[] cmd,<a name="line.1207"></a>
-<span class="sourceLineNo">1208</span>      long timeout) throws IOException {<a name="line.1208"></a>
-<span class="sourceLineNo">1209</span>    ShellCommandExecutor exec = new ShellCommandExecutor(cmd, null, env, <a name="line.1209"></a>
-<span class="sourceLineNo">1210</span>                                                          timeout);<a name="line.1210"></a>
-<span class="sourceLineNo">1211</span>    exec.execute();<a name="line.1211"></a>
-<span class="sourceLineNo">1212</span>    return exec.getOutput();<a name="line.1212"></a>
-<span class="sourceLineNo">1213</span>  }<a name="line.1213"></a>
+<span class="sourceLineNo">1185</span>  /**<a name="line.1185"></a>
+<span class="sourceLineNo">1186</span>   * Declare that the command has timed out.<a name="line.1186"></a>
+<span class="sourceLineNo">1187</span>   * <a name="line.1187"></a>
+<span class="sourceLineNo">1188</span>   */<a name="line.1188"></a>
+<span class="sourceLineNo">1189</span>  private void setTimedOut() {<a name="line.1189"></a>
+<span class="sourceLineNo">1190</span>    this.timedOut.set(true);<a name="line.1190"></a>
+<span class="sourceLineNo">1191</span>  }<a name="line.1191"></a>
+<span class="sourceLineNo">1192</span><a name="line.1192"></a>
+<span class="sourceLineNo">1193</span>  /** <a name="line.1193"></a>
+<span class="sourceLineNo">1194</span>   * Static method to execute a shell command. <a name="line.1194"></a>
+<span class="sourceLineNo">1195</span>   * Covers most of the simple cases without requiring the user to implement  <a name="line.1195"></a>
+<span class="sourceLineNo">1196</span>   * the &lt;code&gt;Shell&lt;/code&gt; interface.<a name="line.1196"></a>
+<span class="sourceLineNo">1197</span>   * @param cmd shell command to execute.<a name="line.1197"></a>
+<span class="sourceLineNo">1198</span>   * @return the output of the executed command.<a name="line.1198"></a>
+<span class="sourceLineNo">1199</span>   */<a name="line.1199"></a>
+<span class="sourceLineNo">1200</span>  public static String execCommand(String ... cmd) throws IOException {<a name="line.1200"></a>
+<span class="sourceLineNo">1201</span>    return execCommand(null, cmd, 0L);<a name="line.1201"></a>
+<span class="sourceLineNo">1202</span>  }<a name="line.1202"></a>
+<span class="sourceLineNo">1203</span><a name="line.1203"></a>
+<span class="sourceLineNo">1204</span>  /**<a name="line.1204"></a>
+<span class="sourceLineNo">1205</span>   * Static method to execute a shell command.<a name="line.1205"></a>
+<span class="sourceLineNo">1206</span>   * Covers most of the simple cases without requiring the user to implement<a name="line.1206"></a>
+<span class="sourceLineNo">1207</span>   * the &lt;code&gt;Shell&lt;/code&gt; interface.<a name="line.1207"></a>
+<span class="sourceLineNo">1208</span>   * @param env the map of environment key=value<a name="line.1208"></a>
+<span class="sourceLineNo">1209</span>   * @param cmd shell command to execute.<a name="line.1209"></a>
+<span class="sourceLineNo">1210</span>   * @param timeout time in milliseconds after which script should be marked timeout<a name="line.1210"></a>
+<span class="sourceLineNo">1211</span>   * @return the output of the executed command.<a name="line.1211"></a>
+<span class="sourceLineNo">1212</span>   * @throws IOException on any problem.<a name="line.1212"></a>
+<span class="sourceLineNo">1213</span>   */<a name="line.1213"></a>
 <span class="sourceLineNo">1214</span><a name="line.1214"></a>
-<span class="sourceLineNo">1215</span>  /**<a name="line.1215"></a>
-<span class="sourceLineNo">1216</span>   * Static method to execute a shell command.<a name="line.1216"></a>
-<span class="sourceLineNo">1217</span>   * Covers most of the simple cases without requiring the user to implement<a name="line.1217"></a>
-<span class="sourceLineNo">1218</span>   * the &lt;code&gt;Shell&lt;/code&gt; interface.<a name="line.1218"></a>
-<span class="sourceLineNo">1219</span>   * @param env the map of environment key=value<a name="line.1219"></a>
-<span class="sourceLineNo">1220</span>   * @param cmd shell command to execute.<a name="line.1220"></a>
-<span class="sourceLineNo">1221</span>   * @return the output of the executed command.<a name="line.1221"></a>
-<span class="sourceLineNo">1222</span>   * @throws IOException on any problem.<a name="line.1222"></a>
-<span class="sourceLineNo">1223</span>   */<a name="line.1223"></a>
-<span class="sourceLineNo">1224</span>  public static String execCommand(Map&lt;String,String&gt; env, String ... cmd)<a name="line.1224"></a>
-<span class="sourceLineNo">1225</span>  throws IOException {<a name="line.1225"></a>
-<span class="sourceLineNo">1226</span>    return execCommand(env, cmd, 0L);<a name="line.1226"></a>
-<span class="sourceLineNo">1227</span>  }<a name="line.1227"></a>
-<span class="sourceLineNo">1228</span><a name="line.1228"></a>
-<span class="sourceLineNo">1229</span>  /**<a name="line.1229"></a>
-<span class="sourceLineNo">1230</span>   * Timer which is used to timeout scripts spawned off by shell.<a name="line.1230"></a>
+<span class="sourceLineNo">1215</span>  public static String execCommand(Map&lt;String, String&gt; env, String[] cmd,<a name="line.1215"></a>
+<span class="sourceLineNo">1216</span>      long timeout) throws IOException {<a name="line.1216"></a>
+<span class="sourceLineNo">1217</span>    ShellCommandExecutor exec = new ShellCommandExecutor(cmd, null, env, <a name="line.1217"></a>
+<span class="sourceLineNo">1218</span>                                                          timeout);<a name="line.1218"></a>
+<span class="sourceLineNo">1219</span>    exec.execute();<a name="line.1219"></a>
+<span class="sourceLineNo">1220</span>    return exec.getOutput();<a name="line.1220"></a>
+<span class="sourceLineNo">1221</span>  }<a name="line.1221"></a>
+<span class="sourceLineNo">1222</span><a name="line.1222"></a>
+<span class="sourceLineNo">1223</span>  /**<a name="line.1223"></a>
+<span class="sourceLineNo">1224</span>   * Static method to execute a shell command.<a name="line.1224"></a>
+<span class="sourceLineNo">1225</span>   * Covers most of the simple cases without requiring the user to implement<a name="line.1225"></a>
+<span class="sourceLineNo">1226</span>   * the &lt;code&gt;Shell&lt;/code&gt; interface.<a name="line.1226"></a>
+<span class="sourceLineNo">1227</span>   * @param env the map of environment key=value<a name="line.1227"></a>
+<span class="sourceLineNo">1228</span>   * @param cmd shell command to execute.<a name="line.1228"></a>
+<span class="sourceLineNo">1229</span>   * @return the output of the executed command.<a name="line.1229"></a>
+<span class="sourceLineNo">1230</span>   * @throws IOException on any problem.<a name="line.1230"></a>
 <span class="sourceLineNo">1231</span>   */<a name="line.1231"></a>
-<span class="sourceLineNo">1232</span>  private static class ShellTimeoutTimerTask extends TimerTask {<a name="line.1232"></a>
-<span class="sourceLineNo">1233</span><a name="line.1233"></a>
-<span class="sourceLineNo">1234</span>    private final Shell shell;<a name="line.1234"></a>
-<span class="sourceLineNo">1235</span><a name="line.1235"></a>
-<span class="sourceLineNo">1236</span>    public ShellTimeoutTimerTask(Shell shell) {<a name="line.1236"></a>
-<span class="sourceLineNo">1237</span>      this.shell = shell;<a name="line.1237"></a>
-<span class="sourceLineNo">1238</span>    }<a name="line.1238"></a>
-<span class="sourceLineNo">1239</span><a name="line.1239"></a>
-<span class="sourceLineNo">1240</span>    @Override<a name="line.1240"></a>
-<span class="sourceLineNo">1241</span>    public void run() {<a name="line.1241"></a>
-<span class="sourceLineNo">1242</span>      Process p = shell.getProcess();<a name="line.1242"></a>
-<span class="sourceLineNo">1243</span>      try {<a name="line.1243"></a>
-<span class="sourceLineNo">1244</span>        p.exitValue();<a name="line.1244"></a>
-<span class="sourceLineNo">1245</span>      } catch (Exception e) {<a name="line.1245"></a>
-<span class="sourceLineNo">1246</span>        //Process has not terminated.<a name="line.1246"></a>
-<span class="sourceLineNo">1247</span>        //So check if it has completed <a name="line.1247"></a>
-<span class="sourceLineNo">1248</span>        //if not just destroy it.<a name="line.1248"></a>
-<span class="sourceLineNo">1249</span>        if (p != null &amp;&amp; !shell.completed.get()) {<a name="line.1249"></a>
-<span class="sourceLineNo">1250</span>          shell.setTimedOut();<a name="line.1250"></a>
-<span class="sourceLineNo">1251</span>          p.destroy();<a name="line.1251"></a>
-<span class="sourceLineNo">1252</span>        }<a name="line.1252"></a>
-<span class="sourceLineNo">1253</span>      }<a name="line.1253"></a>
-<span class="sourceLineNo">1254</span>    }<a name="line.1254"></a>
-<span class="sourceLineNo">1255</span>  }<a name="line.1255"></a>
-<span class="sourceLineNo">1256</span>}<a name="line.1256"></a>
+<span class="sourceLineNo">1232</span>  public static String execCommand(Map&lt;String,String&gt; env, String ... cmd)<a name="line.1232"></a>
+<span class="sourceLineNo">1233</span>  throws IOException {<a name="line.1233"></a>
+<span class="sourceLineNo">1234</span>    return execCommand(env, cmd, 0L);<a name="line.1234"></a>
+<span class="sourceLineNo">1235</span>  }<a name="line.1235"></a>
+<span class="sourceLineNo">1236</span><a name="line.1236"></a>
+<span class="sourceLineNo">1237</span>  /**<a name="line.1237"></a>
+<span class="sourceLineNo">1238</span>   * Timer which is used to timeout scripts spawned off by shell.<a name="line.1238"></a>
+<span class="sourceLineNo">1239</span>   */<a name="line.1239"></a>
+<span class="sourceLineNo">1240</span>  private static class ShellTimeoutTimerTask extends TimerTask {<a name="line.1240"></a>
+<span class="sourceLineNo">1241</span><a name="line.1241"></a>
+<span class="sourceLineNo">1242</span>    private final Shell shell;<a name="line.1242"></a>
+<span class="sourceLineNo">1243</span><a name="line.1243"></a>
+<span class="sourceLineNo">1244</span>    public ShellTimeoutTimerTask(Shell shell) {<a name="line.1244"></a>
+<span class="sourceLineNo">1245</span>      this.shell = shell;<a name="line.1245"></a>
+<span class="sourceLineNo">1246</span>    }<a name="line.1246"></a>
+<span class="sourceLineNo">1247</span><a name="line.1247"></a>
+<span class="sourceLineNo">1248</span>    @Override<a name="line.1248"></a>
+<span class="sourceLineNo">1249</span>    public void run() {<a name="line.1249"></a>
+<span class="sourceLineNo">1250</span>      Process p = shell.getProcess();<a name="line.1250"></a>
+<span class="sourceLineNo">1251</span>      try {<a name="line.1251"></a>
+<span class="sourceLineNo">1252</span>        p.exitValue();<a name="line.1252"></a>
+<span class="sourceLineNo">1253</span>      } catch (Exception e) {<a name="line.1253"></a>
+<span class="sourceLineNo">1254</span>        //Process has not terminated.<a name="line.1254"></a>
+<span class="sourceLineNo">1255</span>        //So check if it has completed <a name="line.1255"></a>
+<span class="sourceLineNo">1256</span>        //if not just destroy it.<a name="line.1256"></a>
+<span class="sourceLineNo">1257</span>        if (p != null &amp;&amp; !shell.completed.get()) {<a name="line.1257"></a>
+<span class="sourceLineNo">1258</span>          shell.setTimedOut();<a name="line.1258"></a>
+<span class="sourceLineNo">1259</span>          p.destroy();<a name="line.1259"></a>
+<span class="sourceLineNo">1260</span>        }<a name="line.1260"></a>
+<span class="sourceLineNo">1261</span>      }<a name="line.1261"></a>
+<span class="sourceLineNo">1262</span>    }<a name="line.1262"></a>
+<span class="sourceLineNo">1263</span>  }<a name="line.1263"></a>
+<span class="sourceLineNo">1264</span>}<a name="line.1264"></a>
 
 
 

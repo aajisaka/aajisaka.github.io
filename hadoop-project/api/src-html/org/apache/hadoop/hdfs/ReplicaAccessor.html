@@ -95,7 +95,14 @@
 <span class="sourceLineNo">087</span>   * short-circuit byte count statistics.<a name="line.87"></a>
 <span class="sourceLineNo">088</span>   */<a name="line.88"></a>
 <span class="sourceLineNo">089</span>  public abstract boolean isShortCircuit();<a name="line.89"></a>
-<span class="sourceLineNo">090</span>}<a name="line.90"></a>
+<span class="sourceLineNo">090</span><a name="line.90"></a>
+<span class="sourceLineNo">091</span>  /**<a name="line.91"></a>
+<span class="sourceLineNo">092</span>   * Return the network distance between local machine and the remote machine.<a name="line.92"></a>
+<span class="sourceLineNo">093</span>   */<a name="line.93"></a>
+<span class="sourceLineNo">094</span>  public int getNetworkDistance() {<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    return isLocal() ? 0 : Integer.MAX_VALUE;<a name="line.95"></a>
+<span class="sourceLineNo">096</span>  }<a name="line.96"></a>
+<span class="sourceLineNo">097</span>}<a name="line.97"></a>
 
 
 
