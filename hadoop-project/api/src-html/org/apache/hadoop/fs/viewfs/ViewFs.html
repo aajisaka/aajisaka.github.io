@@ -757,358 +757,366 @@
 <span class="sourceLineNo">749</span>    res.targetFileSystem.setStoragePolicy(res.remainingPath, policyName);<a name="line.749"></a>
 <span class="sourceLineNo">750</span>  }<a name="line.750"></a>
 <span class="sourceLineNo">751</span><a name="line.751"></a>
-<span class="sourceLineNo">752</span>  /**<a name="line.752"></a>
-<span class="sourceLineNo">753</span>   * Retrieve the storage policy for a given file or directory.<a name="line.753"></a>
-<span class="sourceLineNo">754</span>   *<a name="line.754"></a>
-<span class="sourceLineNo">755</span>   * @param src file or directory path.<a name="line.755"></a>
-<span class="sourceLineNo">756</span>   * @return storage policy for give file.<a name="line.756"></a>
-<span class="sourceLineNo">757</span>   * @throws IOException<a name="line.757"></a>
-<span class="sourceLineNo">758</span>   */<a name="line.758"></a>
-<span class="sourceLineNo">759</span>  public BlockStoragePolicySpi getStoragePolicy(final Path src)<a name="line.759"></a>
-<span class="sourceLineNo">760</span>      throws IOException {<a name="line.760"></a>
-<span class="sourceLineNo">761</span>    InodeTree.ResolveResult&lt;AbstractFileSystem&gt; res =<a name="line.761"></a>
-<span class="sourceLineNo">762</span>        fsState.resolve(getUriPath(src), true);<a name="line.762"></a>
-<span class="sourceLineNo">763</span>    return res.targetFileSystem.getStoragePolicy(res.remainingPath);<a name="line.763"></a>
-<span class="sourceLineNo">764</span>  }<a name="line.764"></a>
-<span class="sourceLineNo">765</span><a name="line.765"></a>
-<span class="sourceLineNo">766</span>  /*<a name="line.766"></a>
-<span class="sourceLineNo">767</span>   * An instance of this class represents an internal dir of the viewFs <a name="line.767"></a>
-<span class="sourceLineNo">768</span>   * ie internal dir of the mount table.<a name="line.768"></a>
-<span class="sourceLineNo">769</span>   * It is a ready only mount tbale and create, mkdir or delete operations<a name="line.769"></a>
-<span class="sourceLineNo">770</span>   * are not allowed.<a name="line.770"></a>
-<span class="sourceLineNo">771</span>   * If called on create or mkdir then this target is the parent of the<a name="line.771"></a>
-<span class="sourceLineNo">772</span>   * directory in which one is trying to create or mkdir; hence<a name="line.772"></a>
-<span class="sourceLineNo">773</span>   * in this case the path name passed in is the last component. <a name="line.773"></a>
-<span class="sourceLineNo">774</span>   * Otherwise this target is the end point of the path and hence<a name="line.774"></a>
-<span class="sourceLineNo">775</span>   * the path name passed in is null. <a name="line.775"></a>
-<span class="sourceLineNo">776</span>   */<a name="line.776"></a>
-<span class="sourceLineNo">777</span>  static class InternalDirOfViewFs extends AbstractFileSystem {<a name="line.777"></a>
-<span class="sourceLineNo">778</span>    <a name="line.778"></a>
-<span class="sourceLineNo">779</span>    final InodeTree.INodeDir&lt;AbstractFileSystem&gt;  theInternalDir;<a name="line.779"></a>
-<span class="sourceLineNo">780</span>    final long creationTime; // of the the mount table<a name="line.780"></a>
-<span class="sourceLineNo">781</span>    final UserGroupInformation ugi; // the user/group of user who created mtable<a name="line.781"></a>
-<span class="sourceLineNo">782</span>    final URI myUri; // the URI of the outer ViewFs<a name="line.782"></a>
-<span class="sourceLineNo">783</span>    <a name="line.783"></a>
-<span class="sourceLineNo">784</span>    public InternalDirOfViewFs(final InodeTree.INodeDir&lt;AbstractFileSystem&gt; dir,<a name="line.784"></a>
-<span class="sourceLineNo">785</span>        final long cTime, final UserGroupInformation ugi, final URI uri)<a name="line.785"></a>
-<span class="sourceLineNo">786</span>      throws URISyntaxException {<a name="line.786"></a>
-<span class="sourceLineNo">787</span>      super(FsConstants.VIEWFS_URI, FsConstants.VIEWFS_SCHEME, false, -1);<a name="line.787"></a>
-<span class="sourceLineNo">788</span>      theInternalDir = dir;<a name="line.788"></a>
-<span class="sourceLineNo">789</span>      creationTime = cTime;<a name="line.789"></a>
-<span class="sourceLineNo">790</span>      this.ugi = ugi;<a name="line.790"></a>
-<span class="sourceLineNo">791</span>      myUri = uri;<a name="line.791"></a>
-<span class="sourceLineNo">792</span>    }<a name="line.792"></a>
-<span class="sourceLineNo">793</span><a name="line.793"></a>
-<span class="sourceLineNo">794</span>    static private void checkPathIsSlash(final Path f) throws IOException {<a name="line.794"></a>
-<span class="sourceLineNo">795</span>      if (f != InodeTree.SlashPath) {<a name="line.795"></a>
-<span class="sourceLineNo">796</span>        throw new IOException (<a name="line.796"></a>
-<span class="sourceLineNo">797</span>        "Internal implementation error: expected file name to be /" );<a name="line.797"></a>
-<span class="sourceLineNo">798</span>      }<a name="line.798"></a>
-<span class="sourceLineNo">799</span>    }<a name="line.799"></a>
-<span class="sourceLineNo">800</span><a name="line.800"></a>
-<span class="sourceLineNo">801</span>    @Override<a name="line.801"></a>
-<span class="sourceLineNo">802</span>    public FSDataOutputStream createInternal(final Path f,<a name="line.802"></a>
-<span class="sourceLineNo">803</span>        final EnumSet&lt;CreateFlag&gt; flag, final FsPermission absolutePermission,<a name="line.803"></a>
-<span class="sourceLineNo">804</span>        final int bufferSize, final short replication, final long blockSize,<a name="line.804"></a>
-<span class="sourceLineNo">805</span>        final Progressable progress, final ChecksumOpt checksumOpt,<a name="line.805"></a>
-<span class="sourceLineNo">806</span>        final boolean createParent) throws AccessControlException,<a name="line.806"></a>
-<span class="sourceLineNo">807</span>        FileAlreadyExistsException, FileNotFoundException,<a name="line.807"></a>
-<span class="sourceLineNo">808</span>        ParentNotDirectoryException, UnsupportedFileSystemException,<a name="line.808"></a>
-<span class="sourceLineNo">809</span>        UnresolvedLinkException, IOException {<a name="line.809"></a>
-<span class="sourceLineNo">810</span>      throw readOnlyMountTable("create", f);<a name="line.810"></a>
-<span class="sourceLineNo">811</span>    }<a name="line.811"></a>
-<span class="sourceLineNo">812</span><a name="line.812"></a>
-<span class="sourceLineNo">813</span>    @Override<a name="line.813"></a>
-<span class="sourceLineNo">814</span>    public boolean delete(final Path f, final boolean recursive)<a name="line.814"></a>
-<span class="sourceLineNo">815</span>        throws AccessControlException, IOException {<a name="line.815"></a>
-<span class="sourceLineNo">816</span>      checkPathIsSlash(f);<a name="line.816"></a>
-<span class="sourceLineNo">817</span>      throw readOnlyMountTable("delete", f);<a name="line.817"></a>
-<span class="sourceLineNo">818</span>    }<a name="line.818"></a>
-<span class="sourceLineNo">819</span><a name="line.819"></a>
-<span class="sourceLineNo">820</span>    @Override<a name="line.820"></a>
-<span class="sourceLineNo">821</span>    public BlockLocation[] getFileBlockLocations(final Path f, final long start,<a name="line.821"></a>
-<span class="sourceLineNo">822</span>        final long len) throws FileNotFoundException, IOException {<a name="line.822"></a>
-<span class="sourceLineNo">823</span>      checkPathIsSlash(f);<a name="line.823"></a>
-<span class="sourceLineNo">824</span>      throw new FileNotFoundException("Path points to dir not a file");<a name="line.824"></a>
-<span class="sourceLineNo">825</span>    }<a name="line.825"></a>
-<span class="sourceLineNo">826</span><a name="line.826"></a>
-<span class="sourceLineNo">827</span>    @Override<a name="line.827"></a>
-<span class="sourceLineNo">828</span>    public FileChecksum getFileChecksum(final Path f)<a name="line.828"></a>
-<span class="sourceLineNo">829</span>        throws FileNotFoundException, IOException {<a name="line.829"></a>
-<span class="sourceLineNo">830</span>      checkPathIsSlash(f);<a name="line.830"></a>
-<span class="sourceLineNo">831</span>      throw new FileNotFoundException("Path points to dir not a file");<a name="line.831"></a>
-<span class="sourceLineNo">832</span>    }<a name="line.832"></a>
-<span class="sourceLineNo">833</span><a name="line.833"></a>
-<span class="sourceLineNo">834</span>    @Override<a name="line.834"></a>
-<span class="sourceLineNo">835</span>    public FileStatus getFileStatus(final Path f) throws IOException {<a name="line.835"></a>
-<span class="sourceLineNo">836</span>      checkPathIsSlash(f);<a name="line.836"></a>
-<span class="sourceLineNo">837</span>      return new FileStatus(0, true, 0, 0, creationTime, creationTime,<a name="line.837"></a>
-<span class="sourceLineNo">838</span>          PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.838"></a>
-<span class="sourceLineNo">839</span>          new Path(theInternalDir.fullPath).makeQualified(<a name="line.839"></a>
-<span class="sourceLineNo">840</span>              myUri, null));<a name="line.840"></a>
-<span class="sourceLineNo">841</span>    }<a name="line.841"></a>
-<span class="sourceLineNo">842</span>    <a name="line.842"></a>
-<span class="sourceLineNo">843</span>    @Override<a name="line.843"></a>
-<span class="sourceLineNo">844</span>    public FileStatus getFileLinkStatus(final Path f)<a name="line.844"></a>
-<span class="sourceLineNo">845</span>        throws FileNotFoundException {<a name="line.845"></a>
-<span class="sourceLineNo">846</span>      // look up i internalDirs children - ignore first Slash<a name="line.846"></a>
-<span class="sourceLineNo">847</span>      INode&lt;AbstractFileSystem&gt; inode =<a name="line.847"></a>
-<span class="sourceLineNo">848</span>        theInternalDir.children.get(f.toUri().toString().substring(1)); <a name="line.848"></a>
-<span class="sourceLineNo">849</span>      if (inode == null) {<a name="line.849"></a>
-<span class="sourceLineNo">850</span>        throw new FileNotFoundException(<a name="line.850"></a>
-<span class="sourceLineNo">851</span>            "viewFs internal mount table - missing entry:" + f);<a name="line.851"></a>
-<span class="sourceLineNo">852</span>      }<a name="line.852"></a>
-<span class="sourceLineNo">853</span>      FileStatus result;<a name="line.853"></a>
-<span class="sourceLineNo">854</span>      if (inode instanceof INodeLink) {<a name="line.854"></a>
-<span class="sourceLineNo">855</span>        INodeLink&lt;AbstractFileSystem&gt; inodelink = <a name="line.855"></a>
-<span class="sourceLineNo">856</span>          (INodeLink&lt;AbstractFileSystem&gt;) inode;<a name="line.856"></a>
-<span class="sourceLineNo">857</span>        result = new FileStatus(0, false, 0, 0, creationTime, creationTime,<a name="line.857"></a>
-<span class="sourceLineNo">858</span>            PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.858"></a>
-<span class="sourceLineNo">859</span>            inodelink.getTargetLink(),<a name="line.859"></a>
-<span class="sourceLineNo">860</span>            new Path(inode.fullPath).makeQualified(<a name="line.860"></a>
-<span class="sourceLineNo">861</span>                myUri, null));<a name="line.861"></a>
-<span class="sourceLineNo">862</span>      } else {<a name="line.862"></a>
-<span class="sourceLineNo">863</span>        result = new FileStatus(0, true, 0, 0, creationTime, creationTime,<a name="line.863"></a>
-<span class="sourceLineNo">864</span>          PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.864"></a>
-<span class="sourceLineNo">865</span>          new Path(inode.fullPath).makeQualified(<a name="line.865"></a>
-<span class="sourceLineNo">866</span>              myUri, null));<a name="line.866"></a>
-<span class="sourceLineNo">867</span>      }<a name="line.867"></a>
-<span class="sourceLineNo">868</span>      return result;<a name="line.868"></a>
-<span class="sourceLineNo">869</span>    }<a name="line.869"></a>
-<span class="sourceLineNo">870</span>    <a name="line.870"></a>
-<span class="sourceLineNo">871</span>    @Override<a name="line.871"></a>
-<span class="sourceLineNo">872</span>    public FsStatus getFsStatus() {<a name="line.872"></a>
-<span class="sourceLineNo">873</span>      return new FsStatus(0, 0, 0);<a name="line.873"></a>
-<span class="sourceLineNo">874</span>    }<a name="line.874"></a>
-<span class="sourceLineNo">875</span><a name="line.875"></a>
-<span class="sourceLineNo">876</span>    @Override<a name="line.876"></a>
-<span class="sourceLineNo">877</span>    public FsServerDefaults getServerDefaults() throws IOException {<a name="line.877"></a>
-<span class="sourceLineNo">878</span>      throw new IOException("FsServerDefaults not implemented yet");<a name="line.878"></a>
-<span class="sourceLineNo">879</span>    }<a name="line.879"></a>
-<span class="sourceLineNo">880</span><a name="line.880"></a>
-<span class="sourceLineNo">881</span>    @Override<a name="line.881"></a>
-<span class="sourceLineNo">882</span>    public int getUriDefaultPort() {<a name="line.882"></a>
-<span class="sourceLineNo">883</span>      return -1;<a name="line.883"></a>
-<span class="sourceLineNo">884</span>    }<a name="line.884"></a>
-<span class="sourceLineNo">885</span><a name="line.885"></a>
-<span class="sourceLineNo">886</span>    @Override<a name="line.886"></a>
-<span class="sourceLineNo">887</span>    public FileStatus[] listStatus(final Path f) throws AccessControlException,<a name="line.887"></a>
-<span class="sourceLineNo">888</span>        IOException {<a name="line.888"></a>
-<span class="sourceLineNo">889</span>      checkPathIsSlash(f);<a name="line.889"></a>
-<span class="sourceLineNo">890</span>      FileStatus[] result = new FileStatus[theInternalDir.children.size()];<a name="line.890"></a>
-<span class="sourceLineNo">891</span>      int i = 0;<a name="line.891"></a>
-<span class="sourceLineNo">892</span>      for (Entry&lt;String, INode&lt;AbstractFileSystem&gt;&gt; iEntry : <a name="line.892"></a>
-<span class="sourceLineNo">893</span>                                          theInternalDir.children.entrySet()) {<a name="line.893"></a>
-<span class="sourceLineNo">894</span>        INode&lt;AbstractFileSystem&gt; inode = iEntry.getValue();<a name="line.894"></a>
-<span class="sourceLineNo">895</span><a name="line.895"></a>
-<span class="sourceLineNo">896</span>        <a name="line.896"></a>
-<span class="sourceLineNo">897</span>        if (inode instanceof INodeLink ) {<a name="line.897"></a>
-<span class="sourceLineNo">898</span>          INodeLink&lt;AbstractFileSystem&gt; link = <a name="line.898"></a>
-<span class="sourceLineNo">899</span>            (INodeLink&lt;AbstractFileSystem&gt;) inode;<a name="line.899"></a>
-<span class="sourceLineNo">900</span><a name="line.900"></a>
-<span class="sourceLineNo">901</span>          result[i++] = new FileStatus(0, false, 0, 0,<a name="line.901"></a>
-<span class="sourceLineNo">902</span>            creationTime, creationTime,<a name="line.902"></a>
-<span class="sourceLineNo">903</span>            PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.903"></a>
-<span class="sourceLineNo">904</span>            link.getTargetLink(),<a name="line.904"></a>
-<span class="sourceLineNo">905</span>            new Path(inode.fullPath).makeQualified(<a name="line.905"></a>
-<span class="sourceLineNo">906</span>                myUri, null));<a name="line.906"></a>
-<span class="sourceLineNo">907</span>        } else {<a name="line.907"></a>
-<span class="sourceLineNo">908</span>          result[i++] = new FileStatus(0, true, 0, 0,<a name="line.908"></a>
-<span class="sourceLineNo">909</span>            creationTime, creationTime,<a name="line.909"></a>
-<span class="sourceLineNo">910</span>            PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.910"></a>
-<span class="sourceLineNo">911</span>            new Path(inode.fullPath).makeQualified(<a name="line.911"></a>
-<span class="sourceLineNo">912</span>                myUri, null));<a name="line.912"></a>
-<span class="sourceLineNo">913</span>        }<a name="line.913"></a>
-<span class="sourceLineNo">914</span>      }<a name="line.914"></a>
-<span class="sourceLineNo">915</span>      return result;<a name="line.915"></a>
-<span class="sourceLineNo">916</span>    }<a name="line.916"></a>
-<span class="sourceLineNo">917</span><a name="line.917"></a>
-<span class="sourceLineNo">918</span>    @Override<a name="line.918"></a>
-<span class="sourceLineNo">919</span>    public void mkdir(final Path dir, final FsPermission permission,<a name="line.919"></a>
-<span class="sourceLineNo">920</span>        final boolean createParent) throws AccessControlException,<a name="line.920"></a>
-<span class="sourceLineNo">921</span>        FileAlreadyExistsException {<a name="line.921"></a>
-<span class="sourceLineNo">922</span>      if (theInternalDir.isRoot &amp;&amp; dir == null) {<a name="line.922"></a>
-<span class="sourceLineNo">923</span>        throw new FileAlreadyExistsException("/ already exits");<a name="line.923"></a>
-<span class="sourceLineNo">924</span>      }<a name="line.924"></a>
-<span class="sourceLineNo">925</span>      throw readOnlyMountTable("mkdir", dir);<a name="line.925"></a>
-<span class="sourceLineNo">926</span>    }<a name="line.926"></a>
-<span class="sourceLineNo">927</span><a name="line.927"></a>
-<span class="sourceLineNo">928</span>    @Override<a name="line.928"></a>
-<span class="sourceLineNo">929</span>    public FSDataInputStream open(final Path f, final int bufferSize)<a name="line.929"></a>
-<span class="sourceLineNo">930</span>        throws FileNotFoundException, IOException {<a name="line.930"></a>
-<span class="sourceLineNo">931</span>      checkPathIsSlash(f);<a name="line.931"></a>
-<span class="sourceLineNo">932</span>      throw new FileNotFoundException("Path points to dir not a file");<a name="line.932"></a>
-<span class="sourceLineNo">933</span>    }<a name="line.933"></a>
-<span class="sourceLineNo">934</span><a name="line.934"></a>
-<span class="sourceLineNo">935</span>    @Override<a name="line.935"></a>
-<span class="sourceLineNo">936</span>    public boolean truncate(final Path f, final long newLength)<a name="line.936"></a>
-<span class="sourceLineNo">937</span>        throws FileNotFoundException, IOException {<a name="line.937"></a>
-<span class="sourceLineNo">938</span>      checkPathIsSlash(f);<a name="line.938"></a>
-<span class="sourceLineNo">939</span>      throw readOnlyMountTable("truncate", f);<a name="line.939"></a>
-<span class="sourceLineNo">940</span>    }<a name="line.940"></a>
-<span class="sourceLineNo">941</span><a name="line.941"></a>
-<span class="sourceLineNo">942</span>    @Override<a name="line.942"></a>
-<span class="sourceLineNo">943</span>    public void renameInternal(final Path src, final Path dst)<a name="line.943"></a>
-<span class="sourceLineNo">944</span>        throws AccessControlException, IOException {<a name="line.944"></a>
-<span class="sourceLineNo">945</span>      checkPathIsSlash(src);<a name="line.945"></a>
-<span class="sourceLineNo">946</span>      checkPathIsSlash(dst);<a name="line.946"></a>
-<span class="sourceLineNo">947</span>      throw readOnlyMountTable("rename", src);     <a name="line.947"></a>
+<span class="sourceLineNo">752</span>  @Override<a name="line.752"></a>
+<span class="sourceLineNo">753</span>  public void unsetStoragePolicy(final Path src)<a name="line.753"></a>
+<span class="sourceLineNo">754</span>      throws IOException {<a name="line.754"></a>
+<span class="sourceLineNo">755</span>    InodeTree.ResolveResult&lt;AbstractFileSystem&gt; res =<a name="line.755"></a>
+<span class="sourceLineNo">756</span>        fsState.resolve(getUriPath(src), true);<a name="line.756"></a>
+<span class="sourceLineNo">757</span>    res.targetFileSystem.unsetStoragePolicy(res.remainingPath);<a name="line.757"></a>
+<span class="sourceLineNo">758</span>  }<a name="line.758"></a>
+<span class="sourceLineNo">759</span><a name="line.759"></a>
+<span class="sourceLineNo">760</span>  /**<a name="line.760"></a>
+<span class="sourceLineNo">761</span>   * Retrieve the storage policy for a given file or directory.<a name="line.761"></a>
+<span class="sourceLineNo">762</span>   *<a name="line.762"></a>
+<span class="sourceLineNo">763</span>   * @param src file or directory path.<a name="line.763"></a>
+<span class="sourceLineNo">764</span>   * @return storage policy for give file.<a name="line.764"></a>
+<span class="sourceLineNo">765</span>   * @throws IOException<a name="line.765"></a>
+<span class="sourceLineNo">766</span>   */<a name="line.766"></a>
+<span class="sourceLineNo">767</span>  public BlockStoragePolicySpi getStoragePolicy(final Path src)<a name="line.767"></a>
+<span class="sourceLineNo">768</span>      throws IOException {<a name="line.768"></a>
+<span class="sourceLineNo">769</span>    InodeTree.ResolveResult&lt;AbstractFileSystem&gt; res =<a name="line.769"></a>
+<span class="sourceLineNo">770</span>        fsState.resolve(getUriPath(src), true);<a name="line.770"></a>
+<span class="sourceLineNo">771</span>    return res.targetFileSystem.getStoragePolicy(res.remainingPath);<a name="line.771"></a>
+<span class="sourceLineNo">772</span>  }<a name="line.772"></a>
+<span class="sourceLineNo">773</span><a name="line.773"></a>
+<span class="sourceLineNo">774</span>  /*<a name="line.774"></a>
+<span class="sourceLineNo">775</span>   * An instance of this class represents an internal dir of the viewFs <a name="line.775"></a>
+<span class="sourceLineNo">776</span>   * ie internal dir of the mount table.<a name="line.776"></a>
+<span class="sourceLineNo">777</span>   * It is a ready only mount tbale and create, mkdir or delete operations<a name="line.777"></a>
+<span class="sourceLineNo">778</span>   * are not allowed.<a name="line.778"></a>
+<span class="sourceLineNo">779</span>   * If called on create or mkdir then this target is the parent of the<a name="line.779"></a>
+<span class="sourceLineNo">780</span>   * directory in which one is trying to create or mkdir; hence<a name="line.780"></a>
+<span class="sourceLineNo">781</span>   * in this case the path name passed in is the last component. <a name="line.781"></a>
+<span class="sourceLineNo">782</span>   * Otherwise this target is the end point of the path and hence<a name="line.782"></a>
+<span class="sourceLineNo">783</span>   * the path name passed in is null. <a name="line.783"></a>
+<span class="sourceLineNo">784</span>   */<a name="line.784"></a>
+<span class="sourceLineNo">785</span>  static class InternalDirOfViewFs extends AbstractFileSystem {<a name="line.785"></a>
+<span class="sourceLineNo">786</span>    <a name="line.786"></a>
+<span class="sourceLineNo">787</span>    final InodeTree.INodeDir&lt;AbstractFileSystem&gt;  theInternalDir;<a name="line.787"></a>
+<span class="sourceLineNo">788</span>    final long creationTime; // of the the mount table<a name="line.788"></a>
+<span class="sourceLineNo">789</span>    final UserGroupInformation ugi; // the user/group of user who created mtable<a name="line.789"></a>
+<span class="sourceLineNo">790</span>    final URI myUri; // the URI of the outer ViewFs<a name="line.790"></a>
+<span class="sourceLineNo">791</span>    <a name="line.791"></a>
+<span class="sourceLineNo">792</span>    public InternalDirOfViewFs(final InodeTree.INodeDir&lt;AbstractFileSystem&gt; dir,<a name="line.792"></a>
+<span class="sourceLineNo">793</span>        final long cTime, final UserGroupInformation ugi, final URI uri)<a name="line.793"></a>
+<span class="sourceLineNo">794</span>      throws URISyntaxException {<a name="line.794"></a>
+<span class="sourceLineNo">795</span>      super(FsConstants.VIEWFS_URI, FsConstants.VIEWFS_SCHEME, false, -1);<a name="line.795"></a>
+<span class="sourceLineNo">796</span>      theInternalDir = dir;<a name="line.796"></a>
+<span class="sourceLineNo">797</span>      creationTime = cTime;<a name="line.797"></a>
+<span class="sourceLineNo">798</span>      this.ugi = ugi;<a name="line.798"></a>
+<span class="sourceLineNo">799</span>      myUri = uri;<a name="line.799"></a>
+<span class="sourceLineNo">800</span>    }<a name="line.800"></a>
+<span class="sourceLineNo">801</span><a name="line.801"></a>
+<span class="sourceLineNo">802</span>    static private void checkPathIsSlash(final Path f) throws IOException {<a name="line.802"></a>
+<span class="sourceLineNo">803</span>      if (f != InodeTree.SlashPath) {<a name="line.803"></a>
+<span class="sourceLineNo">804</span>        throw new IOException (<a name="line.804"></a>
+<span class="sourceLineNo">805</span>        "Internal implementation error: expected file name to be /" );<a name="line.805"></a>
+<span class="sourceLineNo">806</span>      }<a name="line.806"></a>
+<span class="sourceLineNo">807</span>    }<a name="line.807"></a>
+<span class="sourceLineNo">808</span><a name="line.808"></a>
+<span class="sourceLineNo">809</span>    @Override<a name="line.809"></a>
+<span class="sourceLineNo">810</span>    public FSDataOutputStream createInternal(final Path f,<a name="line.810"></a>
+<span class="sourceLineNo">811</span>        final EnumSet&lt;CreateFlag&gt; flag, final FsPermission absolutePermission,<a name="line.811"></a>
+<span class="sourceLineNo">812</span>        final int bufferSize, final short replication, final long blockSize,<a name="line.812"></a>
+<span class="sourceLineNo">813</span>        final Progressable progress, final ChecksumOpt checksumOpt,<a name="line.813"></a>
+<span class="sourceLineNo">814</span>        final boolean createParent) throws AccessControlException,<a name="line.814"></a>
+<span class="sourceLineNo">815</span>        FileAlreadyExistsException, FileNotFoundException,<a name="line.815"></a>
+<span class="sourceLineNo">816</span>        ParentNotDirectoryException, UnsupportedFileSystemException,<a name="line.816"></a>
+<span class="sourceLineNo">817</span>        UnresolvedLinkException, IOException {<a name="line.817"></a>
+<span class="sourceLineNo">818</span>      throw readOnlyMountTable("create", f);<a name="line.818"></a>
+<span class="sourceLineNo">819</span>    }<a name="line.819"></a>
+<span class="sourceLineNo">820</span><a name="line.820"></a>
+<span class="sourceLineNo">821</span>    @Override<a name="line.821"></a>
+<span class="sourceLineNo">822</span>    public boolean delete(final Path f, final boolean recursive)<a name="line.822"></a>
+<span class="sourceLineNo">823</span>        throws AccessControlException, IOException {<a name="line.823"></a>
+<span class="sourceLineNo">824</span>      checkPathIsSlash(f);<a name="line.824"></a>
+<span class="sourceLineNo">825</span>      throw readOnlyMountTable("delete", f);<a name="line.825"></a>
+<span class="sourceLineNo">826</span>    }<a name="line.826"></a>
+<span class="sourceLineNo">827</span><a name="line.827"></a>
+<span class="sourceLineNo">828</span>    @Override<a name="line.828"></a>
+<span class="sourceLineNo">829</span>    public BlockLocation[] getFileBlockLocations(final Path f, final long start,<a name="line.829"></a>
+<span class="sourceLineNo">830</span>        final long len) throws FileNotFoundException, IOException {<a name="line.830"></a>
+<span class="sourceLineNo">831</span>      checkPathIsSlash(f);<a name="line.831"></a>
+<span class="sourceLineNo">832</span>      throw new FileNotFoundException("Path points to dir not a file");<a name="line.832"></a>
+<span class="sourceLineNo">833</span>    }<a name="line.833"></a>
+<span class="sourceLineNo">834</span><a name="line.834"></a>
+<span class="sourceLineNo">835</span>    @Override<a name="line.835"></a>
+<span class="sourceLineNo">836</span>    public FileChecksum getFileChecksum(final Path f)<a name="line.836"></a>
+<span class="sourceLineNo">837</span>        throws FileNotFoundException, IOException {<a name="line.837"></a>
+<span class="sourceLineNo">838</span>      checkPathIsSlash(f);<a name="line.838"></a>
+<span class="sourceLineNo">839</span>      throw new FileNotFoundException("Path points to dir not a file");<a name="line.839"></a>
+<span class="sourceLineNo">840</span>    }<a name="line.840"></a>
+<span class="sourceLineNo">841</span><a name="line.841"></a>
+<span class="sourceLineNo">842</span>    @Override<a name="line.842"></a>
+<span class="sourceLineNo">843</span>    public FileStatus getFileStatus(final Path f) throws IOException {<a name="line.843"></a>
+<span class="sourceLineNo">844</span>      checkPathIsSlash(f);<a name="line.844"></a>
+<span class="sourceLineNo">845</span>      return new FileStatus(0, true, 0, 0, creationTime, creationTime,<a name="line.845"></a>
+<span class="sourceLineNo">846</span>          PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.846"></a>
+<span class="sourceLineNo">847</span>          new Path(theInternalDir.fullPath).makeQualified(<a name="line.847"></a>
+<span class="sourceLineNo">848</span>              myUri, null));<a name="line.848"></a>
+<span class="sourceLineNo">849</span>    }<a name="line.849"></a>
+<span class="sourceLineNo">850</span>    <a name="line.850"></a>
+<span class="sourceLineNo">851</span>    @Override<a name="line.851"></a>
+<span class="sourceLineNo">852</span>    public FileStatus getFileLinkStatus(final Path f)<a name="line.852"></a>
+<span class="sourceLineNo">853</span>        throws FileNotFoundException {<a name="line.853"></a>
+<span class="sourceLineNo">854</span>      // look up i internalDirs children - ignore first Slash<a name="line.854"></a>
+<span class="sourceLineNo">855</span>      INode&lt;AbstractFileSystem&gt; inode =<a name="line.855"></a>
+<span class="sourceLineNo">856</span>        theInternalDir.children.get(f.toUri().toString().substring(1)); <a name="line.856"></a>
+<span class="sourceLineNo">857</span>      if (inode == null) {<a name="line.857"></a>
+<span class="sourceLineNo">858</span>        throw new FileNotFoundException(<a name="line.858"></a>
+<span class="sourceLineNo">859</span>            "viewFs internal mount table - missing entry:" + f);<a name="line.859"></a>
+<span class="sourceLineNo">860</span>      }<a name="line.860"></a>
+<span class="sourceLineNo">861</span>      FileStatus result;<a name="line.861"></a>
+<span class="sourceLineNo">862</span>      if (inode instanceof INodeLink) {<a name="line.862"></a>
+<span class="sourceLineNo">863</span>        INodeLink&lt;AbstractFileSystem&gt; inodelink = <a name="line.863"></a>
+<span class="sourceLineNo">864</span>          (INodeLink&lt;AbstractFileSystem&gt;) inode;<a name="line.864"></a>
+<span class="sourceLineNo">865</span>        result = new FileStatus(0, false, 0, 0, creationTime, creationTime,<a name="line.865"></a>
+<span class="sourceLineNo">866</span>            PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.866"></a>
+<span class="sourceLineNo">867</span>            inodelink.getTargetLink(),<a name="line.867"></a>
+<span class="sourceLineNo">868</span>            new Path(inode.fullPath).makeQualified(<a name="line.868"></a>
+<span class="sourceLineNo">869</span>                myUri, null));<a name="line.869"></a>
+<span class="sourceLineNo">870</span>      } else {<a name="line.870"></a>
+<span class="sourceLineNo">871</span>        result = new FileStatus(0, true, 0, 0, creationTime, creationTime,<a name="line.871"></a>
+<span class="sourceLineNo">872</span>          PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.872"></a>
+<span class="sourceLineNo">873</span>          new Path(inode.fullPath).makeQualified(<a name="line.873"></a>
+<span class="sourceLineNo">874</span>              myUri, null));<a name="line.874"></a>
+<span class="sourceLineNo">875</span>      }<a name="line.875"></a>
+<span class="sourceLineNo">876</span>      return result;<a name="line.876"></a>
+<span class="sourceLineNo">877</span>    }<a name="line.877"></a>
+<span class="sourceLineNo">878</span>    <a name="line.878"></a>
+<span class="sourceLineNo">879</span>    @Override<a name="line.879"></a>
+<span class="sourceLineNo">880</span>    public FsStatus getFsStatus() {<a name="line.880"></a>
+<span class="sourceLineNo">881</span>      return new FsStatus(0, 0, 0);<a name="line.881"></a>
+<span class="sourceLineNo">882</span>    }<a name="line.882"></a>
+<span class="sourceLineNo">883</span><a name="line.883"></a>
+<span class="sourceLineNo">884</span>    @Override<a name="line.884"></a>
+<span class="sourceLineNo">885</span>    public FsServerDefaults getServerDefaults() throws IOException {<a name="line.885"></a>
+<span class="sourceLineNo">886</span>      throw new IOException("FsServerDefaults not implemented yet");<a name="line.886"></a>
+<span class="sourceLineNo">887</span>    }<a name="line.887"></a>
+<span class="sourceLineNo">888</span><a name="line.888"></a>
+<span class="sourceLineNo">889</span>    @Override<a name="line.889"></a>
+<span class="sourceLineNo">890</span>    public int getUriDefaultPort() {<a name="line.890"></a>
+<span class="sourceLineNo">891</span>      return -1;<a name="line.891"></a>
+<span class="sourceLineNo">892</span>    }<a name="line.892"></a>
+<span class="sourceLineNo">893</span><a name="line.893"></a>
+<span class="sourceLineNo">894</span>    @Override<a name="line.894"></a>
+<span class="sourceLineNo">895</span>    public FileStatus[] listStatus(final Path f) throws AccessControlException,<a name="line.895"></a>
+<span class="sourceLineNo">896</span>        IOException {<a name="line.896"></a>
+<span class="sourceLineNo">897</span>      checkPathIsSlash(f);<a name="line.897"></a>
+<span class="sourceLineNo">898</span>      FileStatus[] result = new FileStatus[theInternalDir.children.size()];<a name="line.898"></a>
+<span class="sourceLineNo">899</span>      int i = 0;<a name="line.899"></a>
+<span class="sourceLineNo">900</span>      for (Entry&lt;String, INode&lt;AbstractFileSystem&gt;&gt; iEntry : <a name="line.900"></a>
+<span class="sourceLineNo">901</span>                                          theInternalDir.children.entrySet()) {<a name="line.901"></a>
+<span class="sourceLineNo">902</span>        INode&lt;AbstractFileSystem&gt; inode = iEntry.getValue();<a name="line.902"></a>
+<span class="sourceLineNo">903</span><a name="line.903"></a>
+<span class="sourceLineNo">904</span>        <a name="line.904"></a>
+<span class="sourceLineNo">905</span>        if (inode instanceof INodeLink ) {<a name="line.905"></a>
+<span class="sourceLineNo">906</span>          INodeLink&lt;AbstractFileSystem&gt; link = <a name="line.906"></a>
+<span class="sourceLineNo">907</span>            (INodeLink&lt;AbstractFileSystem&gt;) inode;<a name="line.907"></a>
+<span class="sourceLineNo">908</span><a name="line.908"></a>
+<span class="sourceLineNo">909</span>          result[i++] = new FileStatus(0, false, 0, 0,<a name="line.909"></a>
+<span class="sourceLineNo">910</span>            creationTime, creationTime,<a name="line.910"></a>
+<span class="sourceLineNo">911</span>            PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.911"></a>
+<span class="sourceLineNo">912</span>            link.getTargetLink(),<a name="line.912"></a>
+<span class="sourceLineNo">913</span>            new Path(inode.fullPath).makeQualified(<a name="line.913"></a>
+<span class="sourceLineNo">914</span>                myUri, null));<a name="line.914"></a>
+<span class="sourceLineNo">915</span>        } else {<a name="line.915"></a>
+<span class="sourceLineNo">916</span>          result[i++] = new FileStatus(0, true, 0, 0,<a name="line.916"></a>
+<span class="sourceLineNo">917</span>            creationTime, creationTime,<a name="line.917"></a>
+<span class="sourceLineNo">918</span>            PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.918"></a>
+<span class="sourceLineNo">919</span>            new Path(inode.fullPath).makeQualified(<a name="line.919"></a>
+<span class="sourceLineNo">920</span>                myUri, null));<a name="line.920"></a>
+<span class="sourceLineNo">921</span>        }<a name="line.921"></a>
+<span class="sourceLineNo">922</span>      }<a name="line.922"></a>
+<span class="sourceLineNo">923</span>      return result;<a name="line.923"></a>
+<span class="sourceLineNo">924</span>    }<a name="line.924"></a>
+<span class="sourceLineNo">925</span><a name="line.925"></a>
+<span class="sourceLineNo">926</span>    @Override<a name="line.926"></a>
+<span class="sourceLineNo">927</span>    public void mkdir(final Path dir, final FsPermission permission,<a name="line.927"></a>
+<span class="sourceLineNo">928</span>        final boolean createParent) throws AccessControlException,<a name="line.928"></a>
+<span class="sourceLineNo">929</span>        FileAlreadyExistsException {<a name="line.929"></a>
+<span class="sourceLineNo">930</span>      if (theInternalDir.isRoot &amp;&amp; dir == null) {<a name="line.930"></a>
+<span class="sourceLineNo">931</span>        throw new FileAlreadyExistsException("/ already exits");<a name="line.931"></a>
+<span class="sourceLineNo">932</span>      }<a name="line.932"></a>
+<span class="sourceLineNo">933</span>      throw readOnlyMountTable("mkdir", dir);<a name="line.933"></a>
+<span class="sourceLineNo">934</span>    }<a name="line.934"></a>
+<span class="sourceLineNo">935</span><a name="line.935"></a>
+<span class="sourceLineNo">936</span>    @Override<a name="line.936"></a>
+<span class="sourceLineNo">937</span>    public FSDataInputStream open(final Path f, final int bufferSize)<a name="line.937"></a>
+<span class="sourceLineNo">938</span>        throws FileNotFoundException, IOException {<a name="line.938"></a>
+<span class="sourceLineNo">939</span>      checkPathIsSlash(f);<a name="line.939"></a>
+<span class="sourceLineNo">940</span>      throw new FileNotFoundException("Path points to dir not a file");<a name="line.940"></a>
+<span class="sourceLineNo">941</span>    }<a name="line.941"></a>
+<span class="sourceLineNo">942</span><a name="line.942"></a>
+<span class="sourceLineNo">943</span>    @Override<a name="line.943"></a>
+<span class="sourceLineNo">944</span>    public boolean truncate(final Path f, final long newLength)<a name="line.944"></a>
+<span class="sourceLineNo">945</span>        throws FileNotFoundException, IOException {<a name="line.945"></a>
+<span class="sourceLineNo">946</span>      checkPathIsSlash(f);<a name="line.946"></a>
+<span class="sourceLineNo">947</span>      throw readOnlyMountTable("truncate", f);<a name="line.947"></a>
 <span class="sourceLineNo">948</span>    }<a name="line.948"></a>
 <span class="sourceLineNo">949</span><a name="line.949"></a>
 <span class="sourceLineNo">950</span>    @Override<a name="line.950"></a>
-<span class="sourceLineNo">951</span>    public boolean supportsSymlinks() {<a name="line.951"></a>
-<span class="sourceLineNo">952</span>      return true;<a name="line.952"></a>
-<span class="sourceLineNo">953</span>    }<a name="line.953"></a>
-<span class="sourceLineNo">954</span>    <a name="line.954"></a>
-<span class="sourceLineNo">955</span>    @Override<a name="line.955"></a>
-<span class="sourceLineNo">956</span>    public void createSymlink(final Path target, final Path link,<a name="line.956"></a>
-<span class="sourceLineNo">957</span>        final boolean createParent) throws AccessControlException {<a name="line.957"></a>
-<span class="sourceLineNo">958</span>      throw readOnlyMountTable("createSymlink", link);    <a name="line.958"></a>
-<span class="sourceLineNo">959</span>    }<a name="line.959"></a>
-<span class="sourceLineNo">960</span><a name="line.960"></a>
-<span class="sourceLineNo">961</span>    @Override<a name="line.961"></a>
-<span class="sourceLineNo">962</span>    public Path getLinkTarget(final Path f) throws FileNotFoundException,<a name="line.962"></a>
-<span class="sourceLineNo">963</span>        IOException {<a name="line.963"></a>
-<span class="sourceLineNo">964</span>      return getFileLinkStatus(f).getSymlink();<a name="line.964"></a>
-<span class="sourceLineNo">965</span>    }<a name="line.965"></a>
-<span class="sourceLineNo">966</span><a name="line.966"></a>
-<span class="sourceLineNo">967</span>    @Override<a name="line.967"></a>
-<span class="sourceLineNo">968</span>    public void setOwner(final Path f, final String username,<a name="line.968"></a>
-<span class="sourceLineNo">969</span>        final String groupname) throws AccessControlException, IOException {<a name="line.969"></a>
-<span class="sourceLineNo">970</span>      checkPathIsSlash(f);<a name="line.970"></a>
-<span class="sourceLineNo">971</span>      throw readOnlyMountTable("setOwner", f);<a name="line.971"></a>
-<span class="sourceLineNo">972</span>    }<a name="line.972"></a>
-<span class="sourceLineNo">973</span><a name="line.973"></a>
-<span class="sourceLineNo">974</span>    @Override<a name="line.974"></a>
-<span class="sourceLineNo">975</span>    public void setPermission(final Path f, final FsPermission permission)<a name="line.975"></a>
-<span class="sourceLineNo">976</span>        throws AccessControlException, IOException {<a name="line.976"></a>
-<span class="sourceLineNo">977</span>      checkPathIsSlash(f);<a name="line.977"></a>
-<span class="sourceLineNo">978</span>      throw readOnlyMountTable("setPermission", f);    <a name="line.978"></a>
-<span class="sourceLineNo">979</span>    }<a name="line.979"></a>
-<span class="sourceLineNo">980</span><a name="line.980"></a>
-<span class="sourceLineNo">981</span>    @Override<a name="line.981"></a>
-<span class="sourceLineNo">982</span>    public boolean setReplication(final Path f, final short replication)<a name="line.982"></a>
-<span class="sourceLineNo">983</span>        throws AccessControlException, IOException {<a name="line.983"></a>
-<span class="sourceLineNo">984</span>      checkPathIsSlash(f);<a name="line.984"></a>
-<span class="sourceLineNo">985</span>      throw readOnlyMountTable("setReplication", f);<a name="line.985"></a>
-<span class="sourceLineNo">986</span>    }<a name="line.986"></a>
-<span class="sourceLineNo">987</span><a name="line.987"></a>
-<span class="sourceLineNo">988</span>    @Override<a name="line.988"></a>
-<span class="sourceLineNo">989</span>    public void setTimes(final Path f, final long mtime, final long atime)<a name="line.989"></a>
-<span class="sourceLineNo">990</span>        throws AccessControlException, IOException {<a name="line.990"></a>
-<span class="sourceLineNo">991</span>      checkPathIsSlash(f);<a name="line.991"></a>
-<span class="sourceLineNo">992</span>      throw readOnlyMountTable("setTimes", f);    <a name="line.992"></a>
-<span class="sourceLineNo">993</span>    }<a name="line.993"></a>
-<span class="sourceLineNo">994</span><a name="line.994"></a>
-<span class="sourceLineNo">995</span>    @Override<a name="line.995"></a>
-<span class="sourceLineNo">996</span>    public void setVerifyChecksum(final boolean verifyChecksum)<a name="line.996"></a>
-<span class="sourceLineNo">997</span>        throws AccessControlException {<a name="line.997"></a>
-<span class="sourceLineNo">998</span>      throw readOnlyMountTable("setVerifyChecksum", "");   <a name="line.998"></a>
-<span class="sourceLineNo">999</span>    }<a name="line.999"></a>
-<span class="sourceLineNo">1000</span><a name="line.1000"></a>
-<span class="sourceLineNo">1001</span>    @Override<a name="line.1001"></a>
-<span class="sourceLineNo">1002</span>    public void modifyAclEntries(Path path, List&lt;AclEntry&gt; aclSpec)<a name="line.1002"></a>
-<span class="sourceLineNo">1003</span>        throws IOException {<a name="line.1003"></a>
-<span class="sourceLineNo">1004</span>      checkPathIsSlash(path);<a name="line.1004"></a>
-<span class="sourceLineNo">1005</span>      throw readOnlyMountTable("modifyAclEntries", path);<a name="line.1005"></a>
-<span class="sourceLineNo">1006</span>    }<a name="line.1006"></a>
-<span class="sourceLineNo">1007</span><a name="line.1007"></a>
-<span class="sourceLineNo">1008</span>    @Override<a name="line.1008"></a>
-<span class="sourceLineNo">1009</span>    public void removeAclEntries(Path path, List&lt;AclEntry&gt; aclSpec)<a name="line.1009"></a>
-<span class="sourceLineNo">1010</span>        throws IOException {<a name="line.1010"></a>
-<span class="sourceLineNo">1011</span>      checkPathIsSlash(path);<a name="line.1011"></a>
-<span class="sourceLineNo">1012</span>      throw readOnlyMountTable("removeAclEntries", path);<a name="line.1012"></a>
-<span class="sourceLineNo">1013</span>    }<a name="line.1013"></a>
-<span class="sourceLineNo">1014</span><a name="line.1014"></a>
-<span class="sourceLineNo">1015</span>    @Override<a name="line.1015"></a>
-<span class="sourceLineNo">1016</span>    public void removeDefaultAcl(Path path) throws IOException {<a name="line.1016"></a>
-<span class="sourceLineNo">1017</span>      checkPathIsSlash(path);<a name="line.1017"></a>
-<span class="sourceLineNo">1018</span>      throw readOnlyMountTable("removeDefaultAcl", path);<a name="line.1018"></a>
-<span class="sourceLineNo">1019</span>    }<a name="line.1019"></a>
-<span class="sourceLineNo">1020</span><a name="line.1020"></a>
-<span class="sourceLineNo">1021</span>    @Override<a name="line.1021"></a>
-<span class="sourceLineNo">1022</span>    public void removeAcl(Path path) throws IOException {<a name="line.1022"></a>
-<span class="sourceLineNo">1023</span>      checkPathIsSlash(path);<a name="line.1023"></a>
-<span class="sourceLineNo">1024</span>      throw readOnlyMountTable("removeAcl", path);<a name="line.1024"></a>
-<span class="sourceLineNo">1025</span>    }<a name="line.1025"></a>
-<span class="sourceLineNo">1026</span><a name="line.1026"></a>
-<span class="sourceLineNo">1027</span>    @Override<a name="line.1027"></a>
-<span class="sourceLineNo">1028</span>    public void setAcl(Path path, List&lt;AclEntry&gt; aclSpec) throws IOException {<a name="line.1028"></a>
-<span class="sourceLineNo">1029</span>      checkPathIsSlash(path);<a name="line.1029"></a>
-<span class="sourceLineNo">1030</span>      throw readOnlyMountTable("setAcl", path);<a name="line.1030"></a>
-<span class="sourceLineNo">1031</span>    }<a name="line.1031"></a>
-<span class="sourceLineNo">1032</span><a name="line.1032"></a>
-<span class="sourceLineNo">1033</span>    @Override<a name="line.1033"></a>
-<span class="sourceLineNo">1034</span>    public AclStatus getAclStatus(Path path) throws IOException {<a name="line.1034"></a>
-<span class="sourceLineNo">1035</span>      checkPathIsSlash(path);<a name="line.1035"></a>
-<span class="sourceLineNo">1036</span>      return new AclStatus.Builder().owner(ugi.getUserName())<a name="line.1036"></a>
-<span class="sourceLineNo">1037</span>          .group(ugi.getGroupNames()[0])<a name="line.1037"></a>
-<span class="sourceLineNo">1038</span>          .addEntries(AclUtil.getMinimalAcl(PERMISSION_555))<a name="line.1038"></a>
-<span class="sourceLineNo">1039</span>          .stickyBit(false).build();<a name="line.1039"></a>
-<span class="sourceLineNo">1040</span>    }<a name="line.1040"></a>
-<span class="sourceLineNo">1041</span><a name="line.1041"></a>
-<span class="sourceLineNo">1042</span>    @Override<a name="line.1042"></a>
-<span class="sourceLineNo">1043</span>    public void setXAttr(Path path, String name, byte[] value,<a name="line.1043"></a>
-<span class="sourceLineNo">1044</span>                         EnumSet&lt;XAttrSetFlag&gt; flag) throws IOException {<a name="line.1044"></a>
-<span class="sourceLineNo">1045</span>      checkPathIsSlash(path);<a name="line.1045"></a>
-<span class="sourceLineNo">1046</span>      throw readOnlyMountTable("setXAttr", path);<a name="line.1046"></a>
-<span class="sourceLineNo">1047</span>    }<a name="line.1047"></a>
-<span class="sourceLineNo">1048</span><a name="line.1048"></a>
-<span class="sourceLineNo">1049</span>    @Override<a name="line.1049"></a>
-<span class="sourceLineNo">1050</span>    public byte[] getXAttr(Path path, String name) throws IOException {<a name="line.1050"></a>
-<span class="sourceLineNo">1051</span>      throw new NotInMountpointException(path, "getXAttr");<a name="line.1051"></a>
-<span class="sourceLineNo">1052</span>    }<a name="line.1052"></a>
-<span class="sourceLineNo">1053</span><a name="line.1053"></a>
-<span class="sourceLineNo">1054</span>    @Override<a name="line.1054"></a>
-<span class="sourceLineNo">1055</span>    public Map&lt;String, byte[]&gt; getXAttrs(Path path) throws IOException {<a name="line.1055"></a>
-<span class="sourceLineNo">1056</span>      throw new NotInMountpointException(path, "getXAttrs");<a name="line.1056"></a>
-<span class="sourceLineNo">1057</span>    }<a name="line.1057"></a>
-<span class="sourceLineNo">1058</span><a name="line.1058"></a>
-<span class="sourceLineNo">1059</span>    @Override<a name="line.1059"></a>
-<span class="sourceLineNo">1060</span>    public Map&lt;String, byte[]&gt; getXAttrs(Path path, List&lt;String&gt; names)<a name="line.1060"></a>
-<span class="sourceLineNo">1061</span>        throws IOException {<a name="line.1061"></a>
-<span class="sourceLineNo">1062</span>      throw new NotInMountpointException(path, "getXAttrs");<a name="line.1062"></a>
-<span class="sourceLineNo">1063</span>    }<a name="line.1063"></a>
-<span class="sourceLineNo">1064</span><a name="line.1064"></a>
-<span class="sourceLineNo">1065</span>    @Override<a name="line.1065"></a>
-<span class="sourceLineNo">1066</span>    public List&lt;String&gt; listXAttrs(Path path) throws IOException {<a name="line.1066"></a>
-<span class="sourceLineNo">1067</span>      throw new NotInMountpointException(path, "listXAttrs");<a name="line.1067"></a>
-<span class="sourceLineNo">1068</span>    }<a name="line.1068"></a>
-<span class="sourceLineNo">1069</span><a name="line.1069"></a>
-<span class="sourceLineNo">1070</span>    @Override<a name="line.1070"></a>
-<span class="sourceLineNo">1071</span>    public void removeXAttr(Path path, String name) throws IOException {<a name="line.1071"></a>
-<span class="sourceLineNo">1072</span>      checkPathIsSlash(path);<a name="line.1072"></a>
-<span class="sourceLineNo">1073</span>      throw readOnlyMountTable("removeXAttr", path);<a name="line.1073"></a>
-<span class="sourceLineNo">1074</span>    }<a name="line.1074"></a>
-<span class="sourceLineNo">1075</span><a name="line.1075"></a>
-<span class="sourceLineNo">1076</span>    @Override<a name="line.1076"></a>
-<span class="sourceLineNo">1077</span>    public Path createSnapshot(Path path, String snapshotName)<a name="line.1077"></a>
-<span class="sourceLineNo">1078</span>        throws IOException {<a name="line.1078"></a>
-<span class="sourceLineNo">1079</span>      checkPathIsSlash(path);<a name="line.1079"></a>
-<span class="sourceLineNo">1080</span>      throw readOnlyMountTable("createSnapshot", path);<a name="line.1080"></a>
-<span class="sourceLineNo">1081</span>    }<a name="line.1081"></a>
-<span class="sourceLineNo">1082</span><a name="line.1082"></a>
-<span class="sourceLineNo">1083</span>    @Override<a name="line.1083"></a>
-<span class="sourceLineNo">1084</span>    public void renameSnapshot(Path path, String snapshotOldName,<a name="line.1084"></a>
-<span class="sourceLineNo">1085</span>        String snapshotNewName) throws IOException {<a name="line.1085"></a>
-<span class="sourceLineNo">1086</span>      checkPathIsSlash(path);<a name="line.1086"></a>
-<span class="sourceLineNo">1087</span>      throw readOnlyMountTable("renameSnapshot", path);<a name="line.1087"></a>
-<span class="sourceLineNo">1088</span>    }<a name="line.1088"></a>
-<span class="sourceLineNo">1089</span><a name="line.1089"></a>
-<span class="sourceLineNo">1090</span>    @Override<a name="line.1090"></a>
-<span class="sourceLineNo">1091</span>    public void deleteSnapshot(Path path, String snapshotName)<a name="line.1091"></a>
-<span class="sourceLineNo">1092</span>        throws IOException {<a name="line.1092"></a>
-<span class="sourceLineNo">1093</span>      checkPathIsSlash(path);<a name="line.1093"></a>
-<span class="sourceLineNo">1094</span>      throw readOnlyMountTable("deleteSnapshot", path);<a name="line.1094"></a>
-<span class="sourceLineNo">1095</span>    }<a name="line.1095"></a>
-<span class="sourceLineNo">1096</span><a name="line.1096"></a>
-<span class="sourceLineNo">1097</span>    @Override<a name="line.1097"></a>
-<span class="sourceLineNo">1098</span>    public void setStoragePolicy(Path path, String policyName)<a name="line.1098"></a>
-<span class="sourceLineNo">1099</span>        throws IOException {<a name="line.1099"></a>
-<span class="sourceLineNo">1100</span>      throw readOnlyMountTable("setStoragePolicy", path);<a name="line.1100"></a>
-<span class="sourceLineNo">1101</span>    }<a name="line.1101"></a>
-<span class="sourceLineNo">1102</span>  }<a name="line.1102"></a>
-<span class="sourceLineNo">1103</span>}<a name="line.1103"></a>
+<span class="sourceLineNo">951</span>    public void renameInternal(final Path src, final Path dst)<a name="line.951"></a>
+<span class="sourceLineNo">952</span>        throws AccessControlException, IOException {<a name="line.952"></a>
+<span class="sourceLineNo">953</span>      checkPathIsSlash(src);<a name="line.953"></a>
+<span class="sourceLineNo">954</span>      checkPathIsSlash(dst);<a name="line.954"></a>
+<span class="sourceLineNo">955</span>      throw readOnlyMountTable("rename", src);     <a name="line.955"></a>
+<span class="sourceLineNo">956</span>    }<a name="line.956"></a>
+<span class="sourceLineNo">957</span><a name="line.957"></a>
+<span class="sourceLineNo">958</span>    @Override<a name="line.958"></a>
+<span class="sourceLineNo">959</span>    public boolean supportsSymlinks() {<a name="line.959"></a>
+<span class="sourceLineNo">960</span>      return true;<a name="line.960"></a>
+<span class="sourceLineNo">961</span>    }<a name="line.961"></a>
+<span class="sourceLineNo">962</span>    <a name="line.962"></a>
+<span class="sourceLineNo">963</span>    @Override<a name="line.963"></a>
+<span class="sourceLineNo">964</span>    public void createSymlink(final Path target, final Path link,<a name="line.964"></a>
+<span class="sourceLineNo">965</span>        final boolean createParent) throws AccessControlException {<a name="line.965"></a>
+<span class="sourceLineNo">966</span>      throw readOnlyMountTable("createSymlink", link);    <a name="line.966"></a>
+<span class="sourceLineNo">967</span>    }<a name="line.967"></a>
+<span class="sourceLineNo">968</span><a name="line.968"></a>
+<span class="sourceLineNo">969</span>    @Override<a name="line.969"></a>
+<span class="sourceLineNo">970</span>    public Path getLinkTarget(final Path f) throws FileNotFoundException,<a name="line.970"></a>
+<span class="sourceLineNo">971</span>        IOException {<a name="line.971"></a>
+<span class="sourceLineNo">972</span>      return getFileLinkStatus(f).getSymlink();<a name="line.972"></a>
+<span class="sourceLineNo">973</span>    }<a name="line.973"></a>
+<span class="sourceLineNo">974</span><a name="line.974"></a>
+<span class="sourceLineNo">975</span>    @Override<a name="line.975"></a>
+<span class="sourceLineNo">976</span>    public void setOwner(final Path f, final String username,<a name="line.976"></a>
+<span class="sourceLineNo">977</span>        final String groupname) throws AccessControlException, IOException {<a name="line.977"></a>
+<span class="sourceLineNo">978</span>      checkPathIsSlash(f);<a name="line.978"></a>
+<span class="sourceLineNo">979</span>      throw readOnlyMountTable("setOwner", f);<a name="line.979"></a>
+<span class="sourceLineNo">980</span>    }<a name="line.980"></a>
+<span class="sourceLineNo">981</span><a name="line.981"></a>
+<span class="sourceLineNo">982</span>    @Override<a name="line.982"></a>
+<span class="sourceLineNo">983</span>    public void setPermission(final Path f, final FsPermission permission)<a name="line.983"></a>
+<span class="sourceLineNo">984</span>        throws AccessControlException, IOException {<a name="line.984"></a>
+<span class="sourceLineNo">985</span>      checkPathIsSlash(f);<a name="line.985"></a>
+<span class="sourceLineNo">986</span>      throw readOnlyMountTable("setPermission", f);    <a name="line.986"></a>
+<span class="sourceLineNo">987</span>    }<a name="line.987"></a>
+<span class="sourceLineNo">988</span><a name="line.988"></a>
+<span class="sourceLineNo">989</span>    @Override<a name="line.989"></a>
+<span class="sourceLineNo">990</span>    public boolean setReplication(final Path f, final short replication)<a name="line.990"></a>
+<span class="sourceLineNo">991</span>        throws AccessControlException, IOException {<a name="line.991"></a>
+<span class="sourceLineNo">992</span>      checkPathIsSlash(f);<a name="line.992"></a>
+<span class="sourceLineNo">993</span>      throw readOnlyMountTable("setReplication", f);<a name="line.993"></a>
+<span class="sourceLineNo">994</span>    }<a name="line.994"></a>
+<span class="sourceLineNo">995</span><a name="line.995"></a>
+<span class="sourceLineNo">996</span>    @Override<a name="line.996"></a>
+<span class="sourceLineNo">997</span>    public void setTimes(final Path f, final long mtime, final long atime)<a name="line.997"></a>
+<span class="sourceLineNo">998</span>        throws AccessControlException, IOException {<a name="line.998"></a>
+<span class="sourceLineNo">999</span>      checkPathIsSlash(f);<a name="line.999"></a>
+<span class="sourceLineNo">1000</span>      throw readOnlyMountTable("setTimes", f);    <a name="line.1000"></a>
+<span class="sourceLineNo">1001</span>    }<a name="line.1001"></a>
+<span class="sourceLineNo">1002</span><a name="line.1002"></a>
+<span class="sourceLineNo">1003</span>    @Override<a name="line.1003"></a>
+<span class="sourceLineNo">1004</span>    public void setVerifyChecksum(final boolean verifyChecksum)<a name="line.1004"></a>
+<span class="sourceLineNo">1005</span>        throws AccessControlException {<a name="line.1005"></a>
+<span class="sourceLineNo">1006</span>      throw readOnlyMountTable("setVerifyChecksum", "");   <a name="line.1006"></a>
+<span class="sourceLineNo">1007</span>    }<a name="line.1007"></a>
+<span class="sourceLineNo">1008</span><a name="line.1008"></a>
+<span class="sourceLineNo">1009</span>    @Override<a name="line.1009"></a>
+<span class="sourceLineNo">1010</span>    public void modifyAclEntries(Path path, List&lt;AclEntry&gt; aclSpec)<a name="line.1010"></a>
+<span class="sourceLineNo">1011</span>        throws IOException {<a name="line.1011"></a>
+<span class="sourceLineNo">1012</span>      checkPathIsSlash(path);<a name="line.1012"></a>
+<span class="sourceLineNo">1013</span>      throw readOnlyMountTable("modifyAclEntries", path);<a name="line.1013"></a>
+<span class="sourceLineNo">1014</span>    }<a name="line.1014"></a>
+<span class="sourceLineNo">1015</span><a name="line.1015"></a>
+<span class="sourceLineNo">1016</span>    @Override<a name="line.1016"></a>
+<span class="sourceLineNo">1017</span>    public void removeAclEntries(Path path, List&lt;AclEntry&gt; aclSpec)<a name="line.1017"></a>
+<span class="sourceLineNo">1018</span>        throws IOException {<a name="line.1018"></a>
+<span class="sourceLineNo">1019</span>      checkPathIsSlash(path);<a name="line.1019"></a>
+<span class="sourceLineNo">1020</span>      throw readOnlyMountTable("removeAclEntries", path);<a name="line.1020"></a>
+<span class="sourceLineNo">1021</span>    }<a name="line.1021"></a>
+<span class="sourceLineNo">1022</span><a name="line.1022"></a>
+<span class="sourceLineNo">1023</span>    @Override<a name="line.1023"></a>
+<span class="sourceLineNo">1024</span>    public void removeDefaultAcl(Path path) throws IOException {<a name="line.1024"></a>
+<span class="sourceLineNo">1025</span>      checkPathIsSlash(path);<a name="line.1025"></a>
+<span class="sourceLineNo">1026</span>      throw readOnlyMountTable("removeDefaultAcl", path);<a name="line.1026"></a>
+<span class="sourceLineNo">1027</span>    }<a name="line.1027"></a>
+<span class="sourceLineNo">1028</span><a name="line.1028"></a>
+<span class="sourceLineNo">1029</span>    @Override<a name="line.1029"></a>
+<span class="sourceLineNo">1030</span>    public void removeAcl(Path path) throws IOException {<a name="line.1030"></a>
+<span class="sourceLineNo">1031</span>      checkPathIsSlash(path);<a name="line.1031"></a>
+<span class="sourceLineNo">1032</span>      throw readOnlyMountTable("removeAcl", path);<a name="line.1032"></a>
+<span class="sourceLineNo">1033</span>    }<a name="line.1033"></a>
+<span class="sourceLineNo">1034</span><a name="line.1034"></a>
+<span class="sourceLineNo">1035</span>    @Override<a name="line.1035"></a>
+<span class="sourceLineNo">1036</span>    public void setAcl(Path path, List&lt;AclEntry&gt; aclSpec) throws IOException {<a name="line.1036"></a>
+<span class="sourceLineNo">1037</span>      checkPathIsSlash(path);<a name="line.1037"></a>
+<span class="sourceLineNo">1038</span>      throw readOnlyMountTable("setAcl", path);<a name="line.1038"></a>
+<span class="sourceLineNo">1039</span>    }<a name="line.1039"></a>
+<span class="sourceLineNo">1040</span><a name="line.1040"></a>
+<span class="sourceLineNo">1041</span>    @Override<a name="line.1041"></a>
+<span class="sourceLineNo">1042</span>    public AclStatus getAclStatus(Path path) throws IOException {<a name="line.1042"></a>
+<span class="sourceLineNo">1043</span>      checkPathIsSlash(path);<a name="line.1043"></a>
+<span class="sourceLineNo">1044</span>      return new AclStatus.Builder().owner(ugi.getUserName())<a name="line.1044"></a>
+<span class="sourceLineNo">1045</span>          .group(ugi.getGroupNames()[0])<a name="line.1045"></a>
+<span class="sourceLineNo">1046</span>          .addEntries(AclUtil.getMinimalAcl(PERMISSION_555))<a name="line.1046"></a>
+<span class="sourceLineNo">1047</span>          .stickyBit(false).build();<a name="line.1047"></a>
+<span class="sourceLineNo">1048</span>    }<a name="line.1048"></a>
+<span class="sourceLineNo">1049</span><a name="line.1049"></a>
+<span class="sourceLineNo">1050</span>    @Override<a name="line.1050"></a>
+<span class="sourceLineNo">1051</span>    public void setXAttr(Path path, String name, byte[] value,<a name="line.1051"></a>
+<span class="sourceLineNo">1052</span>                         EnumSet&lt;XAttrSetFlag&gt; flag) throws IOException {<a name="line.1052"></a>
+<span class="sourceLineNo">1053</span>      checkPathIsSlash(path);<a name="line.1053"></a>
+<span class="sourceLineNo">1054</span>      throw readOnlyMountTable("setXAttr", path);<a name="line.1054"></a>
+<span class="sourceLineNo">1055</span>    }<a name="line.1055"></a>
+<span class="sourceLineNo">1056</span><a name="line.1056"></a>
+<span class="sourceLineNo">1057</span>    @Override<a name="line.1057"></a>
+<span class="sourceLineNo">1058</span>    public byte[] getXAttr(Path path, String name) throws IOException {<a name="line.1058"></a>
+<span class="sourceLineNo">1059</span>      throw new NotInMountpointException(path, "getXAttr");<a name="line.1059"></a>
+<span class="sourceLineNo">1060</span>    }<a name="line.1060"></a>
+<span class="sourceLineNo">1061</span><a name="line.1061"></a>
+<span class="sourceLineNo">1062</span>    @Override<a name="line.1062"></a>
+<span class="sourceLineNo">1063</span>    public Map&lt;String, byte[]&gt; getXAttrs(Path path) throws IOException {<a name="line.1063"></a>
+<span class="sourceLineNo">1064</span>      throw new NotInMountpointException(path, "getXAttrs");<a name="line.1064"></a>
+<span class="sourceLineNo">1065</span>    }<a name="line.1065"></a>
+<span class="sourceLineNo">1066</span><a name="line.1066"></a>
+<span class="sourceLineNo">1067</span>    @Override<a name="line.1067"></a>
+<span class="sourceLineNo">1068</span>    public Map&lt;String, byte[]&gt; getXAttrs(Path path, List&lt;String&gt; names)<a name="line.1068"></a>
+<span class="sourceLineNo">1069</span>        throws IOException {<a name="line.1069"></a>
+<span class="sourceLineNo">1070</span>      throw new NotInMountpointException(path, "getXAttrs");<a name="line.1070"></a>
+<span class="sourceLineNo">1071</span>    }<a name="line.1071"></a>
+<span class="sourceLineNo">1072</span><a name="line.1072"></a>
+<span class="sourceLineNo">1073</span>    @Override<a name="line.1073"></a>
+<span class="sourceLineNo">1074</span>    public List&lt;String&gt; listXAttrs(Path path) throws IOException {<a name="line.1074"></a>
+<span class="sourceLineNo">1075</span>      throw new NotInMountpointException(path, "listXAttrs");<a name="line.1075"></a>
+<span class="sourceLineNo">1076</span>    }<a name="line.1076"></a>
+<span class="sourceLineNo">1077</span><a name="line.1077"></a>
+<span class="sourceLineNo">1078</span>    @Override<a name="line.1078"></a>
+<span class="sourceLineNo">1079</span>    public void removeXAttr(Path path, String name) throws IOException {<a name="line.1079"></a>
+<span class="sourceLineNo">1080</span>      checkPathIsSlash(path);<a name="line.1080"></a>
+<span class="sourceLineNo">1081</span>      throw readOnlyMountTable("removeXAttr", path);<a name="line.1081"></a>
+<span class="sourceLineNo">1082</span>    }<a name="line.1082"></a>
+<span class="sourceLineNo">1083</span><a name="line.1083"></a>
+<span class="sourceLineNo">1084</span>    @Override<a name="line.1084"></a>
+<span class="sourceLineNo">1085</span>    public Path createSnapshot(Path path, String snapshotName)<a name="line.1085"></a>
+<span class="sourceLineNo">1086</span>        throws IOException {<a name="line.1086"></a>
+<span class="sourceLineNo">1087</span>      checkPathIsSlash(path);<a name="line.1087"></a>
+<span class="sourceLineNo">1088</span>      throw readOnlyMountTable("createSnapshot", path);<a name="line.1088"></a>
+<span class="sourceLineNo">1089</span>    }<a name="line.1089"></a>
+<span class="sourceLineNo">1090</span><a name="line.1090"></a>
+<span class="sourceLineNo">1091</span>    @Override<a name="line.1091"></a>
+<span class="sourceLineNo">1092</span>    public void renameSnapshot(Path path, String snapshotOldName,<a name="line.1092"></a>
+<span class="sourceLineNo">1093</span>        String snapshotNewName) throws IOException {<a name="line.1093"></a>
+<span class="sourceLineNo">1094</span>      checkPathIsSlash(path);<a name="line.1094"></a>
+<span class="sourceLineNo">1095</span>      throw readOnlyMountTable("renameSnapshot", path);<a name="line.1095"></a>
+<span class="sourceLineNo">1096</span>    }<a name="line.1096"></a>
+<span class="sourceLineNo">1097</span><a name="line.1097"></a>
+<span class="sourceLineNo">1098</span>    @Override<a name="line.1098"></a>
+<span class="sourceLineNo">1099</span>    public void deleteSnapshot(Path path, String snapshotName)<a name="line.1099"></a>
+<span class="sourceLineNo">1100</span>        throws IOException {<a name="line.1100"></a>
+<span class="sourceLineNo">1101</span>      checkPathIsSlash(path);<a name="line.1101"></a>
+<span class="sourceLineNo">1102</span>      throw readOnlyMountTable("deleteSnapshot", path);<a name="line.1102"></a>
+<span class="sourceLineNo">1103</span>    }<a name="line.1103"></a>
+<span class="sourceLineNo">1104</span><a name="line.1104"></a>
+<span class="sourceLineNo">1105</span>    @Override<a name="line.1105"></a>
+<span class="sourceLineNo">1106</span>    public void setStoragePolicy(Path path, String policyName)<a name="line.1106"></a>
+<span class="sourceLineNo">1107</span>        throws IOException {<a name="line.1107"></a>
+<span class="sourceLineNo">1108</span>      throw readOnlyMountTable("setStoragePolicy", path);<a name="line.1108"></a>
+<span class="sourceLineNo">1109</span>    }<a name="line.1109"></a>
+<span class="sourceLineNo">1110</span>  }<a name="line.1110"></a>
+<span class="sourceLineNo">1111</span>}<a name="line.1111"></a>
 
 
 

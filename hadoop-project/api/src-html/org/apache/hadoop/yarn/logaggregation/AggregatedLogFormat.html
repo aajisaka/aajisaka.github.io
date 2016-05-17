@@ -816,80 +816,100 @@
 <span class="sourceLineNo">808</span>      }<a name="line.808"></a>
 <span class="sourceLineNo">809</span>    }<a name="line.809"></a>
 <span class="sourceLineNo">810</span><a name="line.810"></a>
-<span class="sourceLineNo">811</span>    public void close() {<a name="line.811"></a>
-<span class="sourceLineNo">812</span>      IOUtils.cleanup(LOG, scanner, reader, fsDataIStream);<a name="line.812"></a>
-<span class="sourceLineNo">813</span>    }<a name="line.813"></a>
-<span class="sourceLineNo">814</span>  }<a name="line.814"></a>
-<span class="sourceLineNo">815</span><a name="line.815"></a>
-<span class="sourceLineNo">816</span>  @Private<a name="line.816"></a>
-<span class="sourceLineNo">817</span>  public static class ContainerLogsReader {<a name="line.817"></a>
-<span class="sourceLineNo">818</span>    private DataInputStream valueStream;<a name="line.818"></a>
-<span class="sourceLineNo">819</span>    private String currentLogType = null;<a name="line.819"></a>
-<span class="sourceLineNo">820</span>    private long currentLogLength = 0;<a name="line.820"></a>
-<span class="sourceLineNo">821</span>    private BoundedInputStream currentLogData = null;<a name="line.821"></a>
-<span class="sourceLineNo">822</span>    private InputStreamReader currentLogISR;<a name="line.822"></a>
-<span class="sourceLineNo">823</span><a name="line.823"></a>
-<span class="sourceLineNo">824</span>    public ContainerLogsReader(DataInputStream stream) {<a name="line.824"></a>
-<span class="sourceLineNo">825</span>      valueStream = stream;<a name="line.825"></a>
-<span class="sourceLineNo">826</span>    }<a name="line.826"></a>
-<span class="sourceLineNo">827</span><a name="line.827"></a>
-<span class="sourceLineNo">828</span>    public String nextLog() throws IOException {<a name="line.828"></a>
-<span class="sourceLineNo">829</span>      if (currentLogData != null &amp;&amp; currentLogLength &gt; 0) {<a name="line.829"></a>
-<span class="sourceLineNo">830</span>        // seek to the end of the current log, relying on BoundedInputStream<a name="line.830"></a>
-<span class="sourceLineNo">831</span>        // to prevent seeking past the end of the current log<a name="line.831"></a>
-<span class="sourceLineNo">832</span>        do {<a name="line.832"></a>
-<span class="sourceLineNo">833</span>          if (currentLogData.skip(currentLogLength) &lt; 0) {<a name="line.833"></a>
-<span class="sourceLineNo">834</span>            break;<a name="line.834"></a>
-<span class="sourceLineNo">835</span>          }<a name="line.835"></a>
-<span class="sourceLineNo">836</span>        } while (currentLogData.read() != -1);<a name="line.836"></a>
-<span class="sourceLineNo">837</span>      }<a name="line.837"></a>
-<span class="sourceLineNo">838</span><a name="line.838"></a>
-<span class="sourceLineNo">839</span>      currentLogType = null;<a name="line.839"></a>
-<span class="sourceLineNo">840</span>      currentLogLength = 0;<a name="line.840"></a>
-<span class="sourceLineNo">841</span>      currentLogData = null;<a name="line.841"></a>
-<span class="sourceLineNo">842</span>      currentLogISR = null;<a name="line.842"></a>
+<span class="sourceLineNo">811</span>    @Private<a name="line.811"></a>
+<span class="sourceLineNo">812</span>    public static void readContainerMetaDataAndSkipData(<a name="line.812"></a>
+<span class="sourceLineNo">813</span>        DataInputStream valueStream, PrintStream out) throws IOException {<a name="line.813"></a>
+<span class="sourceLineNo">814</span><a name="line.814"></a>
+<span class="sourceLineNo">815</span>      String fileType = valueStream.readUTF();<a name="line.815"></a>
+<span class="sourceLineNo">816</span>      String fileLengthStr = valueStream.readUTF();<a name="line.816"></a>
+<span class="sourceLineNo">817</span>      long fileLength = Long.parseLong(fileLengthStr);<a name="line.817"></a>
+<span class="sourceLineNo">818</span>      out.print("LogType:");<a name="line.818"></a>
+<span class="sourceLineNo">819</span>      out.println(fileType);<a name="line.819"></a>
+<span class="sourceLineNo">820</span>      out.print("LogLength:");<a name="line.820"></a>
+<span class="sourceLineNo">821</span>      out.println(fileLengthStr);<a name="line.821"></a>
+<span class="sourceLineNo">822</span><a name="line.822"></a>
+<span class="sourceLineNo">823</span>      long totalSkipped = 0;<a name="line.823"></a>
+<span class="sourceLineNo">824</span>      long currSkipped = 0;<a name="line.824"></a>
+<span class="sourceLineNo">825</span>      while (currSkipped != -1 &amp;&amp; totalSkipped &lt; fileLength) {<a name="line.825"></a>
+<span class="sourceLineNo">826</span>        currSkipped = valueStream.skip(fileLength - totalSkipped);<a name="line.826"></a>
+<span class="sourceLineNo">827</span>        totalSkipped += currSkipped;<a name="line.827"></a>
+<span class="sourceLineNo">828</span>      }<a name="line.828"></a>
+<span class="sourceLineNo">829</span>    }<a name="line.829"></a>
+<span class="sourceLineNo">830</span><a name="line.830"></a>
+<span class="sourceLineNo">831</span>    public void close() {<a name="line.831"></a>
+<span class="sourceLineNo">832</span>      IOUtils.cleanup(LOG, scanner, reader, fsDataIStream);<a name="line.832"></a>
+<span class="sourceLineNo">833</span>    }<a name="line.833"></a>
+<span class="sourceLineNo">834</span>  }<a name="line.834"></a>
+<span class="sourceLineNo">835</span><a name="line.835"></a>
+<span class="sourceLineNo">836</span>  @Private<a name="line.836"></a>
+<span class="sourceLineNo">837</span>  public static class ContainerLogsReader {<a name="line.837"></a>
+<span class="sourceLineNo">838</span>    private DataInputStream valueStream;<a name="line.838"></a>
+<span class="sourceLineNo">839</span>    private String currentLogType = null;<a name="line.839"></a>
+<span class="sourceLineNo">840</span>    private long currentLogLength = 0;<a name="line.840"></a>
+<span class="sourceLineNo">841</span>    private BoundedInputStream currentLogData = null;<a name="line.841"></a>
+<span class="sourceLineNo">842</span>    private InputStreamReader currentLogISR;<a name="line.842"></a>
 <span class="sourceLineNo">843</span><a name="line.843"></a>
-<span class="sourceLineNo">844</span>      try {<a name="line.844"></a>
-<span class="sourceLineNo">845</span>        String logType = valueStream.readUTF();<a name="line.845"></a>
-<span class="sourceLineNo">846</span>        String logLengthStr = valueStream.readUTF();<a name="line.846"></a>
-<span class="sourceLineNo">847</span>        currentLogLength = Long.parseLong(logLengthStr);<a name="line.847"></a>
-<span class="sourceLineNo">848</span>        currentLogData =<a name="line.848"></a>
-<span class="sourceLineNo">849</span>            new BoundedInputStream(valueStream, currentLogLength);<a name="line.849"></a>
-<span class="sourceLineNo">850</span>        currentLogData.setPropagateClose(false);<a name="line.850"></a>
-<span class="sourceLineNo">851</span>        currentLogISR = new InputStreamReader(currentLogData,<a name="line.851"></a>
-<span class="sourceLineNo">852</span>            Charset.forName("UTF-8"));<a name="line.852"></a>
-<span class="sourceLineNo">853</span>        currentLogType = logType;<a name="line.853"></a>
-<span class="sourceLineNo">854</span>      } catch (EOFException e) {<a name="line.854"></a>
-<span class="sourceLineNo">855</span>      }<a name="line.855"></a>
-<span class="sourceLineNo">856</span><a name="line.856"></a>
-<span class="sourceLineNo">857</span>      return currentLogType;<a name="line.857"></a>
-<span class="sourceLineNo">858</span>    }<a name="line.858"></a>
-<span class="sourceLineNo">859</span><a name="line.859"></a>
-<span class="sourceLineNo">860</span>    public String getCurrentLogType() {<a name="line.860"></a>
-<span class="sourceLineNo">861</span>      return currentLogType;<a name="line.861"></a>
-<span class="sourceLineNo">862</span>    }<a name="line.862"></a>
+<span class="sourceLineNo">844</span>    public ContainerLogsReader(DataInputStream stream) {<a name="line.844"></a>
+<span class="sourceLineNo">845</span>      valueStream = stream;<a name="line.845"></a>
+<span class="sourceLineNo">846</span>    }<a name="line.846"></a>
+<span class="sourceLineNo">847</span><a name="line.847"></a>
+<span class="sourceLineNo">848</span>    public String nextLog() throws IOException {<a name="line.848"></a>
+<span class="sourceLineNo">849</span>      if (currentLogData != null &amp;&amp; currentLogLength &gt; 0) {<a name="line.849"></a>
+<span class="sourceLineNo">850</span>        // seek to the end of the current log, relying on BoundedInputStream<a name="line.850"></a>
+<span class="sourceLineNo">851</span>        // to prevent seeking past the end of the current log<a name="line.851"></a>
+<span class="sourceLineNo">852</span>        do {<a name="line.852"></a>
+<span class="sourceLineNo">853</span>          if (currentLogData.skip(currentLogLength) &lt; 0) {<a name="line.853"></a>
+<span class="sourceLineNo">854</span>            break;<a name="line.854"></a>
+<span class="sourceLineNo">855</span>          }<a name="line.855"></a>
+<span class="sourceLineNo">856</span>        } while (currentLogData.read() != -1);<a name="line.856"></a>
+<span class="sourceLineNo">857</span>      }<a name="line.857"></a>
+<span class="sourceLineNo">858</span><a name="line.858"></a>
+<span class="sourceLineNo">859</span>      currentLogType = null;<a name="line.859"></a>
+<span class="sourceLineNo">860</span>      currentLogLength = 0;<a name="line.860"></a>
+<span class="sourceLineNo">861</span>      currentLogData = null;<a name="line.861"></a>
+<span class="sourceLineNo">862</span>      currentLogISR = null;<a name="line.862"></a>
 <span class="sourceLineNo">863</span><a name="line.863"></a>
-<span class="sourceLineNo">864</span>    public long getCurrentLogLength() {<a name="line.864"></a>
-<span class="sourceLineNo">865</span>      return currentLogLength;<a name="line.865"></a>
-<span class="sourceLineNo">866</span>    }<a name="line.866"></a>
-<span class="sourceLineNo">867</span><a name="line.867"></a>
-<span class="sourceLineNo">868</span>    public long skip(long n) throws IOException {<a name="line.868"></a>
-<span class="sourceLineNo">869</span>      return currentLogData.skip(n);<a name="line.869"></a>
-<span class="sourceLineNo">870</span>    }<a name="line.870"></a>
-<span class="sourceLineNo">871</span><a name="line.871"></a>
-<span class="sourceLineNo">872</span>    public int read() throws IOException {<a name="line.872"></a>
-<span class="sourceLineNo">873</span>      return currentLogData.read();<a name="line.873"></a>
-<span class="sourceLineNo">874</span>    }<a name="line.874"></a>
-<span class="sourceLineNo">875</span><a name="line.875"></a>
-<span class="sourceLineNo">876</span>    public int read(byte[] buf, int off, int len) throws IOException {<a name="line.876"></a>
-<span class="sourceLineNo">877</span>      return currentLogData.read(buf, off, len);<a name="line.877"></a>
+<span class="sourceLineNo">864</span>      try {<a name="line.864"></a>
+<span class="sourceLineNo">865</span>        String logType = valueStream.readUTF();<a name="line.865"></a>
+<span class="sourceLineNo">866</span>        String logLengthStr = valueStream.readUTF();<a name="line.866"></a>
+<span class="sourceLineNo">867</span>        currentLogLength = Long.parseLong(logLengthStr);<a name="line.867"></a>
+<span class="sourceLineNo">868</span>        currentLogData =<a name="line.868"></a>
+<span class="sourceLineNo">869</span>            new BoundedInputStream(valueStream, currentLogLength);<a name="line.869"></a>
+<span class="sourceLineNo">870</span>        currentLogData.setPropagateClose(false);<a name="line.870"></a>
+<span class="sourceLineNo">871</span>        currentLogISR = new InputStreamReader(currentLogData,<a name="line.871"></a>
+<span class="sourceLineNo">872</span>            Charset.forName("UTF-8"));<a name="line.872"></a>
+<span class="sourceLineNo">873</span>        currentLogType = logType;<a name="line.873"></a>
+<span class="sourceLineNo">874</span>      } catch (EOFException e) {<a name="line.874"></a>
+<span class="sourceLineNo">875</span>      }<a name="line.875"></a>
+<span class="sourceLineNo">876</span><a name="line.876"></a>
+<span class="sourceLineNo">877</span>      return currentLogType;<a name="line.877"></a>
 <span class="sourceLineNo">878</span>    }<a name="line.878"></a>
 <span class="sourceLineNo">879</span><a name="line.879"></a>
-<span class="sourceLineNo">880</span>    public int read(char[] buf, int off, int len) throws IOException {<a name="line.880"></a>
-<span class="sourceLineNo">881</span>      return currentLogISR.read(buf, off, len);<a name="line.881"></a>
+<span class="sourceLineNo">880</span>    public String getCurrentLogType() {<a name="line.880"></a>
+<span class="sourceLineNo">881</span>      return currentLogType;<a name="line.881"></a>
 <span class="sourceLineNo">882</span>    }<a name="line.882"></a>
-<span class="sourceLineNo">883</span>  }<a name="line.883"></a>
-<span class="sourceLineNo">884</span>}<a name="line.884"></a>
+<span class="sourceLineNo">883</span><a name="line.883"></a>
+<span class="sourceLineNo">884</span>    public long getCurrentLogLength() {<a name="line.884"></a>
+<span class="sourceLineNo">885</span>      return currentLogLength;<a name="line.885"></a>
+<span class="sourceLineNo">886</span>    }<a name="line.886"></a>
+<span class="sourceLineNo">887</span><a name="line.887"></a>
+<span class="sourceLineNo">888</span>    public long skip(long n) throws IOException {<a name="line.888"></a>
+<span class="sourceLineNo">889</span>      return currentLogData.skip(n);<a name="line.889"></a>
+<span class="sourceLineNo">890</span>    }<a name="line.890"></a>
+<span class="sourceLineNo">891</span><a name="line.891"></a>
+<span class="sourceLineNo">892</span>    public int read() throws IOException {<a name="line.892"></a>
+<span class="sourceLineNo">893</span>      return currentLogData.read();<a name="line.893"></a>
+<span class="sourceLineNo">894</span>    }<a name="line.894"></a>
+<span class="sourceLineNo">895</span><a name="line.895"></a>
+<span class="sourceLineNo">896</span>    public int read(byte[] buf, int off, int len) throws IOException {<a name="line.896"></a>
+<span class="sourceLineNo">897</span>      return currentLogData.read(buf, off, len);<a name="line.897"></a>
+<span class="sourceLineNo">898</span>    }<a name="line.898"></a>
+<span class="sourceLineNo">899</span><a name="line.899"></a>
+<span class="sourceLineNo">900</span>    public int read(char[] buf, int off, int len) throws IOException {<a name="line.900"></a>
+<span class="sourceLineNo">901</span>      return currentLogISR.read(buf, off, len);<a name="line.901"></a>
+<span class="sourceLineNo">902</span>    }<a name="line.902"></a>
+<span class="sourceLineNo">903</span>  }<a name="line.903"></a>
+<span class="sourceLineNo">904</span>}<a name="line.904"></a>
 
 
 

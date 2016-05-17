@@ -119,310 +119,315 @@
 <span class="sourceLineNo">111</span>  public static final String  FS_TRASH_INTERVAL_KEY = "fs.trash.interval";<a name="line.111"></a>
 <span class="sourceLineNo">112</span>  /** Default value for FS_TRASH_INTERVAL_KEY */<a name="line.112"></a>
 <span class="sourceLineNo">113</span>  public static final long    FS_TRASH_INTERVAL_DEFAULT = 0;<a name="line.113"></a>
-<span class="sourceLineNo">114</span><a name="line.114"></a>
-<span class="sourceLineNo">115</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.115"></a>
-<span class="sourceLineNo">116</span>  public static final String  IO_MAPFILE_BLOOM_SIZE_KEY =<a name="line.116"></a>
-<span class="sourceLineNo">117</span>    "io.mapfile.bloom.size";<a name="line.117"></a>
-<span class="sourceLineNo">118</span>  /** Default value for IO_MAPFILE_BLOOM_SIZE_KEY */<a name="line.118"></a>
-<span class="sourceLineNo">119</span>  public static final int     IO_MAPFILE_BLOOM_SIZE_DEFAULT = 1024*1024;<a name="line.119"></a>
+<span class="sourceLineNo">114</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt;. */<a name="line.114"></a>
+<span class="sourceLineNo">115</span>  public static final String  FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED =<a name="line.115"></a>
+<span class="sourceLineNo">116</span>      "fs.client.resolve.topology.enabled";<a name="line.116"></a>
+<span class="sourceLineNo">117</span>  /** Default value for FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED. */<a name="line.117"></a>
+<span class="sourceLineNo">118</span>  public static final boolean FS_CLIENT_TOPOLOGY_RESOLUTION_ENABLED_DEFAULT =<a name="line.118"></a>
+<span class="sourceLineNo">119</span>      false;<a name="line.119"></a>
 <span class="sourceLineNo">120</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.120"></a>
-<span class="sourceLineNo">121</span>  public static final String  IO_MAPFILE_BLOOM_ERROR_RATE_KEY =<a name="line.121"></a>
-<span class="sourceLineNo">122</span>    "io.mapfile.bloom.error.rate" ;<a name="line.122"></a>
-<span class="sourceLineNo">123</span>  /** Default value for IO_MAPFILE_BLOOM_ERROR_RATE_KEY */<a name="line.123"></a>
-<span class="sourceLineNo">124</span>  public static final float   IO_MAPFILE_BLOOM_ERROR_RATE_DEFAULT = 0.005f;<a name="line.124"></a>
-<span class="sourceLineNo">125</span>  /** Codec class that implements Lzo compression algorithm */<a name="line.125"></a>
-<span class="sourceLineNo">126</span>  public static final String  IO_COMPRESSION_CODEC_LZO_CLASS_KEY =<a name="line.126"></a>
-<span class="sourceLineNo">127</span>    "io.compression.codec.lzo.class";<a name="line.127"></a>
-<span class="sourceLineNo">128</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.128"></a>
-<span class="sourceLineNo">129</span>  public static final String  IO_MAP_INDEX_INTERVAL_KEY =<a name="line.129"></a>
-<span class="sourceLineNo">130</span>    "io.map.index.interval";<a name="line.130"></a>
-<span class="sourceLineNo">131</span>  /** Default value for IO_MAP_INDEX_INTERVAL_DEFAULT */<a name="line.131"></a>
-<span class="sourceLineNo">132</span>  public static final int     IO_MAP_INDEX_INTERVAL_DEFAULT = 128;<a name="line.132"></a>
+<span class="sourceLineNo">121</span>  public static final String  IO_MAPFILE_BLOOM_SIZE_KEY =<a name="line.121"></a>
+<span class="sourceLineNo">122</span>    "io.mapfile.bloom.size";<a name="line.122"></a>
+<span class="sourceLineNo">123</span>  /** Default value for IO_MAPFILE_BLOOM_SIZE_KEY */<a name="line.123"></a>
+<span class="sourceLineNo">124</span>  public static final int     IO_MAPFILE_BLOOM_SIZE_DEFAULT = 1024*1024;<a name="line.124"></a>
+<span class="sourceLineNo">125</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.125"></a>
+<span class="sourceLineNo">126</span>  public static final String  IO_MAPFILE_BLOOM_ERROR_RATE_KEY =<a name="line.126"></a>
+<span class="sourceLineNo">127</span>    "io.mapfile.bloom.error.rate" ;<a name="line.127"></a>
+<span class="sourceLineNo">128</span>  /** Default value for IO_MAPFILE_BLOOM_ERROR_RATE_KEY */<a name="line.128"></a>
+<span class="sourceLineNo">129</span>  public static final float   IO_MAPFILE_BLOOM_ERROR_RATE_DEFAULT = 0.005f;<a name="line.129"></a>
+<span class="sourceLineNo">130</span>  /** Codec class that implements Lzo compression algorithm */<a name="line.130"></a>
+<span class="sourceLineNo">131</span>  public static final String  IO_COMPRESSION_CODEC_LZO_CLASS_KEY =<a name="line.131"></a>
+<span class="sourceLineNo">132</span>    "io.compression.codec.lzo.class";<a name="line.132"></a>
 <span class="sourceLineNo">133</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.133"></a>
-<span class="sourceLineNo">134</span>  public static final String  IO_MAP_INDEX_SKIP_KEY = "io.map.index.skip";<a name="line.134"></a>
-<span class="sourceLineNo">135</span>  /** Default value for IO_MAP_INDEX_SKIP_KEY */<a name="line.135"></a>
-<span class="sourceLineNo">136</span>  public static final int     IO_MAP_INDEX_SKIP_DEFAULT = 0;<a name="line.136"></a>
-<span class="sourceLineNo">137</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.137"></a>
-<span class="sourceLineNo">138</span>  public static final String  IO_SEQFILE_COMPRESS_BLOCKSIZE_KEY =<a name="line.138"></a>
-<span class="sourceLineNo">139</span>    "io.seqfile.compress.blocksize";<a name="line.139"></a>
-<span class="sourceLineNo">140</span>  /** Default value for IO_SEQFILE_COMPRESS_BLOCKSIZE_KEY */<a name="line.140"></a>
-<span class="sourceLineNo">141</span>  public static final int     IO_SEQFILE_COMPRESS_BLOCKSIZE_DEFAULT = 1000000;<a name="line.141"></a>
+<span class="sourceLineNo">134</span>  public static final String  IO_MAP_INDEX_INTERVAL_KEY =<a name="line.134"></a>
+<span class="sourceLineNo">135</span>    "io.map.index.interval";<a name="line.135"></a>
+<span class="sourceLineNo">136</span>  /** Default value for IO_MAP_INDEX_INTERVAL_DEFAULT */<a name="line.136"></a>
+<span class="sourceLineNo">137</span>  public static final int     IO_MAP_INDEX_INTERVAL_DEFAULT = 128;<a name="line.137"></a>
+<span class="sourceLineNo">138</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.138"></a>
+<span class="sourceLineNo">139</span>  public static final String  IO_MAP_INDEX_SKIP_KEY = "io.map.index.skip";<a name="line.139"></a>
+<span class="sourceLineNo">140</span>  /** Default value for IO_MAP_INDEX_SKIP_KEY */<a name="line.140"></a>
+<span class="sourceLineNo">141</span>  public static final int     IO_MAP_INDEX_SKIP_DEFAULT = 0;<a name="line.141"></a>
 <span class="sourceLineNo">142</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.142"></a>
-<span class="sourceLineNo">143</span>  public static final String  IO_FILE_BUFFER_SIZE_KEY =<a name="line.143"></a>
-<span class="sourceLineNo">144</span>    "io.file.buffer.size";<a name="line.144"></a>
-<span class="sourceLineNo">145</span>  /** Default value for IO_FILE_BUFFER_SIZE_KEY */<a name="line.145"></a>
-<span class="sourceLineNo">146</span>  public static final int     IO_FILE_BUFFER_SIZE_DEFAULT = 4096;<a name="line.146"></a>
+<span class="sourceLineNo">143</span>  public static final String  IO_SEQFILE_COMPRESS_BLOCKSIZE_KEY =<a name="line.143"></a>
+<span class="sourceLineNo">144</span>    "io.seqfile.compress.blocksize";<a name="line.144"></a>
+<span class="sourceLineNo">145</span>  /** Default value for IO_SEQFILE_COMPRESS_BLOCKSIZE_KEY */<a name="line.145"></a>
+<span class="sourceLineNo">146</span>  public static final int     IO_SEQFILE_COMPRESS_BLOCKSIZE_DEFAULT = 1000000;<a name="line.146"></a>
 <span class="sourceLineNo">147</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.147"></a>
-<span class="sourceLineNo">148</span>  public static final String  IO_SKIP_CHECKSUM_ERRORS_KEY =<a name="line.148"></a>
-<span class="sourceLineNo">149</span>    "io.skip.checksum.errors";<a name="line.149"></a>
-<span class="sourceLineNo">150</span>  /** Default value for IO_SKIP_CHECKSUM_ERRORS_KEY */<a name="line.150"></a>
-<span class="sourceLineNo">151</span>  public static final boolean IO_SKIP_CHECKSUM_ERRORS_DEFAULT = false;<a name="line.151"></a>
-<span class="sourceLineNo">152</span>  /**<a name="line.152"></a>
-<span class="sourceLineNo">153</span>   * @deprecated Moved to mapreduce, see mapreduce.task.io.sort.mb<a name="line.153"></a>
-<span class="sourceLineNo">154</span>   * in mapred-default.xml<a name="line.154"></a>
-<span class="sourceLineNo">155</span>   * See https://issues.apache.org/jira/browse/HADOOP-6801<a name="line.155"></a>
-<span class="sourceLineNo">156</span>   */<a name="line.156"></a>
-<span class="sourceLineNo">157</span>  public static final String  IO_SORT_MB_KEY = "io.sort.mb";<a name="line.157"></a>
-<span class="sourceLineNo">158</span>  /** Default value for IO_SORT_MB_DEFAULT */<a name="line.158"></a>
-<span class="sourceLineNo">159</span>  public static final int     IO_SORT_MB_DEFAULT = 100;<a name="line.159"></a>
-<span class="sourceLineNo">160</span>  /**<a name="line.160"></a>
-<span class="sourceLineNo">161</span>   * @deprecated Moved to mapreduce, see mapreduce.task.io.sort.factor<a name="line.161"></a>
-<span class="sourceLineNo">162</span>   * in mapred-default.xml<a name="line.162"></a>
-<span class="sourceLineNo">163</span>   * See https://issues.apache.org/jira/browse/HADOOP-6801<a name="line.163"></a>
-<span class="sourceLineNo">164</span>   */<a name="line.164"></a>
-<span class="sourceLineNo">165</span>  public static final String  IO_SORT_FACTOR_KEY = "io.sort.factor";<a name="line.165"></a>
-<span class="sourceLineNo">166</span>  /** Default value for IO_SORT_FACTOR_DEFAULT */<a name="line.166"></a>
-<span class="sourceLineNo">167</span>  public static final int     IO_SORT_FACTOR_DEFAULT = 100;<a name="line.167"></a>
-<span class="sourceLineNo">168</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.168"></a>
-<span class="sourceLineNo">169</span>  public static final String  IO_SERIALIZATIONS_KEY = "io.serializations";<a name="line.169"></a>
-<span class="sourceLineNo">170</span><a name="line.170"></a>
-<span class="sourceLineNo">171</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.171"></a>
-<span class="sourceLineNo">172</span>  public static final String  TFILE_IO_CHUNK_SIZE_KEY = "tfile.io.chunk.size";<a name="line.172"></a>
-<span class="sourceLineNo">173</span>  /** Default value for TFILE_IO_CHUNK_SIZE_DEFAULT */<a name="line.173"></a>
-<span class="sourceLineNo">174</span>  public static final int     TFILE_IO_CHUNK_SIZE_DEFAULT = 1024*1024;<a name="line.174"></a>
-<span class="sourceLineNo">175</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.175"></a>
-<span class="sourceLineNo">176</span>  public static final String  TFILE_FS_INPUT_BUFFER_SIZE_KEY =<a name="line.176"></a>
-<span class="sourceLineNo">177</span>    "tfile.fs.input.buffer.size";<a name="line.177"></a>
-<span class="sourceLineNo">178</span>  /** Default value for TFILE_FS_INPUT_BUFFER_SIZE_KEY */<a name="line.178"></a>
-<span class="sourceLineNo">179</span>  public static final int     TFILE_FS_INPUT_BUFFER_SIZE_DEFAULT = 256*1024;<a name="line.179"></a>
+<span class="sourceLineNo">148</span>  public static final String  IO_FILE_BUFFER_SIZE_KEY =<a name="line.148"></a>
+<span class="sourceLineNo">149</span>    "io.file.buffer.size";<a name="line.149"></a>
+<span class="sourceLineNo">150</span>  /** Default value for IO_FILE_BUFFER_SIZE_KEY */<a name="line.150"></a>
+<span class="sourceLineNo">151</span>  public static final int     IO_FILE_BUFFER_SIZE_DEFAULT = 4096;<a name="line.151"></a>
+<span class="sourceLineNo">152</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.152"></a>
+<span class="sourceLineNo">153</span>  public static final String  IO_SKIP_CHECKSUM_ERRORS_KEY =<a name="line.153"></a>
+<span class="sourceLineNo">154</span>    "io.skip.checksum.errors";<a name="line.154"></a>
+<span class="sourceLineNo">155</span>  /** Default value for IO_SKIP_CHECKSUM_ERRORS_KEY */<a name="line.155"></a>
+<span class="sourceLineNo">156</span>  public static final boolean IO_SKIP_CHECKSUM_ERRORS_DEFAULT = false;<a name="line.156"></a>
+<span class="sourceLineNo">157</span>  /**<a name="line.157"></a>
+<span class="sourceLineNo">158</span>   * @deprecated Moved to mapreduce, see mapreduce.task.io.sort.mb<a name="line.158"></a>
+<span class="sourceLineNo">159</span>   * in mapred-default.xml<a name="line.159"></a>
+<span class="sourceLineNo">160</span>   * See https://issues.apache.org/jira/browse/HADOOP-6801<a name="line.160"></a>
+<span class="sourceLineNo">161</span>   */<a name="line.161"></a>
+<span class="sourceLineNo">162</span>  public static final String  IO_SORT_MB_KEY = "io.sort.mb";<a name="line.162"></a>
+<span class="sourceLineNo">163</span>  /** Default value for IO_SORT_MB_DEFAULT */<a name="line.163"></a>
+<span class="sourceLineNo">164</span>  public static final int     IO_SORT_MB_DEFAULT = 100;<a name="line.164"></a>
+<span class="sourceLineNo">165</span>  /**<a name="line.165"></a>
+<span class="sourceLineNo">166</span>   * @deprecated Moved to mapreduce, see mapreduce.task.io.sort.factor<a name="line.166"></a>
+<span class="sourceLineNo">167</span>   * in mapred-default.xml<a name="line.167"></a>
+<span class="sourceLineNo">168</span>   * See https://issues.apache.org/jira/browse/HADOOP-6801<a name="line.168"></a>
+<span class="sourceLineNo">169</span>   */<a name="line.169"></a>
+<span class="sourceLineNo">170</span>  public static final String  IO_SORT_FACTOR_KEY = "io.sort.factor";<a name="line.170"></a>
+<span class="sourceLineNo">171</span>  /** Default value for IO_SORT_FACTOR_DEFAULT */<a name="line.171"></a>
+<span class="sourceLineNo">172</span>  public static final int     IO_SORT_FACTOR_DEFAULT = 100;<a name="line.172"></a>
+<span class="sourceLineNo">173</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.173"></a>
+<span class="sourceLineNo">174</span>  public static final String  IO_SERIALIZATIONS_KEY = "io.serializations";<a name="line.174"></a>
+<span class="sourceLineNo">175</span><a name="line.175"></a>
+<span class="sourceLineNo">176</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.176"></a>
+<span class="sourceLineNo">177</span>  public static final String  TFILE_IO_CHUNK_SIZE_KEY = "tfile.io.chunk.size";<a name="line.177"></a>
+<span class="sourceLineNo">178</span>  /** Default value for TFILE_IO_CHUNK_SIZE_DEFAULT */<a name="line.178"></a>
+<span class="sourceLineNo">179</span>  public static final int     TFILE_IO_CHUNK_SIZE_DEFAULT = 1024*1024;<a name="line.179"></a>
 <span class="sourceLineNo">180</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.180"></a>
-<span class="sourceLineNo">181</span>  public static final String  TFILE_FS_OUTPUT_BUFFER_SIZE_KEY =<a name="line.181"></a>
-<span class="sourceLineNo">182</span>    "tfile.fs.output.buffer.size";<a name="line.182"></a>
-<span class="sourceLineNo">183</span>  /** Default value for TFILE_FS_OUTPUT_BUFFER_SIZE_KEY */<a name="line.183"></a>
-<span class="sourceLineNo">184</span>  public static final int     TFILE_FS_OUTPUT_BUFFER_SIZE_DEFAULT = 256*1024;<a name="line.184"></a>
-<span class="sourceLineNo">185</span><a name="line.185"></a>
-<span class="sourceLineNo">186</span>  public static final String  HADOOP_CALLER_CONTEXT_ENABLED_KEY =<a name="line.186"></a>
-<span class="sourceLineNo">187</span>      "hadoop.caller.context.enabled";<a name="line.187"></a>
-<span class="sourceLineNo">188</span>  public static final boolean HADOOP_CALLER_CONTEXT_ENABLED_DEFAULT = false;<a name="line.188"></a>
-<span class="sourceLineNo">189</span>  public static final String  HADOOP_CALLER_CONTEXT_MAX_SIZE_KEY =<a name="line.189"></a>
-<span class="sourceLineNo">190</span>      "hadoop.caller.context.max.size";<a name="line.190"></a>
-<span class="sourceLineNo">191</span>  public static final int     HADOOP_CALLER_CONTEXT_MAX_SIZE_DEFAULT = 128;<a name="line.191"></a>
-<span class="sourceLineNo">192</span>  public static final String  HADOOP_CALLER_CONTEXT_SIGNATURE_MAX_SIZE_KEY =<a name="line.192"></a>
-<span class="sourceLineNo">193</span>      "hadoop.caller.context.signature.max.size";<a name="line.193"></a>
-<span class="sourceLineNo">194</span>  public static final int     HADOOP_CALLER_CONTEXT_SIGNATURE_MAX_SIZE_DEFAULT =<a name="line.194"></a>
-<span class="sourceLineNo">195</span>      40;<a name="line.195"></a>
-<span class="sourceLineNo">196</span><a name="line.196"></a>
-<span class="sourceLineNo">197</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.197"></a>
-<span class="sourceLineNo">198</span>  public static final String  IPC_CLIENT_CONNECTION_MAXIDLETIME_KEY =<a name="line.198"></a>
-<span class="sourceLineNo">199</span>    "ipc.client.connection.maxidletime";<a name="line.199"></a>
-<span class="sourceLineNo">200</span>  /** Default value for IPC_CLIENT_CONNECTION_MAXIDLETIME_KEY */<a name="line.200"></a>
-<span class="sourceLineNo">201</span>  public static final int     IPC_CLIENT_CONNECTION_MAXIDLETIME_DEFAULT = 10000; // 10s<a name="line.201"></a>
+<span class="sourceLineNo">181</span>  public static final String  TFILE_FS_INPUT_BUFFER_SIZE_KEY =<a name="line.181"></a>
+<span class="sourceLineNo">182</span>    "tfile.fs.input.buffer.size";<a name="line.182"></a>
+<span class="sourceLineNo">183</span>  /** Default value for TFILE_FS_INPUT_BUFFER_SIZE_KEY */<a name="line.183"></a>
+<span class="sourceLineNo">184</span>  public static final int     TFILE_FS_INPUT_BUFFER_SIZE_DEFAULT = 256*1024;<a name="line.184"></a>
+<span class="sourceLineNo">185</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.185"></a>
+<span class="sourceLineNo">186</span>  public static final String  TFILE_FS_OUTPUT_BUFFER_SIZE_KEY =<a name="line.186"></a>
+<span class="sourceLineNo">187</span>    "tfile.fs.output.buffer.size";<a name="line.187"></a>
+<span class="sourceLineNo">188</span>  /** Default value for TFILE_FS_OUTPUT_BUFFER_SIZE_KEY */<a name="line.188"></a>
+<span class="sourceLineNo">189</span>  public static final int     TFILE_FS_OUTPUT_BUFFER_SIZE_DEFAULT = 256*1024;<a name="line.189"></a>
+<span class="sourceLineNo">190</span><a name="line.190"></a>
+<span class="sourceLineNo">191</span>  public static final String  HADOOP_CALLER_CONTEXT_ENABLED_KEY =<a name="line.191"></a>
+<span class="sourceLineNo">192</span>      "hadoop.caller.context.enabled";<a name="line.192"></a>
+<span class="sourceLineNo">193</span>  public static final boolean HADOOP_CALLER_CONTEXT_ENABLED_DEFAULT = false;<a name="line.193"></a>
+<span class="sourceLineNo">194</span>  public static final String  HADOOP_CALLER_CONTEXT_MAX_SIZE_KEY =<a name="line.194"></a>
+<span class="sourceLineNo">195</span>      "hadoop.caller.context.max.size";<a name="line.195"></a>
+<span class="sourceLineNo">196</span>  public static final int     HADOOP_CALLER_CONTEXT_MAX_SIZE_DEFAULT = 128;<a name="line.196"></a>
+<span class="sourceLineNo">197</span>  public static final String  HADOOP_CALLER_CONTEXT_SIGNATURE_MAX_SIZE_KEY =<a name="line.197"></a>
+<span class="sourceLineNo">198</span>      "hadoop.caller.context.signature.max.size";<a name="line.198"></a>
+<span class="sourceLineNo">199</span>  public static final int     HADOOP_CALLER_CONTEXT_SIGNATURE_MAX_SIZE_DEFAULT =<a name="line.199"></a>
+<span class="sourceLineNo">200</span>      40;<a name="line.200"></a>
+<span class="sourceLineNo">201</span><a name="line.201"></a>
 <span class="sourceLineNo">202</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.202"></a>
-<span class="sourceLineNo">203</span>  public static final String  IPC_CLIENT_CONNECT_TIMEOUT_KEY =<a name="line.203"></a>
-<span class="sourceLineNo">204</span>    "ipc.client.connect.timeout";<a name="line.204"></a>
-<span class="sourceLineNo">205</span>  /** Default value for IPC_CLIENT_CONNECT_TIMEOUT_KEY */<a name="line.205"></a>
-<span class="sourceLineNo">206</span>  public static final int     IPC_CLIENT_CONNECT_TIMEOUT_DEFAULT = 20000; // 20s<a name="line.206"></a>
+<span class="sourceLineNo">203</span>  public static final String  IPC_CLIENT_CONNECTION_MAXIDLETIME_KEY =<a name="line.203"></a>
+<span class="sourceLineNo">204</span>    "ipc.client.connection.maxidletime";<a name="line.204"></a>
+<span class="sourceLineNo">205</span>  /** Default value for IPC_CLIENT_CONNECTION_MAXIDLETIME_KEY */<a name="line.205"></a>
+<span class="sourceLineNo">206</span>  public static final int     IPC_CLIENT_CONNECTION_MAXIDLETIME_DEFAULT = 10000; // 10s<a name="line.206"></a>
 <span class="sourceLineNo">207</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.207"></a>
-<span class="sourceLineNo">208</span>  public static final String  IPC_CLIENT_CONNECT_MAX_RETRIES_KEY =<a name="line.208"></a>
-<span class="sourceLineNo">209</span>    "ipc.client.connect.max.retries";<a name="line.209"></a>
-<span class="sourceLineNo">210</span>  /** Default value for IPC_CLIENT_CONNECT_MAX_RETRIES_KEY */<a name="line.210"></a>
-<span class="sourceLineNo">211</span>  public static final int     IPC_CLIENT_CONNECT_MAX_RETRIES_DEFAULT = 10;<a name="line.211"></a>
+<span class="sourceLineNo">208</span>  public static final String  IPC_CLIENT_CONNECT_TIMEOUT_KEY =<a name="line.208"></a>
+<span class="sourceLineNo">209</span>    "ipc.client.connect.timeout";<a name="line.209"></a>
+<span class="sourceLineNo">210</span>  /** Default value for IPC_CLIENT_CONNECT_TIMEOUT_KEY */<a name="line.210"></a>
+<span class="sourceLineNo">211</span>  public static final int     IPC_CLIENT_CONNECT_TIMEOUT_DEFAULT = 20000; // 20s<a name="line.211"></a>
 <span class="sourceLineNo">212</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.212"></a>
-<span class="sourceLineNo">213</span>  public static final String  IPC_CLIENT_CONNECT_RETRY_INTERVAL_KEY =<a name="line.213"></a>
-<span class="sourceLineNo">214</span>      "ipc.client.connect.retry.interval";<a name="line.214"></a>
-<span class="sourceLineNo">215</span>  /** Default value for IPC_CLIENT_CONNECT_RETRY_INTERVAL_KEY */<a name="line.215"></a>
-<span class="sourceLineNo">216</span>  public static final int     IPC_CLIENT_CONNECT_RETRY_INTERVAL_DEFAULT = 1000;<a name="line.216"></a>
+<span class="sourceLineNo">213</span>  public static final String  IPC_CLIENT_CONNECT_MAX_RETRIES_KEY =<a name="line.213"></a>
+<span class="sourceLineNo">214</span>    "ipc.client.connect.max.retries";<a name="line.214"></a>
+<span class="sourceLineNo">215</span>  /** Default value for IPC_CLIENT_CONNECT_MAX_RETRIES_KEY */<a name="line.215"></a>
+<span class="sourceLineNo">216</span>  public static final int     IPC_CLIENT_CONNECT_MAX_RETRIES_DEFAULT = 10;<a name="line.216"></a>
 <span class="sourceLineNo">217</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.217"></a>
-<span class="sourceLineNo">218</span>  public static final String  IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SOCKET_TIMEOUTS_KEY =<a name="line.218"></a>
-<span class="sourceLineNo">219</span>    "ipc.client.connect.max.retries.on.timeouts";<a name="line.219"></a>
-<span class="sourceLineNo">220</span>  /** Default value for IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SOCKET_TIMEOUTS_KEY */<a name="line.220"></a>
-<span class="sourceLineNo">221</span>  public static final int  IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SOCKET_TIMEOUTS_DEFAULT = 45;<a name="line.221"></a>
+<span class="sourceLineNo">218</span>  public static final String  IPC_CLIENT_CONNECT_RETRY_INTERVAL_KEY =<a name="line.218"></a>
+<span class="sourceLineNo">219</span>      "ipc.client.connect.retry.interval";<a name="line.219"></a>
+<span class="sourceLineNo">220</span>  /** Default value for IPC_CLIENT_CONNECT_RETRY_INTERVAL_KEY */<a name="line.220"></a>
+<span class="sourceLineNo">221</span>  public static final int     IPC_CLIENT_CONNECT_RETRY_INTERVAL_DEFAULT = 1000;<a name="line.221"></a>
 <span class="sourceLineNo">222</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.222"></a>
-<span class="sourceLineNo">223</span>  public static final String  IPC_CLIENT_TCPNODELAY_KEY =<a name="line.223"></a>
-<span class="sourceLineNo">224</span>    "ipc.client.tcpnodelay";<a name="line.224"></a>
-<span class="sourceLineNo">225</span>  /** Default value for IPC_CLIENT_TCPNODELAY_KEY */<a name="line.225"></a>
-<span class="sourceLineNo">226</span>  public static final boolean IPC_CLIENT_TCPNODELAY_DEFAULT = true;<a name="line.226"></a>
-<span class="sourceLineNo">227</span>  /** Enable low-latency connections from the client */<a name="line.227"></a>
-<span class="sourceLineNo">228</span>  public static final String   IPC_CLIENT_LOW_LATENCY = "ipc.client.low-latency";<a name="line.228"></a>
-<span class="sourceLineNo">229</span>  /** Default value of IPC_CLIENT_LOW_LATENCY */<a name="line.229"></a>
-<span class="sourceLineNo">230</span>  public static final boolean  IPC_CLIENT_LOW_LATENCY_DEFAULT = false;<a name="line.230"></a>
-<span class="sourceLineNo">231</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.231"></a>
-<span class="sourceLineNo">232</span>  public static final String  IPC_SERVER_LISTEN_QUEUE_SIZE_KEY =<a name="line.232"></a>
-<span class="sourceLineNo">233</span>    "ipc.server.listen.queue.size";<a name="line.233"></a>
-<span class="sourceLineNo">234</span>  /** Default value for IPC_SERVER_LISTEN_QUEUE_SIZE_KEY */<a name="line.234"></a>
-<span class="sourceLineNo">235</span>  public static final int     IPC_SERVER_LISTEN_QUEUE_SIZE_DEFAULT = 128;<a name="line.235"></a>
+<span class="sourceLineNo">223</span>  public static final String  IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SOCKET_TIMEOUTS_KEY =<a name="line.223"></a>
+<span class="sourceLineNo">224</span>    "ipc.client.connect.max.retries.on.timeouts";<a name="line.224"></a>
+<span class="sourceLineNo">225</span>  /** Default value for IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SOCKET_TIMEOUTS_KEY */<a name="line.225"></a>
+<span class="sourceLineNo">226</span>  public static final int  IPC_CLIENT_CONNECT_MAX_RETRIES_ON_SOCKET_TIMEOUTS_DEFAULT = 45;<a name="line.226"></a>
+<span class="sourceLineNo">227</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.227"></a>
+<span class="sourceLineNo">228</span>  public static final String  IPC_CLIENT_TCPNODELAY_KEY =<a name="line.228"></a>
+<span class="sourceLineNo">229</span>    "ipc.client.tcpnodelay";<a name="line.229"></a>
+<span class="sourceLineNo">230</span>  /** Default value for IPC_CLIENT_TCPNODELAY_KEY */<a name="line.230"></a>
+<span class="sourceLineNo">231</span>  public static final boolean IPC_CLIENT_TCPNODELAY_DEFAULT = true;<a name="line.231"></a>
+<span class="sourceLineNo">232</span>  /** Enable low-latency connections from the client */<a name="line.232"></a>
+<span class="sourceLineNo">233</span>  public static final String   IPC_CLIENT_LOW_LATENCY = "ipc.client.low-latency";<a name="line.233"></a>
+<span class="sourceLineNo">234</span>  /** Default value of IPC_CLIENT_LOW_LATENCY */<a name="line.234"></a>
+<span class="sourceLineNo">235</span>  public static final boolean  IPC_CLIENT_LOW_LATENCY_DEFAULT = false;<a name="line.235"></a>
 <span class="sourceLineNo">236</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.236"></a>
-<span class="sourceLineNo">237</span>  public static final String  IPC_CLIENT_KILL_MAX_KEY = "ipc.client.kill.max";<a name="line.237"></a>
-<span class="sourceLineNo">238</span>  /** Default value for IPC_CLIENT_KILL_MAX_KEY */<a name="line.238"></a>
-<span class="sourceLineNo">239</span>  public static final int     IPC_CLIENT_KILL_MAX_DEFAULT = 10;<a name="line.239"></a>
-<span class="sourceLineNo">240</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.240"></a>
-<span class="sourceLineNo">241</span>  public static final String  IPC_CLIENT_IDLETHRESHOLD_KEY =<a name="line.241"></a>
-<span class="sourceLineNo">242</span>    "ipc.client.idlethreshold";<a name="line.242"></a>
-<span class="sourceLineNo">243</span>  /** Default value for IPC_CLIENT_IDLETHRESHOLD_DEFAULT */<a name="line.243"></a>
-<span class="sourceLineNo">244</span>  public static final int     IPC_CLIENT_IDLETHRESHOLD_DEFAULT = 4000;<a name="line.244"></a>
+<span class="sourceLineNo">237</span>  public static final String  IPC_SERVER_LISTEN_QUEUE_SIZE_KEY =<a name="line.237"></a>
+<span class="sourceLineNo">238</span>    "ipc.server.listen.queue.size";<a name="line.238"></a>
+<span class="sourceLineNo">239</span>  /** Default value for IPC_SERVER_LISTEN_QUEUE_SIZE_KEY */<a name="line.239"></a>
+<span class="sourceLineNo">240</span>  public static final int     IPC_SERVER_LISTEN_QUEUE_SIZE_DEFAULT = 128;<a name="line.240"></a>
+<span class="sourceLineNo">241</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.241"></a>
+<span class="sourceLineNo">242</span>  public static final String  IPC_CLIENT_KILL_MAX_KEY = "ipc.client.kill.max";<a name="line.242"></a>
+<span class="sourceLineNo">243</span>  /** Default value for IPC_CLIENT_KILL_MAX_KEY */<a name="line.243"></a>
+<span class="sourceLineNo">244</span>  public static final int     IPC_CLIENT_KILL_MAX_DEFAULT = 10;<a name="line.244"></a>
 <span class="sourceLineNo">245</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.245"></a>
-<span class="sourceLineNo">246</span>  public static final String  IPC_SERVER_TCPNODELAY_KEY =<a name="line.246"></a>
-<span class="sourceLineNo">247</span>    "ipc.server.tcpnodelay";<a name="line.247"></a>
-<span class="sourceLineNo">248</span>  /** Default value for IPC_SERVER_TCPNODELAY_KEY */<a name="line.248"></a>
-<span class="sourceLineNo">249</span>  public static final boolean IPC_SERVER_TCPNODELAY_DEFAULT = true;<a name="line.249"></a>
+<span class="sourceLineNo">246</span>  public static final String  IPC_CLIENT_IDLETHRESHOLD_KEY =<a name="line.246"></a>
+<span class="sourceLineNo">247</span>    "ipc.client.idlethreshold";<a name="line.247"></a>
+<span class="sourceLineNo">248</span>  /** Default value for IPC_CLIENT_IDLETHRESHOLD_DEFAULT */<a name="line.248"></a>
+<span class="sourceLineNo">249</span>  public static final int     IPC_CLIENT_IDLETHRESHOLD_DEFAULT = 4000;<a name="line.249"></a>
 <span class="sourceLineNo">250</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.250"></a>
-<span class="sourceLineNo">251</span>  public static final String  IPC_SERVER_MAX_CONNECTIONS_KEY =<a name="line.251"></a>
-<span class="sourceLineNo">252</span>    "ipc.server.max.connections";<a name="line.252"></a>
-<span class="sourceLineNo">253</span>  /** Default value for IPC_SERVER_MAX_CONNECTIONS_KEY */<a name="line.253"></a>
-<span class="sourceLineNo">254</span>  public static final int     IPC_SERVER_MAX_CONNECTIONS_DEFAULT = 0;<a name="line.254"></a>
-<span class="sourceLineNo">255</span><a name="line.255"></a>
-<span class="sourceLineNo">256</span>  /** Logs if a RPC is really slow compared to rest of RPCs. */<a name="line.256"></a>
-<span class="sourceLineNo">257</span>  public static final String IPC_SERVER_LOG_SLOW_RPC =<a name="line.257"></a>
-<span class="sourceLineNo">258</span>                                                "ipc.server.log.slow.rpc";<a name="line.258"></a>
-<span class="sourceLineNo">259</span>  public static final boolean IPC_SERVER_LOG_SLOW_RPC_DEFAULT = false;<a name="line.259"></a>
+<span class="sourceLineNo">251</span>  public static final String  IPC_SERVER_TCPNODELAY_KEY =<a name="line.251"></a>
+<span class="sourceLineNo">252</span>    "ipc.server.tcpnodelay";<a name="line.252"></a>
+<span class="sourceLineNo">253</span>  /** Default value for IPC_SERVER_TCPNODELAY_KEY */<a name="line.253"></a>
+<span class="sourceLineNo">254</span>  public static final boolean IPC_SERVER_TCPNODELAY_DEFAULT = true;<a name="line.254"></a>
+<span class="sourceLineNo">255</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.255"></a>
+<span class="sourceLineNo">256</span>  public static final String  IPC_SERVER_MAX_CONNECTIONS_KEY =<a name="line.256"></a>
+<span class="sourceLineNo">257</span>    "ipc.server.max.connections";<a name="line.257"></a>
+<span class="sourceLineNo">258</span>  /** Default value for IPC_SERVER_MAX_CONNECTIONS_KEY */<a name="line.258"></a>
+<span class="sourceLineNo">259</span>  public static final int     IPC_SERVER_MAX_CONNECTIONS_DEFAULT = 0;<a name="line.259"></a>
 <span class="sourceLineNo">260</span><a name="line.260"></a>
-<span class="sourceLineNo">261</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.261"></a>
-<span class="sourceLineNo">262</span>  public static final String  HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_KEY =<a name="line.262"></a>
-<span class="sourceLineNo">263</span>    "hadoop.rpc.socket.factory.class.default";<a name="line.263"></a>
-<span class="sourceLineNo">264</span>  public static final String  HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_DEFAULT =<a name="line.264"></a>
-<span class="sourceLineNo">265</span>    "org.apache.hadoop.net.StandardSocketFactory";<a name="line.265"></a>
+<span class="sourceLineNo">261</span>  /** Logs if a RPC is really slow compared to rest of RPCs. */<a name="line.261"></a>
+<span class="sourceLineNo">262</span>  public static final String IPC_SERVER_LOG_SLOW_RPC =<a name="line.262"></a>
+<span class="sourceLineNo">263</span>                                                "ipc.server.log.slow.rpc";<a name="line.263"></a>
+<span class="sourceLineNo">264</span>  public static final boolean IPC_SERVER_LOG_SLOW_RPC_DEFAULT = false;<a name="line.264"></a>
+<span class="sourceLineNo">265</span><a name="line.265"></a>
 <span class="sourceLineNo">266</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.266"></a>
-<span class="sourceLineNo">267</span>  public static final String  HADOOP_SOCKS_SERVER_KEY = "hadoop.socks.server";<a name="line.267"></a>
-<span class="sourceLineNo">268</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.268"></a>
-<span class="sourceLineNo">269</span>  public static final String  HADOOP_UTIL_HASH_TYPE_KEY =<a name="line.269"></a>
-<span class="sourceLineNo">270</span>    "hadoop.util.hash.type";<a name="line.270"></a>
-<span class="sourceLineNo">271</span>  /** Default value for HADOOP_UTIL_HASH_TYPE_KEY */<a name="line.271"></a>
-<span class="sourceLineNo">272</span>  public static final String  HADOOP_UTIL_HASH_TYPE_DEFAULT = "murmur";<a name="line.272"></a>
+<span class="sourceLineNo">267</span>  public static final String  HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_KEY =<a name="line.267"></a>
+<span class="sourceLineNo">268</span>    "hadoop.rpc.socket.factory.class.default";<a name="line.268"></a>
+<span class="sourceLineNo">269</span>  public static final String  HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_DEFAULT =<a name="line.269"></a>
+<span class="sourceLineNo">270</span>    "org.apache.hadoop.net.StandardSocketFactory";<a name="line.270"></a>
+<span class="sourceLineNo">271</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.271"></a>
+<span class="sourceLineNo">272</span>  public static final String  HADOOP_SOCKS_SERVER_KEY = "hadoop.socks.server";<a name="line.272"></a>
 <span class="sourceLineNo">273</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.273"></a>
-<span class="sourceLineNo">274</span>  public static final String  HADOOP_SECURITY_GROUP_MAPPING =<a name="line.274"></a>
-<span class="sourceLineNo">275</span>    "hadoop.security.group.mapping";<a name="line.275"></a>
-<span class="sourceLineNo">276</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.276"></a>
-<span class="sourceLineNo">277</span>  public static final String  HADOOP_SECURITY_GROUPS_CACHE_SECS =<a name="line.277"></a>
-<span class="sourceLineNo">278</span>    "hadoop.security.groups.cache.secs";<a name="line.278"></a>
-<span class="sourceLineNo">279</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.279"></a>
-<span class="sourceLineNo">280</span>  public static final long HADOOP_SECURITY_GROUPS_CACHE_SECS_DEFAULT =<a name="line.280"></a>
-<span class="sourceLineNo">281</span>    300;<a name="line.281"></a>
-<span class="sourceLineNo">282</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.282"></a>
-<span class="sourceLineNo">283</span>  public static final String  HADOOP_SECURITY_GROUPS_NEGATIVE_CACHE_SECS =<a name="line.283"></a>
-<span class="sourceLineNo">284</span>    "hadoop.security.groups.negative-cache.secs";<a name="line.284"></a>
-<span class="sourceLineNo">285</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.285"></a>
-<span class="sourceLineNo">286</span>  public static final long HADOOP_SECURITY_GROUPS_NEGATIVE_CACHE_SECS_DEFAULT =<a name="line.286"></a>
-<span class="sourceLineNo">287</span>    30;<a name="line.287"></a>
-<span class="sourceLineNo">288</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.288"></a>
-<span class="sourceLineNo">289</span>  public static final String HADOOP_SECURITY_GROUPS_CACHE_WARN_AFTER_MS =<a name="line.289"></a>
-<span class="sourceLineNo">290</span>    "hadoop.security.groups.cache.warn.after.ms";<a name="line.290"></a>
-<span class="sourceLineNo">291</span>  public static final long HADOOP_SECURITY_GROUPS_CACHE_WARN_AFTER_MS_DEFAULT =<a name="line.291"></a>
-<span class="sourceLineNo">292</span>    5000;<a name="line.292"></a>
+<span class="sourceLineNo">274</span>  public static final String  HADOOP_UTIL_HASH_TYPE_KEY =<a name="line.274"></a>
+<span class="sourceLineNo">275</span>    "hadoop.util.hash.type";<a name="line.275"></a>
+<span class="sourceLineNo">276</span>  /** Default value for HADOOP_UTIL_HASH_TYPE_KEY */<a name="line.276"></a>
+<span class="sourceLineNo">277</span>  public static final String  HADOOP_UTIL_HASH_TYPE_DEFAULT = "murmur";<a name="line.277"></a>
+<span class="sourceLineNo">278</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.278"></a>
+<span class="sourceLineNo">279</span>  public static final String  HADOOP_SECURITY_GROUP_MAPPING =<a name="line.279"></a>
+<span class="sourceLineNo">280</span>    "hadoop.security.group.mapping";<a name="line.280"></a>
+<span class="sourceLineNo">281</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.281"></a>
+<span class="sourceLineNo">282</span>  public static final String  HADOOP_SECURITY_GROUPS_CACHE_SECS =<a name="line.282"></a>
+<span class="sourceLineNo">283</span>    "hadoop.security.groups.cache.secs";<a name="line.283"></a>
+<span class="sourceLineNo">284</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.284"></a>
+<span class="sourceLineNo">285</span>  public static final long HADOOP_SECURITY_GROUPS_CACHE_SECS_DEFAULT =<a name="line.285"></a>
+<span class="sourceLineNo">286</span>    300;<a name="line.286"></a>
+<span class="sourceLineNo">287</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.287"></a>
+<span class="sourceLineNo">288</span>  public static final String  HADOOP_SECURITY_GROUPS_NEGATIVE_CACHE_SECS =<a name="line.288"></a>
+<span class="sourceLineNo">289</span>    "hadoop.security.groups.negative-cache.secs";<a name="line.289"></a>
+<span class="sourceLineNo">290</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.290"></a>
+<span class="sourceLineNo">291</span>  public static final long HADOOP_SECURITY_GROUPS_NEGATIVE_CACHE_SECS_DEFAULT =<a name="line.291"></a>
+<span class="sourceLineNo">292</span>    30;<a name="line.292"></a>
 <span class="sourceLineNo">293</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.293"></a>
-<span class="sourceLineNo">294</span>  public static final String  HADOOP_SECURITY_AUTHENTICATION =<a name="line.294"></a>
-<span class="sourceLineNo">295</span>    "hadoop.security.authentication";<a name="line.295"></a>
-<span class="sourceLineNo">296</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.296"></a>
-<span class="sourceLineNo">297</span>  public static final String HADOOP_SECURITY_AUTHORIZATION =<a name="line.297"></a>
-<span class="sourceLineNo">298</span>    "hadoop.security.authorization";<a name="line.298"></a>
-<span class="sourceLineNo">299</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.299"></a>
-<span class="sourceLineNo">300</span>  public static final String HADOOP_SECURITY_INSTRUMENTATION_REQUIRES_ADMIN =<a name="line.300"></a>
-<span class="sourceLineNo">301</span>    "hadoop.security.instrumentation.requires.admin";<a name="line.301"></a>
-<span class="sourceLineNo">302</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.302"></a>
-<span class="sourceLineNo">303</span>  public static final String  HADOOP_SECURITY_SERVICE_USER_NAME_KEY =<a name="line.303"></a>
-<span class="sourceLineNo">304</span>    "hadoop.security.service.user.name.key";<a name="line.304"></a>
-<span class="sourceLineNo">305</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.305"></a>
-<span class="sourceLineNo">306</span>  public static final String  HADOOP_SECURITY_AUTH_TO_LOCAL =<a name="line.306"></a>
-<span class="sourceLineNo">307</span>    "hadoop.security.auth_to_local";<a name="line.307"></a>
-<span class="sourceLineNo">308</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.308"></a>
-<span class="sourceLineNo">309</span>  public static final String HADOOP_SECURITY_DNS_INTERFACE_KEY =<a name="line.309"></a>
-<span class="sourceLineNo">310</span>    "hadoop.security.dns.interface";<a name="line.310"></a>
-<span class="sourceLineNo">311</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.311"></a>
-<span class="sourceLineNo">312</span>  public static final String HADOOP_SECURITY_DNS_NAMESERVER_KEY =<a name="line.312"></a>
-<span class="sourceLineNo">313</span>    "hadoop.security.dns.nameserver";<a name="line.313"></a>
-<span class="sourceLineNo">314</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.314"></a>
-<span class="sourceLineNo">315</span>  public static final String HADOOP_TOKEN_FILES =<a name="line.315"></a>
-<span class="sourceLineNo">316</span>      "hadoop.token.files";<a name="line.316"></a>
-<span class="sourceLineNo">317</span><a name="line.317"></a>
-<span class="sourceLineNo">318</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.318"></a>
-<span class="sourceLineNo">319</span>  public static final String HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN =<a name="line.319"></a>
-<span class="sourceLineNo">320</span>          "hadoop.kerberos.min.seconds.before.relogin";<a name="line.320"></a>
-<span class="sourceLineNo">321</span>  /** Default value for HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN */<a name="line.321"></a>
-<span class="sourceLineNo">322</span>  public static final int HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN_DEFAULT =<a name="line.322"></a>
-<span class="sourceLineNo">323</span>          60;<a name="line.323"></a>
-<span class="sourceLineNo">324</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.324"></a>
-<span class="sourceLineNo">325</span>  public static final String  HADOOP_RPC_PROTECTION =<a name="line.325"></a>
-<span class="sourceLineNo">326</span>    "hadoop.rpc.protection";<a name="line.326"></a>
-<span class="sourceLineNo">327</span>  /** Class to override Sasl Properties for a connection */<a name="line.327"></a>
-<span class="sourceLineNo">328</span>  public static final String  HADOOP_SECURITY_SASL_PROPS_RESOLVER_CLASS =<a name="line.328"></a>
-<span class="sourceLineNo">329</span>    "hadoop.security.saslproperties.resolver.class";<a name="line.329"></a>
-<span class="sourceLineNo">330</span>  public static final String HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX = <a name="line.330"></a>
-<span class="sourceLineNo">331</span>    "hadoop.security.crypto.codec.classes";<a name="line.331"></a>
-<span class="sourceLineNo">332</span>  public static final String<a name="line.332"></a>
-<span class="sourceLineNo">333</span>      HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_AES_CTR_NOPADDING_KEY =<a name="line.333"></a>
-<span class="sourceLineNo">334</span>      HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX<a name="line.334"></a>
-<span class="sourceLineNo">335</span>          + CipherSuite.AES_CTR_NOPADDING.getConfigSuffix();<a name="line.335"></a>
-<span class="sourceLineNo">336</span>  public static final String<a name="line.336"></a>
-<span class="sourceLineNo">337</span>      HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_AES_CTR_NOPADDING_DEFAULT =<a name="line.337"></a>
-<span class="sourceLineNo">338</span>      OpensslAesCtrCryptoCodec.class.getName() + "," +<a name="line.338"></a>
-<span class="sourceLineNo">339</span>          JceAesCtrCryptoCodec.class.getName();<a name="line.339"></a>
-<span class="sourceLineNo">340</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.340"></a>
-<span class="sourceLineNo">341</span>  public static final String HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_KEY =<a name="line.341"></a>
-<span class="sourceLineNo">342</span>    "hadoop.security.crypto.cipher.suite";<a name="line.342"></a>
-<span class="sourceLineNo">343</span>  public static final String HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_DEFAULT = <a name="line.343"></a>
-<span class="sourceLineNo">344</span>    "AES/CTR/NoPadding";<a name="line.344"></a>
+<span class="sourceLineNo">294</span>  public static final String HADOOP_SECURITY_GROUPS_CACHE_WARN_AFTER_MS =<a name="line.294"></a>
+<span class="sourceLineNo">295</span>    "hadoop.security.groups.cache.warn.after.ms";<a name="line.295"></a>
+<span class="sourceLineNo">296</span>  public static final long HADOOP_SECURITY_GROUPS_CACHE_WARN_AFTER_MS_DEFAULT =<a name="line.296"></a>
+<span class="sourceLineNo">297</span>    5000;<a name="line.297"></a>
+<span class="sourceLineNo">298</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.298"></a>
+<span class="sourceLineNo">299</span>  public static final String  HADOOP_SECURITY_AUTHENTICATION =<a name="line.299"></a>
+<span class="sourceLineNo">300</span>    "hadoop.security.authentication";<a name="line.300"></a>
+<span class="sourceLineNo">301</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.301"></a>
+<span class="sourceLineNo">302</span>  public static final String HADOOP_SECURITY_AUTHORIZATION =<a name="line.302"></a>
+<span class="sourceLineNo">303</span>    "hadoop.security.authorization";<a name="line.303"></a>
+<span class="sourceLineNo">304</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.304"></a>
+<span class="sourceLineNo">305</span>  public static final String HADOOP_SECURITY_INSTRUMENTATION_REQUIRES_ADMIN =<a name="line.305"></a>
+<span class="sourceLineNo">306</span>    "hadoop.security.instrumentation.requires.admin";<a name="line.306"></a>
+<span class="sourceLineNo">307</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.307"></a>
+<span class="sourceLineNo">308</span>  public static final String  HADOOP_SECURITY_SERVICE_USER_NAME_KEY =<a name="line.308"></a>
+<span class="sourceLineNo">309</span>    "hadoop.security.service.user.name.key";<a name="line.309"></a>
+<span class="sourceLineNo">310</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.310"></a>
+<span class="sourceLineNo">311</span>  public static final String  HADOOP_SECURITY_AUTH_TO_LOCAL =<a name="line.311"></a>
+<span class="sourceLineNo">312</span>    "hadoop.security.auth_to_local";<a name="line.312"></a>
+<span class="sourceLineNo">313</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.313"></a>
+<span class="sourceLineNo">314</span>  public static final String HADOOP_SECURITY_DNS_INTERFACE_KEY =<a name="line.314"></a>
+<span class="sourceLineNo">315</span>    "hadoop.security.dns.interface";<a name="line.315"></a>
+<span class="sourceLineNo">316</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.316"></a>
+<span class="sourceLineNo">317</span>  public static final String HADOOP_SECURITY_DNS_NAMESERVER_KEY =<a name="line.317"></a>
+<span class="sourceLineNo">318</span>    "hadoop.security.dns.nameserver";<a name="line.318"></a>
+<span class="sourceLineNo">319</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.319"></a>
+<span class="sourceLineNo">320</span>  public static final String HADOOP_TOKEN_FILES =<a name="line.320"></a>
+<span class="sourceLineNo">321</span>      "hadoop.token.files";<a name="line.321"></a>
+<span class="sourceLineNo">322</span><a name="line.322"></a>
+<span class="sourceLineNo">323</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.323"></a>
+<span class="sourceLineNo">324</span>  public static final String HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN =<a name="line.324"></a>
+<span class="sourceLineNo">325</span>          "hadoop.kerberos.min.seconds.before.relogin";<a name="line.325"></a>
+<span class="sourceLineNo">326</span>  /** Default value for HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN */<a name="line.326"></a>
+<span class="sourceLineNo">327</span>  public static final int HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN_DEFAULT =<a name="line.327"></a>
+<span class="sourceLineNo">328</span>          60;<a name="line.328"></a>
+<span class="sourceLineNo">329</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.329"></a>
+<span class="sourceLineNo">330</span>  public static final String  HADOOP_RPC_PROTECTION =<a name="line.330"></a>
+<span class="sourceLineNo">331</span>    "hadoop.rpc.protection";<a name="line.331"></a>
+<span class="sourceLineNo">332</span>  /** Class to override Sasl Properties for a connection */<a name="line.332"></a>
+<span class="sourceLineNo">333</span>  public static final String  HADOOP_SECURITY_SASL_PROPS_RESOLVER_CLASS =<a name="line.333"></a>
+<span class="sourceLineNo">334</span>    "hadoop.security.saslproperties.resolver.class";<a name="line.334"></a>
+<span class="sourceLineNo">335</span>  public static final String HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX = <a name="line.335"></a>
+<span class="sourceLineNo">336</span>    "hadoop.security.crypto.codec.classes";<a name="line.336"></a>
+<span class="sourceLineNo">337</span>  public static final String<a name="line.337"></a>
+<span class="sourceLineNo">338</span>      HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_AES_CTR_NOPADDING_KEY =<a name="line.338"></a>
+<span class="sourceLineNo">339</span>      HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_KEY_PREFIX<a name="line.339"></a>
+<span class="sourceLineNo">340</span>          + CipherSuite.AES_CTR_NOPADDING.getConfigSuffix();<a name="line.340"></a>
+<span class="sourceLineNo">341</span>  public static final String<a name="line.341"></a>
+<span class="sourceLineNo">342</span>      HADOOP_SECURITY_CRYPTO_CODEC_CLASSES_AES_CTR_NOPADDING_DEFAULT =<a name="line.342"></a>
+<span class="sourceLineNo">343</span>      OpensslAesCtrCryptoCodec.class.getName() + "," +<a name="line.343"></a>
+<span class="sourceLineNo">344</span>          JceAesCtrCryptoCodec.class.getName();<a name="line.344"></a>
 <span class="sourceLineNo">345</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.345"></a>
-<span class="sourceLineNo">346</span>  public static final String HADOOP_SECURITY_CRYPTO_JCE_PROVIDER_KEY =<a name="line.346"></a>
-<span class="sourceLineNo">347</span>    "hadoop.security.crypto.jce.provider";<a name="line.347"></a>
-<span class="sourceLineNo">348</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.348"></a>
-<span class="sourceLineNo">349</span>  public static final String HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY = <a name="line.349"></a>
-<span class="sourceLineNo">350</span>    "hadoop.security.crypto.buffer.size";<a name="line.350"></a>
-<span class="sourceLineNo">351</span>  /** Defalt value for HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY */<a name="line.351"></a>
-<span class="sourceLineNo">352</span>  public static final int HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_DEFAULT = 8192;<a name="line.352"></a>
-<span class="sourceLineNo">353</span>  /** Class to override Impersonation provider */<a name="line.353"></a>
-<span class="sourceLineNo">354</span>  public static final String  HADOOP_SECURITY_IMPERSONATION_PROVIDER_CLASS =<a name="line.354"></a>
-<span class="sourceLineNo">355</span>    "hadoop.security.impersonation.provider.class";<a name="line.355"></a>
-<span class="sourceLineNo">356</span><a name="line.356"></a>
-<span class="sourceLineNo">357</span>  //  &lt;!-- KMSClientProvider configurations --&gt;<a name="line.357"></a>
-<span class="sourceLineNo">358</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.358"></a>
-<span class="sourceLineNo">359</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_SIZE =<a name="line.359"></a>
-<span class="sourceLineNo">360</span>      "hadoop.security.kms.client.encrypted.key.cache.size";<a name="line.360"></a>
-<span class="sourceLineNo">361</span>  /** Default value for KMS_CLIENT_ENC_KEY_CACHE_SIZE */<a name="line.361"></a>
-<span class="sourceLineNo">362</span>  public static final int KMS_CLIENT_ENC_KEY_CACHE_SIZE_DEFAULT = 500;<a name="line.362"></a>
-<span class="sourceLineNo">363</span><a name="line.363"></a>
-<span class="sourceLineNo">364</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.364"></a>
-<span class="sourceLineNo">365</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK =<a name="line.365"></a>
-<span class="sourceLineNo">366</span>      "hadoop.security.kms.client.encrypted.key.cache.low-watermark";<a name="line.366"></a>
-<span class="sourceLineNo">367</span>  /** Default value for KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK */<a name="line.367"></a>
-<span class="sourceLineNo">368</span>  public static final float KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK_DEFAULT =<a name="line.368"></a>
-<span class="sourceLineNo">369</span>      0.3f;<a name="line.369"></a>
-<span class="sourceLineNo">370</span><a name="line.370"></a>
-<span class="sourceLineNo">371</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.371"></a>
-<span class="sourceLineNo">372</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_NUM_REFILL_THREADS =<a name="line.372"></a>
-<span class="sourceLineNo">373</span>      "hadoop.security.kms.client.encrypted.key.cache.num.refill.threads";<a name="line.373"></a>
-<span class="sourceLineNo">374</span>  /** Default value for KMS_CLIENT_ENC_KEY_NUM_REFILL_THREADS */<a name="line.374"></a>
-<span class="sourceLineNo">375</span>  public static final int KMS_CLIENT_ENC_KEY_CACHE_NUM_REFILL_THREADS_DEFAULT =<a name="line.375"></a>
-<span class="sourceLineNo">376</span>      2;<a name="line.376"></a>
-<span class="sourceLineNo">377</span><a name="line.377"></a>
-<span class="sourceLineNo">378</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.378"></a>
-<span class="sourceLineNo">379</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_EXPIRY_MS =<a name="line.379"></a>
-<span class="sourceLineNo">380</span>      "hadoop.security.kms.client.encrypted.key.cache.expiry";<a name="line.380"></a>
-<span class="sourceLineNo">381</span>  /** Default value for KMS_CLIENT_ENC_KEY_CACHE_EXPIRY (12 hrs)*/<a name="line.381"></a>
-<span class="sourceLineNo">382</span>  public static final int KMS_CLIENT_ENC_KEY_CACHE_EXPIRY_DEFAULT = 43200000;<a name="line.382"></a>
-<span class="sourceLineNo">383</span><a name="line.383"></a>
-<span class="sourceLineNo">384</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.384"></a>
-<span class="sourceLineNo">385</span>  public static final String HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY = <a name="line.385"></a>
-<span class="sourceLineNo">386</span>    "hadoop.security.java.secure.random.algorithm";<a name="line.386"></a>
-<span class="sourceLineNo">387</span>  /** Defalt value for HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY */<a name="line.387"></a>
-<span class="sourceLineNo">388</span>  public static final String HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_DEFAULT = <a name="line.388"></a>
-<span class="sourceLineNo">389</span>    "SHA1PRNG";<a name="line.389"></a>
-<span class="sourceLineNo">390</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.390"></a>
-<span class="sourceLineNo">391</span>  public static final String HADOOP_SECURITY_SECURE_RANDOM_IMPL_KEY = <a name="line.391"></a>
-<span class="sourceLineNo">392</span>    "hadoop.security.secure.random.impl";<a name="line.392"></a>
-<span class="sourceLineNo">393</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.393"></a>
-<span class="sourceLineNo">394</span>  public static final String HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_KEY = <a name="line.394"></a>
-<span class="sourceLineNo">395</span>    "hadoop.security.random.device.file.path";<a name="line.395"></a>
-<span class="sourceLineNo">396</span>  public static final String HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_DEFAULT = <a name="line.396"></a>
-<span class="sourceLineNo">397</span>    "/dev/urandom";<a name="line.397"></a>
-<span class="sourceLineNo">398</span><a name="line.398"></a>
-<span class="sourceLineNo">399</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.399"></a>
-<span class="sourceLineNo">400</span>  public static final String HADOOP_SHELL_MISSING_DEFAULT_FS_WARNING_KEY =<a name="line.400"></a>
-<span class="sourceLineNo">401</span>      "hadoop.shell.missing.defaultFs.warning";<a name="line.401"></a>
-<span class="sourceLineNo">402</span>  public static final boolean HADOOP_SHELL_MISSING_DEFAULT_FS_WARNING_DEFAULT =<a name="line.402"></a>
-<span class="sourceLineNo">403</span>      false;<a name="line.403"></a>
-<span class="sourceLineNo">404</span><a name="line.404"></a>
-<span class="sourceLineNo">405</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.405"></a>
-<span class="sourceLineNo">406</span>  public static final String HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES =<a name="line.406"></a>
-<span class="sourceLineNo">407</span>      "hadoop.shell.safely.delete.limit.num.files";<a name="line.407"></a>
-<span class="sourceLineNo">408</span>  public static final long HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES_DEFAULT =<a name="line.408"></a>
-<span class="sourceLineNo">409</span>      100;<a name="line.409"></a>
-<span class="sourceLineNo">410</span><a name="line.410"></a>
-<span class="sourceLineNo">411</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.411"></a>
-<span class="sourceLineNo">412</span>  public static final String HADOOP_HTTP_LOGS_ENABLED =<a name="line.412"></a>
-<span class="sourceLineNo">413</span>      "hadoop.http.logs.enabled";<a name="line.413"></a>
-<span class="sourceLineNo">414</span>  /** Defalt value for HADOOP_HTTP_LOGS_ENABLED */<a name="line.414"></a>
-<span class="sourceLineNo">415</span>  public static final boolean HADOOP_HTTP_LOGS_ENABLED_DEFAULT = true;<a name="line.415"></a>
-<span class="sourceLineNo">416</span>}<a name="line.416"></a>
-<span class="sourceLineNo">417</span><a name="line.417"></a>
+<span class="sourceLineNo">346</span>  public static final String HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_KEY =<a name="line.346"></a>
+<span class="sourceLineNo">347</span>    "hadoop.security.crypto.cipher.suite";<a name="line.347"></a>
+<span class="sourceLineNo">348</span>  public static final String HADOOP_SECURITY_CRYPTO_CIPHER_SUITE_DEFAULT = <a name="line.348"></a>
+<span class="sourceLineNo">349</span>    "AES/CTR/NoPadding";<a name="line.349"></a>
+<span class="sourceLineNo">350</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.350"></a>
+<span class="sourceLineNo">351</span>  public static final String HADOOP_SECURITY_CRYPTO_JCE_PROVIDER_KEY =<a name="line.351"></a>
+<span class="sourceLineNo">352</span>    "hadoop.security.crypto.jce.provider";<a name="line.352"></a>
+<span class="sourceLineNo">353</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.353"></a>
+<span class="sourceLineNo">354</span>  public static final String HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY = <a name="line.354"></a>
+<span class="sourceLineNo">355</span>    "hadoop.security.crypto.buffer.size";<a name="line.355"></a>
+<span class="sourceLineNo">356</span>  /** Defalt value for HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_KEY */<a name="line.356"></a>
+<span class="sourceLineNo">357</span>  public static final int HADOOP_SECURITY_CRYPTO_BUFFER_SIZE_DEFAULT = 8192;<a name="line.357"></a>
+<span class="sourceLineNo">358</span>  /** Class to override Impersonation provider */<a name="line.358"></a>
+<span class="sourceLineNo">359</span>  public static final String  HADOOP_SECURITY_IMPERSONATION_PROVIDER_CLASS =<a name="line.359"></a>
+<span class="sourceLineNo">360</span>    "hadoop.security.impersonation.provider.class";<a name="line.360"></a>
+<span class="sourceLineNo">361</span><a name="line.361"></a>
+<span class="sourceLineNo">362</span>  //  &lt;!-- KMSClientProvider configurations --&gt;<a name="line.362"></a>
+<span class="sourceLineNo">363</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.363"></a>
+<span class="sourceLineNo">364</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_SIZE =<a name="line.364"></a>
+<span class="sourceLineNo">365</span>      "hadoop.security.kms.client.encrypted.key.cache.size";<a name="line.365"></a>
+<span class="sourceLineNo">366</span>  /** Default value for KMS_CLIENT_ENC_KEY_CACHE_SIZE */<a name="line.366"></a>
+<span class="sourceLineNo">367</span>  public static final int KMS_CLIENT_ENC_KEY_CACHE_SIZE_DEFAULT = 500;<a name="line.367"></a>
+<span class="sourceLineNo">368</span><a name="line.368"></a>
+<span class="sourceLineNo">369</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.369"></a>
+<span class="sourceLineNo">370</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK =<a name="line.370"></a>
+<span class="sourceLineNo">371</span>      "hadoop.security.kms.client.encrypted.key.cache.low-watermark";<a name="line.371"></a>
+<span class="sourceLineNo">372</span>  /** Default value for KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK */<a name="line.372"></a>
+<span class="sourceLineNo">373</span>  public static final float KMS_CLIENT_ENC_KEY_CACHE_LOW_WATERMARK_DEFAULT =<a name="line.373"></a>
+<span class="sourceLineNo">374</span>      0.3f;<a name="line.374"></a>
+<span class="sourceLineNo">375</span><a name="line.375"></a>
+<span class="sourceLineNo">376</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.376"></a>
+<span class="sourceLineNo">377</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_NUM_REFILL_THREADS =<a name="line.377"></a>
+<span class="sourceLineNo">378</span>      "hadoop.security.kms.client.encrypted.key.cache.num.refill.threads";<a name="line.378"></a>
+<span class="sourceLineNo">379</span>  /** Default value for KMS_CLIENT_ENC_KEY_NUM_REFILL_THREADS */<a name="line.379"></a>
+<span class="sourceLineNo">380</span>  public static final int KMS_CLIENT_ENC_KEY_CACHE_NUM_REFILL_THREADS_DEFAULT =<a name="line.380"></a>
+<span class="sourceLineNo">381</span>      2;<a name="line.381"></a>
+<span class="sourceLineNo">382</span><a name="line.382"></a>
+<span class="sourceLineNo">383</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.383"></a>
+<span class="sourceLineNo">384</span>  public static final String KMS_CLIENT_ENC_KEY_CACHE_EXPIRY_MS =<a name="line.384"></a>
+<span class="sourceLineNo">385</span>      "hadoop.security.kms.client.encrypted.key.cache.expiry";<a name="line.385"></a>
+<span class="sourceLineNo">386</span>  /** Default value for KMS_CLIENT_ENC_KEY_CACHE_EXPIRY (12 hrs)*/<a name="line.386"></a>
+<span class="sourceLineNo">387</span>  public static final int KMS_CLIENT_ENC_KEY_CACHE_EXPIRY_DEFAULT = 43200000;<a name="line.387"></a>
+<span class="sourceLineNo">388</span><a name="line.388"></a>
+<span class="sourceLineNo">389</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.389"></a>
+<span class="sourceLineNo">390</span>  public static final String HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY = <a name="line.390"></a>
+<span class="sourceLineNo">391</span>    "hadoop.security.java.secure.random.algorithm";<a name="line.391"></a>
+<span class="sourceLineNo">392</span>  /** Defalt value for HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY */<a name="line.392"></a>
+<span class="sourceLineNo">393</span>  public static final String HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_DEFAULT = <a name="line.393"></a>
+<span class="sourceLineNo">394</span>    "SHA1PRNG";<a name="line.394"></a>
+<span class="sourceLineNo">395</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.395"></a>
+<span class="sourceLineNo">396</span>  public static final String HADOOP_SECURITY_SECURE_RANDOM_IMPL_KEY = <a name="line.396"></a>
+<span class="sourceLineNo">397</span>    "hadoop.security.secure.random.impl";<a name="line.397"></a>
+<span class="sourceLineNo">398</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.398"></a>
+<span class="sourceLineNo">399</span>  public static final String HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_KEY = <a name="line.399"></a>
+<span class="sourceLineNo">400</span>    "hadoop.security.random.device.file.path";<a name="line.400"></a>
+<span class="sourceLineNo">401</span>  public static final String HADOOP_SECURITY_SECURE_RANDOM_DEVICE_FILE_PATH_DEFAULT = <a name="line.401"></a>
+<span class="sourceLineNo">402</span>    "/dev/urandom";<a name="line.402"></a>
+<span class="sourceLineNo">403</span><a name="line.403"></a>
+<span class="sourceLineNo">404</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.404"></a>
+<span class="sourceLineNo">405</span>  public static final String HADOOP_SHELL_MISSING_DEFAULT_FS_WARNING_KEY =<a name="line.405"></a>
+<span class="sourceLineNo">406</span>      "hadoop.shell.missing.defaultFs.warning";<a name="line.406"></a>
+<span class="sourceLineNo">407</span>  public static final boolean HADOOP_SHELL_MISSING_DEFAULT_FS_WARNING_DEFAULT =<a name="line.407"></a>
+<span class="sourceLineNo">408</span>      false;<a name="line.408"></a>
+<span class="sourceLineNo">409</span><a name="line.409"></a>
+<span class="sourceLineNo">410</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.410"></a>
+<span class="sourceLineNo">411</span>  public static final String HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES =<a name="line.411"></a>
+<span class="sourceLineNo">412</span>      "hadoop.shell.safely.delete.limit.num.files";<a name="line.412"></a>
+<span class="sourceLineNo">413</span>  public static final long HADOOP_SHELL_SAFELY_DELETE_LIMIT_NUM_FILES_DEFAULT =<a name="line.413"></a>
+<span class="sourceLineNo">414</span>      100;<a name="line.414"></a>
+<span class="sourceLineNo">415</span><a name="line.415"></a>
+<span class="sourceLineNo">416</span>  /** See &lt;a href="{@docRoot}/../core-default.html"&gt;core-default.xml&lt;/a&gt; */<a name="line.416"></a>
+<span class="sourceLineNo">417</span>  public static final String HADOOP_HTTP_LOGS_ENABLED =<a name="line.417"></a>
+<span class="sourceLineNo">418</span>      "hadoop.http.logs.enabled";<a name="line.418"></a>
+<span class="sourceLineNo">419</span>  /** Defalt value for HADOOP_HTTP_LOGS_ENABLED */<a name="line.419"></a>
+<span class="sourceLineNo">420</span>  public static final boolean HADOOP_HTTP_LOGS_ENABLED_DEFAULT = true;<a name="line.420"></a>
+<span class="sourceLineNo">421</span>}<a name="line.421"></a>
+<span class="sourceLineNo">422</span><a name="line.422"></a>
 
 
 

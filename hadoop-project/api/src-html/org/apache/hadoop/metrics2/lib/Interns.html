@@ -26,23 +26,23 @@
 <span class="sourceLineNo">018</span><a name="line.18"></a>
 <span class="sourceLineNo">019</span>package org.apache.hadoop.metrics2.lib;<a name="line.19"></a>
 <span class="sourceLineNo">020</span><a name="line.20"></a>
-<span class="sourceLineNo">021</span>import java.util.Map;<a name="line.21"></a>
-<span class="sourceLineNo">022</span>import java.util.LinkedHashMap;<a name="line.22"></a>
-<span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>import org.apache.commons.logging.Log;<a name="line.24"></a>
-<span class="sourceLineNo">025</span>import org.apache.commons.logging.LogFactory;<a name="line.25"></a>
-<span class="sourceLineNo">026</span>import org.apache.hadoop.classification.InterfaceAudience;<a name="line.26"></a>
-<span class="sourceLineNo">027</span>import org.apache.hadoop.classification.InterfaceStability;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import org.apache.hadoop.metrics2.MetricsInfo;<a name="line.28"></a>
-<span class="sourceLineNo">029</span>import org.apache.hadoop.metrics2.MetricsTag;<a name="line.29"></a>
+<span class="sourceLineNo">021</span>import org.apache.hadoop.classification.InterfaceAudience;<a name="line.21"></a>
+<span class="sourceLineNo">022</span>import org.apache.hadoop.classification.InterfaceStability;<a name="line.22"></a>
+<span class="sourceLineNo">023</span>import org.apache.hadoop.metrics2.MetricsInfo;<a name="line.23"></a>
+<span class="sourceLineNo">024</span>import org.apache.hadoop.metrics2.MetricsTag;<a name="line.24"></a>
+<span class="sourceLineNo">025</span>import org.slf4j.Logger;<a name="line.25"></a>
+<span class="sourceLineNo">026</span>import org.slf4j.LoggerFactory;<a name="line.26"></a>
+<span class="sourceLineNo">027</span><a name="line.27"></a>
+<span class="sourceLineNo">028</span>import java.util.LinkedHashMap;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import java.util.Map;<a name="line.29"></a>
 <span class="sourceLineNo">030</span><a name="line.30"></a>
 <span class="sourceLineNo">031</span>/**<a name="line.31"></a>
-<span class="sourceLineNo">032</span> * Helpers to create interned metrics info<a name="line.32"></a>
+<span class="sourceLineNo">032</span> * Helpers to create interned metrics info.<a name="line.32"></a>
 <span class="sourceLineNo">033</span> */<a name="line.33"></a>
 <span class="sourceLineNo">034</span>@InterfaceAudience.Public<a name="line.34"></a>
 <span class="sourceLineNo">035</span>@InterfaceStability.Evolving<a name="line.35"></a>
 <span class="sourceLineNo">036</span>public class Interns {<a name="line.36"></a>
-<span class="sourceLineNo">037</span>  private static final Log LOG = LogFactory.getLog(Interns.class);<a name="line.37"></a>
+<span class="sourceLineNo">037</span>  private static final Logger LOG = LoggerFactory.getLogger(Interns.class);<a name="line.37"></a>
 <span class="sourceLineNo">038</span><a name="line.38"></a>
 <span class="sourceLineNo">039</span>  // A simple intern cache with two keys<a name="line.39"></a>
 <span class="sourceLineNo">040</span>  // (to avoid creating new (combined) key objects for lookup)<a name="line.40"></a>
@@ -55,7 +55,7 @@
 <span class="sourceLineNo">047</span>      protected boolean removeEldestEntry(Map.Entry&lt;K1, Map&lt;K2, V&gt;&gt; e) {<a name="line.47"></a>
 <span class="sourceLineNo">048</span>        boolean overflow = expireKey1At(size());<a name="line.48"></a>
 <span class="sourceLineNo">049</span>        if (overflow &amp;&amp; !gotOverflow) {<a name="line.49"></a>
-<span class="sourceLineNo">050</span>          LOG.warn("Metrics intern cache overflow at "+ size() +" for "+ e);<a name="line.50"></a>
+<span class="sourceLineNo">050</span>          LOG.info("Metrics intern cache overflow at {} for {}", size(), e);<a name="line.50"></a>
 <span class="sourceLineNo">051</span>          gotOverflow = true;<a name="line.51"></a>
 <span class="sourceLineNo">052</span>        }<a name="line.52"></a>
 <span class="sourceLineNo">053</span>        return overflow;<a name="line.53"></a>
@@ -75,7 +75,7 @@
 <span class="sourceLineNo">067</span>          @Override protected boolean removeEldestEntry(Map.Entry&lt;K2, V&gt; e) {<a name="line.67"></a>
 <span class="sourceLineNo">068</span>            boolean overflow = expireKey2At(size());<a name="line.68"></a>
 <span class="sourceLineNo">069</span>            if (overflow &amp;&amp; !gotOverflow) {<a name="line.69"></a>
-<span class="sourceLineNo">070</span>              LOG.warn("Metrics intern cache overflow at "+ size() +" for "+ e);<a name="line.70"></a>
+<span class="sourceLineNo">070</span>              LOG.info("Metrics intern cache overflow at {} for {}", size(), e);<a name="line.70"></a>
 <span class="sourceLineNo">071</span>              gotOverflow = true;<a name="line.71"></a>
 <span class="sourceLineNo">072</span>            }<a name="line.72"></a>
 <span class="sourceLineNo">073</span>            return overflow;<a name="line.73"></a>
@@ -117,9 +117,9 @@
 <span class="sourceLineNo">109</span>  }<a name="line.109"></a>
 <span class="sourceLineNo">110</span><a name="line.110"></a>
 <span class="sourceLineNo">111</span>  /**<a name="line.111"></a>
-<span class="sourceLineNo">112</span>   * Get a metric info object<a name="line.112"></a>
-<span class="sourceLineNo">113</span>   * @param name<a name="line.113"></a>
-<span class="sourceLineNo">114</span>   * @param description<a name="line.114"></a>
+<span class="sourceLineNo">112</span>   * Get a metric info object.<a name="line.112"></a>
+<span class="sourceLineNo">113</span>   * @param name Name of metric info object<a name="line.113"></a>
+<span class="sourceLineNo">114</span>   * @param description Description of metric info object<a name="line.114"></a>
 <span class="sourceLineNo">115</span>   * @return an interned metric info object<a name="line.115"></a>
 <span class="sourceLineNo">116</span>   */<a name="line.116"></a>
 <span class="sourceLineNo">117</span>  public static MetricsInfo info(String name, String description) {<a name="line.117"></a>
@@ -151,7 +151,7 @@
 <span class="sourceLineNo">143</span>  }<a name="line.143"></a>
 <span class="sourceLineNo">144</span><a name="line.144"></a>
 <span class="sourceLineNo">145</span>  /**<a name="line.145"></a>
-<span class="sourceLineNo">146</span>   * Get a metrics tag<a name="line.146"></a>
+<span class="sourceLineNo">146</span>   * Get a metrics tag.<a name="line.146"></a>
 <span class="sourceLineNo">147</span>   * @param info  of the tag<a name="line.147"></a>
 <span class="sourceLineNo">148</span>   * @param value of the tag<a name="line.148"></a>
 <span class="sourceLineNo">149</span>   * @return an interned metrics tag<a name="line.149"></a>
@@ -161,7 +161,7 @@
 <span class="sourceLineNo">153</span>  }<a name="line.153"></a>
 <span class="sourceLineNo">154</span><a name="line.154"></a>
 <span class="sourceLineNo">155</span>  /**<a name="line.155"></a>
-<span class="sourceLineNo">156</span>   * Get a metrics tag<a name="line.156"></a>
+<span class="sourceLineNo">156</span>   * Get a metrics tag.<a name="line.156"></a>
 <span class="sourceLineNo">157</span>   * @param name  of the tag<a name="line.157"></a>
 <span class="sourceLineNo">158</span>   * @param description of the tag<a name="line.158"></a>
 <span class="sourceLineNo">159</span>   * @param value of the tag<a name="line.159"></a>

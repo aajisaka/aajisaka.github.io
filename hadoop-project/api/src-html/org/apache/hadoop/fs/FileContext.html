@@ -2704,39 +2704,56 @@
 <span class="sourceLineNo">2696</span>  }<a name="line.2696"></a>
 <span class="sourceLineNo">2697</span><a name="line.2697"></a>
 <span class="sourceLineNo">2698</span>  /**<a name="line.2698"></a>
-<span class="sourceLineNo">2699</span>   * Query the effective storage policy ID for the given file or directory.<a name="line.2699"></a>
-<span class="sourceLineNo">2700</span>   *<a name="line.2700"></a>
-<span class="sourceLineNo">2701</span>   * @param src file or directory path.<a name="line.2701"></a>
-<span class="sourceLineNo">2702</span>   * @return storage policy for give file.<a name="line.2702"></a>
-<span class="sourceLineNo">2703</span>   * @throws IOException<a name="line.2703"></a>
-<span class="sourceLineNo">2704</span>   */<a name="line.2704"></a>
-<span class="sourceLineNo">2705</span>  public BlockStoragePolicySpi getStoragePolicy(Path path) throws IOException {<a name="line.2705"></a>
-<span class="sourceLineNo">2706</span>    final Path absF = fixRelativePart(path);<a name="line.2706"></a>
-<span class="sourceLineNo">2707</span>    return new FSLinkResolver&lt;BlockStoragePolicySpi&gt;() {<a name="line.2707"></a>
-<span class="sourceLineNo">2708</span>      @Override<a name="line.2708"></a>
-<span class="sourceLineNo">2709</span>      public BlockStoragePolicySpi next(final AbstractFileSystem fs,<a name="line.2709"></a>
-<span class="sourceLineNo">2710</span>          final Path p)<a name="line.2710"></a>
-<span class="sourceLineNo">2711</span>          throws IOException {<a name="line.2711"></a>
-<span class="sourceLineNo">2712</span>        return fs.getStoragePolicy(p);<a name="line.2712"></a>
-<span class="sourceLineNo">2713</span>      }<a name="line.2713"></a>
-<span class="sourceLineNo">2714</span>    }.resolve(this, absF);<a name="line.2714"></a>
-<span class="sourceLineNo">2715</span>  }<a name="line.2715"></a>
-<span class="sourceLineNo">2716</span><a name="line.2716"></a>
-<span class="sourceLineNo">2717</span>  /**<a name="line.2717"></a>
-<span class="sourceLineNo">2718</span>   * Retrieve all the storage policies supported by this file system.<a name="line.2718"></a>
-<span class="sourceLineNo">2719</span>   *<a name="line.2719"></a>
-<span class="sourceLineNo">2720</span>   * @return all storage policies supported by this filesystem.<a name="line.2720"></a>
-<span class="sourceLineNo">2721</span>   * @throws IOException<a name="line.2721"></a>
-<span class="sourceLineNo">2722</span>   */<a name="line.2722"></a>
-<span class="sourceLineNo">2723</span>  public Collection&lt;? extends BlockStoragePolicySpi&gt; getAllStoragePolicies()<a name="line.2723"></a>
-<span class="sourceLineNo">2724</span>      throws IOException {<a name="line.2724"></a>
-<span class="sourceLineNo">2725</span>    return defaultFS.getAllStoragePolicies();<a name="line.2725"></a>
-<span class="sourceLineNo">2726</span>  }<a name="line.2726"></a>
-<span class="sourceLineNo">2727</span><a name="line.2727"></a>
-<span class="sourceLineNo">2728</span>  Tracer getTracer() {<a name="line.2728"></a>
-<span class="sourceLineNo">2729</span>    return tracer;<a name="line.2729"></a>
-<span class="sourceLineNo">2730</span>  }<a name="line.2730"></a>
-<span class="sourceLineNo">2731</span>}<a name="line.2731"></a>
+<span class="sourceLineNo">2699</span>   * Unset the storage policy set for a given file or directory.<a name="line.2699"></a>
+<span class="sourceLineNo">2700</span>   * @param src file or directory path.<a name="line.2700"></a>
+<span class="sourceLineNo">2701</span>   * @throws IOException<a name="line.2701"></a>
+<span class="sourceLineNo">2702</span>   */<a name="line.2702"></a>
+<span class="sourceLineNo">2703</span>  public void unsetStoragePolicy(final Path src) throws IOException {<a name="line.2703"></a>
+<span class="sourceLineNo">2704</span>    final Path absF = fixRelativePart(src);<a name="line.2704"></a>
+<span class="sourceLineNo">2705</span>    new FSLinkResolver&lt;Void&gt;() {<a name="line.2705"></a>
+<span class="sourceLineNo">2706</span>      @Override<a name="line.2706"></a>
+<span class="sourceLineNo">2707</span>      public Void next(final AbstractFileSystem fs, final Path p)<a name="line.2707"></a>
+<span class="sourceLineNo">2708</span>          throws IOException {<a name="line.2708"></a>
+<span class="sourceLineNo">2709</span>        fs.unsetStoragePolicy(src);<a name="line.2709"></a>
+<span class="sourceLineNo">2710</span>        return null;<a name="line.2710"></a>
+<span class="sourceLineNo">2711</span>      }<a name="line.2711"></a>
+<span class="sourceLineNo">2712</span>    }.resolve(this, absF);<a name="line.2712"></a>
+<span class="sourceLineNo">2713</span>  }<a name="line.2713"></a>
+<span class="sourceLineNo">2714</span><a name="line.2714"></a>
+<span class="sourceLineNo">2715</span>  /**<a name="line.2715"></a>
+<span class="sourceLineNo">2716</span>   * Query the effective storage policy ID for the given file or directory.<a name="line.2716"></a>
+<span class="sourceLineNo">2717</span>   *<a name="line.2717"></a>
+<span class="sourceLineNo">2718</span>   * @param src file or directory path.<a name="line.2718"></a>
+<span class="sourceLineNo">2719</span>   * @return storage policy for give file.<a name="line.2719"></a>
+<span class="sourceLineNo">2720</span>   * @throws IOException<a name="line.2720"></a>
+<span class="sourceLineNo">2721</span>   */<a name="line.2721"></a>
+<span class="sourceLineNo">2722</span>  public BlockStoragePolicySpi getStoragePolicy(Path path) throws IOException {<a name="line.2722"></a>
+<span class="sourceLineNo">2723</span>    final Path absF = fixRelativePart(path);<a name="line.2723"></a>
+<span class="sourceLineNo">2724</span>    return new FSLinkResolver&lt;BlockStoragePolicySpi&gt;() {<a name="line.2724"></a>
+<span class="sourceLineNo">2725</span>      @Override<a name="line.2725"></a>
+<span class="sourceLineNo">2726</span>      public BlockStoragePolicySpi next(final AbstractFileSystem fs,<a name="line.2726"></a>
+<span class="sourceLineNo">2727</span>          final Path p)<a name="line.2727"></a>
+<span class="sourceLineNo">2728</span>          throws IOException {<a name="line.2728"></a>
+<span class="sourceLineNo">2729</span>        return fs.getStoragePolicy(p);<a name="line.2729"></a>
+<span class="sourceLineNo">2730</span>      }<a name="line.2730"></a>
+<span class="sourceLineNo">2731</span>    }.resolve(this, absF);<a name="line.2731"></a>
+<span class="sourceLineNo">2732</span>  }<a name="line.2732"></a>
+<span class="sourceLineNo">2733</span><a name="line.2733"></a>
+<span class="sourceLineNo">2734</span>  /**<a name="line.2734"></a>
+<span class="sourceLineNo">2735</span>   * Retrieve all the storage policies supported by this file system.<a name="line.2735"></a>
+<span class="sourceLineNo">2736</span>   *<a name="line.2736"></a>
+<span class="sourceLineNo">2737</span>   * @return all storage policies supported by this filesystem.<a name="line.2737"></a>
+<span class="sourceLineNo">2738</span>   * @throws IOException<a name="line.2738"></a>
+<span class="sourceLineNo">2739</span>   */<a name="line.2739"></a>
+<span class="sourceLineNo">2740</span>  public Collection&lt;? extends BlockStoragePolicySpi&gt; getAllStoragePolicies()<a name="line.2740"></a>
+<span class="sourceLineNo">2741</span>      throws IOException {<a name="line.2741"></a>
+<span class="sourceLineNo">2742</span>    return defaultFS.getAllStoragePolicies();<a name="line.2742"></a>
+<span class="sourceLineNo">2743</span>  }<a name="line.2743"></a>
+<span class="sourceLineNo">2744</span><a name="line.2744"></a>
+<span class="sourceLineNo">2745</span>  Tracer getTracer() {<a name="line.2745"></a>
+<span class="sourceLineNo">2746</span>    return tracer;<a name="line.2746"></a>
+<span class="sourceLineNo">2747</span>  }<a name="line.2747"></a>
+<span class="sourceLineNo">2748</span>}<a name="line.2748"></a>
 
 
 
