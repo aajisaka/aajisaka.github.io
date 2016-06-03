@@ -103,9 +103,9 @@
 <span class="sourceLineNo">095</span>  private String trackingUrl ="";<a name="line.95"></a>
 <span class="sourceLineNo">096</span>  private int numUsedSlots;<a name="line.96"></a>
 <span class="sourceLineNo">097</span>  private int numReservedSlots;<a name="line.97"></a>
-<span class="sourceLineNo">098</span>  private int usedMem;<a name="line.98"></a>
-<span class="sourceLineNo">099</span>  private int reservedMem;<a name="line.99"></a>
-<span class="sourceLineNo">100</span>  private int neededMem;<a name="line.100"></a>
+<span class="sourceLineNo">098</span>  private long usedMem;<a name="line.98"></a>
+<span class="sourceLineNo">099</span>  private long reservedMem;<a name="line.99"></a>
+<span class="sourceLineNo">100</span>  private long neededMem;<a name="line.100"></a>
 <span class="sourceLineNo">101</span>  private boolean isUber;<a name="line.101"></a>
 <span class="sourceLineNo">102</span>    <a name="line.102"></a>
 <span class="sourceLineNo">103</span>  /**<a name="line.103"></a>
@@ -588,42 +588,42 @@
 <span class="sourceLineNo">580</span>  /**<a name="line.580"></a>
 <span class="sourceLineNo">581</span>   * @return the used memory<a name="line.581"></a>
 <span class="sourceLineNo">582</span>   */<a name="line.582"></a>
-<span class="sourceLineNo">583</span>  public int getUsedMem() {<a name="line.583"></a>
+<span class="sourceLineNo">583</span>  public long getUsedMem() {<a name="line.583"></a>
 <span class="sourceLineNo">584</span>    return usedMem;<a name="line.584"></a>
 <span class="sourceLineNo">585</span>  }<a name="line.585"></a>
 <span class="sourceLineNo">586</span><a name="line.586"></a>
 <span class="sourceLineNo">587</span>  /**<a name="line.587"></a>
 <span class="sourceLineNo">588</span>   * @param m the used memory<a name="line.588"></a>
 <span class="sourceLineNo">589</span>   */<a name="line.589"></a>
-<span class="sourceLineNo">590</span>  public void setUsedMem(int m) {<a name="line.590"></a>
+<span class="sourceLineNo">590</span>  public void setUsedMem(long m) {<a name="line.590"></a>
 <span class="sourceLineNo">591</span>    this.usedMem = m;<a name="line.591"></a>
 <span class="sourceLineNo">592</span>  }<a name="line.592"></a>
 <span class="sourceLineNo">593</span><a name="line.593"></a>
 <span class="sourceLineNo">594</span>  /**<a name="line.594"></a>
 <span class="sourceLineNo">595</span>   * @return the reserved memory<a name="line.595"></a>
 <span class="sourceLineNo">596</span>   */<a name="line.596"></a>
-<span class="sourceLineNo">597</span>  public int getReservedMem() {<a name="line.597"></a>
+<span class="sourceLineNo">597</span>  public long getReservedMem() {<a name="line.597"></a>
 <span class="sourceLineNo">598</span>    return reservedMem;<a name="line.598"></a>
 <span class="sourceLineNo">599</span> }<a name="line.599"></a>
 <span class="sourceLineNo">600</span><a name="line.600"></a>
 <span class="sourceLineNo">601</span>  /**<a name="line.601"></a>
 <span class="sourceLineNo">602</span>   * @param r the reserved memory<a name="line.602"></a>
 <span class="sourceLineNo">603</span>   */<a name="line.603"></a>
-<span class="sourceLineNo">604</span>  public void setReservedMem(int r) {<a name="line.604"></a>
+<span class="sourceLineNo">604</span>  public void setReservedMem(long r) {<a name="line.604"></a>
 <span class="sourceLineNo">605</span>    this.reservedMem = r;<a name="line.605"></a>
 <span class="sourceLineNo">606</span>  }<a name="line.606"></a>
 <span class="sourceLineNo">607</span><a name="line.607"></a>
 <span class="sourceLineNo">608</span>  /**<a name="line.608"></a>
 <span class="sourceLineNo">609</span>   * @return the needed memory<a name="line.609"></a>
 <span class="sourceLineNo">610</span>   */<a name="line.610"></a>
-<span class="sourceLineNo">611</span>  public int getNeededMem() {<a name="line.611"></a>
+<span class="sourceLineNo">611</span>  public long getNeededMem() {<a name="line.611"></a>
 <span class="sourceLineNo">612</span>  return neededMem;<a name="line.612"></a>
 <span class="sourceLineNo">613</span> }<a name="line.613"></a>
 <span class="sourceLineNo">614</span><a name="line.614"></a>
 <span class="sourceLineNo">615</span>  /**<a name="line.615"></a>
 <span class="sourceLineNo">616</span>   * @param n the needed memory<a name="line.616"></a>
 <span class="sourceLineNo">617</span>   */<a name="line.617"></a>
-<span class="sourceLineNo">618</span>  public void setNeededMem(int n) {<a name="line.618"></a>
+<span class="sourceLineNo">618</span>  public void setNeededMem(long n) {<a name="line.618"></a>
 <span class="sourceLineNo">619</span>    this.neededMem = n;<a name="line.619"></a>
 <span class="sourceLineNo">620</span>  }<a name="line.620"></a>
 <span class="sourceLineNo">621</span><a name="line.621"></a>

@@ -232,7 +232,7 @@
 <span class="sourceLineNo">224</span>  @VisibleForTesting<a name="line.224"></a>
 <span class="sourceLineNo">225</span>  protected int numTotalContainers = 1;<a name="line.225"></a>
 <span class="sourceLineNo">226</span>  // Memory to request for the container on which the shell command will run<a name="line.226"></a>
-<span class="sourceLineNo">227</span>  private int containerMemory = 10;<a name="line.227"></a>
+<span class="sourceLineNo">227</span>  private long containerMemory = 10;<a name="line.227"></a>
 <span class="sourceLineNo">228</span>  // VirtualCores to request for the container on which the shell command will run<a name="line.228"></a>
 <span class="sourceLineNo">229</span>  private int containerVirtualCores = 1;<a name="line.229"></a>
 <span class="sourceLineNo">230</span>  // Priority of the request<a name="line.230"></a>
@@ -639,7 +639,7 @@
 <span class="sourceLineNo">631</span>            appMasterTrackingUrl);<a name="line.631"></a>
 <span class="sourceLineNo">632</span>    // Dump out information about cluster capability as seen by the<a name="line.632"></a>
 <span class="sourceLineNo">633</span>    // resource manager<a name="line.633"></a>
-<span class="sourceLineNo">634</span>    int maxMem = response.getMaximumResourceCapability().getMemory();<a name="line.634"></a>
+<span class="sourceLineNo">634</span>    long maxMem = response.getMaximumResourceCapability().getMemorySize();<a name="line.634"></a>
 <span class="sourceLineNo">635</span>    LOG.info("Max mem capability of resources in this cluster " + maxMem);<a name="line.635"></a>
 <span class="sourceLineNo">636</span>    <a name="line.636"></a>
 <span class="sourceLineNo">637</span>    int maxVCores = response.getMaximumResourceCapability().getVirtualCores();<a name="line.637"></a>
@@ -753,8 +753,8 @@
 <span class="sourceLineNo">745</span>    FinalApplicationStatus appStatus;<a name="line.745"></a>
 <span class="sourceLineNo">746</span>    String appMessage = null;<a name="line.746"></a>
 <span class="sourceLineNo">747</span>    boolean success = true;<a name="line.747"></a>
-<span class="sourceLineNo">748</span>    if (numFailedContainers.get() == 0 &amp;&amp; <a name="line.748"></a>
-<span class="sourceLineNo">749</span>        numCompletedContainers.get() == numTotalContainers) {<a name="line.749"></a>
+<span class="sourceLineNo">748</span>    if (numCompletedContainers.get() - numFailedContainers.get()<a name="line.748"></a>
+<span class="sourceLineNo">749</span>        &gt;= numTotalContainers) {<a name="line.749"></a>
 <span class="sourceLineNo">750</span>      appStatus = FinalApplicationStatus.SUCCEEDED;<a name="line.750"></a>
 <span class="sourceLineNo">751</span>    } else {<a name="line.751"></a>
 <span class="sourceLineNo">752</span>      appStatus = FinalApplicationStatus.FAILED;<a name="line.752"></a>
@@ -869,7 +869,7 @@
 <span class="sourceLineNo">861</span>            + ":" + allocatedContainer.getNodeId().getPort()<a name="line.861"></a>
 <span class="sourceLineNo">862</span>            + ", containerNodeURI=" + allocatedContainer.getNodeHttpAddress()<a name="line.862"></a>
 <span class="sourceLineNo">863</span>            + ", containerResourceMemory"<a name="line.863"></a>
-<span class="sourceLineNo">864</span>            + allocatedContainer.getResource().getMemory()<a name="line.864"></a>
+<span class="sourceLineNo">864</span>            + allocatedContainer.getResource().getMemorySize()<a name="line.864"></a>
 <span class="sourceLineNo">865</span>            + ", containerResourceVirtualCores"<a name="line.865"></a>
 <span class="sourceLineNo">866</span>            + allocatedContainer.getResource().getVirtualCores());<a name="line.866"></a>
 <span class="sourceLineNo">867</span>        // + ", containerToken"<a name="line.867"></a>

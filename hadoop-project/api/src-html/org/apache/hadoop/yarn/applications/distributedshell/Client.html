@@ -135,7 +135,7 @@
 <span class="sourceLineNo">127</span>  // Queue for App master<a name="line.127"></a>
 <span class="sourceLineNo">128</span>  private String amQueue = "";<a name="line.128"></a>
 <span class="sourceLineNo">129</span>  // Amt. of memory resource to request for to run the App Master<a name="line.129"></a>
-<span class="sourceLineNo">130</span>  private int amMemory = 10; <a name="line.130"></a>
+<span class="sourceLineNo">130</span>  private long amMemory = 10;<a name="line.130"></a>
 <span class="sourceLineNo">131</span>  // Amt. of virtual core resource to request for to run the App Master<a name="line.131"></a>
 <span class="sourceLineNo">132</span>  private int amVCores = 1;<a name="line.132"></a>
 <span class="sourceLineNo">133</span><a name="line.133"></a>
@@ -528,7 +528,7 @@
 <span class="sourceLineNo">520</span>    // the required resources from the RM for the app master<a name="line.520"></a>
 <span class="sourceLineNo">521</span>    // Memory ask has to be a multiple of min and less than max. <a name="line.521"></a>
 <span class="sourceLineNo">522</span>    // Dump out information about cluster capability as seen by the resource manager<a name="line.522"></a>
-<span class="sourceLineNo">523</span>    int maxMem = appResponse.getMaximumResourceCapability().getMemory();<a name="line.523"></a>
+<span class="sourceLineNo">523</span>    long maxMem = appResponse.getMaximumResourceCapability().getMemorySize();<a name="line.523"></a>
 <span class="sourceLineNo">524</span>    LOG.info("Max mem capability of resources in this cluster " + maxMem);<a name="line.524"></a>
 <span class="sourceLineNo">525</span><a name="line.525"></a>
 <span class="sourceLineNo">526</span>    // A resource ask cannot exceed the max. <a name="line.526"></a>

@@ -25,7 +25,6 @@ org.apache.hadoop.fs.http.client
 org.apache.hadoop.fs.http.server
 org.apache.hadoop.fs.permission
 org.apache.hadoop.fs.s3
-org.apache.hadoop.fs.s3a
 org.apache.hadoop.fs.s3native
 org.apache.hadoop.fs.sftp
 org.apache.hadoop.fs.shell.find
@@ -97,7 +96,6 @@ org.apache.hadoop.io.erasurecode.codec
 org.apache.hadoop.io.erasurecode.coder
 org.apache.hadoop.io.erasurecode.coder.util
 org.apache.hadoop.io.erasurecode.grouper
-org.apache.hadoop.io.erasurecode.rawcoder
 org.apache.hadoop.io.file.tfile
 org.apache.hadoop.io.serializer
 org.apache.hadoop.io.serializer.avro
