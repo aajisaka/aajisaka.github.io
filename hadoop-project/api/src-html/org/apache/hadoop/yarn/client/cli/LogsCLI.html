@@ -286,672 +286,674 @@
 <span class="sourceLineNo">278</span>      Configuration conf, String appId) throws ClientHandlerException,<a name="line.278"></a>
 <span class="sourceLineNo">279</span>      UniformInterfaceException, JSONException {<a name="line.279"></a>
 <span class="sourceLineNo">280</span>    Client webServiceClient = Client.create();<a name="line.280"></a>
-<span class="sourceLineNo">281</span>    String webAppAddress = WebAppUtils.getRMWebAppURLWithScheme(conf);<a name="line.281"></a>
-<span class="sourceLineNo">282</span>    WebResource webResource = webServiceClient.resource(webAppAddress);<a name="line.282"></a>
-<span class="sourceLineNo">283</span><a name="line.283"></a>
-<span class="sourceLineNo">284</span>    ClientResponse response =<a name="line.284"></a>
-<span class="sourceLineNo">285</span>        webResource.path("ws").path("v1").path("cluster").path("apps")<a name="line.285"></a>
-<span class="sourceLineNo">286</span>          .path(appId).path("appattempts").accept(MediaType.APPLICATION_JSON)<a name="line.286"></a>
-<span class="sourceLineNo">287</span>          .get(ClientResponse.class);<a name="line.287"></a>
-<span class="sourceLineNo">288</span>    JSONObject json =<a name="line.288"></a>
-<span class="sourceLineNo">289</span>        response.getEntity(JSONObject.class).getJSONObject("appAttempts");<a name="line.289"></a>
-<span class="sourceLineNo">290</span>    JSONArray requests = json.getJSONArray("appAttempt");<a name="line.290"></a>
-<span class="sourceLineNo">291</span>    List&lt;JSONObject&gt; amContainersList = new ArrayList&lt;JSONObject&gt;();<a name="line.291"></a>
-<span class="sourceLineNo">292</span>    for (int i = 0; i &lt; requests.length(); i++) {<a name="line.292"></a>
-<span class="sourceLineNo">293</span>      amContainersList.add(requests.getJSONObject(i));<a name="line.293"></a>
-<span class="sourceLineNo">294</span>    }<a name="line.294"></a>
-<span class="sourceLineNo">295</span>    return amContainersList;<a name="line.295"></a>
-<span class="sourceLineNo">296</span>  }<a name="line.296"></a>
-<span class="sourceLineNo">297</span><a name="line.297"></a>
-<span class="sourceLineNo">298</span>  private List&lt;JSONObject&gt; getAMContainerInfoForAHSWebService(<a name="line.298"></a>
-<span class="sourceLineNo">299</span>      Configuration conf, String appId) throws ClientHandlerException,<a name="line.299"></a>
-<span class="sourceLineNo">300</span>      UniformInterfaceException, JSONException {<a name="line.300"></a>
-<span class="sourceLineNo">301</span>    Client webServiceClient = Client.create();<a name="line.301"></a>
-<span class="sourceLineNo">302</span>    String webAppAddress =<a name="line.302"></a>
-<span class="sourceLineNo">303</span>        WebAppUtils.getHttpSchemePrefix(conf)<a name="line.303"></a>
-<span class="sourceLineNo">304</span>            + WebAppUtils.getAHSWebAppURLWithoutScheme(conf);<a name="line.304"></a>
-<span class="sourceLineNo">305</span>    WebResource webResource = webServiceClient.resource(webAppAddress);<a name="line.305"></a>
-<span class="sourceLineNo">306</span><a name="line.306"></a>
-<span class="sourceLineNo">307</span>    ClientResponse response =<a name="line.307"></a>
-<span class="sourceLineNo">308</span>        webResource.path("ws").path("v1").path("applicationhistory")<a name="line.308"></a>
-<span class="sourceLineNo">309</span>          .path("apps").path(appId).path("appattempts")<a name="line.309"></a>
-<span class="sourceLineNo">310</span>          .accept(MediaType.APPLICATION_JSON)<a name="line.310"></a>
-<span class="sourceLineNo">311</span>          .get(ClientResponse.class);<a name="line.311"></a>
-<span class="sourceLineNo">312</span>    JSONObject json = response.getEntity(JSONObject.class);<a name="line.312"></a>
-<span class="sourceLineNo">313</span>    JSONArray requests = json.getJSONArray("appAttempt");<a name="line.313"></a>
-<span class="sourceLineNo">314</span>    List&lt;JSONObject&gt; amContainersList = new ArrayList&lt;JSONObject&gt;();<a name="line.314"></a>
-<span class="sourceLineNo">315</span>    for (int i = 0; i &lt; requests.length(); i++) {<a name="line.315"></a>
-<span class="sourceLineNo">316</span>      amContainersList.add(requests.getJSONObject(i));<a name="line.316"></a>
-<span class="sourceLineNo">317</span>    }<a name="line.317"></a>
-<span class="sourceLineNo">318</span>    Collections.reverse(amContainersList);<a name="line.318"></a>
-<span class="sourceLineNo">319</span>    return amContainersList;<a name="line.319"></a>
-<span class="sourceLineNo">320</span>  }<a name="line.320"></a>
-<span class="sourceLineNo">321</span><a name="line.321"></a>
-<span class="sourceLineNo">322</span>  private boolean fetchAllLogFiles(String[] logFiles) {<a name="line.322"></a>
-<span class="sourceLineNo">323</span>    if(logFiles != null) {<a name="line.323"></a>
-<span class="sourceLineNo">324</span>      List&lt;String&gt; logs = Arrays.asList(logFiles);<a name="line.324"></a>
-<span class="sourceLineNo">325</span>      if(logs.contains("ALL") || logs.contains(".*")) {<a name="line.325"></a>
-<span class="sourceLineNo">326</span>        return true;<a name="line.326"></a>
-<span class="sourceLineNo">327</span>      }<a name="line.327"></a>
-<span class="sourceLineNo">328</span>    }<a name="line.328"></a>
-<span class="sourceLineNo">329</span>    return false;<a name="line.329"></a>
-<span class="sourceLineNo">330</span>  }<a name="line.330"></a>
-<span class="sourceLineNo">331</span><a name="line.331"></a>
-<span class="sourceLineNo">332</span>  private List&lt;String&gt; getContainerLogFiles(Configuration conf,<a name="line.332"></a>
-<span class="sourceLineNo">333</span>      String containerIdStr, String nodeHttpAddress) throws IOException {<a name="line.333"></a>
-<span class="sourceLineNo">334</span>    List&lt;String&gt; logFiles = new ArrayList&lt;&gt;();<a name="line.334"></a>
-<span class="sourceLineNo">335</span>    Client webServiceClient = Client.create();<a name="line.335"></a>
-<span class="sourceLineNo">336</span>    try {<a name="line.336"></a>
-<span class="sourceLineNo">337</span>      WebResource webResource = webServiceClient<a name="line.337"></a>
-<span class="sourceLineNo">338</span>          .resource(WebAppUtils.getHttpSchemePrefix(conf) + nodeHttpAddress);<a name="line.338"></a>
-<span class="sourceLineNo">339</span>      ClientResponse response =<a name="line.339"></a>
-<span class="sourceLineNo">340</span>          webResource.path("ws").path("v1").path("node").path("containers")<a name="line.340"></a>
-<span class="sourceLineNo">341</span>              .path(containerIdStr).accept(MediaType.APPLICATION_XML)<a name="line.341"></a>
-<span class="sourceLineNo">342</span>              .get(ClientResponse.class);<a name="line.342"></a>
-<span class="sourceLineNo">343</span>      if (response.getClientResponseStatus().equals(ClientResponse.Status.OK)) {<a name="line.343"></a>
-<span class="sourceLineNo">344</span>        try {<a name="line.344"></a>
-<span class="sourceLineNo">345</span>          String xml = response.getEntity(String.class);<a name="line.345"></a>
-<span class="sourceLineNo">346</span>          DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();<a name="line.346"></a>
-<span class="sourceLineNo">347</span>          DocumentBuilder db = dbf.newDocumentBuilder();<a name="line.347"></a>
-<span class="sourceLineNo">348</span>          InputSource is = new InputSource();<a name="line.348"></a>
-<span class="sourceLineNo">349</span>          is.setCharacterStream(new StringReader(xml));<a name="line.349"></a>
-<span class="sourceLineNo">350</span>          Document dom = db.parse(is);<a name="line.350"></a>
-<span class="sourceLineNo">351</span>          NodeList elements = dom.getElementsByTagName("containerLogFiles");<a name="line.351"></a>
-<span class="sourceLineNo">352</span>          for (int i = 0; i &lt; elements.getLength(); i++) {<a name="line.352"></a>
-<span class="sourceLineNo">353</span>            logFiles.add(elements.item(i).getTextContent());<a name="line.353"></a>
-<span class="sourceLineNo">354</span>          }<a name="line.354"></a>
-<span class="sourceLineNo">355</span>        } catch (Exception e) {<a name="line.355"></a>
-<span class="sourceLineNo">356</span>          System.err.println("Unable to parse xml from webservice. Error:");<a name="line.356"></a>
-<span class="sourceLineNo">357</span>          System.err.println(e.getMessage());<a name="line.357"></a>
-<span class="sourceLineNo">358</span>          throw new IOException(e);<a name="line.358"></a>
-<span class="sourceLineNo">359</span>        }<a name="line.359"></a>
-<span class="sourceLineNo">360</span>      }<a name="line.360"></a>
-<span class="sourceLineNo">361</span><a name="line.361"></a>
-<span class="sourceLineNo">362</span>    } catch (ClientHandlerException | UniformInterfaceException ex) {<a name="line.362"></a>
-<span class="sourceLineNo">363</span>      System.err.println("Unable to fetch log files list");<a name="line.363"></a>
-<span class="sourceLineNo">364</span>      throw new IOException(ex);<a name="line.364"></a>
-<span class="sourceLineNo">365</span>    }<a name="line.365"></a>
-<span class="sourceLineNo">366</span>    return logFiles;<a name="line.366"></a>
-<span class="sourceLineNo">367</span>  }<a name="line.367"></a>
-<span class="sourceLineNo">368</span><a name="line.368"></a>
-<span class="sourceLineNo">369</span>  @Private<a name="line.369"></a>
-<span class="sourceLineNo">370</span>  @VisibleForTesting<a name="line.370"></a>
-<span class="sourceLineNo">371</span>  public void printContainerLogsFromRunningApplication(Configuration conf,<a name="line.371"></a>
-<span class="sourceLineNo">372</span>      ContainerLogsRequest request, LogCLIHelpers logCliHelper)<a name="line.372"></a>
-<span class="sourceLineNo">373</span>      throws IOException {<a name="line.373"></a>
-<span class="sourceLineNo">374</span>    String containerIdStr = request.getContainerId().toString();<a name="line.374"></a>
-<span class="sourceLineNo">375</span>    String localDir = request.getOutputLocalDir();<a name="line.375"></a>
-<span class="sourceLineNo">376</span>    String nodeHttpAddress = request.getNodeHttpAddress();<a name="line.376"></a>
-<span class="sourceLineNo">377</span>    String nodeId = request.getNodeId();<a name="line.377"></a>
-<span class="sourceLineNo">378</span>    PrintStream out = logCliHelper.createPrintStream(localDir, nodeId,<a name="line.378"></a>
-<span class="sourceLineNo">379</span>        containerIdStr);<a name="line.379"></a>
-<span class="sourceLineNo">380</span>    try {<a name="line.380"></a>
-<span class="sourceLineNo">381</span>      // fetch all the log files for the container<a name="line.381"></a>
-<span class="sourceLineNo">382</span>      // filter the log files based on the given --logFiles pattern<a name="line.382"></a>
-<span class="sourceLineNo">383</span>      List&lt;String&gt; allLogs=<a name="line.383"></a>
-<span class="sourceLineNo">384</span>          getContainerLogFiles(getConf(), containerIdStr, nodeHttpAddress);<a name="line.384"></a>
-<span class="sourceLineNo">385</span>      List&lt;String&gt; matchedFiles = getMatchedLogFiles(<a name="line.385"></a>
-<span class="sourceLineNo">386</span>          request, allLogs, true);<a name="line.386"></a>
-<span class="sourceLineNo">387</span>      if (matchedFiles.isEmpty()) {<a name="line.387"></a>
-<span class="sourceLineNo">388</span>        return;<a name="line.388"></a>
-<span class="sourceLineNo">389</span>      }<a name="line.389"></a>
-<span class="sourceLineNo">390</span>      ContainerLogsRequest newOptions = new ContainerLogsRequest(request);<a name="line.390"></a>
-<span class="sourceLineNo">391</span>      newOptions.setLogTypes(matchedFiles);<a name="line.391"></a>
-<span class="sourceLineNo">392</span><a name="line.392"></a>
-<span class="sourceLineNo">393</span>      Client webServiceClient = Client.create();<a name="line.393"></a>
-<span class="sourceLineNo">394</span>      String containerString = "\n\nContainer: " + containerIdStr;<a name="line.394"></a>
-<span class="sourceLineNo">395</span>      out.println(containerString);<a name="line.395"></a>
-<span class="sourceLineNo">396</span>      out.println(StringUtils.repeat("=", containerString.length()));<a name="line.396"></a>
-<span class="sourceLineNo">397</span><a name="line.397"></a>
-<span class="sourceLineNo">398</span>      for (String logFile : newOptions.getLogTypes()) {<a name="line.398"></a>
-<span class="sourceLineNo">399</span>        out.println("LogType:" + logFile);<a name="line.399"></a>
-<span class="sourceLineNo">400</span>        out.println("Log Upload Time:"<a name="line.400"></a>
-<span class="sourceLineNo">401</span>            + Times.format(System.currentTimeMillis()));<a name="line.401"></a>
-<span class="sourceLineNo">402</span>        out.println("Log Contents:");<a name="line.402"></a>
-<span class="sourceLineNo">403</span>        try {<a name="line.403"></a>
-<span class="sourceLineNo">404</span>          WebResource webResource =<a name="line.404"></a>
-<span class="sourceLineNo">405</span>              webServiceClient.resource(WebAppUtils.getHttpSchemePrefix(conf)<a name="line.405"></a>
-<span class="sourceLineNo">406</span>                  + nodeHttpAddress);<a name="line.406"></a>
-<span class="sourceLineNo">407</span>          ClientResponse response =<a name="line.407"></a>
-<span class="sourceLineNo">408</span>              webResource.path("ws").path("v1").path("node")<a name="line.408"></a>
-<span class="sourceLineNo">409</span>                .path("containerlogs").path(containerIdStr).path(logFile)<a name="line.409"></a>
-<span class="sourceLineNo">410</span>                .queryParam("size", Long.toString(request.getBytes()))<a name="line.410"></a>
-<span class="sourceLineNo">411</span>                .accept(MediaType.TEXT_PLAIN).get(ClientResponse.class);<a name="line.411"></a>
-<span class="sourceLineNo">412</span>          out.println(response.getEntity(String.class));<a name="line.412"></a>
-<span class="sourceLineNo">413</span>          out.println("End of LogType:" + logFile);<a name="line.413"></a>
-<span class="sourceLineNo">414</span>          out.flush();<a name="line.414"></a>
-<span class="sourceLineNo">415</span>        } catch (ClientHandlerException | UniformInterfaceException ex) {<a name="line.415"></a>
-<span class="sourceLineNo">416</span>          System.err.println("Can not find the log file:" + logFile<a name="line.416"></a>
-<span class="sourceLineNo">417</span>              + " for the container:" + containerIdStr + " in NodeManager:"<a name="line.417"></a>
-<span class="sourceLineNo">418</span>              + nodeId);<a name="line.418"></a>
-<span class="sourceLineNo">419</span>        }<a name="line.419"></a>
-<span class="sourceLineNo">420</span>      }<a name="line.420"></a>
-<span class="sourceLineNo">421</span>      // for the case, we have already uploaded partial logs in HDFS<a name="line.421"></a>
-<span class="sourceLineNo">422</span>      logCliHelper.dumpAContainersLogsForALogType(newOptions, false);<a name="line.422"></a>
-<span class="sourceLineNo">423</span>    } finally {<a name="line.423"></a>
-<span class="sourceLineNo">424</span>      logCliHelper.closePrintStream(out);<a name="line.424"></a>
-<span class="sourceLineNo">425</span>    }<a name="line.425"></a>
-<span class="sourceLineNo">426</span>  }<a name="line.426"></a>
-<span class="sourceLineNo">427</span><a name="line.427"></a>
-<span class="sourceLineNo">428</span>  private int printContainerLogsForFinishedApplication(<a name="line.428"></a>
-<span class="sourceLineNo">429</span>      ContainerLogsRequest request, LogCLIHelpers logCliHelper)<a name="line.429"></a>
-<span class="sourceLineNo">430</span>      throws IOException {<a name="line.430"></a>
-<span class="sourceLineNo">431</span>    ContainerLogsRequest newOptions = getMatchedLogOptions(<a name="line.431"></a>
-<span class="sourceLineNo">432</span>        request, logCliHelper);<a name="line.432"></a>
-<span class="sourceLineNo">433</span>    if (newOptions == null) {<a name="line.433"></a>
-<span class="sourceLineNo">434</span>      return -1;<a name="line.434"></a>
-<span class="sourceLineNo">435</span>    }<a name="line.435"></a>
-<span class="sourceLineNo">436</span>    return logCliHelper.dumpAContainersLogsForALogType(newOptions);<a name="line.436"></a>
-<span class="sourceLineNo">437</span>  }<a name="line.437"></a>
-<span class="sourceLineNo">438</span><a name="line.438"></a>
-<span class="sourceLineNo">439</span>  private int printContainerLogsForFinishedApplicationWithoutNodeId(<a name="line.439"></a>
-<span class="sourceLineNo">440</span>      ContainerLogsRequest request, LogCLIHelpers logCliHelper)<a name="line.440"></a>
-<span class="sourceLineNo">441</span>      throws IOException {<a name="line.441"></a>
-<span class="sourceLineNo">442</span>    ContainerLogsRequest newOptions = getMatchedLogOptions(<a name="line.442"></a>
-<span class="sourceLineNo">443</span>        request, logCliHelper);<a name="line.443"></a>
-<span class="sourceLineNo">444</span>    if (newOptions == null) {<a name="line.444"></a>
-<span class="sourceLineNo">445</span>      return -1;<a name="line.445"></a>
-<span class="sourceLineNo">446</span>    }<a name="line.446"></a>
-<span class="sourceLineNo">447</span>    return logCliHelper.dumpAContainersLogsForALogTypeWithoutNodeId(<a name="line.447"></a>
-<span class="sourceLineNo">448</span>        newOptions);<a name="line.448"></a>
-<span class="sourceLineNo">449</span>  }<a name="line.449"></a>
-<span class="sourceLineNo">450</span><a name="line.450"></a>
-<span class="sourceLineNo">451</span>  @Private<a name="line.451"></a>
-<span class="sourceLineNo">452</span>  @VisibleForTesting<a name="line.452"></a>
-<span class="sourceLineNo">453</span>  public ContainerReport getContainerReport(String containerIdStr)<a name="line.453"></a>
-<span class="sourceLineNo">454</span>      throws YarnException, IOException {<a name="line.454"></a>
-<span class="sourceLineNo">455</span>    YarnClient yarnClient = createYarnClient();<a name="line.455"></a>
-<span class="sourceLineNo">456</span>    try {<a name="line.456"></a>
-<span class="sourceLineNo">457</span>      return yarnClient.getContainerReport(ConverterUtils<a name="line.457"></a>
-<span class="sourceLineNo">458</span>        .toContainerId(containerIdStr));<a name="line.458"></a>
-<span class="sourceLineNo">459</span>    } finally {<a name="line.459"></a>
-<span class="sourceLineNo">460</span>      yarnClient.close();<a name="line.460"></a>
-<span class="sourceLineNo">461</span>    }<a name="line.461"></a>
-<span class="sourceLineNo">462</span>  }<a name="line.462"></a>
-<span class="sourceLineNo">463</span><a name="line.463"></a>
-<span class="sourceLineNo">464</span>  private boolean isApplicationFinished(YarnApplicationState appState) {<a name="line.464"></a>
-<span class="sourceLineNo">465</span>    return appState == YarnApplicationState.FINISHED<a name="line.465"></a>
-<span class="sourceLineNo">466</span>        || appState == YarnApplicationState.FAILED<a name="line.466"></a>
-<span class="sourceLineNo">467</span>        || appState == YarnApplicationState.KILLED; <a name="line.467"></a>
-<span class="sourceLineNo">468</span>  }<a name="line.468"></a>
-<span class="sourceLineNo">469</span><a name="line.469"></a>
-<span class="sourceLineNo">470</span>  private int printAMContainerLogs(Configuration conf,<a name="line.470"></a>
-<span class="sourceLineNo">471</span>      ContainerLogsRequest request, List&lt;String&gt; amContainers,<a name="line.471"></a>
-<span class="sourceLineNo">472</span>      LogCLIHelpers logCliHelper) throws Exception {<a name="line.472"></a>
-<span class="sourceLineNo">473</span>    List&lt;JSONObject&gt; amContainersList = null;<a name="line.473"></a>
-<span class="sourceLineNo">474</span>    List&lt;ContainerLogsRequest&gt; requests =<a name="line.474"></a>
-<span class="sourceLineNo">475</span>        new ArrayList&lt;ContainerLogsRequest&gt;();<a name="line.475"></a>
-<span class="sourceLineNo">476</span>    boolean getAMContainerLists = false;<a name="line.476"></a>
-<span class="sourceLineNo">477</span>    String appId = request.getAppId().toString();<a name="line.477"></a>
-<span class="sourceLineNo">478</span>    String errorMessage = "";<a name="line.478"></a>
-<span class="sourceLineNo">479</span>    try {<a name="line.479"></a>
-<span class="sourceLineNo">480</span>      amContainersList = getAMContainerInfoForRMWebService(conf, appId);<a name="line.480"></a>
-<span class="sourceLineNo">481</span>      if (amContainersList != null &amp;&amp; !amContainersList.isEmpty()) {<a name="line.481"></a>
-<span class="sourceLineNo">482</span>        getAMContainerLists = true;<a name="line.482"></a>
-<span class="sourceLineNo">483</span>        for (JSONObject amContainer : amContainersList) {<a name="line.483"></a>
-<span class="sourceLineNo">484</span>          ContainerLogsRequest amRequest = new ContainerLogsRequest(request);<a name="line.484"></a>
-<span class="sourceLineNo">485</span>          amRequest.setContainerId(amContainer.getString("containerId"));<a name="line.485"></a>
-<span class="sourceLineNo">486</span>          amRequest.setNodeHttpAddress(<a name="line.486"></a>
-<span class="sourceLineNo">487</span>              amContainer.getString("nodeHttpAddress"));<a name="line.487"></a>
-<span class="sourceLineNo">488</span>          amRequest.setNodeId(amContainer.getString("nodeId"));<a name="line.488"></a>
-<span class="sourceLineNo">489</span>          requests.add(amRequest);<a name="line.489"></a>
-<span class="sourceLineNo">490</span>        }<a name="line.490"></a>
-<span class="sourceLineNo">491</span>      }<a name="line.491"></a>
-<span class="sourceLineNo">492</span>    } catch (Exception ex) {<a name="line.492"></a>
-<span class="sourceLineNo">493</span>      errorMessage = ex.getMessage();<a name="line.493"></a>
-<span class="sourceLineNo">494</span>      if (request.isAppFinished()) {<a name="line.494"></a>
-<span class="sourceLineNo">495</span>        try {<a name="line.495"></a>
-<span class="sourceLineNo">496</span>          amContainersList = getAMContainerInfoForAHSWebService(conf, appId);<a name="line.496"></a>
-<span class="sourceLineNo">497</span>          if (amContainersList != null &amp;&amp; !amContainersList.isEmpty()) {<a name="line.497"></a>
-<span class="sourceLineNo">498</span>            getAMContainerLists = true;<a name="line.498"></a>
-<span class="sourceLineNo">499</span>            for (JSONObject amContainer : amContainersList) {<a name="line.499"></a>
-<span class="sourceLineNo">500</span>              ContainerLogsRequest amRequest = new ContainerLogsRequest(<a name="line.500"></a>
-<span class="sourceLineNo">501</span>                  request);<a name="line.501"></a>
-<span class="sourceLineNo">502</span>              amRequest.setContainerId(amContainer.getString("amContainerId"));<a name="line.502"></a>
-<span class="sourceLineNo">503</span>              requests.add(amRequest);<a name="line.503"></a>
-<span class="sourceLineNo">504</span>            }<a name="line.504"></a>
-<span class="sourceLineNo">505</span>          }<a name="line.505"></a>
-<span class="sourceLineNo">506</span>        } catch (Exception e) {<a name="line.506"></a>
-<span class="sourceLineNo">507</span>          errorMessage = e.getMessage();<a name="line.507"></a>
-<span class="sourceLineNo">508</span>        }<a name="line.508"></a>
-<span class="sourceLineNo">509</span>      }<a name="line.509"></a>
-<span class="sourceLineNo">510</span>    }<a name="line.510"></a>
-<span class="sourceLineNo">511</span><a name="line.511"></a>
-<span class="sourceLineNo">512</span>    if (!getAMContainerLists) {<a name="line.512"></a>
-<span class="sourceLineNo">513</span>      System.err.println("Unable to get AM container informations "<a name="line.513"></a>
-<span class="sourceLineNo">514</span>          + "for the application:" + appId);<a name="line.514"></a>
-<span class="sourceLineNo">515</span>      System.err.println(errorMessage);<a name="line.515"></a>
-<span class="sourceLineNo">516</span>      return -1;<a name="line.516"></a>
-<span class="sourceLineNo">517</span>    }<a name="line.517"></a>
-<span class="sourceLineNo">518</span><a name="line.518"></a>
-<span class="sourceLineNo">519</span>    if (amContainers.contains("ALL")) {<a name="line.519"></a>
-<span class="sourceLineNo">520</span>      for (ContainerLogsRequest amRequest : requests) {<a name="line.520"></a>
-<span class="sourceLineNo">521</span>        outputAMContainerLogs(amRequest, conf, logCliHelper);<a name="line.521"></a>
-<span class="sourceLineNo">522</span>      }<a name="line.522"></a>
-<span class="sourceLineNo">523</span>      System.out.println();      <a name="line.523"></a>
-<span class="sourceLineNo">524</span>      System.out.println("Specified ALL for -am option. "<a name="line.524"></a>
-<span class="sourceLineNo">525</span>          + "Printed logs for all am containers.");<a name="line.525"></a>
-<span class="sourceLineNo">526</span>    } else {<a name="line.526"></a>
-<span class="sourceLineNo">527</span>      for (String amContainer : amContainers) {<a name="line.527"></a>
-<span class="sourceLineNo">528</span>        int amContainerId = Integer.parseInt(amContainer.trim());<a name="line.528"></a>
-<span class="sourceLineNo">529</span>        if (amContainerId == -1) {<a name="line.529"></a>
-<span class="sourceLineNo">530</span>          outputAMContainerLogs(requests.get(requests.size() - 1), conf,<a name="line.530"></a>
-<span class="sourceLineNo">531</span>              logCliHelper);<a name="line.531"></a>
-<span class="sourceLineNo">532</span>        } else {<a name="line.532"></a>
-<span class="sourceLineNo">533</span>          if (amContainerId &lt;= requests.size()) {<a name="line.533"></a>
-<span class="sourceLineNo">534</span>            outputAMContainerLogs(requests.get(amContainerId - 1), conf,<a name="line.534"></a>
-<span class="sourceLineNo">535</span>                logCliHelper);<a name="line.535"></a>
-<span class="sourceLineNo">536</span>          }<a name="line.536"></a>
-<span class="sourceLineNo">537</span>        }<a name="line.537"></a>
-<span class="sourceLineNo">538</span>      }<a name="line.538"></a>
-<span class="sourceLineNo">539</span>    }<a name="line.539"></a>
-<span class="sourceLineNo">540</span>    return 0;<a name="line.540"></a>
-<span class="sourceLineNo">541</span>  }<a name="line.541"></a>
-<span class="sourceLineNo">542</span><a name="line.542"></a>
-<span class="sourceLineNo">543</span>  private void outputAMContainerLogs(ContainerLogsRequest request,<a name="line.543"></a>
-<span class="sourceLineNo">544</span>      Configuration conf, LogCLIHelpers logCliHelper) throws Exception {<a name="line.544"></a>
-<span class="sourceLineNo">545</span>    String nodeHttpAddress = request.getNodeHttpAddress();<a name="line.545"></a>
-<span class="sourceLineNo">546</span>    String containerId = request.getContainerId();<a name="line.546"></a>
-<span class="sourceLineNo">547</span>    String nodeId = request.getNodeId();<a name="line.547"></a>
-<span class="sourceLineNo">548</span><a name="line.548"></a>
-<span class="sourceLineNo">549</span>    if (request.isAppFinished()) {<a name="line.549"></a>
-<span class="sourceLineNo">550</span>      if (containerId != null &amp;&amp; !containerId.isEmpty()) {<a name="line.550"></a>
-<span class="sourceLineNo">551</span>        if (nodeId == null || nodeId.isEmpty()) {<a name="line.551"></a>
-<span class="sourceLineNo">552</span>          try {<a name="line.552"></a>
-<span class="sourceLineNo">553</span>            nodeId =<a name="line.553"></a>
-<span class="sourceLineNo">554</span>                getContainerReport(containerId).getAssignedNode().toString();<a name="line.554"></a>
-<span class="sourceLineNo">555</span>            request.setNodeId(nodeId);<a name="line.555"></a>
-<span class="sourceLineNo">556</span>          } catch (Exception ex) {<a name="line.556"></a>
-<span class="sourceLineNo">557</span>            System.err.println(ex);<a name="line.557"></a>
-<span class="sourceLineNo">558</span>            nodeId = null;<a name="line.558"></a>
-<span class="sourceLineNo">559</span>          }<a name="line.559"></a>
-<span class="sourceLineNo">560</span>        }<a name="line.560"></a>
-<span class="sourceLineNo">561</span>        if (nodeId != null &amp;&amp; !nodeId.isEmpty()) {<a name="line.561"></a>
-<span class="sourceLineNo">562</span>          printContainerLogsForFinishedApplication(request,<a name="line.562"></a>
-<span class="sourceLineNo">563</span>              logCliHelper);<a name="line.563"></a>
-<span class="sourceLineNo">564</span>        }<a name="line.564"></a>
-<span class="sourceLineNo">565</span>      }<a name="line.565"></a>
-<span class="sourceLineNo">566</span>    } else {<a name="line.566"></a>
-<span class="sourceLineNo">567</span>      if (nodeHttpAddress != null &amp;&amp; containerId != null<a name="line.567"></a>
-<span class="sourceLineNo">568</span>          &amp;&amp; !nodeHttpAddress.isEmpty() &amp;&amp; !containerId.isEmpty()) {<a name="line.568"></a>
-<span class="sourceLineNo">569</span>        printContainerLogsFromRunningApplication(conf,<a name="line.569"></a>
-<span class="sourceLineNo">570</span>            request, logCliHelper);<a name="line.570"></a>
-<span class="sourceLineNo">571</span>      }<a name="line.571"></a>
-<span class="sourceLineNo">572</span>    }<a name="line.572"></a>
-<span class="sourceLineNo">573</span>  }<a name="line.573"></a>
-<span class="sourceLineNo">574</span><a name="line.574"></a>
-<span class="sourceLineNo">575</span>  private int showMetaInfo(ContainerLogsRequest request,<a name="line.575"></a>
-<span class="sourceLineNo">576</span>      LogCLIHelpers logCliHelper) throws IOException {<a name="line.576"></a>
-<span class="sourceLineNo">577</span>    if (!request.isAppFinished()) {<a name="line.577"></a>
-<span class="sourceLineNo">578</span>      System.err.println("The -show_meta_info command can be only used "<a name="line.578"></a>
-<span class="sourceLineNo">579</span>          + "with finished applications");<a name="line.579"></a>
-<span class="sourceLineNo">580</span>      return -1;<a name="line.580"></a>
-<span class="sourceLineNo">581</span>    } else {<a name="line.581"></a>
-<span class="sourceLineNo">582</span>      logCliHelper.printLogMetadata(request, System.out, System.err);<a name="line.582"></a>
-<span class="sourceLineNo">583</span>      return 0;<a name="line.583"></a>
-<span class="sourceLineNo">584</span>    }<a name="line.584"></a>
-<span class="sourceLineNo">585</span>  }<a name="line.585"></a>
-<span class="sourceLineNo">586</span><a name="line.586"></a>
-<span class="sourceLineNo">587</span>  private int showNodeLists(ContainerLogsRequest request,<a name="line.587"></a>
-<span class="sourceLineNo">588</span>      LogCLIHelpers logCliHelper) throws IOException {<a name="line.588"></a>
-<span class="sourceLineNo">589</span>    if (!request.isAppFinished()) {<a name="line.589"></a>
-<span class="sourceLineNo">590</span>      System.err.println("The -list_nodes command can be only used with "<a name="line.590"></a>
-<span class="sourceLineNo">591</span>          + "finished applications");<a name="line.591"></a>
-<span class="sourceLineNo">592</span>      return -1;<a name="line.592"></a>
-<span class="sourceLineNo">593</span>    } else {<a name="line.593"></a>
-<span class="sourceLineNo">594</span>      logCliHelper.printNodesList(request, System.out, System.err);<a name="line.594"></a>
-<span class="sourceLineNo">595</span>      return 0;<a name="line.595"></a>
-<span class="sourceLineNo">596</span>    }<a name="line.596"></a>
-<span class="sourceLineNo">597</span>  }<a name="line.597"></a>
-<span class="sourceLineNo">598</span><a name="line.598"></a>
-<span class="sourceLineNo">599</span>  private Options createCommandOpts() {<a name="line.599"></a>
-<span class="sourceLineNo">600</span>    Options opts = new Options();<a name="line.600"></a>
-<span class="sourceLineNo">601</span>    opts.addOption(HELP_CMD, false, "Displays help for all commands.");<a name="line.601"></a>
-<span class="sourceLineNo">602</span>    Option appIdOpt =<a name="line.602"></a>
-<span class="sourceLineNo">603</span>        new Option(APPLICATION_ID_OPTION, true, "ApplicationId (required)");<a name="line.603"></a>
-<span class="sourceLineNo">604</span>    appIdOpt.setRequired(true);<a name="line.604"></a>
-<span class="sourceLineNo">605</span>    opts.addOption(appIdOpt);<a name="line.605"></a>
-<span class="sourceLineNo">606</span>    opts.addOption(CONTAINER_ID_OPTION, true, "ContainerId. "<a name="line.606"></a>
-<span class="sourceLineNo">607</span>        + "By default, it will only print syslog if the application is runing."<a name="line.607"></a>
-<span class="sourceLineNo">608</span>        + " Work with -logFiles to get other logs.");<a name="line.608"></a>
-<span class="sourceLineNo">609</span>    opts.addOption(NODE_ADDRESS_OPTION, true, "NodeAddress in the format "<a name="line.609"></a>
-<span class="sourceLineNo">610</span>        + "nodename:port");<a name="line.610"></a>
-<span class="sourceLineNo">611</span>    opts.addOption(APP_OWNER_OPTION, true,<a name="line.611"></a>
-<span class="sourceLineNo">612</span>        "AppOwner (assumed to be current user if not specified)");<a name="line.612"></a>
-<span class="sourceLineNo">613</span>    Option amOption = new Option(AM_CONTAINER_OPTION, true,<a name="line.613"></a>
-<span class="sourceLineNo">614</span>        "Prints the AM Container logs for this application. "<a name="line.614"></a>
-<span class="sourceLineNo">615</span>        + "Specify comma-separated value to get logs for related AM "<a name="line.615"></a>
-<span class="sourceLineNo">616</span>        + "Container. For example, If we specify -am 1,2, we will get "<a name="line.616"></a>
-<span class="sourceLineNo">617</span>        + "the logs for the first AM Container as well as the second "<a name="line.617"></a>
-<span class="sourceLineNo">618</span>        + "AM Container. To get logs for all AM Containers, use -am ALL. "<a name="line.618"></a>
-<span class="sourceLineNo">619</span>        + "To get logs for the latest AM Container, use -am -1. "<a name="line.619"></a>
-<span class="sourceLineNo">620</span>        + "By default, it will only print out syslog. Work with -logFiles "<a name="line.620"></a>
-<span class="sourceLineNo">621</span>        + "to get other logs");<a name="line.621"></a>
-<span class="sourceLineNo">622</span>    amOption.setValueSeparator(',');<a name="line.622"></a>
-<span class="sourceLineNo">623</span>    amOption.setArgs(Option.UNLIMITED_VALUES);<a name="line.623"></a>
-<span class="sourceLineNo">624</span>    amOption.setArgName("AM Containers");<a name="line.624"></a>
-<span class="sourceLineNo">625</span>    opts.addOption(amOption);<a name="line.625"></a>
-<span class="sourceLineNo">626</span>    Option logFileOpt = new Option(CONTAINER_LOG_FILES, true,<a name="line.626"></a>
-<span class="sourceLineNo">627</span>        "Work with -am/-containerId and specify comma-separated value "<a name="line.627"></a>
-<span class="sourceLineNo">628</span>        + "to get specified container log files. Use \"ALL\" to fetch all the "<a name="line.628"></a>
-<span class="sourceLineNo">629</span>        + "log files for the container. It also supports Java Regex.");<a name="line.629"></a>
-<span class="sourceLineNo">630</span>    logFileOpt.setValueSeparator(',');<a name="line.630"></a>
-<span class="sourceLineNo">631</span>    logFileOpt.setArgs(Option.UNLIMITED_VALUES);<a name="line.631"></a>
-<span class="sourceLineNo">632</span>    logFileOpt.setArgName("Log File Name");<a name="line.632"></a>
-<span class="sourceLineNo">633</span>    opts.addOption(logFileOpt);<a name="line.633"></a>
-<span class="sourceLineNo">634</span>    opts.addOption(SHOW_META_INFO, false, "Show the log metadata, "<a name="line.634"></a>
-<span class="sourceLineNo">635</span>        + "including log-file names, the size of the log files. "<a name="line.635"></a>
-<span class="sourceLineNo">636</span>        + "You can combine this with --containerId to get log metadata for "<a name="line.636"></a>
-<span class="sourceLineNo">637</span>        + "the specific container, or with --nodeAddress to get log metadata "<a name="line.637"></a>
-<span class="sourceLineNo">638</span>        + "for all the containers on the specific NodeManager. "<a name="line.638"></a>
-<span class="sourceLineNo">639</span>        + "Currently, this option can only be used for finished "<a name="line.639"></a>
-<span class="sourceLineNo">640</span>        + "applications.");<a name="line.640"></a>
-<span class="sourceLineNo">641</span>    opts.addOption(LIST_NODES_OPTION, false,<a name="line.641"></a>
-<span class="sourceLineNo">642</span>        "Show the list of nodes that successfully aggregated logs. "<a name="line.642"></a>
-<span class="sourceLineNo">643</span>        + "This option can only be used with finished applications.");<a name="line.643"></a>
-<span class="sourceLineNo">644</span>    opts.addOption(OUT_OPTION, true, "Local directory for storing individual "<a name="line.644"></a>
-<span class="sourceLineNo">645</span>        + "container logs. The container logs will be stored based on the "<a name="line.645"></a>
-<span class="sourceLineNo">646</span>        + "node the container ran on.");<a name="line.646"></a>
-<span class="sourceLineNo">647</span>    opts.addOption(SIZE_OPTION, true, "Prints the log file's first 'n' bytes "<a name="line.647"></a>
-<span class="sourceLineNo">648</span>        + "or the last 'n' bytes. Use negative values as bytes to read from "<a name="line.648"></a>
-<span class="sourceLineNo">649</span>        + "the end and positive values as bytes to read from the beginning.");<a name="line.649"></a>
-<span class="sourceLineNo">650</span>    opts.getOption(APPLICATION_ID_OPTION).setArgName("Application ID");<a name="line.650"></a>
-<span class="sourceLineNo">651</span>    opts.getOption(CONTAINER_ID_OPTION).setArgName("Container ID");<a name="line.651"></a>
-<span class="sourceLineNo">652</span>    opts.getOption(NODE_ADDRESS_OPTION).setArgName("Node Address");<a name="line.652"></a>
-<span class="sourceLineNo">653</span>    opts.getOption(APP_OWNER_OPTION).setArgName("Application Owner");<a name="line.653"></a>
-<span class="sourceLineNo">654</span>    opts.getOption(AM_CONTAINER_OPTION).setArgName("AM Containers");<a name="line.654"></a>
-<span class="sourceLineNo">655</span>    opts.getOption(OUT_OPTION).setArgName("Local Directory");<a name="line.655"></a>
-<span class="sourceLineNo">656</span>    opts.getOption(SIZE_OPTION).setArgName("size");<a name="line.656"></a>
-<span class="sourceLineNo">657</span>    return opts;<a name="line.657"></a>
-<span class="sourceLineNo">658</span>  }<a name="line.658"></a>
-<span class="sourceLineNo">659</span><a name="line.659"></a>
-<span class="sourceLineNo">660</span>  private Options createPrintOpts(Options commandOpts) {<a name="line.660"></a>
-<span class="sourceLineNo">661</span>    Options printOpts = new Options();<a name="line.661"></a>
-<span class="sourceLineNo">662</span>    printOpts.addOption(commandOpts.getOption(HELP_CMD));<a name="line.662"></a>
-<span class="sourceLineNo">663</span>    printOpts.addOption(commandOpts.getOption(CONTAINER_ID_OPTION));<a name="line.663"></a>
-<span class="sourceLineNo">664</span>    printOpts.addOption(commandOpts.getOption(NODE_ADDRESS_OPTION));<a name="line.664"></a>
-<span class="sourceLineNo">665</span>    printOpts.addOption(commandOpts.getOption(APP_OWNER_OPTION));<a name="line.665"></a>
-<span class="sourceLineNo">666</span>    printOpts.addOption(commandOpts.getOption(AM_CONTAINER_OPTION));<a name="line.666"></a>
-<span class="sourceLineNo">667</span>    printOpts.addOption(commandOpts.getOption(CONTAINER_LOG_FILES));<a name="line.667"></a>
-<span class="sourceLineNo">668</span>    printOpts.addOption(commandOpts.getOption(SHOW_META_INFO));<a name="line.668"></a>
-<span class="sourceLineNo">669</span>    printOpts.addOption(commandOpts.getOption(LIST_NODES_OPTION));<a name="line.669"></a>
-<span class="sourceLineNo">670</span>    printOpts.addOption(commandOpts.getOption(OUT_OPTION));<a name="line.670"></a>
-<span class="sourceLineNo">671</span>    printOpts.addOption(commandOpts.getOption(SIZE_OPTION));<a name="line.671"></a>
-<span class="sourceLineNo">672</span>    return printOpts;<a name="line.672"></a>
-<span class="sourceLineNo">673</span>  }<a name="line.673"></a>
-<span class="sourceLineNo">674</span><a name="line.674"></a>
-<span class="sourceLineNo">675</span>  private List&lt;String&gt; parseAMContainer(CommandLine commandLine,<a name="line.675"></a>
-<span class="sourceLineNo">676</span>      Options printOpts) throws NumberFormatException {<a name="line.676"></a>
-<span class="sourceLineNo">677</span>    List&lt;String&gt; amContainersList = new ArrayList&lt;String&gt;();<a name="line.677"></a>
-<span class="sourceLineNo">678</span>    String[] amContainers = commandLine.getOptionValues(AM_CONTAINER_OPTION);<a name="line.678"></a>
-<span class="sourceLineNo">679</span>    for (String am : amContainers) {<a name="line.679"></a>
-<span class="sourceLineNo">680</span>      boolean errorInput = false;<a name="line.680"></a>
-<span class="sourceLineNo">681</span>      if (!am.trim().equalsIgnoreCase("ALL")) {<a name="line.681"></a>
-<span class="sourceLineNo">682</span>        try {<a name="line.682"></a>
-<span class="sourceLineNo">683</span>          int id = Integer.parseInt(am.trim());<a name="line.683"></a>
-<span class="sourceLineNo">684</span>          if (id != -1 &amp;&amp; id &lt;= 0) {<a name="line.684"></a>
-<span class="sourceLineNo">685</span>            errorInput = true;<a name="line.685"></a>
-<span class="sourceLineNo">686</span>          }<a name="line.686"></a>
-<span class="sourceLineNo">687</span>        } catch (NumberFormatException ex) {<a name="line.687"></a>
-<span class="sourceLineNo">688</span>          errorInput = true;<a name="line.688"></a>
-<span class="sourceLineNo">689</span>        }<a name="line.689"></a>
-<span class="sourceLineNo">690</span>        if (errorInput) {<a name="line.690"></a>
-<span class="sourceLineNo">691</span>          String errMessage =<a name="line.691"></a>
-<span class="sourceLineNo">692</span>              "Invalid input for option -am. Valid inputs are 'ALL', -1 "<a name="line.692"></a>
-<span class="sourceLineNo">693</span>              + "and any other integer which is larger than 0.";<a name="line.693"></a>
-<span class="sourceLineNo">694</span>          printHelpMessage(printOpts);<a name="line.694"></a>
-<span class="sourceLineNo">695</span>          throw new NumberFormatException(errMessage);<a name="line.695"></a>
-<span class="sourceLineNo">696</span>        }<a name="line.696"></a>
-<span class="sourceLineNo">697</span>        amContainersList.add(am.trim());<a name="line.697"></a>
-<span class="sourceLineNo">698</span>      } else {<a name="line.698"></a>
-<span class="sourceLineNo">699</span>        amContainersList.add("ALL");<a name="line.699"></a>
-<span class="sourceLineNo">700</span>        break;<a name="line.700"></a>
-<span class="sourceLineNo">701</span>      }<a name="line.701"></a>
-<span class="sourceLineNo">702</span>    }<a name="line.702"></a>
-<span class="sourceLineNo">703</span>    return amContainersList;<a name="line.703"></a>
-<span class="sourceLineNo">704</span>  }<a name="line.704"></a>
-<span class="sourceLineNo">705</span><a name="line.705"></a>
-<span class="sourceLineNo">706</span>  private int fetchAMContainerLogs(ContainerLogsRequest request,<a name="line.706"></a>
-<span class="sourceLineNo">707</span>      List&lt;String&gt; amContainersList, LogCLIHelpers logCliHelper)<a name="line.707"></a>
-<span class="sourceLineNo">708</span>      throws Exception {<a name="line.708"></a>
-<span class="sourceLineNo">709</span>    List&lt;String&gt; logFiles = request.getLogTypes();<a name="line.709"></a>
-<span class="sourceLineNo">710</span>    // if we do not specify the value for CONTAINER_LOG_FILES option,<a name="line.710"></a>
-<span class="sourceLineNo">711</span>    // we will only output syslog<a name="line.711"></a>
-<span class="sourceLineNo">712</span>    if (logFiles == null || logFiles.isEmpty()) {<a name="line.712"></a>
-<span class="sourceLineNo">713</span>      logFiles = Arrays.asList("syslog");<a name="line.713"></a>
-<span class="sourceLineNo">714</span>    }<a name="line.714"></a>
-<span class="sourceLineNo">715</span>    request.setLogTypes(logFiles);<a name="line.715"></a>
-<span class="sourceLineNo">716</span>    // If the application is running, we will call the RM WebService<a name="line.716"></a>
-<span class="sourceLineNo">717</span>    // to get the AppAttempts which includes the nodeHttpAddress<a name="line.717"></a>
-<span class="sourceLineNo">718</span>    // and containerId for all the AM Containers.<a name="line.718"></a>
-<span class="sourceLineNo">719</span>    // After that, we will call NodeManager webService to get the<a name="line.719"></a>
-<span class="sourceLineNo">720</span>    // related logs<a name="line.720"></a>
-<span class="sourceLineNo">721</span>    if (!request.isAppFinished()) {<a name="line.721"></a>
-<span class="sourceLineNo">722</span>      return printAMContainerLogs(getConf(), request, amContainersList,<a name="line.722"></a>
-<span class="sourceLineNo">723</span>          logCliHelper);<a name="line.723"></a>
-<span class="sourceLineNo">724</span>    } else {<a name="line.724"></a>
-<span class="sourceLineNo">725</span>      // If the application is in the final state, we will call RM webservice<a name="line.725"></a>
-<span class="sourceLineNo">726</span>      // to get all AppAttempts information first. If we get nothing,<a name="line.726"></a>
-<span class="sourceLineNo">727</span>      // we will try to call AHS webservice to get related AppAttempts<a name="line.727"></a>
-<span class="sourceLineNo">728</span>      // which includes nodeAddress for the AM Containers.<a name="line.728"></a>
-<span class="sourceLineNo">729</span>      // After that, we will use nodeAddress and containerId<a name="line.729"></a>
-<span class="sourceLineNo">730</span>      // to get logs from HDFS directly.<a name="line.730"></a>
-<span class="sourceLineNo">731</span>      if (getConf().getBoolean(YarnConfiguration.APPLICATION_HISTORY_ENABLED,<a name="line.731"></a>
-<span class="sourceLineNo">732</span>          YarnConfiguration.DEFAULT_APPLICATION_HISTORY_ENABLED)) {<a name="line.732"></a>
-<span class="sourceLineNo">733</span>        return printAMContainerLogs(getConf(), request, amContainersList,<a name="line.733"></a>
-<span class="sourceLineNo">734</span>            logCliHelper);<a name="line.734"></a>
-<span class="sourceLineNo">735</span>      } else {<a name="line.735"></a>
-<span class="sourceLineNo">736</span>        ApplicationId appId = request.getAppId();<a name="line.736"></a>
-<span class="sourceLineNo">737</span>        String appOwner = request.getAppOwner();<a name="line.737"></a>
-<span class="sourceLineNo">738</span>        System.err.println("Can not get AMContainers logs for "<a name="line.738"></a>
-<span class="sourceLineNo">739</span>            + "the application:" + appId + " with the appOwner:" + appOwner);<a name="line.739"></a>
-<span class="sourceLineNo">740</span>        System.err.println("This application:" + appId + " has finished."<a name="line.740"></a>
-<span class="sourceLineNo">741</span>            + " Please enable the application-history service or explicitly"<a name="line.741"></a>
-<span class="sourceLineNo">742</span>            + " use 'yarn logs -applicationId &lt;appId&gt; "<a name="line.742"></a>
-<span class="sourceLineNo">743</span>            + "-containerId &lt;containerId&gt; --nodeAddress &lt;nodeHttpAddress&gt;' "<a name="line.743"></a>
-<span class="sourceLineNo">744</span>            + "to get the container logs.");<a name="line.744"></a>
-<span class="sourceLineNo">745</span>        return -1;<a name="line.745"></a>
-<span class="sourceLineNo">746</span>      }<a name="line.746"></a>
-<span class="sourceLineNo">747</span>    }<a name="line.747"></a>
-<span class="sourceLineNo">748</span>  }<a name="line.748"></a>
-<span class="sourceLineNo">749</span><a name="line.749"></a>
-<span class="sourceLineNo">750</span>  private int fetchContainerLogs(ContainerLogsRequest request,<a name="line.750"></a>
-<span class="sourceLineNo">751</span>      LogCLIHelpers logCliHelper) throws IOException {<a name="line.751"></a>
-<span class="sourceLineNo">752</span>    int resultCode = 0;<a name="line.752"></a>
-<span class="sourceLineNo">753</span>    String appIdStr = request.getAppId().toString();<a name="line.753"></a>
-<span class="sourceLineNo">754</span>    String containerIdStr = request.getContainerId();<a name="line.754"></a>
-<span class="sourceLineNo">755</span>    String nodeAddress = request.getNodeId();<a name="line.755"></a>
-<span class="sourceLineNo">756</span>    String appOwner = request.getAppOwner();<a name="line.756"></a>
-<span class="sourceLineNo">757</span>    boolean isAppFinished = request.isAppFinished();<a name="line.757"></a>
-<span class="sourceLineNo">758</span>    List&lt;String&gt; logFiles = request.getLogTypes();<a name="line.758"></a>
-<span class="sourceLineNo">759</span>    // if we provide the node address and the application is in the final<a name="line.759"></a>
-<span class="sourceLineNo">760</span>    // state, we could directly get logs from HDFS.<a name="line.760"></a>
-<span class="sourceLineNo">761</span>    if (nodeAddress != null &amp;&amp; isAppFinished) {<a name="line.761"></a>
-<span class="sourceLineNo">762</span>      // if user specified "ALL" as the logFiles param, pass empty list<a name="line.762"></a>
-<span class="sourceLineNo">763</span>      // to logCliHelper so that it fetches all the logs<a name="line.763"></a>
-<span class="sourceLineNo">764</span>      return printContainerLogsForFinishedApplication(<a name="line.764"></a>
-<span class="sourceLineNo">765</span>          request, logCliHelper);<a name="line.765"></a>
-<span class="sourceLineNo">766</span>    }<a name="line.766"></a>
-<span class="sourceLineNo">767</span>    String nodeHttpAddress = null;<a name="line.767"></a>
-<span class="sourceLineNo">768</span>    String nodeId = null;<a name="line.768"></a>
-<span class="sourceLineNo">769</span>    try {<a name="line.769"></a>
-<span class="sourceLineNo">770</span>      // If the nodeAddress is not provided, we will try to get<a name="line.770"></a>
-<span class="sourceLineNo">771</span>      // the ContainerReport. In the containerReport, we could get<a name="line.771"></a>
-<span class="sourceLineNo">772</span>      // nodeAddress and nodeHttpAddress<a name="line.772"></a>
-<span class="sourceLineNo">773</span>      ContainerReport report = getContainerReport(containerIdStr);<a name="line.773"></a>
-<span class="sourceLineNo">774</span>      nodeHttpAddress =<a name="line.774"></a>
-<span class="sourceLineNo">775</span>          report.getNodeHttpAddress().replaceFirst(<a name="line.775"></a>
-<span class="sourceLineNo">776</span>            WebAppUtils.getHttpSchemePrefix(getConf()), "");<a name="line.776"></a>
-<span class="sourceLineNo">777</span>      nodeId = report.getAssignedNode().toString();<a name="line.777"></a>
-<span class="sourceLineNo">778</span>      request.setNodeId(nodeId);<a name="line.778"></a>
-<span class="sourceLineNo">779</span>      request.setNodeHttpAddress(nodeHttpAddress);<a name="line.779"></a>
-<span class="sourceLineNo">780</span>    } catch (IOException | YarnException ex) {<a name="line.780"></a>
-<span class="sourceLineNo">781</span>      if (isAppFinished) {<a name="line.781"></a>
-<span class="sourceLineNo">782</span>        return printContainerLogsForFinishedApplicationWithoutNodeId(<a name="line.782"></a>
-<span class="sourceLineNo">783</span>            request, logCliHelper);<a name="line.783"></a>
-<span class="sourceLineNo">784</span>      } else {<a name="line.784"></a>
-<span class="sourceLineNo">785</span>        System.err.println("Unable to get logs for this container:"<a name="line.785"></a>
-<span class="sourceLineNo">786</span>            + containerIdStr + "for the application:" + appIdStr<a name="line.786"></a>
-<span class="sourceLineNo">787</span>            + " with the appOwner: " + appOwner);<a name="line.787"></a>
-<span class="sourceLineNo">788</span>        System.err.println("The application: " + appIdStr<a name="line.788"></a>
-<span class="sourceLineNo">789</span>            + " is still running, and we can not get Container report "<a name="line.789"></a>
-<span class="sourceLineNo">790</span>            + "for the container: " + containerIdStr +". Please try later "<a name="line.790"></a>
-<span class="sourceLineNo">791</span>            + "or after the application finishes.");<a name="line.791"></a>
-<span class="sourceLineNo">792</span>        return -1;<a name="line.792"></a>
-<span class="sourceLineNo">793</span>      }<a name="line.793"></a>
-<span class="sourceLineNo">794</span>    }<a name="line.794"></a>
-<span class="sourceLineNo">795</span>    // If the application is not in the final state,<a name="line.795"></a>
-<span class="sourceLineNo">796</span>    // we will provide the NodeHttpAddress and get the container logs<a name="line.796"></a>
-<span class="sourceLineNo">797</span>    // by calling NodeManager webservice.<a name="line.797"></a>
-<span class="sourceLineNo">798</span>    if (!isAppFinished) {<a name="line.798"></a>
-<span class="sourceLineNo">799</span>      // if we do not specify the value for CONTAINER_LOG_FILES option,<a name="line.799"></a>
-<span class="sourceLineNo">800</span>      // we will only output syslog<a name="line.800"></a>
-<span class="sourceLineNo">801</span>      if (logFiles == null || logFiles.isEmpty()) {<a name="line.801"></a>
-<span class="sourceLineNo">802</span>        logFiles = Arrays.asList("syslog");<a name="line.802"></a>
-<span class="sourceLineNo">803</span>      }<a name="line.803"></a>
-<span class="sourceLineNo">804</span>      request.setLogTypes(logFiles);<a name="line.804"></a>
-<span class="sourceLineNo">805</span>      printContainerLogsFromRunningApplication(getConf(), request,<a name="line.805"></a>
-<span class="sourceLineNo">806</span>          logCliHelper);<a name="line.806"></a>
-<span class="sourceLineNo">807</span>    } else {<a name="line.807"></a>
-<span class="sourceLineNo">808</span>      // If the application is in the final state, we will directly<a name="line.808"></a>
-<span class="sourceLineNo">809</span>      // get the container logs from HDFS.<a name="line.809"></a>
-<span class="sourceLineNo">810</span>      resultCode = printContainerLogsForFinishedApplication(<a name="line.810"></a>
-<span class="sourceLineNo">811</span>          request, logCliHelper);<a name="line.811"></a>
-<span class="sourceLineNo">812</span>    }<a name="line.812"></a>
-<span class="sourceLineNo">813</span>    return resultCode;<a name="line.813"></a>
-<span class="sourceLineNo">814</span>  }<a name="line.814"></a>
-<span class="sourceLineNo">815</span><a name="line.815"></a>
-<span class="sourceLineNo">816</span>  private int fetchApplicationLogs(ContainerLogsRequest options,<a name="line.816"></a>
-<span class="sourceLineNo">817</span>      LogCLIHelpers logCliHelper) throws IOException, YarnException {<a name="line.817"></a>
-<span class="sourceLineNo">818</span>    // If the application has finished, we would fetch the logs<a name="line.818"></a>
-<span class="sourceLineNo">819</span>    // from HDFS.<a name="line.819"></a>
-<span class="sourceLineNo">820</span>    // If the application is still running, we would get the full<a name="line.820"></a>
-<span class="sourceLineNo">821</span>    // list of the containers first, then fetch the logs for each<a name="line.821"></a>
-<span class="sourceLineNo">822</span>    // container from NM.<a name="line.822"></a>
-<span class="sourceLineNo">823</span>    int resultCode = 0;<a name="line.823"></a>
-<span class="sourceLineNo">824</span>    if (options.isAppFinished()) {<a name="line.824"></a>
-<span class="sourceLineNo">825</span>      ContainerLogsRequest newOptions = getMatchedLogOptions(<a name="line.825"></a>
-<span class="sourceLineNo">826</span>          options, logCliHelper);<a name="line.826"></a>
-<span class="sourceLineNo">827</span>      if (newOptions == null) {<a name="line.827"></a>
-<span class="sourceLineNo">828</span>        resultCode = -1;<a name="line.828"></a>
-<span class="sourceLineNo">829</span>      } else {<a name="line.829"></a>
-<span class="sourceLineNo">830</span>        resultCode =<a name="line.830"></a>
-<span class="sourceLineNo">831</span>            logCliHelper.dumpAllContainersLogs(newOptions);<a name="line.831"></a>
-<span class="sourceLineNo">832</span>      }<a name="line.832"></a>
-<span class="sourceLineNo">833</span>    } else {<a name="line.833"></a>
-<span class="sourceLineNo">834</span>      List&lt;ContainerLogsRequest&gt; containerLogRequests =<a name="line.834"></a>
-<span class="sourceLineNo">835</span>          getContainersLogRequestForRunningApplication(options);<a name="line.835"></a>
-<span class="sourceLineNo">836</span>      for (ContainerLogsRequest container : containerLogRequests) {<a name="line.836"></a>
-<span class="sourceLineNo">837</span>        printContainerLogsFromRunningApplication(getConf(), container,<a name="line.837"></a>
-<span class="sourceLineNo">838</span>            logCliHelper);<a name="line.838"></a>
-<span class="sourceLineNo">839</span>      }<a name="line.839"></a>
-<span class="sourceLineNo">840</span>    }<a name="line.840"></a>
-<span class="sourceLineNo">841</span>    if (resultCode == -1) {<a name="line.841"></a>
-<span class="sourceLineNo">842</span>      System.err.println("Can not find the logs for the application: "<a name="line.842"></a>
-<span class="sourceLineNo">843</span>          + options.getAppId() + " with the appOwner: "<a name="line.843"></a>
-<span class="sourceLineNo">844</span>          + options.getAppOwner());<a name="line.844"></a>
-<span class="sourceLineNo">845</span>    }<a name="line.845"></a>
-<span class="sourceLineNo">846</span>    return resultCode;<a name="line.846"></a>
-<span class="sourceLineNo">847</span>  }<a name="line.847"></a>
-<span class="sourceLineNo">848</span><a name="line.848"></a>
-<span class="sourceLineNo">849</span>  private String guessAppOwner(ApplicationReport appReport,<a name="line.849"></a>
-<span class="sourceLineNo">850</span>      ApplicationId appId) throws IOException {<a name="line.850"></a>
-<span class="sourceLineNo">851</span>    String appOwner = null;<a name="line.851"></a>
-<span class="sourceLineNo">852</span>    if (appReport != null) {<a name="line.852"></a>
-<span class="sourceLineNo">853</span>      //always use the app owner from the app report if possible<a name="line.853"></a>
-<span class="sourceLineNo">854</span>      appOwner = appReport.getUser();<a name="line.854"></a>
-<span class="sourceLineNo">855</span>    } else {<a name="line.855"></a>
-<span class="sourceLineNo">856</span>      appOwner = UserGroupInformation.getCurrentUser().getShortUserName();<a name="line.856"></a>
-<span class="sourceLineNo">857</span>      appOwner = LogCLIHelpers.getOwnerForAppIdOrNull(<a name="line.857"></a>
-<span class="sourceLineNo">858</span>          appId, appOwner, getConf());<a name="line.858"></a>
-<span class="sourceLineNo">859</span>    }<a name="line.859"></a>
-<span class="sourceLineNo">860</span>    return appOwner;<a name="line.860"></a>
-<span class="sourceLineNo">861</span>  }<a name="line.861"></a>
-<span class="sourceLineNo">862</span><a name="line.862"></a>
-<span class="sourceLineNo">863</span>  private ContainerLogsRequest getMatchedLogOptions(<a name="line.863"></a>
-<span class="sourceLineNo">864</span>      ContainerLogsRequest request, LogCLIHelpers logCliHelper)<a name="line.864"></a>
-<span class="sourceLineNo">865</span>      throws IOException {<a name="line.865"></a>
-<span class="sourceLineNo">866</span>    ContainerLogsRequest newOptions = new ContainerLogsRequest(request);<a name="line.866"></a>
-<span class="sourceLineNo">867</span>    if (request.getLogTypes() != null &amp;&amp; !request.getLogTypes().isEmpty()) {<a name="line.867"></a>
-<span class="sourceLineNo">868</span>      List&lt;String&gt; matchedFiles = new ArrayList&lt;String&gt;();<a name="line.868"></a>
-<span class="sourceLineNo">869</span>      if (!request.getLogTypes().contains(".*")) {<a name="line.869"></a>
-<span class="sourceLineNo">870</span>        Set&lt;String&gt; files = logCliHelper.listContainerLogs(request);<a name="line.870"></a>
-<span class="sourceLineNo">871</span>        matchedFiles = getMatchedLogFiles(<a name="line.871"></a>
-<span class="sourceLineNo">872</span>            request, files, true);<a name="line.872"></a>
-<span class="sourceLineNo">873</span>        if (matchedFiles.isEmpty()) {<a name="line.873"></a>
-<span class="sourceLineNo">874</span>          return null;<a name="line.874"></a>
-<span class="sourceLineNo">875</span>        }<a name="line.875"></a>
-<span class="sourceLineNo">876</span>      }<a name="line.876"></a>
-<span class="sourceLineNo">877</span>      newOptions.setLogTypes(matchedFiles);<a name="line.877"></a>
-<span class="sourceLineNo">878</span>    }<a name="line.878"></a>
-<span class="sourceLineNo">879</span>    return newOptions;<a name="line.879"></a>
-<span class="sourceLineNo">880</span>  }<a name="line.880"></a>
-<span class="sourceLineNo">881</span><a name="line.881"></a>
-<span class="sourceLineNo">882</span>  private List&lt;String&gt; getMatchedLogFiles(ContainerLogsRequest options,<a name="line.882"></a>
-<span class="sourceLineNo">883</span>      Collection&lt;String&gt; candidate, boolean printError) throws IOException {<a name="line.883"></a>
-<span class="sourceLineNo">884</span>    List&lt;String&gt; matchedFiles = new ArrayList&lt;String&gt;();<a name="line.884"></a>
-<span class="sourceLineNo">885</span>    List&lt;String&gt; filePattern = options.getLogTypes();<a name="line.885"></a>
-<span class="sourceLineNo">886</span>    for (String file : candidate) {<a name="line.886"></a>
-<span class="sourceLineNo">887</span>      if (isFileMatching(file, filePattern)) {<a name="line.887"></a>
-<span class="sourceLineNo">888</span>        matchedFiles.add(file);<a name="line.888"></a>
-<span class="sourceLineNo">889</span>      }<a name="line.889"></a>
-<span class="sourceLineNo">890</span>    }<a name="line.890"></a>
-<span class="sourceLineNo">891</span>    if (matchedFiles.isEmpty()) {<a name="line.891"></a>
-<span class="sourceLineNo">892</span>      if (printError) {<a name="line.892"></a>
-<span class="sourceLineNo">893</span>        System.err.println("Can not find any log file matching the pattern: "<a name="line.893"></a>
-<span class="sourceLineNo">894</span>            + options.getLogTypes() + " for the application: "<a name="line.894"></a>
-<span class="sourceLineNo">895</span>            + options.getAppId());<a name="line.895"></a>
-<span class="sourceLineNo">896</span>      }<a name="line.896"></a>
-<span class="sourceLineNo">897</span>    }<a name="line.897"></a>
-<span class="sourceLineNo">898</span>    return matchedFiles;<a name="line.898"></a>
-<span class="sourceLineNo">899</span>  }<a name="line.899"></a>
-<span class="sourceLineNo">900</span><a name="line.900"></a>
-<span class="sourceLineNo">901</span>  private boolean isFileMatching(String fileType,<a name="line.901"></a>
-<span class="sourceLineNo">902</span>      List&lt;String&gt; logTypes) {<a name="line.902"></a>
-<span class="sourceLineNo">903</span>    for (String logType : logTypes) {<a name="line.903"></a>
-<span class="sourceLineNo">904</span>      Pattern filterPattern = Pattern.compile(logType);<a name="line.904"></a>
-<span class="sourceLineNo">905</span>      boolean match = filterPattern.matcher(fileType).find();<a name="line.905"></a>
-<span class="sourceLineNo">906</span>      if (match) {<a name="line.906"></a>
-<span class="sourceLineNo">907</span>        return true;<a name="line.907"></a>
-<span class="sourceLineNo">908</span>      }<a name="line.908"></a>
-<span class="sourceLineNo">909</span>    }<a name="line.909"></a>
-<span class="sourceLineNo">910</span>    return false;<a name="line.910"></a>
-<span class="sourceLineNo">911</span>  }<a name="line.911"></a>
-<span class="sourceLineNo">912</span><a name="line.912"></a>
-<span class="sourceLineNo">913</span>  private List&lt;ContainerLogsRequest&gt;<a name="line.913"></a>
-<span class="sourceLineNo">914</span>      getContainersLogRequestForRunningApplication(<a name="line.914"></a>
-<span class="sourceLineNo">915</span>          ContainerLogsRequest options) throws YarnException, IOException {<a name="line.915"></a>
-<span class="sourceLineNo">916</span>    List&lt;ContainerLogsRequest&gt; newOptionsList =<a name="line.916"></a>
-<span class="sourceLineNo">917</span>        new ArrayList&lt;ContainerLogsRequest&gt;();<a name="line.917"></a>
-<span class="sourceLineNo">918</span>    YarnClient yarnClient = createYarnClient();<a name="line.918"></a>
-<span class="sourceLineNo">919</span>    try {<a name="line.919"></a>
-<span class="sourceLineNo">920</span>      List&lt;ApplicationAttemptReport&gt; attempts =<a name="line.920"></a>
-<span class="sourceLineNo">921</span>          yarnClient.getApplicationAttempts(options.getAppId());<a name="line.921"></a>
-<span class="sourceLineNo">922</span>      for (ApplicationAttemptReport attempt : attempts) {<a name="line.922"></a>
-<span class="sourceLineNo">923</span>        List&lt;ContainerReport&gt; containers = yarnClient.getContainers(<a name="line.923"></a>
-<span class="sourceLineNo">924</span>            attempt.getApplicationAttemptId());<a name="line.924"></a>
-<span class="sourceLineNo">925</span>        for (ContainerReport container : containers) {<a name="line.925"></a>
-<span class="sourceLineNo">926</span>          ContainerLogsRequest newOptions = new ContainerLogsRequest(options);<a name="line.926"></a>
-<span class="sourceLineNo">927</span>          newOptions.setContainerId(container.getContainerId().toString());<a name="line.927"></a>
-<span class="sourceLineNo">928</span>          newOptions.setNodeId(container.getAssignedNode().toString());<a name="line.928"></a>
-<span class="sourceLineNo">929</span>          newOptions.setNodeHttpAddress(container.getNodeHttpAddress()<a name="line.929"></a>
-<span class="sourceLineNo">930</span>              .replaceFirst(WebAppUtils.getHttpSchemePrefix(getConf()), ""));<a name="line.930"></a>
-<span class="sourceLineNo">931</span>          // if we do not specify the value for CONTAINER_LOG_FILES option,<a name="line.931"></a>
-<span class="sourceLineNo">932</span>          // we will only output syslog<a name="line.932"></a>
-<span class="sourceLineNo">933</span>          List&lt;String&gt; logFiles = newOptions.getLogTypes();<a name="line.933"></a>
-<span class="sourceLineNo">934</span>          if (logFiles == null || logFiles.isEmpty()) {<a name="line.934"></a>
-<span class="sourceLineNo">935</span>            logFiles = Arrays.asList("syslog");<a name="line.935"></a>
-<span class="sourceLineNo">936</span>            newOptions.setLogTypes(logFiles);<a name="line.936"></a>
-<span class="sourceLineNo">937</span>          }<a name="line.937"></a>
-<span class="sourceLineNo">938</span>          newOptionsList.add(newOptions);<a name="line.938"></a>
-<span class="sourceLineNo">939</span>        }<a name="line.939"></a>
-<span class="sourceLineNo">940</span>      }<a name="line.940"></a>
-<span class="sourceLineNo">941</span>      return newOptionsList;<a name="line.941"></a>
-<span class="sourceLineNo">942</span>    } finally {<a name="line.942"></a>
-<span class="sourceLineNo">943</span>      yarnClient.close();<a name="line.943"></a>
-<span class="sourceLineNo">944</span>    }<a name="line.944"></a>
-<span class="sourceLineNo">945</span>  }<a name="line.945"></a>
-<span class="sourceLineNo">946</span>}<a name="line.946"></a>
+<span class="sourceLineNo">281</span>    String webAppAddress = WebAppUtils.getHttpSchemePrefix(conf) +<a name="line.281"></a>
+<span class="sourceLineNo">282</span>        WebAppUtils.getWebAppBindURL(conf, YarnConfiguration.RM_BIND_HOST,<a name="line.282"></a>
+<span class="sourceLineNo">283</span>        WebAppUtils.getRMWebAppURLWithoutScheme(conf));<a name="line.283"></a>
+<span class="sourceLineNo">284</span>    WebResource webResource = webServiceClient.resource(webAppAddress);<a name="line.284"></a>
+<span class="sourceLineNo">285</span><a name="line.285"></a>
+<span class="sourceLineNo">286</span>    ClientResponse response =<a name="line.286"></a>
+<span class="sourceLineNo">287</span>        webResource.path("ws").path("v1").path("cluster").path("apps")<a name="line.287"></a>
+<span class="sourceLineNo">288</span>          .path(appId).path("appattempts").accept(MediaType.APPLICATION_JSON)<a name="line.288"></a>
+<span class="sourceLineNo">289</span>          .get(ClientResponse.class);<a name="line.289"></a>
+<span class="sourceLineNo">290</span>    JSONObject json =<a name="line.290"></a>
+<span class="sourceLineNo">291</span>        response.getEntity(JSONObject.class).getJSONObject("appAttempts");<a name="line.291"></a>
+<span class="sourceLineNo">292</span>    JSONArray requests = json.getJSONArray("appAttempt");<a name="line.292"></a>
+<span class="sourceLineNo">293</span>    List&lt;JSONObject&gt; amContainersList = new ArrayList&lt;JSONObject&gt;();<a name="line.293"></a>
+<span class="sourceLineNo">294</span>    for (int i = 0; i &lt; requests.length(); i++) {<a name="line.294"></a>
+<span class="sourceLineNo">295</span>      amContainersList.add(requests.getJSONObject(i));<a name="line.295"></a>
+<span class="sourceLineNo">296</span>    }<a name="line.296"></a>
+<span class="sourceLineNo">297</span>    return amContainersList;<a name="line.297"></a>
+<span class="sourceLineNo">298</span>  }<a name="line.298"></a>
+<span class="sourceLineNo">299</span><a name="line.299"></a>
+<span class="sourceLineNo">300</span>  private List&lt;JSONObject&gt; getAMContainerInfoForAHSWebService(<a name="line.300"></a>
+<span class="sourceLineNo">301</span>      Configuration conf, String appId) throws ClientHandlerException,<a name="line.301"></a>
+<span class="sourceLineNo">302</span>      UniformInterfaceException, JSONException {<a name="line.302"></a>
+<span class="sourceLineNo">303</span>    Client webServiceClient = Client.create();<a name="line.303"></a>
+<span class="sourceLineNo">304</span>    String webAppAddress =<a name="line.304"></a>
+<span class="sourceLineNo">305</span>        WebAppUtils.getHttpSchemePrefix(conf)<a name="line.305"></a>
+<span class="sourceLineNo">306</span>            + WebAppUtils.getAHSWebAppURLWithoutScheme(conf);<a name="line.306"></a>
+<span class="sourceLineNo">307</span>    WebResource webResource = webServiceClient.resource(webAppAddress);<a name="line.307"></a>
+<span class="sourceLineNo">308</span><a name="line.308"></a>
+<span class="sourceLineNo">309</span>    ClientResponse response =<a name="line.309"></a>
+<span class="sourceLineNo">310</span>        webResource.path("ws").path("v1").path("applicationhistory")<a name="line.310"></a>
+<span class="sourceLineNo">311</span>          .path("apps").path(appId).path("appattempts")<a name="line.311"></a>
+<span class="sourceLineNo">312</span>          .accept(MediaType.APPLICATION_JSON)<a name="line.312"></a>
+<span class="sourceLineNo">313</span>          .get(ClientResponse.class);<a name="line.313"></a>
+<span class="sourceLineNo">314</span>    JSONObject json = response.getEntity(JSONObject.class);<a name="line.314"></a>
+<span class="sourceLineNo">315</span>    JSONArray requests = json.getJSONArray("appAttempt");<a name="line.315"></a>
+<span class="sourceLineNo">316</span>    List&lt;JSONObject&gt; amContainersList = new ArrayList&lt;JSONObject&gt;();<a name="line.316"></a>
+<span class="sourceLineNo">317</span>    for (int i = 0; i &lt; requests.length(); i++) {<a name="line.317"></a>
+<span class="sourceLineNo">318</span>      amContainersList.add(requests.getJSONObject(i));<a name="line.318"></a>
+<span class="sourceLineNo">319</span>    }<a name="line.319"></a>
+<span class="sourceLineNo">320</span>    Collections.reverse(amContainersList);<a name="line.320"></a>
+<span class="sourceLineNo">321</span>    return amContainersList;<a name="line.321"></a>
+<span class="sourceLineNo">322</span>  }<a name="line.322"></a>
+<span class="sourceLineNo">323</span><a name="line.323"></a>
+<span class="sourceLineNo">324</span>  private boolean fetchAllLogFiles(String[] logFiles) {<a name="line.324"></a>
+<span class="sourceLineNo">325</span>    if(logFiles != null) {<a name="line.325"></a>
+<span class="sourceLineNo">326</span>      List&lt;String&gt; logs = Arrays.asList(logFiles);<a name="line.326"></a>
+<span class="sourceLineNo">327</span>      if(logs.contains("ALL") || logs.contains(".*")) {<a name="line.327"></a>
+<span class="sourceLineNo">328</span>        return true;<a name="line.328"></a>
+<span class="sourceLineNo">329</span>      }<a name="line.329"></a>
+<span class="sourceLineNo">330</span>    }<a name="line.330"></a>
+<span class="sourceLineNo">331</span>    return false;<a name="line.331"></a>
+<span class="sourceLineNo">332</span>  }<a name="line.332"></a>
+<span class="sourceLineNo">333</span><a name="line.333"></a>
+<span class="sourceLineNo">334</span>  private List&lt;String&gt; getContainerLogFiles(Configuration conf,<a name="line.334"></a>
+<span class="sourceLineNo">335</span>      String containerIdStr, String nodeHttpAddress) throws IOException {<a name="line.335"></a>
+<span class="sourceLineNo">336</span>    List&lt;String&gt; logFiles = new ArrayList&lt;&gt;();<a name="line.336"></a>
+<span class="sourceLineNo">337</span>    Client webServiceClient = Client.create();<a name="line.337"></a>
+<span class="sourceLineNo">338</span>    try {<a name="line.338"></a>
+<span class="sourceLineNo">339</span>      WebResource webResource = webServiceClient<a name="line.339"></a>
+<span class="sourceLineNo">340</span>          .resource(WebAppUtils.getHttpSchemePrefix(conf) + nodeHttpAddress);<a name="line.340"></a>
+<span class="sourceLineNo">341</span>      ClientResponse response =<a name="line.341"></a>
+<span class="sourceLineNo">342</span>          webResource.path("ws").path("v1").path("node").path("containers")<a name="line.342"></a>
+<span class="sourceLineNo">343</span>              .path(containerIdStr).accept(MediaType.APPLICATION_XML)<a name="line.343"></a>
+<span class="sourceLineNo">344</span>              .get(ClientResponse.class);<a name="line.344"></a>
+<span class="sourceLineNo">345</span>      if (response.getClientResponseStatus().equals(ClientResponse.Status.OK)) {<a name="line.345"></a>
+<span class="sourceLineNo">346</span>        try {<a name="line.346"></a>
+<span class="sourceLineNo">347</span>          String xml = response.getEntity(String.class);<a name="line.347"></a>
+<span class="sourceLineNo">348</span>          DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();<a name="line.348"></a>
+<span class="sourceLineNo">349</span>          DocumentBuilder db = dbf.newDocumentBuilder();<a name="line.349"></a>
+<span class="sourceLineNo">350</span>          InputSource is = new InputSource();<a name="line.350"></a>
+<span class="sourceLineNo">351</span>          is.setCharacterStream(new StringReader(xml));<a name="line.351"></a>
+<span class="sourceLineNo">352</span>          Document dom = db.parse(is);<a name="line.352"></a>
+<span class="sourceLineNo">353</span>          NodeList elements = dom.getElementsByTagName("containerLogFiles");<a name="line.353"></a>
+<span class="sourceLineNo">354</span>          for (int i = 0; i &lt; elements.getLength(); i++) {<a name="line.354"></a>
+<span class="sourceLineNo">355</span>            logFiles.add(elements.item(i).getTextContent());<a name="line.355"></a>
+<span class="sourceLineNo">356</span>          }<a name="line.356"></a>
+<span class="sourceLineNo">357</span>        } catch (Exception e) {<a name="line.357"></a>
+<span class="sourceLineNo">358</span>          System.err.println("Unable to parse xml from webservice. Error:");<a name="line.358"></a>
+<span class="sourceLineNo">359</span>          System.err.println(e.getMessage());<a name="line.359"></a>
+<span class="sourceLineNo">360</span>          throw new IOException(e);<a name="line.360"></a>
+<span class="sourceLineNo">361</span>        }<a name="line.361"></a>
+<span class="sourceLineNo">362</span>      }<a name="line.362"></a>
+<span class="sourceLineNo">363</span><a name="line.363"></a>
+<span class="sourceLineNo">364</span>    } catch (ClientHandlerException | UniformInterfaceException ex) {<a name="line.364"></a>
+<span class="sourceLineNo">365</span>      System.err.println("Unable to fetch log files list");<a name="line.365"></a>
+<span class="sourceLineNo">366</span>      throw new IOException(ex);<a name="line.366"></a>
+<span class="sourceLineNo">367</span>    }<a name="line.367"></a>
+<span class="sourceLineNo">368</span>    return logFiles;<a name="line.368"></a>
+<span class="sourceLineNo">369</span>  }<a name="line.369"></a>
+<span class="sourceLineNo">370</span><a name="line.370"></a>
+<span class="sourceLineNo">371</span>  @Private<a name="line.371"></a>
+<span class="sourceLineNo">372</span>  @VisibleForTesting<a name="line.372"></a>
+<span class="sourceLineNo">373</span>  public void printContainerLogsFromRunningApplication(Configuration conf,<a name="line.373"></a>
+<span class="sourceLineNo">374</span>      ContainerLogsRequest request, LogCLIHelpers logCliHelper)<a name="line.374"></a>
+<span class="sourceLineNo">375</span>      throws IOException {<a name="line.375"></a>
+<span class="sourceLineNo">376</span>    String containerIdStr = request.getContainerId().toString();<a name="line.376"></a>
+<span class="sourceLineNo">377</span>    String localDir = request.getOutputLocalDir();<a name="line.377"></a>
+<span class="sourceLineNo">378</span>    String nodeHttpAddress = request.getNodeHttpAddress();<a name="line.378"></a>
+<span class="sourceLineNo">379</span>    String nodeId = request.getNodeId();<a name="line.379"></a>
+<span class="sourceLineNo">380</span>    PrintStream out = logCliHelper.createPrintStream(localDir, nodeId,<a name="line.380"></a>
+<span class="sourceLineNo">381</span>        containerIdStr);<a name="line.381"></a>
+<span class="sourceLineNo">382</span>    try {<a name="line.382"></a>
+<span class="sourceLineNo">383</span>      // fetch all the log files for the container<a name="line.383"></a>
+<span class="sourceLineNo">384</span>      // filter the log files based on the given --logFiles pattern<a name="line.384"></a>
+<span class="sourceLineNo">385</span>      List&lt;String&gt; allLogs=<a name="line.385"></a>
+<span class="sourceLineNo">386</span>          getContainerLogFiles(getConf(), containerIdStr, nodeHttpAddress);<a name="line.386"></a>
+<span class="sourceLineNo">387</span>      List&lt;String&gt; matchedFiles = getMatchedLogFiles(<a name="line.387"></a>
+<span class="sourceLineNo">388</span>          request, allLogs, true);<a name="line.388"></a>
+<span class="sourceLineNo">389</span>      if (matchedFiles.isEmpty()) {<a name="line.389"></a>
+<span class="sourceLineNo">390</span>        return;<a name="line.390"></a>
+<span class="sourceLineNo">391</span>      }<a name="line.391"></a>
+<span class="sourceLineNo">392</span>      ContainerLogsRequest newOptions = new ContainerLogsRequest(request);<a name="line.392"></a>
+<span class="sourceLineNo">393</span>      newOptions.setLogTypes(matchedFiles);<a name="line.393"></a>
+<span class="sourceLineNo">394</span><a name="line.394"></a>
+<span class="sourceLineNo">395</span>      Client webServiceClient = Client.create();<a name="line.395"></a>
+<span class="sourceLineNo">396</span>      String containerString = "\n\nContainer: " + containerIdStr;<a name="line.396"></a>
+<span class="sourceLineNo">397</span>      out.println(containerString);<a name="line.397"></a>
+<span class="sourceLineNo">398</span>      out.println(StringUtils.repeat("=", containerString.length()));<a name="line.398"></a>
+<span class="sourceLineNo">399</span><a name="line.399"></a>
+<span class="sourceLineNo">400</span>      for (String logFile : newOptions.getLogTypes()) {<a name="line.400"></a>
+<span class="sourceLineNo">401</span>        out.println("LogType:" + logFile);<a name="line.401"></a>
+<span class="sourceLineNo">402</span>        out.println("Log Upload Time:"<a name="line.402"></a>
+<span class="sourceLineNo">403</span>            + Times.format(System.currentTimeMillis()));<a name="line.403"></a>
+<span class="sourceLineNo">404</span>        out.println("Log Contents:");<a name="line.404"></a>
+<span class="sourceLineNo">405</span>        try {<a name="line.405"></a>
+<span class="sourceLineNo">406</span>          WebResource webResource =<a name="line.406"></a>
+<span class="sourceLineNo">407</span>              webServiceClient.resource(WebAppUtils.getHttpSchemePrefix(conf)<a name="line.407"></a>
+<span class="sourceLineNo">408</span>                  + nodeHttpAddress);<a name="line.408"></a>
+<span class="sourceLineNo">409</span>          ClientResponse response =<a name="line.409"></a>
+<span class="sourceLineNo">410</span>              webResource.path("ws").path("v1").path("node")<a name="line.410"></a>
+<span class="sourceLineNo">411</span>                .path("containerlogs").path(containerIdStr).path(logFile)<a name="line.411"></a>
+<span class="sourceLineNo">412</span>                .queryParam("size", Long.toString(request.getBytes()))<a name="line.412"></a>
+<span class="sourceLineNo">413</span>                .accept(MediaType.TEXT_PLAIN).get(ClientResponse.class);<a name="line.413"></a>
+<span class="sourceLineNo">414</span>          out.println(response.getEntity(String.class));<a name="line.414"></a>
+<span class="sourceLineNo">415</span>          out.println("End of LogType:" + logFile);<a name="line.415"></a>
+<span class="sourceLineNo">416</span>          out.flush();<a name="line.416"></a>
+<span class="sourceLineNo">417</span>        } catch (ClientHandlerException | UniformInterfaceException ex) {<a name="line.417"></a>
+<span class="sourceLineNo">418</span>          System.err.println("Can not find the log file:" + logFile<a name="line.418"></a>
+<span class="sourceLineNo">419</span>              + " for the container:" + containerIdStr + " in NodeManager:"<a name="line.419"></a>
+<span class="sourceLineNo">420</span>              + nodeId);<a name="line.420"></a>
+<span class="sourceLineNo">421</span>        }<a name="line.421"></a>
+<span class="sourceLineNo">422</span>      }<a name="line.422"></a>
+<span class="sourceLineNo">423</span>      // for the case, we have already uploaded partial logs in HDFS<a name="line.423"></a>
+<span class="sourceLineNo">424</span>      logCliHelper.dumpAContainersLogsForALogType(newOptions, false);<a name="line.424"></a>
+<span class="sourceLineNo">425</span>    } finally {<a name="line.425"></a>
+<span class="sourceLineNo">426</span>      logCliHelper.closePrintStream(out);<a name="line.426"></a>
+<span class="sourceLineNo">427</span>    }<a name="line.427"></a>
+<span class="sourceLineNo">428</span>  }<a name="line.428"></a>
+<span class="sourceLineNo">429</span><a name="line.429"></a>
+<span class="sourceLineNo">430</span>  private int printContainerLogsForFinishedApplication(<a name="line.430"></a>
+<span class="sourceLineNo">431</span>      ContainerLogsRequest request, LogCLIHelpers logCliHelper)<a name="line.431"></a>
+<span class="sourceLineNo">432</span>      throws IOException {<a name="line.432"></a>
+<span class="sourceLineNo">433</span>    ContainerLogsRequest newOptions = getMatchedLogOptions(<a name="line.433"></a>
+<span class="sourceLineNo">434</span>        request, logCliHelper);<a name="line.434"></a>
+<span class="sourceLineNo">435</span>    if (newOptions == null) {<a name="line.435"></a>
+<span class="sourceLineNo">436</span>      return -1;<a name="line.436"></a>
+<span class="sourceLineNo">437</span>    }<a name="line.437"></a>
+<span class="sourceLineNo">438</span>    return logCliHelper.dumpAContainersLogsForALogType(newOptions);<a name="line.438"></a>
+<span class="sourceLineNo">439</span>  }<a name="line.439"></a>
+<span class="sourceLineNo">440</span><a name="line.440"></a>
+<span class="sourceLineNo">441</span>  private int printContainerLogsForFinishedApplicationWithoutNodeId(<a name="line.441"></a>
+<span class="sourceLineNo">442</span>      ContainerLogsRequest request, LogCLIHelpers logCliHelper)<a name="line.442"></a>
+<span class="sourceLineNo">443</span>      throws IOException {<a name="line.443"></a>
+<span class="sourceLineNo">444</span>    ContainerLogsRequest newOptions = getMatchedLogOptions(<a name="line.444"></a>
+<span class="sourceLineNo">445</span>        request, logCliHelper);<a name="line.445"></a>
+<span class="sourceLineNo">446</span>    if (newOptions == null) {<a name="line.446"></a>
+<span class="sourceLineNo">447</span>      return -1;<a name="line.447"></a>
+<span class="sourceLineNo">448</span>    }<a name="line.448"></a>
+<span class="sourceLineNo">449</span>    return logCliHelper.dumpAContainersLogsForALogTypeWithoutNodeId(<a name="line.449"></a>
+<span class="sourceLineNo">450</span>        newOptions);<a name="line.450"></a>
+<span class="sourceLineNo">451</span>  }<a name="line.451"></a>
+<span class="sourceLineNo">452</span><a name="line.452"></a>
+<span class="sourceLineNo">453</span>  @Private<a name="line.453"></a>
+<span class="sourceLineNo">454</span>  @VisibleForTesting<a name="line.454"></a>
+<span class="sourceLineNo">455</span>  public ContainerReport getContainerReport(String containerIdStr)<a name="line.455"></a>
+<span class="sourceLineNo">456</span>      throws YarnException, IOException {<a name="line.456"></a>
+<span class="sourceLineNo">457</span>    YarnClient yarnClient = createYarnClient();<a name="line.457"></a>
+<span class="sourceLineNo">458</span>    try {<a name="line.458"></a>
+<span class="sourceLineNo">459</span>      return yarnClient.getContainerReport(ConverterUtils<a name="line.459"></a>
+<span class="sourceLineNo">460</span>        .toContainerId(containerIdStr));<a name="line.460"></a>
+<span class="sourceLineNo">461</span>    } finally {<a name="line.461"></a>
+<span class="sourceLineNo">462</span>      yarnClient.close();<a name="line.462"></a>
+<span class="sourceLineNo">463</span>    }<a name="line.463"></a>
+<span class="sourceLineNo">464</span>  }<a name="line.464"></a>
+<span class="sourceLineNo">465</span><a name="line.465"></a>
+<span class="sourceLineNo">466</span>  private boolean isApplicationFinished(YarnApplicationState appState) {<a name="line.466"></a>
+<span class="sourceLineNo">467</span>    return appState == YarnApplicationState.FINISHED<a name="line.467"></a>
+<span class="sourceLineNo">468</span>        || appState == YarnApplicationState.FAILED<a name="line.468"></a>
+<span class="sourceLineNo">469</span>        || appState == YarnApplicationState.KILLED; <a name="line.469"></a>
+<span class="sourceLineNo">470</span>  }<a name="line.470"></a>
+<span class="sourceLineNo">471</span><a name="line.471"></a>
+<span class="sourceLineNo">472</span>  private int printAMContainerLogs(Configuration conf,<a name="line.472"></a>
+<span class="sourceLineNo">473</span>      ContainerLogsRequest request, List&lt;String&gt; amContainers,<a name="line.473"></a>
+<span class="sourceLineNo">474</span>      LogCLIHelpers logCliHelper) throws Exception {<a name="line.474"></a>
+<span class="sourceLineNo">475</span>    List&lt;JSONObject&gt; amContainersList = null;<a name="line.475"></a>
+<span class="sourceLineNo">476</span>    List&lt;ContainerLogsRequest&gt; requests =<a name="line.476"></a>
+<span class="sourceLineNo">477</span>        new ArrayList&lt;ContainerLogsRequest&gt;();<a name="line.477"></a>
+<span class="sourceLineNo">478</span>    boolean getAMContainerLists = false;<a name="line.478"></a>
+<span class="sourceLineNo">479</span>    String appId = request.getAppId().toString();<a name="line.479"></a>
+<span class="sourceLineNo">480</span>    String errorMessage = "";<a name="line.480"></a>
+<span class="sourceLineNo">481</span>    try {<a name="line.481"></a>
+<span class="sourceLineNo">482</span>      amContainersList = getAMContainerInfoForRMWebService(conf, appId);<a name="line.482"></a>
+<span class="sourceLineNo">483</span>      if (amContainersList != null &amp;&amp; !amContainersList.isEmpty()) {<a name="line.483"></a>
+<span class="sourceLineNo">484</span>        getAMContainerLists = true;<a name="line.484"></a>
+<span class="sourceLineNo">485</span>        for (JSONObject amContainer : amContainersList) {<a name="line.485"></a>
+<span class="sourceLineNo">486</span>          ContainerLogsRequest amRequest = new ContainerLogsRequest(request);<a name="line.486"></a>
+<span class="sourceLineNo">487</span>          amRequest.setContainerId(amContainer.getString("containerId"));<a name="line.487"></a>
+<span class="sourceLineNo">488</span>          amRequest.setNodeHttpAddress(<a name="line.488"></a>
+<span class="sourceLineNo">489</span>              amContainer.getString("nodeHttpAddress"));<a name="line.489"></a>
+<span class="sourceLineNo">490</span>          amRequest.setNodeId(amContainer.getString("nodeId"));<a name="line.490"></a>
+<span class="sourceLineNo">491</span>          requests.add(amRequest);<a name="line.491"></a>
+<span class="sourceLineNo">492</span>        }<a name="line.492"></a>
+<span class="sourceLineNo">493</span>      }<a name="line.493"></a>
+<span class="sourceLineNo">494</span>    } catch (Exception ex) {<a name="line.494"></a>
+<span class="sourceLineNo">495</span>      errorMessage = ex.getMessage();<a name="line.495"></a>
+<span class="sourceLineNo">496</span>      if (request.isAppFinished()) {<a name="line.496"></a>
+<span class="sourceLineNo">497</span>        try {<a name="line.497"></a>
+<span class="sourceLineNo">498</span>          amContainersList = getAMContainerInfoForAHSWebService(conf, appId);<a name="line.498"></a>
+<span class="sourceLineNo">499</span>          if (amContainersList != null &amp;&amp; !amContainersList.isEmpty()) {<a name="line.499"></a>
+<span class="sourceLineNo">500</span>            getAMContainerLists = true;<a name="line.500"></a>
+<span class="sourceLineNo">501</span>            for (JSONObject amContainer : amContainersList) {<a name="line.501"></a>
+<span class="sourceLineNo">502</span>              ContainerLogsRequest amRequest = new ContainerLogsRequest(<a name="line.502"></a>
+<span class="sourceLineNo">503</span>                  request);<a name="line.503"></a>
+<span class="sourceLineNo">504</span>              amRequest.setContainerId(amContainer.getString("amContainerId"));<a name="line.504"></a>
+<span class="sourceLineNo">505</span>              requests.add(amRequest);<a name="line.505"></a>
+<span class="sourceLineNo">506</span>            }<a name="line.506"></a>
+<span class="sourceLineNo">507</span>          }<a name="line.507"></a>
+<span class="sourceLineNo">508</span>        } catch (Exception e) {<a name="line.508"></a>
+<span class="sourceLineNo">509</span>          errorMessage = e.getMessage();<a name="line.509"></a>
+<span class="sourceLineNo">510</span>        }<a name="line.510"></a>
+<span class="sourceLineNo">511</span>      }<a name="line.511"></a>
+<span class="sourceLineNo">512</span>    }<a name="line.512"></a>
+<span class="sourceLineNo">513</span><a name="line.513"></a>
+<span class="sourceLineNo">514</span>    if (!getAMContainerLists) {<a name="line.514"></a>
+<span class="sourceLineNo">515</span>      System.err.println("Unable to get AM container informations "<a name="line.515"></a>
+<span class="sourceLineNo">516</span>          + "for the application:" + appId);<a name="line.516"></a>
+<span class="sourceLineNo">517</span>      System.err.println(errorMessage);<a name="line.517"></a>
+<span class="sourceLineNo">518</span>      return -1;<a name="line.518"></a>
+<span class="sourceLineNo">519</span>    }<a name="line.519"></a>
+<span class="sourceLineNo">520</span><a name="line.520"></a>
+<span class="sourceLineNo">521</span>    if (amContainers.contains("ALL")) {<a name="line.521"></a>
+<span class="sourceLineNo">522</span>      for (ContainerLogsRequest amRequest : requests) {<a name="line.522"></a>
+<span class="sourceLineNo">523</span>        outputAMContainerLogs(amRequest, conf, logCliHelper);<a name="line.523"></a>
+<span class="sourceLineNo">524</span>      }<a name="line.524"></a>
+<span class="sourceLineNo">525</span>      System.out.println();      <a name="line.525"></a>
+<span class="sourceLineNo">526</span>      System.out.println("Specified ALL for -am option. "<a name="line.526"></a>
+<span class="sourceLineNo">527</span>          + "Printed logs for all am containers.");<a name="line.527"></a>
+<span class="sourceLineNo">528</span>    } else {<a name="line.528"></a>
+<span class="sourceLineNo">529</span>      for (String amContainer : amContainers) {<a name="line.529"></a>
+<span class="sourceLineNo">530</span>        int amContainerId = Integer.parseInt(amContainer.trim());<a name="line.530"></a>
+<span class="sourceLineNo">531</span>        if (amContainerId == -1) {<a name="line.531"></a>
+<span class="sourceLineNo">532</span>          outputAMContainerLogs(requests.get(requests.size() - 1), conf,<a name="line.532"></a>
+<span class="sourceLineNo">533</span>              logCliHelper);<a name="line.533"></a>
+<span class="sourceLineNo">534</span>        } else {<a name="line.534"></a>
+<span class="sourceLineNo">535</span>          if (amContainerId &lt;= requests.size()) {<a name="line.535"></a>
+<span class="sourceLineNo">536</span>            outputAMContainerLogs(requests.get(amContainerId - 1), conf,<a name="line.536"></a>
+<span class="sourceLineNo">537</span>                logCliHelper);<a name="line.537"></a>
+<span class="sourceLineNo">538</span>          }<a name="line.538"></a>
+<span class="sourceLineNo">539</span>        }<a name="line.539"></a>
+<span class="sourceLineNo">540</span>      }<a name="line.540"></a>
+<span class="sourceLineNo">541</span>    }<a name="line.541"></a>
+<span class="sourceLineNo">542</span>    return 0;<a name="line.542"></a>
+<span class="sourceLineNo">543</span>  }<a name="line.543"></a>
+<span class="sourceLineNo">544</span><a name="line.544"></a>
+<span class="sourceLineNo">545</span>  private void outputAMContainerLogs(ContainerLogsRequest request,<a name="line.545"></a>
+<span class="sourceLineNo">546</span>      Configuration conf, LogCLIHelpers logCliHelper) throws Exception {<a name="line.546"></a>
+<span class="sourceLineNo">547</span>    String nodeHttpAddress = request.getNodeHttpAddress();<a name="line.547"></a>
+<span class="sourceLineNo">548</span>    String containerId = request.getContainerId();<a name="line.548"></a>
+<span class="sourceLineNo">549</span>    String nodeId = request.getNodeId();<a name="line.549"></a>
+<span class="sourceLineNo">550</span><a name="line.550"></a>
+<span class="sourceLineNo">551</span>    if (request.isAppFinished()) {<a name="line.551"></a>
+<span class="sourceLineNo">552</span>      if (containerId != null &amp;&amp; !containerId.isEmpty()) {<a name="line.552"></a>
+<span class="sourceLineNo">553</span>        if (nodeId == null || nodeId.isEmpty()) {<a name="line.553"></a>
+<span class="sourceLineNo">554</span>          try {<a name="line.554"></a>
+<span class="sourceLineNo">555</span>            nodeId =<a name="line.555"></a>
+<span class="sourceLineNo">556</span>                getContainerReport(containerId).getAssignedNode().toString();<a name="line.556"></a>
+<span class="sourceLineNo">557</span>            request.setNodeId(nodeId);<a name="line.557"></a>
+<span class="sourceLineNo">558</span>          } catch (Exception ex) {<a name="line.558"></a>
+<span class="sourceLineNo">559</span>            System.err.println(ex);<a name="line.559"></a>
+<span class="sourceLineNo">560</span>            nodeId = null;<a name="line.560"></a>
+<span class="sourceLineNo">561</span>          }<a name="line.561"></a>
+<span class="sourceLineNo">562</span>        }<a name="line.562"></a>
+<span class="sourceLineNo">563</span>        if (nodeId != null &amp;&amp; !nodeId.isEmpty()) {<a name="line.563"></a>
+<span class="sourceLineNo">564</span>          printContainerLogsForFinishedApplication(request,<a name="line.564"></a>
+<span class="sourceLineNo">565</span>              logCliHelper);<a name="line.565"></a>
+<span class="sourceLineNo">566</span>        }<a name="line.566"></a>
+<span class="sourceLineNo">567</span>      }<a name="line.567"></a>
+<span class="sourceLineNo">568</span>    } else {<a name="line.568"></a>
+<span class="sourceLineNo">569</span>      if (nodeHttpAddress != null &amp;&amp; containerId != null<a name="line.569"></a>
+<span class="sourceLineNo">570</span>          &amp;&amp; !nodeHttpAddress.isEmpty() &amp;&amp; !containerId.isEmpty()) {<a name="line.570"></a>
+<span class="sourceLineNo">571</span>        printContainerLogsFromRunningApplication(conf,<a name="line.571"></a>
+<span class="sourceLineNo">572</span>            request, logCliHelper);<a name="line.572"></a>
+<span class="sourceLineNo">573</span>      }<a name="line.573"></a>
+<span class="sourceLineNo">574</span>    }<a name="line.574"></a>
+<span class="sourceLineNo">575</span>  }<a name="line.575"></a>
+<span class="sourceLineNo">576</span><a name="line.576"></a>
+<span class="sourceLineNo">577</span>  private int showMetaInfo(ContainerLogsRequest request,<a name="line.577"></a>
+<span class="sourceLineNo">578</span>      LogCLIHelpers logCliHelper) throws IOException {<a name="line.578"></a>
+<span class="sourceLineNo">579</span>    if (!request.isAppFinished()) {<a name="line.579"></a>
+<span class="sourceLineNo">580</span>      System.err.println("The -show_meta_info command can be only used "<a name="line.580"></a>
+<span class="sourceLineNo">581</span>          + "with finished applications");<a name="line.581"></a>
+<span class="sourceLineNo">582</span>      return -1;<a name="line.582"></a>
+<span class="sourceLineNo">583</span>    } else {<a name="line.583"></a>
+<span class="sourceLineNo">584</span>      logCliHelper.printLogMetadata(request, System.out, System.err);<a name="line.584"></a>
+<span class="sourceLineNo">585</span>      return 0;<a name="line.585"></a>
+<span class="sourceLineNo">586</span>    }<a name="line.586"></a>
+<span class="sourceLineNo">587</span>  }<a name="line.587"></a>
+<span class="sourceLineNo">588</span><a name="line.588"></a>
+<span class="sourceLineNo">589</span>  private int showNodeLists(ContainerLogsRequest request,<a name="line.589"></a>
+<span class="sourceLineNo">590</span>      LogCLIHelpers logCliHelper) throws IOException {<a name="line.590"></a>
+<span class="sourceLineNo">591</span>    if (!request.isAppFinished()) {<a name="line.591"></a>
+<span class="sourceLineNo">592</span>      System.err.println("The -list_nodes command can be only used with "<a name="line.592"></a>
+<span class="sourceLineNo">593</span>          + "finished applications");<a name="line.593"></a>
+<span class="sourceLineNo">594</span>      return -1;<a name="line.594"></a>
+<span class="sourceLineNo">595</span>    } else {<a name="line.595"></a>
+<span class="sourceLineNo">596</span>      logCliHelper.printNodesList(request, System.out, System.err);<a name="line.596"></a>
+<span class="sourceLineNo">597</span>      return 0;<a name="line.597"></a>
+<span class="sourceLineNo">598</span>    }<a name="line.598"></a>
+<span class="sourceLineNo">599</span>  }<a name="line.599"></a>
+<span class="sourceLineNo">600</span><a name="line.600"></a>
+<span class="sourceLineNo">601</span>  private Options createCommandOpts() {<a name="line.601"></a>
+<span class="sourceLineNo">602</span>    Options opts = new Options();<a name="line.602"></a>
+<span class="sourceLineNo">603</span>    opts.addOption(HELP_CMD, false, "Displays help for all commands.");<a name="line.603"></a>
+<span class="sourceLineNo">604</span>    Option appIdOpt =<a name="line.604"></a>
+<span class="sourceLineNo">605</span>        new Option(APPLICATION_ID_OPTION, true, "ApplicationId (required)");<a name="line.605"></a>
+<span class="sourceLineNo">606</span>    appIdOpt.setRequired(true);<a name="line.606"></a>
+<span class="sourceLineNo">607</span>    opts.addOption(appIdOpt);<a name="line.607"></a>
+<span class="sourceLineNo">608</span>    opts.addOption(CONTAINER_ID_OPTION, true, "ContainerId. "<a name="line.608"></a>
+<span class="sourceLineNo">609</span>        + "By default, it will only print syslog if the application is runing."<a name="line.609"></a>
+<span class="sourceLineNo">610</span>        + " Work with -logFiles to get other logs.");<a name="line.610"></a>
+<span class="sourceLineNo">611</span>    opts.addOption(NODE_ADDRESS_OPTION, true, "NodeAddress in the format "<a name="line.611"></a>
+<span class="sourceLineNo">612</span>        + "nodename:port");<a name="line.612"></a>
+<span class="sourceLineNo">613</span>    opts.addOption(APP_OWNER_OPTION, true,<a name="line.613"></a>
+<span class="sourceLineNo">614</span>        "AppOwner (assumed to be current user if not specified)");<a name="line.614"></a>
+<span class="sourceLineNo">615</span>    Option amOption = new Option(AM_CONTAINER_OPTION, true,<a name="line.615"></a>
+<span class="sourceLineNo">616</span>        "Prints the AM Container logs for this application. "<a name="line.616"></a>
+<span class="sourceLineNo">617</span>        + "Specify comma-separated value to get logs for related AM "<a name="line.617"></a>
+<span class="sourceLineNo">618</span>        + "Container. For example, If we specify -am 1,2, we will get "<a name="line.618"></a>
+<span class="sourceLineNo">619</span>        + "the logs for the first AM Container as well as the second "<a name="line.619"></a>
+<span class="sourceLineNo">620</span>        + "AM Container. To get logs for all AM Containers, use -am ALL. "<a name="line.620"></a>
+<span class="sourceLineNo">621</span>        + "To get logs for the latest AM Container, use -am -1. "<a name="line.621"></a>
+<span class="sourceLineNo">622</span>        + "By default, it will only print out syslog. Work with -logFiles "<a name="line.622"></a>
+<span class="sourceLineNo">623</span>        + "to get other logs");<a name="line.623"></a>
+<span class="sourceLineNo">624</span>    amOption.setValueSeparator(',');<a name="line.624"></a>
+<span class="sourceLineNo">625</span>    amOption.setArgs(Option.UNLIMITED_VALUES);<a name="line.625"></a>
+<span class="sourceLineNo">626</span>    amOption.setArgName("AM Containers");<a name="line.626"></a>
+<span class="sourceLineNo">627</span>    opts.addOption(amOption);<a name="line.627"></a>
+<span class="sourceLineNo">628</span>    Option logFileOpt = new Option(CONTAINER_LOG_FILES, true,<a name="line.628"></a>
+<span class="sourceLineNo">629</span>        "Work with -am/-containerId and specify comma-separated value "<a name="line.629"></a>
+<span class="sourceLineNo">630</span>        + "to get specified container log files. Use \"ALL\" to fetch all the "<a name="line.630"></a>
+<span class="sourceLineNo">631</span>        + "log files for the container. It also supports Java Regex.");<a name="line.631"></a>
+<span class="sourceLineNo">632</span>    logFileOpt.setValueSeparator(',');<a name="line.632"></a>
+<span class="sourceLineNo">633</span>    logFileOpt.setArgs(Option.UNLIMITED_VALUES);<a name="line.633"></a>
+<span class="sourceLineNo">634</span>    logFileOpt.setArgName("Log File Name");<a name="line.634"></a>
+<span class="sourceLineNo">635</span>    opts.addOption(logFileOpt);<a name="line.635"></a>
+<span class="sourceLineNo">636</span>    opts.addOption(SHOW_META_INFO, false, "Show the log metadata, "<a name="line.636"></a>
+<span class="sourceLineNo">637</span>        + "including log-file names, the size of the log files. "<a name="line.637"></a>
+<span class="sourceLineNo">638</span>        + "You can combine this with --containerId to get log metadata for "<a name="line.638"></a>
+<span class="sourceLineNo">639</span>        + "the specific container, or with --nodeAddress to get log metadata "<a name="line.639"></a>
+<span class="sourceLineNo">640</span>        + "for all the containers on the specific NodeManager. "<a name="line.640"></a>
+<span class="sourceLineNo">641</span>        + "Currently, this option can only be used for finished "<a name="line.641"></a>
+<span class="sourceLineNo">642</span>        + "applications.");<a name="line.642"></a>
+<span class="sourceLineNo">643</span>    opts.addOption(LIST_NODES_OPTION, false,<a name="line.643"></a>
+<span class="sourceLineNo">644</span>        "Show the list of nodes that successfully aggregated logs. "<a name="line.644"></a>
+<span class="sourceLineNo">645</span>        + "This option can only be used with finished applications.");<a name="line.645"></a>
+<span class="sourceLineNo">646</span>    opts.addOption(OUT_OPTION, true, "Local directory for storing individual "<a name="line.646"></a>
+<span class="sourceLineNo">647</span>        + "container logs. The container logs will be stored based on the "<a name="line.647"></a>
+<span class="sourceLineNo">648</span>        + "node the container ran on.");<a name="line.648"></a>
+<span class="sourceLineNo">649</span>    opts.addOption(SIZE_OPTION, true, "Prints the log file's first 'n' bytes "<a name="line.649"></a>
+<span class="sourceLineNo">650</span>        + "or the last 'n' bytes. Use negative values as bytes to read from "<a name="line.650"></a>
+<span class="sourceLineNo">651</span>        + "the end and positive values as bytes to read from the beginning.");<a name="line.651"></a>
+<span class="sourceLineNo">652</span>    opts.getOption(APPLICATION_ID_OPTION).setArgName("Application ID");<a name="line.652"></a>
+<span class="sourceLineNo">653</span>    opts.getOption(CONTAINER_ID_OPTION).setArgName("Container ID");<a name="line.653"></a>
+<span class="sourceLineNo">654</span>    opts.getOption(NODE_ADDRESS_OPTION).setArgName("Node Address");<a name="line.654"></a>
+<span class="sourceLineNo">655</span>    opts.getOption(APP_OWNER_OPTION).setArgName("Application Owner");<a name="line.655"></a>
+<span class="sourceLineNo">656</span>    opts.getOption(AM_CONTAINER_OPTION).setArgName("AM Containers");<a name="line.656"></a>
+<span class="sourceLineNo">657</span>    opts.getOption(OUT_OPTION).setArgName("Local Directory");<a name="line.657"></a>
+<span class="sourceLineNo">658</span>    opts.getOption(SIZE_OPTION).setArgName("size");<a name="line.658"></a>
+<span class="sourceLineNo">659</span>    return opts;<a name="line.659"></a>
+<span class="sourceLineNo">660</span>  }<a name="line.660"></a>
+<span class="sourceLineNo">661</span><a name="line.661"></a>
+<span class="sourceLineNo">662</span>  private Options createPrintOpts(Options commandOpts) {<a name="line.662"></a>
+<span class="sourceLineNo">663</span>    Options printOpts = new Options();<a name="line.663"></a>
+<span class="sourceLineNo">664</span>    printOpts.addOption(commandOpts.getOption(HELP_CMD));<a name="line.664"></a>
+<span class="sourceLineNo">665</span>    printOpts.addOption(commandOpts.getOption(CONTAINER_ID_OPTION));<a name="line.665"></a>
+<span class="sourceLineNo">666</span>    printOpts.addOption(commandOpts.getOption(NODE_ADDRESS_OPTION));<a name="line.666"></a>
+<span class="sourceLineNo">667</span>    printOpts.addOption(commandOpts.getOption(APP_OWNER_OPTION));<a name="line.667"></a>
+<span class="sourceLineNo">668</span>    printOpts.addOption(commandOpts.getOption(AM_CONTAINER_OPTION));<a name="line.668"></a>
+<span class="sourceLineNo">669</span>    printOpts.addOption(commandOpts.getOption(CONTAINER_LOG_FILES));<a name="line.669"></a>
+<span class="sourceLineNo">670</span>    printOpts.addOption(commandOpts.getOption(SHOW_META_INFO));<a name="line.670"></a>
+<span class="sourceLineNo">671</span>    printOpts.addOption(commandOpts.getOption(LIST_NODES_OPTION));<a name="line.671"></a>
+<span class="sourceLineNo">672</span>    printOpts.addOption(commandOpts.getOption(OUT_OPTION));<a name="line.672"></a>
+<span class="sourceLineNo">673</span>    printOpts.addOption(commandOpts.getOption(SIZE_OPTION));<a name="line.673"></a>
+<span class="sourceLineNo">674</span>    return printOpts;<a name="line.674"></a>
+<span class="sourceLineNo">675</span>  }<a name="line.675"></a>
+<span class="sourceLineNo">676</span><a name="line.676"></a>
+<span class="sourceLineNo">677</span>  private List&lt;String&gt; parseAMContainer(CommandLine commandLine,<a name="line.677"></a>
+<span class="sourceLineNo">678</span>      Options printOpts) throws NumberFormatException {<a name="line.678"></a>
+<span class="sourceLineNo">679</span>    List&lt;String&gt; amContainersList = new ArrayList&lt;String&gt;();<a name="line.679"></a>
+<span class="sourceLineNo">680</span>    String[] amContainers = commandLine.getOptionValues(AM_CONTAINER_OPTION);<a name="line.680"></a>
+<span class="sourceLineNo">681</span>    for (String am : amContainers) {<a name="line.681"></a>
+<span class="sourceLineNo">682</span>      boolean errorInput = false;<a name="line.682"></a>
+<span class="sourceLineNo">683</span>      if (!am.trim().equalsIgnoreCase("ALL")) {<a name="line.683"></a>
+<span class="sourceLineNo">684</span>        try {<a name="line.684"></a>
+<span class="sourceLineNo">685</span>          int id = Integer.parseInt(am.trim());<a name="line.685"></a>
+<span class="sourceLineNo">686</span>          if (id != -1 &amp;&amp; id &lt;= 0) {<a name="line.686"></a>
+<span class="sourceLineNo">687</span>            errorInput = true;<a name="line.687"></a>
+<span class="sourceLineNo">688</span>          }<a name="line.688"></a>
+<span class="sourceLineNo">689</span>        } catch (NumberFormatException ex) {<a name="line.689"></a>
+<span class="sourceLineNo">690</span>          errorInput = true;<a name="line.690"></a>
+<span class="sourceLineNo">691</span>        }<a name="line.691"></a>
+<span class="sourceLineNo">692</span>        if (errorInput) {<a name="line.692"></a>
+<span class="sourceLineNo">693</span>          String errMessage =<a name="line.693"></a>
+<span class="sourceLineNo">694</span>              "Invalid input for option -am. Valid inputs are 'ALL', -1 "<a name="line.694"></a>
+<span class="sourceLineNo">695</span>              + "and any other integer which is larger than 0.";<a name="line.695"></a>
+<span class="sourceLineNo">696</span>          printHelpMessage(printOpts);<a name="line.696"></a>
+<span class="sourceLineNo">697</span>          throw new NumberFormatException(errMessage);<a name="line.697"></a>
+<span class="sourceLineNo">698</span>        }<a name="line.698"></a>
+<span class="sourceLineNo">699</span>        amContainersList.add(am.trim());<a name="line.699"></a>
+<span class="sourceLineNo">700</span>      } else {<a name="line.700"></a>
+<span class="sourceLineNo">701</span>        amContainersList.add("ALL");<a name="line.701"></a>
+<span class="sourceLineNo">702</span>        break;<a name="line.702"></a>
+<span class="sourceLineNo">703</span>      }<a name="line.703"></a>
+<span class="sourceLineNo">704</span>    }<a name="line.704"></a>
+<span class="sourceLineNo">705</span>    return amContainersList;<a name="line.705"></a>
+<span class="sourceLineNo">706</span>  }<a name="line.706"></a>
+<span class="sourceLineNo">707</span><a name="line.707"></a>
+<span class="sourceLineNo">708</span>  private int fetchAMContainerLogs(ContainerLogsRequest request,<a name="line.708"></a>
+<span class="sourceLineNo">709</span>      List&lt;String&gt; amContainersList, LogCLIHelpers logCliHelper)<a name="line.709"></a>
+<span class="sourceLineNo">710</span>      throws Exception {<a name="line.710"></a>
+<span class="sourceLineNo">711</span>    List&lt;String&gt; logFiles = request.getLogTypes();<a name="line.711"></a>
+<span class="sourceLineNo">712</span>    // if we do not specify the value for CONTAINER_LOG_FILES option,<a name="line.712"></a>
+<span class="sourceLineNo">713</span>    // we will only output syslog<a name="line.713"></a>
+<span class="sourceLineNo">714</span>    if (logFiles == null || logFiles.isEmpty()) {<a name="line.714"></a>
+<span class="sourceLineNo">715</span>      logFiles = Arrays.asList("syslog");<a name="line.715"></a>
+<span class="sourceLineNo">716</span>    }<a name="line.716"></a>
+<span class="sourceLineNo">717</span>    request.setLogTypes(logFiles);<a name="line.717"></a>
+<span class="sourceLineNo">718</span>    // If the application is running, we will call the RM WebService<a name="line.718"></a>
+<span class="sourceLineNo">719</span>    // to get the AppAttempts which includes the nodeHttpAddress<a name="line.719"></a>
+<span class="sourceLineNo">720</span>    // and containerId for all the AM Containers.<a name="line.720"></a>
+<span class="sourceLineNo">721</span>    // After that, we will call NodeManager webService to get the<a name="line.721"></a>
+<span class="sourceLineNo">722</span>    // related logs<a name="line.722"></a>
+<span class="sourceLineNo">723</span>    if (!request.isAppFinished()) {<a name="line.723"></a>
+<span class="sourceLineNo">724</span>      return printAMContainerLogs(getConf(), request, amContainersList,<a name="line.724"></a>
+<span class="sourceLineNo">725</span>          logCliHelper);<a name="line.725"></a>
+<span class="sourceLineNo">726</span>    } else {<a name="line.726"></a>
+<span class="sourceLineNo">727</span>      // If the application is in the final state, we will call RM webservice<a name="line.727"></a>
+<span class="sourceLineNo">728</span>      // to get all AppAttempts information first. If we get nothing,<a name="line.728"></a>
+<span class="sourceLineNo">729</span>      // we will try to call AHS webservice to get related AppAttempts<a name="line.729"></a>
+<span class="sourceLineNo">730</span>      // which includes nodeAddress for the AM Containers.<a name="line.730"></a>
+<span class="sourceLineNo">731</span>      // After that, we will use nodeAddress and containerId<a name="line.731"></a>
+<span class="sourceLineNo">732</span>      // to get logs from HDFS directly.<a name="line.732"></a>
+<span class="sourceLineNo">733</span>      if (getConf().getBoolean(YarnConfiguration.APPLICATION_HISTORY_ENABLED,<a name="line.733"></a>
+<span class="sourceLineNo">734</span>          YarnConfiguration.DEFAULT_APPLICATION_HISTORY_ENABLED)) {<a name="line.734"></a>
+<span class="sourceLineNo">735</span>        return printAMContainerLogs(getConf(), request, amContainersList,<a name="line.735"></a>
+<span class="sourceLineNo">736</span>            logCliHelper);<a name="line.736"></a>
+<span class="sourceLineNo">737</span>      } else {<a name="line.737"></a>
+<span class="sourceLineNo">738</span>        ApplicationId appId = request.getAppId();<a name="line.738"></a>
+<span class="sourceLineNo">739</span>        String appOwner = request.getAppOwner();<a name="line.739"></a>
+<span class="sourceLineNo">740</span>        System.err.println("Can not get AMContainers logs for "<a name="line.740"></a>
+<span class="sourceLineNo">741</span>            + "the application:" + appId + " with the appOwner:" + appOwner);<a name="line.741"></a>
+<span class="sourceLineNo">742</span>        System.err.println("This application:" + appId + " has finished."<a name="line.742"></a>
+<span class="sourceLineNo">743</span>            + " Please enable the application-history service or explicitly"<a name="line.743"></a>
+<span class="sourceLineNo">744</span>            + " use 'yarn logs -applicationId &lt;appId&gt; "<a name="line.744"></a>
+<span class="sourceLineNo">745</span>            + "-containerId &lt;containerId&gt; --nodeAddress &lt;nodeHttpAddress&gt;' "<a name="line.745"></a>
+<span class="sourceLineNo">746</span>            + "to get the container logs.");<a name="line.746"></a>
+<span class="sourceLineNo">747</span>        return -1;<a name="line.747"></a>
+<span class="sourceLineNo">748</span>      }<a name="line.748"></a>
+<span class="sourceLineNo">749</span>    }<a name="line.749"></a>
+<span class="sourceLineNo">750</span>  }<a name="line.750"></a>
+<span class="sourceLineNo">751</span><a name="line.751"></a>
+<span class="sourceLineNo">752</span>  private int fetchContainerLogs(ContainerLogsRequest request,<a name="line.752"></a>
+<span class="sourceLineNo">753</span>      LogCLIHelpers logCliHelper) throws IOException {<a name="line.753"></a>
+<span class="sourceLineNo">754</span>    int resultCode = 0;<a name="line.754"></a>
+<span class="sourceLineNo">755</span>    String appIdStr = request.getAppId().toString();<a name="line.755"></a>
+<span class="sourceLineNo">756</span>    String containerIdStr = request.getContainerId();<a name="line.756"></a>
+<span class="sourceLineNo">757</span>    String nodeAddress = request.getNodeId();<a name="line.757"></a>
+<span class="sourceLineNo">758</span>    String appOwner = request.getAppOwner();<a name="line.758"></a>
+<span class="sourceLineNo">759</span>    boolean isAppFinished = request.isAppFinished();<a name="line.759"></a>
+<span class="sourceLineNo">760</span>    List&lt;String&gt; logFiles = request.getLogTypes();<a name="line.760"></a>
+<span class="sourceLineNo">761</span>    // if we provide the node address and the application is in the final<a name="line.761"></a>
+<span class="sourceLineNo">762</span>    // state, we could directly get logs from HDFS.<a name="line.762"></a>
+<span class="sourceLineNo">763</span>    if (nodeAddress != null &amp;&amp; isAppFinished) {<a name="line.763"></a>
+<span class="sourceLineNo">764</span>      // if user specified "ALL" as the logFiles param, pass empty list<a name="line.764"></a>
+<span class="sourceLineNo">765</span>      // to logCliHelper so that it fetches all the logs<a name="line.765"></a>
+<span class="sourceLineNo">766</span>      return printContainerLogsForFinishedApplication(<a name="line.766"></a>
+<span class="sourceLineNo">767</span>          request, logCliHelper);<a name="line.767"></a>
+<span class="sourceLineNo">768</span>    }<a name="line.768"></a>
+<span class="sourceLineNo">769</span>    String nodeHttpAddress = null;<a name="line.769"></a>
+<span class="sourceLineNo">770</span>    String nodeId = null;<a name="line.770"></a>
+<span class="sourceLineNo">771</span>    try {<a name="line.771"></a>
+<span class="sourceLineNo">772</span>      // If the nodeAddress is not provided, we will try to get<a name="line.772"></a>
+<span class="sourceLineNo">773</span>      // the ContainerReport. In the containerReport, we could get<a name="line.773"></a>
+<span class="sourceLineNo">774</span>      // nodeAddress and nodeHttpAddress<a name="line.774"></a>
+<span class="sourceLineNo">775</span>      ContainerReport report = getContainerReport(containerIdStr);<a name="line.775"></a>
+<span class="sourceLineNo">776</span>      nodeHttpAddress =<a name="line.776"></a>
+<span class="sourceLineNo">777</span>          report.getNodeHttpAddress().replaceFirst(<a name="line.777"></a>
+<span class="sourceLineNo">778</span>            WebAppUtils.getHttpSchemePrefix(getConf()), "");<a name="line.778"></a>
+<span class="sourceLineNo">779</span>      nodeId = report.getAssignedNode().toString();<a name="line.779"></a>
+<span class="sourceLineNo">780</span>      request.setNodeId(nodeId);<a name="line.780"></a>
+<span class="sourceLineNo">781</span>      request.setNodeHttpAddress(nodeHttpAddress);<a name="line.781"></a>
+<span class="sourceLineNo">782</span>    } catch (IOException | YarnException ex) {<a name="line.782"></a>
+<span class="sourceLineNo">783</span>      if (isAppFinished) {<a name="line.783"></a>
+<span class="sourceLineNo">784</span>        return printContainerLogsForFinishedApplicationWithoutNodeId(<a name="line.784"></a>
+<span class="sourceLineNo">785</span>            request, logCliHelper);<a name="line.785"></a>
+<span class="sourceLineNo">786</span>      } else {<a name="line.786"></a>
+<span class="sourceLineNo">787</span>        System.err.println("Unable to get logs for this container:"<a name="line.787"></a>
+<span class="sourceLineNo">788</span>            + containerIdStr + "for the application:" + appIdStr<a name="line.788"></a>
+<span class="sourceLineNo">789</span>            + " with the appOwner: " + appOwner);<a name="line.789"></a>
+<span class="sourceLineNo">790</span>        System.err.println("The application: " + appIdStr<a name="line.790"></a>
+<span class="sourceLineNo">791</span>            + " is still running, and we can not get Container report "<a name="line.791"></a>
+<span class="sourceLineNo">792</span>            + "for the container: " + containerIdStr +". Please try later "<a name="line.792"></a>
+<span class="sourceLineNo">793</span>            + "or after the application finishes.");<a name="line.793"></a>
+<span class="sourceLineNo">794</span>        return -1;<a name="line.794"></a>
+<span class="sourceLineNo">795</span>      }<a name="line.795"></a>
+<span class="sourceLineNo">796</span>    }<a name="line.796"></a>
+<span class="sourceLineNo">797</span>    // If the application is not in the final state,<a name="line.797"></a>
+<span class="sourceLineNo">798</span>    // we will provide the NodeHttpAddress and get the container logs<a name="line.798"></a>
+<span class="sourceLineNo">799</span>    // by calling NodeManager webservice.<a name="line.799"></a>
+<span class="sourceLineNo">800</span>    if (!isAppFinished) {<a name="line.800"></a>
+<span class="sourceLineNo">801</span>      // if we do not specify the value for CONTAINER_LOG_FILES option,<a name="line.801"></a>
+<span class="sourceLineNo">802</span>      // we will only output syslog<a name="line.802"></a>
+<span class="sourceLineNo">803</span>      if (logFiles == null || logFiles.isEmpty()) {<a name="line.803"></a>
+<span class="sourceLineNo">804</span>        logFiles = Arrays.asList("syslog");<a name="line.804"></a>
+<span class="sourceLineNo">805</span>      }<a name="line.805"></a>
+<span class="sourceLineNo">806</span>      request.setLogTypes(logFiles);<a name="line.806"></a>
+<span class="sourceLineNo">807</span>      printContainerLogsFromRunningApplication(getConf(), request,<a name="line.807"></a>
+<span class="sourceLineNo">808</span>          logCliHelper);<a name="line.808"></a>
+<span class="sourceLineNo">809</span>    } else {<a name="line.809"></a>
+<span class="sourceLineNo">810</span>      // If the application is in the final state, we will directly<a name="line.810"></a>
+<span class="sourceLineNo">811</span>      // get the container logs from HDFS.<a name="line.811"></a>
+<span class="sourceLineNo">812</span>      resultCode = printContainerLogsForFinishedApplication(<a name="line.812"></a>
+<span class="sourceLineNo">813</span>          request, logCliHelper);<a name="line.813"></a>
+<span class="sourceLineNo">814</span>    }<a name="line.814"></a>
+<span class="sourceLineNo">815</span>    return resultCode;<a name="line.815"></a>
+<span class="sourceLineNo">816</span>  }<a name="line.816"></a>
+<span class="sourceLineNo">817</span><a name="line.817"></a>
+<span class="sourceLineNo">818</span>  private int fetchApplicationLogs(ContainerLogsRequest options,<a name="line.818"></a>
+<span class="sourceLineNo">819</span>      LogCLIHelpers logCliHelper) throws IOException, YarnException {<a name="line.819"></a>
+<span class="sourceLineNo">820</span>    // If the application has finished, we would fetch the logs<a name="line.820"></a>
+<span class="sourceLineNo">821</span>    // from HDFS.<a name="line.821"></a>
+<span class="sourceLineNo">822</span>    // If the application is still running, we would get the full<a name="line.822"></a>
+<span class="sourceLineNo">823</span>    // list of the containers first, then fetch the logs for each<a name="line.823"></a>
+<span class="sourceLineNo">824</span>    // container from NM.<a name="line.824"></a>
+<span class="sourceLineNo">825</span>    int resultCode = 0;<a name="line.825"></a>
+<span class="sourceLineNo">826</span>    if (options.isAppFinished()) {<a name="line.826"></a>
+<span class="sourceLineNo">827</span>      ContainerLogsRequest newOptions = getMatchedLogOptions(<a name="line.827"></a>
+<span class="sourceLineNo">828</span>          options, logCliHelper);<a name="line.828"></a>
+<span class="sourceLineNo">829</span>      if (newOptions == null) {<a name="line.829"></a>
+<span class="sourceLineNo">830</span>        resultCode = -1;<a name="line.830"></a>
+<span class="sourceLineNo">831</span>      } else {<a name="line.831"></a>
+<span class="sourceLineNo">832</span>        resultCode =<a name="line.832"></a>
+<span class="sourceLineNo">833</span>            logCliHelper.dumpAllContainersLogs(newOptions);<a name="line.833"></a>
+<span class="sourceLineNo">834</span>      }<a name="line.834"></a>
+<span class="sourceLineNo">835</span>    } else {<a name="line.835"></a>
+<span class="sourceLineNo">836</span>      List&lt;ContainerLogsRequest&gt; containerLogRequests =<a name="line.836"></a>
+<span class="sourceLineNo">837</span>          getContainersLogRequestForRunningApplication(options);<a name="line.837"></a>
+<span class="sourceLineNo">838</span>      for (ContainerLogsRequest container : containerLogRequests) {<a name="line.838"></a>
+<span class="sourceLineNo">839</span>        printContainerLogsFromRunningApplication(getConf(), container,<a name="line.839"></a>
+<span class="sourceLineNo">840</span>            logCliHelper);<a name="line.840"></a>
+<span class="sourceLineNo">841</span>      }<a name="line.841"></a>
+<span class="sourceLineNo">842</span>    }<a name="line.842"></a>
+<span class="sourceLineNo">843</span>    if (resultCode == -1) {<a name="line.843"></a>
+<span class="sourceLineNo">844</span>      System.err.println("Can not find the logs for the application: "<a name="line.844"></a>
+<span class="sourceLineNo">845</span>          + options.getAppId() + " with the appOwner: "<a name="line.845"></a>
+<span class="sourceLineNo">846</span>          + options.getAppOwner());<a name="line.846"></a>
+<span class="sourceLineNo">847</span>    }<a name="line.847"></a>
+<span class="sourceLineNo">848</span>    return resultCode;<a name="line.848"></a>
+<span class="sourceLineNo">849</span>  }<a name="line.849"></a>
+<span class="sourceLineNo">850</span><a name="line.850"></a>
+<span class="sourceLineNo">851</span>  private String guessAppOwner(ApplicationReport appReport,<a name="line.851"></a>
+<span class="sourceLineNo">852</span>      ApplicationId appId) throws IOException {<a name="line.852"></a>
+<span class="sourceLineNo">853</span>    String appOwner = null;<a name="line.853"></a>
+<span class="sourceLineNo">854</span>    if (appReport != null) {<a name="line.854"></a>
+<span class="sourceLineNo">855</span>      //always use the app owner from the app report if possible<a name="line.855"></a>
+<span class="sourceLineNo">856</span>      appOwner = appReport.getUser();<a name="line.856"></a>
+<span class="sourceLineNo">857</span>    } else {<a name="line.857"></a>
+<span class="sourceLineNo">858</span>      appOwner = UserGroupInformation.getCurrentUser().getShortUserName();<a name="line.858"></a>
+<span class="sourceLineNo">859</span>      appOwner = LogCLIHelpers.getOwnerForAppIdOrNull(<a name="line.859"></a>
+<span class="sourceLineNo">860</span>          appId, appOwner, getConf());<a name="line.860"></a>
+<span class="sourceLineNo">861</span>    }<a name="line.861"></a>
+<span class="sourceLineNo">862</span>    return appOwner;<a name="line.862"></a>
+<span class="sourceLineNo">863</span>  }<a name="line.863"></a>
+<span class="sourceLineNo">864</span><a name="line.864"></a>
+<span class="sourceLineNo">865</span>  private ContainerLogsRequest getMatchedLogOptions(<a name="line.865"></a>
+<span class="sourceLineNo">866</span>      ContainerLogsRequest request, LogCLIHelpers logCliHelper)<a name="line.866"></a>
+<span class="sourceLineNo">867</span>      throws IOException {<a name="line.867"></a>
+<span class="sourceLineNo">868</span>    ContainerLogsRequest newOptions = new ContainerLogsRequest(request);<a name="line.868"></a>
+<span class="sourceLineNo">869</span>    if (request.getLogTypes() != null &amp;&amp; !request.getLogTypes().isEmpty()) {<a name="line.869"></a>
+<span class="sourceLineNo">870</span>      List&lt;String&gt; matchedFiles = new ArrayList&lt;String&gt;();<a name="line.870"></a>
+<span class="sourceLineNo">871</span>      if (!request.getLogTypes().contains(".*")) {<a name="line.871"></a>
+<span class="sourceLineNo">872</span>        Set&lt;String&gt; files = logCliHelper.listContainerLogs(request);<a name="line.872"></a>
+<span class="sourceLineNo">873</span>        matchedFiles = getMatchedLogFiles(<a name="line.873"></a>
+<span class="sourceLineNo">874</span>            request, files, true);<a name="line.874"></a>
+<span class="sourceLineNo">875</span>        if (matchedFiles.isEmpty()) {<a name="line.875"></a>
+<span class="sourceLineNo">876</span>          return null;<a name="line.876"></a>
+<span class="sourceLineNo">877</span>        }<a name="line.877"></a>
+<span class="sourceLineNo">878</span>      }<a name="line.878"></a>
+<span class="sourceLineNo">879</span>      newOptions.setLogTypes(matchedFiles);<a name="line.879"></a>
+<span class="sourceLineNo">880</span>    }<a name="line.880"></a>
+<span class="sourceLineNo">881</span>    return newOptions;<a name="line.881"></a>
+<span class="sourceLineNo">882</span>  }<a name="line.882"></a>
+<span class="sourceLineNo">883</span><a name="line.883"></a>
+<span class="sourceLineNo">884</span>  private List&lt;String&gt; getMatchedLogFiles(ContainerLogsRequest options,<a name="line.884"></a>
+<span class="sourceLineNo">885</span>      Collection&lt;String&gt; candidate, boolean printError) throws IOException {<a name="line.885"></a>
+<span class="sourceLineNo">886</span>    List&lt;String&gt; matchedFiles = new ArrayList&lt;String&gt;();<a name="line.886"></a>
+<span class="sourceLineNo">887</span>    List&lt;String&gt; filePattern = options.getLogTypes();<a name="line.887"></a>
+<span class="sourceLineNo">888</span>    for (String file : candidate) {<a name="line.888"></a>
+<span class="sourceLineNo">889</span>      if (isFileMatching(file, filePattern)) {<a name="line.889"></a>
+<span class="sourceLineNo">890</span>        matchedFiles.add(file);<a name="line.890"></a>
+<span class="sourceLineNo">891</span>      }<a name="line.891"></a>
+<span class="sourceLineNo">892</span>    }<a name="line.892"></a>
+<span class="sourceLineNo">893</span>    if (matchedFiles.isEmpty()) {<a name="line.893"></a>
+<span class="sourceLineNo">894</span>      if (printError) {<a name="line.894"></a>
+<span class="sourceLineNo">895</span>        System.err.println("Can not find any log file matching the pattern: "<a name="line.895"></a>
+<span class="sourceLineNo">896</span>            + options.getLogTypes() + " for the application: "<a name="line.896"></a>
+<span class="sourceLineNo">897</span>            + options.getAppId());<a name="line.897"></a>
+<span class="sourceLineNo">898</span>      }<a name="line.898"></a>
+<span class="sourceLineNo">899</span>    }<a name="line.899"></a>
+<span class="sourceLineNo">900</span>    return matchedFiles;<a name="line.900"></a>
+<span class="sourceLineNo">901</span>  }<a name="line.901"></a>
+<span class="sourceLineNo">902</span><a name="line.902"></a>
+<span class="sourceLineNo">903</span>  private boolean isFileMatching(String fileType,<a name="line.903"></a>
+<span class="sourceLineNo">904</span>      List&lt;String&gt; logTypes) {<a name="line.904"></a>
+<span class="sourceLineNo">905</span>    for (String logType : logTypes) {<a name="line.905"></a>
+<span class="sourceLineNo">906</span>      Pattern filterPattern = Pattern.compile(logType);<a name="line.906"></a>
+<span class="sourceLineNo">907</span>      boolean match = filterPattern.matcher(fileType).find();<a name="line.907"></a>
+<span class="sourceLineNo">908</span>      if (match) {<a name="line.908"></a>
+<span class="sourceLineNo">909</span>        return true;<a name="line.909"></a>
+<span class="sourceLineNo">910</span>      }<a name="line.910"></a>
+<span class="sourceLineNo">911</span>    }<a name="line.911"></a>
+<span class="sourceLineNo">912</span>    return false;<a name="line.912"></a>
+<span class="sourceLineNo">913</span>  }<a name="line.913"></a>
+<span class="sourceLineNo">914</span><a name="line.914"></a>
+<span class="sourceLineNo">915</span>  private List&lt;ContainerLogsRequest&gt;<a name="line.915"></a>
+<span class="sourceLineNo">916</span>      getContainersLogRequestForRunningApplication(<a name="line.916"></a>
+<span class="sourceLineNo">917</span>          ContainerLogsRequest options) throws YarnException, IOException {<a name="line.917"></a>
+<span class="sourceLineNo">918</span>    List&lt;ContainerLogsRequest&gt; newOptionsList =<a name="line.918"></a>
+<span class="sourceLineNo">919</span>        new ArrayList&lt;ContainerLogsRequest&gt;();<a name="line.919"></a>
+<span class="sourceLineNo">920</span>    YarnClient yarnClient = createYarnClient();<a name="line.920"></a>
+<span class="sourceLineNo">921</span>    try {<a name="line.921"></a>
+<span class="sourceLineNo">922</span>      List&lt;ApplicationAttemptReport&gt; attempts =<a name="line.922"></a>
+<span class="sourceLineNo">923</span>          yarnClient.getApplicationAttempts(options.getAppId());<a name="line.923"></a>
+<span class="sourceLineNo">924</span>      for (ApplicationAttemptReport attempt : attempts) {<a name="line.924"></a>
+<span class="sourceLineNo">925</span>        List&lt;ContainerReport&gt; containers = yarnClient.getContainers(<a name="line.925"></a>
+<span class="sourceLineNo">926</span>            attempt.getApplicationAttemptId());<a name="line.926"></a>
+<span class="sourceLineNo">927</span>        for (ContainerReport container : containers) {<a name="line.927"></a>
+<span class="sourceLineNo">928</span>          ContainerLogsRequest newOptions = new ContainerLogsRequest(options);<a name="line.928"></a>
+<span class="sourceLineNo">929</span>          newOptions.setContainerId(container.getContainerId().toString());<a name="line.929"></a>
+<span class="sourceLineNo">930</span>          newOptions.setNodeId(container.getAssignedNode().toString());<a name="line.930"></a>
+<span class="sourceLineNo">931</span>          newOptions.setNodeHttpAddress(container.getNodeHttpAddress()<a name="line.931"></a>
+<span class="sourceLineNo">932</span>              .replaceFirst(WebAppUtils.getHttpSchemePrefix(getConf()), ""));<a name="line.932"></a>
+<span class="sourceLineNo">933</span>          // if we do not specify the value for CONTAINER_LOG_FILES option,<a name="line.933"></a>
+<span class="sourceLineNo">934</span>          // we will only output syslog<a name="line.934"></a>
+<span class="sourceLineNo">935</span>          List&lt;String&gt; logFiles = newOptions.getLogTypes();<a name="line.935"></a>
+<span class="sourceLineNo">936</span>          if (logFiles == null || logFiles.isEmpty()) {<a name="line.936"></a>
+<span class="sourceLineNo">937</span>            logFiles = Arrays.asList("syslog");<a name="line.937"></a>
+<span class="sourceLineNo">938</span>            newOptions.setLogTypes(logFiles);<a name="line.938"></a>
+<span class="sourceLineNo">939</span>          }<a name="line.939"></a>
+<span class="sourceLineNo">940</span>          newOptionsList.add(newOptions);<a name="line.940"></a>
+<span class="sourceLineNo">941</span>        }<a name="line.941"></a>
+<span class="sourceLineNo">942</span>      }<a name="line.942"></a>
+<span class="sourceLineNo">943</span>      return newOptionsList;<a name="line.943"></a>
+<span class="sourceLineNo">944</span>    } finally {<a name="line.944"></a>
+<span class="sourceLineNo">945</span>      yarnClient.close();<a name="line.945"></a>
+<span class="sourceLineNo">946</span>    }<a name="line.946"></a>
+<span class="sourceLineNo">947</span>  }<a name="line.947"></a>
+<span class="sourceLineNo">948</span>}<a name="line.948"></a>
 
 
 

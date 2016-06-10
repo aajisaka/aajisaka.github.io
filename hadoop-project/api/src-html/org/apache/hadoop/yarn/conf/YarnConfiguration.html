@@ -2561,161 +2561,172 @@
 <span class="sourceLineNo">2553</span>  public static final long DEFAULT_RM_NODE_LABELS_PROVIDER_FETCH_INTERVAL_MS =<a name="line.2553"></a>
 <span class="sourceLineNo">2554</span>      30 * 60 * 1000;<a name="line.2554"></a>
 <span class="sourceLineNo">2555</span><a name="line.2555"></a>
-<span class="sourceLineNo">2556</span>  public static final String AM_BLACKLISTING_ENABLED =<a name="line.2556"></a>
-<span class="sourceLineNo">2557</span>      YARN_PREFIX + "am.blacklisting.enabled";<a name="line.2557"></a>
-<span class="sourceLineNo">2558</span>  public static final boolean DEFAULT_AM_BLACKLISTING_ENABLED = true;<a name="line.2558"></a>
-<span class="sourceLineNo">2559</span><a name="line.2559"></a>
-<span class="sourceLineNo">2560</span>  public static final String AM_BLACKLISTING_DISABLE_THRESHOLD =<a name="line.2560"></a>
-<span class="sourceLineNo">2561</span>      YARN_PREFIX + "am.blacklisting.disable-failure-threshold";<a name="line.2561"></a>
-<span class="sourceLineNo">2562</span>  public static final float DEFAULT_AM_BLACKLISTING_DISABLE_THRESHOLD = 0.8f;<a name="line.2562"></a>
-<span class="sourceLineNo">2563</span><a name="line.2563"></a>
-<span class="sourceLineNo">2564</span><a name="line.2564"></a>
-<span class="sourceLineNo">2565</span>  private static final String NM_SCRIPT_BASED_NODE_LABELS_PROVIDER_PREFIX =<a name="line.2565"></a>
-<span class="sourceLineNo">2566</span>      NM_NODE_LABELS_PROVIDER_PREFIX + "script.";<a name="line.2566"></a>
-<span class="sourceLineNo">2567</span><a name="line.2567"></a>
-<span class="sourceLineNo">2568</span>  public static final String NM_SCRIPT_BASED_NODE_LABELS_PROVIDER_PATH =<a name="line.2568"></a>
-<span class="sourceLineNo">2569</span>      NM_SCRIPT_BASED_NODE_LABELS_PROVIDER_PREFIX + "path";<a name="line.2569"></a>
-<span class="sourceLineNo">2570</span><a name="line.2570"></a>
-<span class="sourceLineNo">2571</span>  public static final String NM_SCRIPT_BASED_NODE_LABELS_PROVIDER_SCRIPT_OPTS =<a name="line.2571"></a>
-<span class="sourceLineNo">2572</span>      NM_SCRIPT_BASED_NODE_LABELS_PROVIDER_PREFIX + "opts";<a name="line.2572"></a>
-<span class="sourceLineNo">2573</span><a name="line.2573"></a>
-<span class="sourceLineNo">2574</span>  // RM and NM CSRF props<a name="line.2574"></a>
-<span class="sourceLineNo">2575</span>  public static final String REST_CSRF = "webapp.rest-csrf.";<a name="line.2575"></a>
-<span class="sourceLineNo">2576</span>  public static final String RM_CSRF_PREFIX = RM_PREFIX + REST_CSRF;<a name="line.2576"></a>
-<span class="sourceLineNo">2577</span>  public static final String NM_CSRF_PREFIX = NM_PREFIX + REST_CSRF;<a name="line.2577"></a>
-<span class="sourceLineNo">2578</span>  public static final String TIMELINE_CSRF_PREFIX = TIMELINE_SERVICE_PREFIX +<a name="line.2578"></a>
-<span class="sourceLineNo">2579</span>                                                    REST_CSRF;<a name="line.2579"></a>
-<span class="sourceLineNo">2580</span>  public static final String RM_CSRF_ENABLED = RM_CSRF_PREFIX + "enabled";<a name="line.2580"></a>
-<span class="sourceLineNo">2581</span>  public static final String NM_CSRF_ENABLED = NM_CSRF_PREFIX + "enabled";<a name="line.2581"></a>
-<span class="sourceLineNo">2582</span>  public static final String TIMELINE_CSRF_ENABLED = TIMELINE_CSRF_PREFIX +<a name="line.2582"></a>
-<span class="sourceLineNo">2583</span>                                                     "enabled";<a name="line.2583"></a>
-<span class="sourceLineNo">2584</span>  public static final String RM_CSRF_CUSTOM_HEADER = RM_CSRF_PREFIX +<a name="line.2584"></a>
-<span class="sourceLineNo">2585</span>                                                     "custom-header";<a name="line.2585"></a>
-<span class="sourceLineNo">2586</span>  public static final String NM_CSRF_CUSTOM_HEADER = NM_CSRF_PREFIX +<a name="line.2586"></a>
-<span class="sourceLineNo">2587</span>                                                     "custom-header";<a name="line.2587"></a>
-<span class="sourceLineNo">2588</span>  public static final String TIMELINE_CSRF_CUSTOM_HEADER =<a name="line.2588"></a>
-<span class="sourceLineNo">2589</span>      TIMELINE_CSRF_PREFIX + "custom-header";<a name="line.2589"></a>
-<span class="sourceLineNo">2590</span>  public static final String RM_CSRF_METHODS_TO_IGNORE = RM_CSRF_PREFIX +<a name="line.2590"></a>
-<span class="sourceLineNo">2591</span>                                                     "methods-to-ignore";<a name="line.2591"></a>
-<span class="sourceLineNo">2592</span>  public static final String NM_CSRF_METHODS_TO_IGNORE = NM_CSRF_PREFIX +<a name="line.2592"></a>
-<span class="sourceLineNo">2593</span>                                                         "methods-to-ignore";<a name="line.2593"></a>
-<span class="sourceLineNo">2594</span>  public static final String TIMELINE_CSRF_METHODS_TO_IGNORE =<a name="line.2594"></a>
-<span class="sourceLineNo">2595</span>      TIMELINE_CSRF_PREFIX + "methods-to-ignore";<a name="line.2595"></a>
-<span class="sourceLineNo">2596</span><a name="line.2596"></a>
-<span class="sourceLineNo">2597</span>  // RM and NM XFS props<a name="line.2597"></a>
-<span class="sourceLineNo">2598</span>  public static final String XFS = "webapp.xfs-filter.";<a name="line.2598"></a>
-<span class="sourceLineNo">2599</span>  public static final String YARN_XFS_ENABLED = "yarn." + XFS + "enabled";<a name="line.2599"></a>
-<span class="sourceLineNo">2600</span>  public static final String RM_XFS_PREFIX = RM_PREFIX + XFS;<a name="line.2600"></a>
-<span class="sourceLineNo">2601</span>  public static final String NM_XFS_PREFIX = NM_PREFIX + XFS;<a name="line.2601"></a>
-<span class="sourceLineNo">2602</span>  public static final String TIMELINE_XFS_PREFIX = TIMELINE_SERVICE_PREFIX +<a name="line.2602"></a>
-<span class="sourceLineNo">2603</span>      XFS;<a name="line.2603"></a>
-<span class="sourceLineNo">2604</span>  public static final String RM_XFS_OPTIONS = RM_XFS_PREFIX +<a name="line.2604"></a>
-<span class="sourceLineNo">2605</span>      "xframe-options";<a name="line.2605"></a>
-<span class="sourceLineNo">2606</span>  public static final String NM_XFS_OPTIONS = NM_XFS_PREFIX +<a name="line.2606"></a>
-<span class="sourceLineNo">2607</span>      "xframe-options";<a name="line.2607"></a>
-<span class="sourceLineNo">2608</span>  public static final String TIMELINE_XFS_OPTIONS =<a name="line.2608"></a>
-<span class="sourceLineNo">2609</span>      TIMELINE_XFS_PREFIX + "xframe-options";<a name="line.2609"></a>
-<span class="sourceLineNo">2610</span><a name="line.2610"></a>
-<span class="sourceLineNo">2611</span>  public YarnConfiguration() {<a name="line.2611"></a>
-<span class="sourceLineNo">2612</span>    super();<a name="line.2612"></a>
-<span class="sourceLineNo">2613</span>  }<a name="line.2613"></a>
-<span class="sourceLineNo">2614</span>  <a name="line.2614"></a>
-<span class="sourceLineNo">2615</span>  public YarnConfiguration(Configuration conf) {<a name="line.2615"></a>
-<span class="sourceLineNo">2616</span>    super(conf);<a name="line.2616"></a>
-<span class="sourceLineNo">2617</span>    if (! (conf instanceof YarnConfiguration)) {<a name="line.2617"></a>
-<span class="sourceLineNo">2618</span>      this.reloadConfiguration();<a name="line.2618"></a>
-<span class="sourceLineNo">2619</span>    }<a name="line.2619"></a>
-<span class="sourceLineNo">2620</span>  }<a name="line.2620"></a>
+<span class="sourceLineNo">2556</span>  @Private<a name="line.2556"></a>
+<span class="sourceLineNo">2557</span>  /**<a name="line.2557"></a>
+<span class="sourceLineNo">2558</span>   * This is a private feature that isn't supposed to be used by end-users.<a name="line.2558"></a>
+<span class="sourceLineNo">2559</span>   */<a name="line.2559"></a>
+<span class="sourceLineNo">2560</span>  public static final String AM_SCHEDULING_NODE_BLACKLISTING_ENABLED =<a name="line.2560"></a>
+<span class="sourceLineNo">2561</span>      RM_PREFIX + "am-scheduling.node-blacklisting-enabled";<a name="line.2561"></a>
+<span class="sourceLineNo">2562</span>  @Private<a name="line.2562"></a>
+<span class="sourceLineNo">2563</span>  public static final boolean DEFAULT_AM_SCHEDULING_NODE_BLACKLISTING_ENABLED =<a name="line.2563"></a>
+<span class="sourceLineNo">2564</span>      true;<a name="line.2564"></a>
+<span class="sourceLineNo">2565</span><a name="line.2565"></a>
+<span class="sourceLineNo">2566</span>  @Private<a name="line.2566"></a>
+<span class="sourceLineNo">2567</span>  /**<a name="line.2567"></a>
+<span class="sourceLineNo">2568</span>   * This is a private feature that isn't supposed to be used by end-users.<a name="line.2568"></a>
+<span class="sourceLineNo">2569</span>   */<a name="line.2569"></a>
+<span class="sourceLineNo">2570</span>  public static final String AM_SCHEDULING_NODE_BLACKLISTING_DISABLE_THRESHOLD =<a name="line.2570"></a>
+<span class="sourceLineNo">2571</span>      RM_PREFIX + "am-scheduling.node-blacklisting-disable-threshold";<a name="line.2571"></a>
+<span class="sourceLineNo">2572</span>  @Private<a name="line.2572"></a>
+<span class="sourceLineNo">2573</span>  public static final float<a name="line.2573"></a>
+<span class="sourceLineNo">2574</span>      DEFAULT_AM_SCHEDULING_NODE_BLACKLISTING_DISABLE_THRESHOLD = 0.8f;<a name="line.2574"></a>
+<span class="sourceLineNo">2575</span><a name="line.2575"></a>
+<span class="sourceLineNo">2576</span>  private static final String NM_SCRIPT_BASED_NODE_LABELS_PROVIDER_PREFIX =<a name="line.2576"></a>
+<span class="sourceLineNo">2577</span>      NM_NODE_LABELS_PROVIDER_PREFIX + "script.";<a name="line.2577"></a>
+<span class="sourceLineNo">2578</span><a name="line.2578"></a>
+<span class="sourceLineNo">2579</span>  public static final String NM_SCRIPT_BASED_NODE_LABELS_PROVIDER_PATH =<a name="line.2579"></a>
+<span class="sourceLineNo">2580</span>      NM_SCRIPT_BASED_NODE_LABELS_PROVIDER_PREFIX + "path";<a name="line.2580"></a>
+<span class="sourceLineNo">2581</span><a name="line.2581"></a>
+<span class="sourceLineNo">2582</span>  public static final String NM_SCRIPT_BASED_NODE_LABELS_PROVIDER_SCRIPT_OPTS =<a name="line.2582"></a>
+<span class="sourceLineNo">2583</span>      NM_SCRIPT_BASED_NODE_LABELS_PROVIDER_PREFIX + "opts";<a name="line.2583"></a>
+<span class="sourceLineNo">2584</span><a name="line.2584"></a>
+<span class="sourceLineNo">2585</span>  // RM and NM CSRF props<a name="line.2585"></a>
+<span class="sourceLineNo">2586</span>  public static final String REST_CSRF = "webapp.rest-csrf.";<a name="line.2586"></a>
+<span class="sourceLineNo">2587</span>  public static final String RM_CSRF_PREFIX = RM_PREFIX + REST_CSRF;<a name="line.2587"></a>
+<span class="sourceLineNo">2588</span>  public static final String NM_CSRF_PREFIX = NM_PREFIX + REST_CSRF;<a name="line.2588"></a>
+<span class="sourceLineNo">2589</span>  public static final String TIMELINE_CSRF_PREFIX = TIMELINE_SERVICE_PREFIX +<a name="line.2589"></a>
+<span class="sourceLineNo">2590</span>                                                    REST_CSRF;<a name="line.2590"></a>
+<span class="sourceLineNo">2591</span>  public static final String RM_CSRF_ENABLED = RM_CSRF_PREFIX + "enabled";<a name="line.2591"></a>
+<span class="sourceLineNo">2592</span>  public static final String NM_CSRF_ENABLED = NM_CSRF_PREFIX + "enabled";<a name="line.2592"></a>
+<span class="sourceLineNo">2593</span>  public static final String TIMELINE_CSRF_ENABLED = TIMELINE_CSRF_PREFIX +<a name="line.2593"></a>
+<span class="sourceLineNo">2594</span>                                                     "enabled";<a name="line.2594"></a>
+<span class="sourceLineNo">2595</span>  public static final String RM_CSRF_CUSTOM_HEADER = RM_CSRF_PREFIX +<a name="line.2595"></a>
+<span class="sourceLineNo">2596</span>                                                     "custom-header";<a name="line.2596"></a>
+<span class="sourceLineNo">2597</span>  public static final String NM_CSRF_CUSTOM_HEADER = NM_CSRF_PREFIX +<a name="line.2597"></a>
+<span class="sourceLineNo">2598</span>                                                     "custom-header";<a name="line.2598"></a>
+<span class="sourceLineNo">2599</span>  public static final String TIMELINE_CSRF_CUSTOM_HEADER =<a name="line.2599"></a>
+<span class="sourceLineNo">2600</span>      TIMELINE_CSRF_PREFIX + "custom-header";<a name="line.2600"></a>
+<span class="sourceLineNo">2601</span>  public static final String RM_CSRF_METHODS_TO_IGNORE = RM_CSRF_PREFIX +<a name="line.2601"></a>
+<span class="sourceLineNo">2602</span>                                                     "methods-to-ignore";<a name="line.2602"></a>
+<span class="sourceLineNo">2603</span>  public static final String NM_CSRF_METHODS_TO_IGNORE = NM_CSRF_PREFIX +<a name="line.2603"></a>
+<span class="sourceLineNo">2604</span>                                                         "methods-to-ignore";<a name="line.2604"></a>
+<span class="sourceLineNo">2605</span>  public static final String TIMELINE_CSRF_METHODS_TO_IGNORE =<a name="line.2605"></a>
+<span class="sourceLineNo">2606</span>      TIMELINE_CSRF_PREFIX + "methods-to-ignore";<a name="line.2606"></a>
+<span class="sourceLineNo">2607</span><a name="line.2607"></a>
+<span class="sourceLineNo">2608</span>  // RM and NM XFS props<a name="line.2608"></a>
+<span class="sourceLineNo">2609</span>  public static final String XFS = "webapp.xfs-filter.";<a name="line.2609"></a>
+<span class="sourceLineNo">2610</span>  public static final String YARN_XFS_ENABLED = "yarn." + XFS + "enabled";<a name="line.2610"></a>
+<span class="sourceLineNo">2611</span>  public static final String RM_XFS_PREFIX = RM_PREFIX + XFS;<a name="line.2611"></a>
+<span class="sourceLineNo">2612</span>  public static final String NM_XFS_PREFIX = NM_PREFIX + XFS;<a name="line.2612"></a>
+<span class="sourceLineNo">2613</span>  public static final String TIMELINE_XFS_PREFIX = TIMELINE_SERVICE_PREFIX +<a name="line.2613"></a>
+<span class="sourceLineNo">2614</span>      XFS;<a name="line.2614"></a>
+<span class="sourceLineNo">2615</span>  public static final String RM_XFS_OPTIONS = RM_XFS_PREFIX +<a name="line.2615"></a>
+<span class="sourceLineNo">2616</span>      "xframe-options";<a name="line.2616"></a>
+<span class="sourceLineNo">2617</span>  public static final String NM_XFS_OPTIONS = NM_XFS_PREFIX +<a name="line.2617"></a>
+<span class="sourceLineNo">2618</span>      "xframe-options";<a name="line.2618"></a>
+<span class="sourceLineNo">2619</span>  public static final String TIMELINE_XFS_OPTIONS =<a name="line.2619"></a>
+<span class="sourceLineNo">2620</span>      TIMELINE_XFS_PREFIX + "xframe-options";<a name="line.2620"></a>
 <span class="sourceLineNo">2621</span><a name="line.2621"></a>
-<span class="sourceLineNo">2622</span>  @Private<a name="line.2622"></a>
-<span class="sourceLineNo">2623</span>  public static List&lt;String&gt; getServiceAddressConfKeys(Configuration conf) {<a name="line.2623"></a>
-<span class="sourceLineNo">2624</span>    return useHttps(conf) ? RM_SERVICES_ADDRESS_CONF_KEYS_HTTPS<a name="line.2624"></a>
-<span class="sourceLineNo">2625</span>        : RM_SERVICES_ADDRESS_CONF_KEYS_HTTP;<a name="line.2625"></a>
-<span class="sourceLineNo">2626</span>  }<a name="line.2626"></a>
-<span class="sourceLineNo">2627</span><a name="line.2627"></a>
-<span class="sourceLineNo">2628</span>  /**<a name="line.2628"></a>
-<span class="sourceLineNo">2629</span>   * Get the socket address for &lt;code&gt;name&lt;/code&gt; property as a<a name="line.2629"></a>
-<span class="sourceLineNo">2630</span>   * &lt;code&gt;InetSocketAddress&lt;/code&gt;. On a HA cluster,<a name="line.2630"></a>
-<span class="sourceLineNo">2631</span>   * this fetches the address corresponding to the RM identified by<a name="line.2631"></a>
-<span class="sourceLineNo">2632</span>   * {@link #RM_HA_ID}.<a name="line.2632"></a>
-<span class="sourceLineNo">2633</span>   * @param name property name.<a name="line.2633"></a>
-<span class="sourceLineNo">2634</span>   * @param defaultAddress the default value<a name="line.2634"></a>
-<span class="sourceLineNo">2635</span>   * @param defaultPort the default port<a name="line.2635"></a>
-<span class="sourceLineNo">2636</span>   * @return InetSocketAddress<a name="line.2636"></a>
-<span class="sourceLineNo">2637</span>   */<a name="line.2637"></a>
-<span class="sourceLineNo">2638</span>  @Override<a name="line.2638"></a>
-<span class="sourceLineNo">2639</span>  public InetSocketAddress getSocketAddr(<a name="line.2639"></a>
-<span class="sourceLineNo">2640</span>      String name, String defaultAddress, int defaultPort) {<a name="line.2640"></a>
-<span class="sourceLineNo">2641</span>    String address;<a name="line.2641"></a>
-<span class="sourceLineNo">2642</span>    if (HAUtil.isHAEnabled(this) &amp;&amp; getServiceAddressConfKeys(this).contains(name)) {<a name="line.2642"></a>
-<span class="sourceLineNo">2643</span>      address = HAUtil.getConfValueForRMInstance(name, defaultAddress, this);<a name="line.2643"></a>
-<span class="sourceLineNo">2644</span>    } else {<a name="line.2644"></a>
-<span class="sourceLineNo">2645</span>      address = get(name, defaultAddress);<a name="line.2645"></a>
-<span class="sourceLineNo">2646</span>    }<a name="line.2646"></a>
-<span class="sourceLineNo">2647</span>    return NetUtils.createSocketAddr(address, defaultPort, name);<a name="line.2647"></a>
-<span class="sourceLineNo">2648</span>  }<a name="line.2648"></a>
-<span class="sourceLineNo">2649</span><a name="line.2649"></a>
-<span class="sourceLineNo">2650</span>  @Override<a name="line.2650"></a>
-<span class="sourceLineNo">2651</span>  public InetSocketAddress updateConnectAddr(String name,<a name="line.2651"></a>
-<span class="sourceLineNo">2652</span>                                             InetSocketAddress addr) {<a name="line.2652"></a>
-<span class="sourceLineNo">2653</span>    String prefix = name;<a name="line.2653"></a>
-<span class="sourceLineNo">2654</span>    if (HAUtil.isHAEnabled(this) &amp;&amp; getServiceAddressConfKeys(this).contains(name)) {<a name="line.2654"></a>
-<span class="sourceLineNo">2655</span>      prefix = HAUtil.addSuffix(prefix, HAUtil.getRMHAId(this));<a name="line.2655"></a>
-<span class="sourceLineNo">2656</span>    }<a name="line.2656"></a>
-<span class="sourceLineNo">2657</span>    return super.updateConnectAddr(prefix, addr);<a name="line.2657"></a>
-<span class="sourceLineNo">2658</span>  }<a name="line.2658"></a>
-<span class="sourceLineNo">2659</span><a name="line.2659"></a>
-<span class="sourceLineNo">2660</span>  @Private<a name="line.2660"></a>
-<span class="sourceLineNo">2661</span>  public static int getRMDefaultPortNumber(String addressPrefix,<a name="line.2661"></a>
-<span class="sourceLineNo">2662</span>      Configuration conf) {<a name="line.2662"></a>
-<span class="sourceLineNo">2663</span>    if (addressPrefix.equals(YarnConfiguration.RM_ADDRESS)) {<a name="line.2663"></a>
-<span class="sourceLineNo">2664</span>      return YarnConfiguration.DEFAULT_RM_PORT;<a name="line.2664"></a>
-<span class="sourceLineNo">2665</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_SCHEDULER_ADDRESS)) {<a name="line.2665"></a>
-<span class="sourceLineNo">2666</span>      return YarnConfiguration.DEFAULT_RM_SCHEDULER_PORT;<a name="line.2666"></a>
-<span class="sourceLineNo">2667</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_WEBAPP_ADDRESS)) {<a name="line.2667"></a>
-<span class="sourceLineNo">2668</span>      return YarnConfiguration.DEFAULT_RM_WEBAPP_PORT;<a name="line.2668"></a>
-<span class="sourceLineNo">2669</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_WEBAPP_HTTPS_ADDRESS)) {<a name="line.2669"></a>
-<span class="sourceLineNo">2670</span>      return YarnConfiguration.DEFAULT_RM_WEBAPP_HTTPS_PORT;<a name="line.2670"></a>
-<span class="sourceLineNo">2671</span>    } else if (addressPrefix<a name="line.2671"></a>
-<span class="sourceLineNo">2672</span>        .equals(YarnConfiguration.RM_RESOURCE_TRACKER_ADDRESS)) {<a name="line.2672"></a>
-<span class="sourceLineNo">2673</span>      return YarnConfiguration.DEFAULT_RM_RESOURCE_TRACKER_PORT;<a name="line.2673"></a>
-<span class="sourceLineNo">2674</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_ADMIN_ADDRESS)) {<a name="line.2674"></a>
-<span class="sourceLineNo">2675</span>      return YarnConfiguration.DEFAULT_RM_ADMIN_PORT;<a name="line.2675"></a>
-<span class="sourceLineNo">2676</span>    } else {<a name="line.2676"></a>
-<span class="sourceLineNo">2677</span>      throw new HadoopIllegalArgumentException(<a name="line.2677"></a>
-<span class="sourceLineNo">2678</span>          "Invalid RM RPC address Prefix: " + addressPrefix<a name="line.2678"></a>
-<span class="sourceLineNo">2679</span>              + ". The valid value should be one of "<a name="line.2679"></a>
-<span class="sourceLineNo">2680</span>              + getServiceAddressConfKeys(conf));<a name="line.2680"></a>
-<span class="sourceLineNo">2681</span>    }<a name="line.2681"></a>
-<span class="sourceLineNo">2682</span>  }<a name="line.2682"></a>
-<span class="sourceLineNo">2683</span><a name="line.2683"></a>
-<span class="sourceLineNo">2684</span>  public static boolean useHttps(Configuration conf) {<a name="line.2684"></a>
-<span class="sourceLineNo">2685</span>    return HttpConfig.Policy.HTTPS_ONLY == HttpConfig.Policy.fromString(conf<a name="line.2685"></a>
-<span class="sourceLineNo">2686</span>        .get(YARN_HTTP_POLICY_KEY,<a name="line.2686"></a>
-<span class="sourceLineNo">2687</span>            YARN_HTTP_POLICY_DEFAULT));<a name="line.2687"></a>
-<span class="sourceLineNo">2688</span>  }<a name="line.2688"></a>
-<span class="sourceLineNo">2689</span><a name="line.2689"></a>
-<span class="sourceLineNo">2690</span>  public static boolean shouldRMFailFast(Configuration conf) {<a name="line.2690"></a>
-<span class="sourceLineNo">2691</span>    return conf.getBoolean(YarnConfiguration.RM_FAIL_FAST,<a name="line.2691"></a>
-<span class="sourceLineNo">2692</span>        conf.getBoolean(YarnConfiguration.YARN_FAIL_FAST,<a name="line.2692"></a>
-<span class="sourceLineNo">2693</span>            YarnConfiguration.DEFAULT_YARN_FAIL_FAST));<a name="line.2693"></a>
-<span class="sourceLineNo">2694</span>  }<a name="line.2694"></a>
-<span class="sourceLineNo">2695</span><a name="line.2695"></a>
-<span class="sourceLineNo">2696</span>  @Private<a name="line.2696"></a>
-<span class="sourceLineNo">2697</span>  public static String getClusterId(Configuration conf) {<a name="line.2697"></a>
-<span class="sourceLineNo">2698</span>    String clusterId = conf.get(YarnConfiguration.RM_CLUSTER_ID);<a name="line.2698"></a>
-<span class="sourceLineNo">2699</span>    if (clusterId == null) {<a name="line.2699"></a>
-<span class="sourceLineNo">2700</span>      throw new HadoopIllegalArgumentException("Configuration doesn't specify " +<a name="line.2700"></a>
-<span class="sourceLineNo">2701</span>          YarnConfiguration.RM_CLUSTER_ID);<a name="line.2701"></a>
-<span class="sourceLineNo">2702</span>    }<a name="line.2702"></a>
-<span class="sourceLineNo">2703</span>    return clusterId;<a name="line.2703"></a>
-<span class="sourceLineNo">2704</span>  }<a name="line.2704"></a>
-<span class="sourceLineNo">2705</span><a name="line.2705"></a>
-<span class="sourceLineNo">2706</span>  /* For debugging. mp configurations to system output as XML format. */<a name="line.2706"></a>
-<span class="sourceLineNo">2707</span>  public static void main(String[] args) throws Exception {<a name="line.2707"></a>
-<span class="sourceLineNo">2708</span>    new YarnConfiguration(new Configuration()).writeXml(System.out);<a name="line.2708"></a>
-<span class="sourceLineNo">2709</span>  }<a name="line.2709"></a>
-<span class="sourceLineNo">2710</span>}<a name="line.2710"></a>
+<span class="sourceLineNo">2622</span>  public YarnConfiguration() {<a name="line.2622"></a>
+<span class="sourceLineNo">2623</span>    super();<a name="line.2623"></a>
+<span class="sourceLineNo">2624</span>  }<a name="line.2624"></a>
+<span class="sourceLineNo">2625</span>  <a name="line.2625"></a>
+<span class="sourceLineNo">2626</span>  public YarnConfiguration(Configuration conf) {<a name="line.2626"></a>
+<span class="sourceLineNo">2627</span>    super(conf);<a name="line.2627"></a>
+<span class="sourceLineNo">2628</span>    if (! (conf instanceof YarnConfiguration)) {<a name="line.2628"></a>
+<span class="sourceLineNo">2629</span>      this.reloadConfiguration();<a name="line.2629"></a>
+<span class="sourceLineNo">2630</span>    }<a name="line.2630"></a>
+<span class="sourceLineNo">2631</span>  }<a name="line.2631"></a>
+<span class="sourceLineNo">2632</span><a name="line.2632"></a>
+<span class="sourceLineNo">2633</span>  @Private<a name="line.2633"></a>
+<span class="sourceLineNo">2634</span>  public static List&lt;String&gt; getServiceAddressConfKeys(Configuration conf) {<a name="line.2634"></a>
+<span class="sourceLineNo">2635</span>    return useHttps(conf) ? RM_SERVICES_ADDRESS_CONF_KEYS_HTTPS<a name="line.2635"></a>
+<span class="sourceLineNo">2636</span>        : RM_SERVICES_ADDRESS_CONF_KEYS_HTTP;<a name="line.2636"></a>
+<span class="sourceLineNo">2637</span>  }<a name="line.2637"></a>
+<span class="sourceLineNo">2638</span><a name="line.2638"></a>
+<span class="sourceLineNo">2639</span>  /**<a name="line.2639"></a>
+<span class="sourceLineNo">2640</span>   * Get the socket address for &lt;code&gt;name&lt;/code&gt; property as a<a name="line.2640"></a>
+<span class="sourceLineNo">2641</span>   * &lt;code&gt;InetSocketAddress&lt;/code&gt;. On a HA cluster,<a name="line.2641"></a>
+<span class="sourceLineNo">2642</span>   * this fetches the address corresponding to the RM identified by<a name="line.2642"></a>
+<span class="sourceLineNo">2643</span>   * {@link #RM_HA_ID}.<a name="line.2643"></a>
+<span class="sourceLineNo">2644</span>   * @param name property name.<a name="line.2644"></a>
+<span class="sourceLineNo">2645</span>   * @param defaultAddress the default value<a name="line.2645"></a>
+<span class="sourceLineNo">2646</span>   * @param defaultPort the default port<a name="line.2646"></a>
+<span class="sourceLineNo">2647</span>   * @return InetSocketAddress<a name="line.2647"></a>
+<span class="sourceLineNo">2648</span>   */<a name="line.2648"></a>
+<span class="sourceLineNo">2649</span>  @Override<a name="line.2649"></a>
+<span class="sourceLineNo">2650</span>  public InetSocketAddress getSocketAddr(<a name="line.2650"></a>
+<span class="sourceLineNo">2651</span>      String name, String defaultAddress, int defaultPort) {<a name="line.2651"></a>
+<span class="sourceLineNo">2652</span>    String address;<a name="line.2652"></a>
+<span class="sourceLineNo">2653</span>    if (HAUtil.isHAEnabled(this) &amp;&amp; getServiceAddressConfKeys(this).contains(name)) {<a name="line.2653"></a>
+<span class="sourceLineNo">2654</span>      address = HAUtil.getConfValueForRMInstance(name, defaultAddress, this);<a name="line.2654"></a>
+<span class="sourceLineNo">2655</span>    } else {<a name="line.2655"></a>
+<span class="sourceLineNo">2656</span>      address = get(name, defaultAddress);<a name="line.2656"></a>
+<span class="sourceLineNo">2657</span>    }<a name="line.2657"></a>
+<span class="sourceLineNo">2658</span>    return NetUtils.createSocketAddr(address, defaultPort, name);<a name="line.2658"></a>
+<span class="sourceLineNo">2659</span>  }<a name="line.2659"></a>
+<span class="sourceLineNo">2660</span><a name="line.2660"></a>
+<span class="sourceLineNo">2661</span>  @Override<a name="line.2661"></a>
+<span class="sourceLineNo">2662</span>  public InetSocketAddress updateConnectAddr(String name,<a name="line.2662"></a>
+<span class="sourceLineNo">2663</span>                                             InetSocketAddress addr) {<a name="line.2663"></a>
+<span class="sourceLineNo">2664</span>    String prefix = name;<a name="line.2664"></a>
+<span class="sourceLineNo">2665</span>    if (HAUtil.isHAEnabled(this) &amp;&amp; getServiceAddressConfKeys(this).contains(name)) {<a name="line.2665"></a>
+<span class="sourceLineNo">2666</span>      prefix = HAUtil.addSuffix(prefix, HAUtil.getRMHAId(this));<a name="line.2666"></a>
+<span class="sourceLineNo">2667</span>    }<a name="line.2667"></a>
+<span class="sourceLineNo">2668</span>    return super.updateConnectAddr(prefix, addr);<a name="line.2668"></a>
+<span class="sourceLineNo">2669</span>  }<a name="line.2669"></a>
+<span class="sourceLineNo">2670</span><a name="line.2670"></a>
+<span class="sourceLineNo">2671</span>  @Private<a name="line.2671"></a>
+<span class="sourceLineNo">2672</span>  public static int getRMDefaultPortNumber(String addressPrefix,<a name="line.2672"></a>
+<span class="sourceLineNo">2673</span>      Configuration conf) {<a name="line.2673"></a>
+<span class="sourceLineNo">2674</span>    if (addressPrefix.equals(YarnConfiguration.RM_ADDRESS)) {<a name="line.2674"></a>
+<span class="sourceLineNo">2675</span>      return YarnConfiguration.DEFAULT_RM_PORT;<a name="line.2675"></a>
+<span class="sourceLineNo">2676</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_SCHEDULER_ADDRESS)) {<a name="line.2676"></a>
+<span class="sourceLineNo">2677</span>      return YarnConfiguration.DEFAULT_RM_SCHEDULER_PORT;<a name="line.2677"></a>
+<span class="sourceLineNo">2678</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_WEBAPP_ADDRESS)) {<a name="line.2678"></a>
+<span class="sourceLineNo">2679</span>      return YarnConfiguration.DEFAULT_RM_WEBAPP_PORT;<a name="line.2679"></a>
+<span class="sourceLineNo">2680</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_WEBAPP_HTTPS_ADDRESS)) {<a name="line.2680"></a>
+<span class="sourceLineNo">2681</span>      return YarnConfiguration.DEFAULT_RM_WEBAPP_HTTPS_PORT;<a name="line.2681"></a>
+<span class="sourceLineNo">2682</span>    } else if (addressPrefix<a name="line.2682"></a>
+<span class="sourceLineNo">2683</span>        .equals(YarnConfiguration.RM_RESOURCE_TRACKER_ADDRESS)) {<a name="line.2683"></a>
+<span class="sourceLineNo">2684</span>      return YarnConfiguration.DEFAULT_RM_RESOURCE_TRACKER_PORT;<a name="line.2684"></a>
+<span class="sourceLineNo">2685</span>    } else if (addressPrefix.equals(YarnConfiguration.RM_ADMIN_ADDRESS)) {<a name="line.2685"></a>
+<span class="sourceLineNo">2686</span>      return YarnConfiguration.DEFAULT_RM_ADMIN_PORT;<a name="line.2686"></a>
+<span class="sourceLineNo">2687</span>    } else {<a name="line.2687"></a>
+<span class="sourceLineNo">2688</span>      throw new HadoopIllegalArgumentException(<a name="line.2688"></a>
+<span class="sourceLineNo">2689</span>          "Invalid RM RPC address Prefix: " + addressPrefix<a name="line.2689"></a>
+<span class="sourceLineNo">2690</span>              + ". The valid value should be one of "<a name="line.2690"></a>
+<span class="sourceLineNo">2691</span>              + getServiceAddressConfKeys(conf));<a name="line.2691"></a>
+<span class="sourceLineNo">2692</span>    }<a name="line.2692"></a>
+<span class="sourceLineNo">2693</span>  }<a name="line.2693"></a>
+<span class="sourceLineNo">2694</span><a name="line.2694"></a>
+<span class="sourceLineNo">2695</span>  public static boolean useHttps(Configuration conf) {<a name="line.2695"></a>
+<span class="sourceLineNo">2696</span>    return HttpConfig.Policy.HTTPS_ONLY == HttpConfig.Policy.fromString(conf<a name="line.2696"></a>
+<span class="sourceLineNo">2697</span>        .get(YARN_HTTP_POLICY_KEY,<a name="line.2697"></a>
+<span class="sourceLineNo">2698</span>            YARN_HTTP_POLICY_DEFAULT));<a name="line.2698"></a>
+<span class="sourceLineNo">2699</span>  }<a name="line.2699"></a>
+<span class="sourceLineNo">2700</span><a name="line.2700"></a>
+<span class="sourceLineNo">2701</span>  public static boolean shouldRMFailFast(Configuration conf) {<a name="line.2701"></a>
+<span class="sourceLineNo">2702</span>    return conf.getBoolean(YarnConfiguration.RM_FAIL_FAST,<a name="line.2702"></a>
+<span class="sourceLineNo">2703</span>        conf.getBoolean(YarnConfiguration.YARN_FAIL_FAST,<a name="line.2703"></a>
+<span class="sourceLineNo">2704</span>            YarnConfiguration.DEFAULT_YARN_FAIL_FAST));<a name="line.2704"></a>
+<span class="sourceLineNo">2705</span>  }<a name="line.2705"></a>
+<span class="sourceLineNo">2706</span><a name="line.2706"></a>
+<span class="sourceLineNo">2707</span>  @Private<a name="line.2707"></a>
+<span class="sourceLineNo">2708</span>  public static String getClusterId(Configuration conf) {<a name="line.2708"></a>
+<span class="sourceLineNo">2709</span>    String clusterId = conf.get(YarnConfiguration.RM_CLUSTER_ID);<a name="line.2709"></a>
+<span class="sourceLineNo">2710</span>    if (clusterId == null) {<a name="line.2710"></a>
+<span class="sourceLineNo">2711</span>      throw new HadoopIllegalArgumentException("Configuration doesn't specify " +<a name="line.2711"></a>
+<span class="sourceLineNo">2712</span>          YarnConfiguration.RM_CLUSTER_ID);<a name="line.2712"></a>
+<span class="sourceLineNo">2713</span>    }<a name="line.2713"></a>
+<span class="sourceLineNo">2714</span>    return clusterId;<a name="line.2714"></a>
+<span class="sourceLineNo">2715</span>  }<a name="line.2715"></a>
+<span class="sourceLineNo">2716</span><a name="line.2716"></a>
+<span class="sourceLineNo">2717</span>  /* For debugging. mp configurations to system output as XML format. */<a name="line.2717"></a>
+<span class="sourceLineNo">2718</span>  public static void main(String[] args) throws Exception {<a name="line.2718"></a>
+<span class="sourceLineNo">2719</span>    new YarnConfiguration(new Configuration()).writeXml(System.out);<a name="line.2719"></a>
+<span class="sourceLineNo">2720</span>  }<a name="line.2720"></a>
+<span class="sourceLineNo">2721</span>}<a name="line.2721"></a>
 
 
 

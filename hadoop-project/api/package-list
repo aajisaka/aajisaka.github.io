@@ -1,6 +1,4 @@
 org.apache.hadoop
-org.apache.hadoop.ant
-org.apache.hadoop.ant.condition
 org.apache.hadoop.classification
 org.apache.hadoop.conf
 org.apache.hadoop.contrib.bkjournal
@@ -17,6 +15,8 @@ org.apache.hadoop.examples.pi.math
 org.apache.hadoop.examples.terasort
 org.apache.hadoop.filecache
 org.apache.hadoop.fs
+org.apache.hadoop.fs.adl
+org.apache.hadoop.fs.adl.oauth2
 org.apache.hadoop.fs.azure
 org.apache.hadoop.fs.azure.metrics
 org.apache.hadoop.fs.crypto
