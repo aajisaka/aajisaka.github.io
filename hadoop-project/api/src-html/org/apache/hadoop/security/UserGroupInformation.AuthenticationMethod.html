@@ -111,7 +111,7 @@
 <span class="sourceLineNo">103</span>   * @param immediate true if we should login without waiting for ticket window<a name="line.103"></a>
 <span class="sourceLineNo">104</span>   */<a name="line.104"></a>
 <span class="sourceLineNo">105</span>  @VisibleForTesting<a name="line.105"></a>
-<span class="sourceLineNo">106</span>  static void setShouldRenewImmediatelyForTests(boolean immediate) {<a name="line.106"></a>
+<span class="sourceLineNo">106</span>  public static void setShouldRenewImmediatelyForTests(boolean immediate) {<a name="line.106"></a>
 <span class="sourceLineNo">107</span>    shouldRenewImmediatelyForTests = immediate;<a name="line.107"></a>
 <span class="sourceLineNo">108</span>  }<a name="line.108"></a>
 <span class="sourceLineNo">109</span><a name="line.109"></a>
@@ -347,7 +347,7 @@
 <span class="sourceLineNo">339</span>  <a name="line.339"></a>
 <span class="sourceLineNo">340</span>  @InterfaceAudience.Private<a name="line.340"></a>
 <span class="sourceLineNo">341</span>  @VisibleForTesting<a name="line.341"></a>
-<span class="sourceLineNo">342</span>  static void reset() {<a name="line.342"></a>
+<span class="sourceLineNo">342</span>  public static void reset() {<a name="line.342"></a>
 <span class="sourceLineNo">343</span>    authenticationMethod = null;<a name="line.343"></a>
 <span class="sourceLineNo">344</span>    conf = null;<a name="line.344"></a>
 <span class="sourceLineNo">345</span>    groups = null;<a name="line.345"></a>

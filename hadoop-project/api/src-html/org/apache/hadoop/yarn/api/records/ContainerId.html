@@ -50,7 +50,7 @@
 <span class="sourceLineNo">042</span>  private static final String CONTAINER_PREFIX = "container";<a name="line.42"></a>
 <span class="sourceLineNo">043</span>  private static final String EPOCH_PREFIX = "e";<a name="line.43"></a>
 <span class="sourceLineNo">044</span><a name="line.44"></a>
-<span class="sourceLineNo">045</span>  @Private<a name="line.45"></a>
+<span class="sourceLineNo">045</span>  @Public<a name="line.45"></a>
 <span class="sourceLineNo">046</span>  @Unstable<a name="line.46"></a>
 <span class="sourceLineNo">047</span>  public static ContainerId newContainerId(ApplicationAttemptId appAttemptId,<a name="line.47"></a>
 <span class="sourceLineNo">048</span>      long containerId) {<a name="line.48"></a>
@@ -105,7 +105,7 @@
 <span class="sourceLineNo">097</span>   */<a name="line.97"></a>
 <span class="sourceLineNo">098</span>  @Public<a name="line.98"></a>
 <span class="sourceLineNo">099</span>  @Deprecated<a name="line.99"></a>
-<span class="sourceLineNo">100</span>  @Stable<a name="line.100"></a>
+<span class="sourceLineNo">100</span>  @Unstable<a name="line.100"></a>
 <span class="sourceLineNo">101</span>  public abstract int getId();<a name="line.101"></a>
 <span class="sourceLineNo">102</span><a name="line.102"></a>
 <span class="sourceLineNo">103</span>  /**<a name="line.103"></a>
@@ -213,7 +213,7 @@
 <span class="sourceLineNo">205</span>  }<a name="line.205"></a>
 <span class="sourceLineNo">206</span><a name="line.206"></a>
 <span class="sourceLineNo">207</span>  @Public<a name="line.207"></a>
-<span class="sourceLineNo">208</span>  @Unstable<a name="line.208"></a>
+<span class="sourceLineNo">208</span>  @Stable<a name="line.208"></a>
 <span class="sourceLineNo">209</span>  public static ContainerId fromString(String containerIdStr) {<a name="line.209"></a>
 <span class="sourceLineNo">210</span>    Iterator&lt;String&gt; it = _SPLITTER.split(containerIdStr).iterator();<a name="line.210"></a>
 <span class="sourceLineNo">211</span>    if (!it.next().equals(CONTAINER_PREFIX)) {<a name="line.211"></a>

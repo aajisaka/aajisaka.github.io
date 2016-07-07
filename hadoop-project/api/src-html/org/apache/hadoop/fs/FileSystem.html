@@ -3627,60 +3627,63 @@
 <span class="sourceLineNo">3619</span>   * Reset all statistics for all file systems<a name="line.3619"></a>
 <span class="sourceLineNo">3620</span>   */<a name="line.3620"></a>
 <span class="sourceLineNo">3621</span>  public static synchronized void clearStatistics() {<a name="line.3621"></a>
-<span class="sourceLineNo">3622</span>    for(Statistics stat: statisticsTable.values()) {<a name="line.3622"></a>
-<span class="sourceLineNo">3623</span>      stat.reset();<a name="line.3623"></a>
-<span class="sourceLineNo">3624</span>    }<a name="line.3624"></a>
-<span class="sourceLineNo">3625</span>  }<a name="line.3625"></a>
-<span class="sourceLineNo">3626</span><a name="line.3626"></a>
-<span class="sourceLineNo">3627</span>  /**<a name="line.3627"></a>
-<span class="sourceLineNo">3628</span>   * Print all statistics for all file systems<a name="line.3628"></a>
-<span class="sourceLineNo">3629</span>   */<a name="line.3629"></a>
-<span class="sourceLineNo">3630</span>  public static synchronized<a name="line.3630"></a>
-<span class="sourceLineNo">3631</span>  void printStatistics() throws IOException {<a name="line.3631"></a>
-<span class="sourceLineNo">3632</span>    for (Map.Entry&lt;Class&lt;? extends FileSystem&gt;, Statistics&gt; pair: <a name="line.3632"></a>
-<span class="sourceLineNo">3633</span>            statisticsTable.entrySet()) {<a name="line.3633"></a>
-<span class="sourceLineNo">3634</span>      System.out.println("  FileSystem " + pair.getKey().getName() + <a name="line.3634"></a>
-<span class="sourceLineNo">3635</span>                         ": " + pair.getValue());<a name="line.3635"></a>
-<span class="sourceLineNo">3636</span>    }<a name="line.3636"></a>
-<span class="sourceLineNo">3637</span>  }<a name="line.3637"></a>
-<span class="sourceLineNo">3638</span><a name="line.3638"></a>
-<span class="sourceLineNo">3639</span>  // Symlinks are temporarily disabled - see HADOOP-10020 and HADOOP-10052<a name="line.3639"></a>
-<span class="sourceLineNo">3640</span>  private static boolean symlinksEnabled = false;<a name="line.3640"></a>
+<span class="sourceLineNo">3622</span>    final Iterator&lt;StorageStatistics&gt; iterator =<a name="line.3622"></a>
+<span class="sourceLineNo">3623</span>        GlobalStorageStatistics.INSTANCE.iterator();<a name="line.3623"></a>
+<span class="sourceLineNo">3624</span>    while (iterator.hasNext()) {<a name="line.3624"></a>
+<span class="sourceLineNo">3625</span>      final StorageStatistics statistics = iterator.next();<a name="line.3625"></a>
+<span class="sourceLineNo">3626</span>      statistics.reset();<a name="line.3626"></a>
+<span class="sourceLineNo">3627</span>    }<a name="line.3627"></a>
+<span class="sourceLineNo">3628</span>  }<a name="line.3628"></a>
+<span class="sourceLineNo">3629</span><a name="line.3629"></a>
+<span class="sourceLineNo">3630</span>  /**<a name="line.3630"></a>
+<span class="sourceLineNo">3631</span>   * Print all statistics for all file systems<a name="line.3631"></a>
+<span class="sourceLineNo">3632</span>   */<a name="line.3632"></a>
+<span class="sourceLineNo">3633</span>  public static synchronized<a name="line.3633"></a>
+<span class="sourceLineNo">3634</span>  void printStatistics() throws IOException {<a name="line.3634"></a>
+<span class="sourceLineNo">3635</span>    for (Map.Entry&lt;Class&lt;? extends FileSystem&gt;, Statistics&gt; pair: <a name="line.3635"></a>
+<span class="sourceLineNo">3636</span>            statisticsTable.entrySet()) {<a name="line.3636"></a>
+<span class="sourceLineNo">3637</span>      System.out.println("  FileSystem " + pair.getKey().getName() + <a name="line.3637"></a>
+<span class="sourceLineNo">3638</span>                         ": " + pair.getValue());<a name="line.3638"></a>
+<span class="sourceLineNo">3639</span>    }<a name="line.3639"></a>
+<span class="sourceLineNo">3640</span>  }<a name="line.3640"></a>
 <span class="sourceLineNo">3641</span><a name="line.3641"></a>
-<span class="sourceLineNo">3642</span>  private static Configuration conf = null;<a name="line.3642"></a>
-<span class="sourceLineNo">3643</span><a name="line.3643"></a>
-<span class="sourceLineNo">3644</span>  @VisibleForTesting<a name="line.3644"></a>
-<span class="sourceLineNo">3645</span>  public static boolean areSymlinksEnabled() {<a name="line.3645"></a>
-<span class="sourceLineNo">3646</span>    return symlinksEnabled;<a name="line.3646"></a>
-<span class="sourceLineNo">3647</span>  }<a name="line.3647"></a>
-<span class="sourceLineNo">3648</span><a name="line.3648"></a>
-<span class="sourceLineNo">3649</span>  @VisibleForTesting<a name="line.3649"></a>
-<span class="sourceLineNo">3650</span>  public static void enableSymlinks() {<a name="line.3650"></a>
-<span class="sourceLineNo">3651</span>    symlinksEnabled = true;<a name="line.3651"></a>
-<span class="sourceLineNo">3652</span>  }<a name="line.3652"></a>
-<span class="sourceLineNo">3653</span><a name="line.3653"></a>
-<span class="sourceLineNo">3654</span>  /**<a name="line.3654"></a>
-<span class="sourceLineNo">3655</span>   * Get the StorageStatistics for this FileSystem object.  These statistics are<a name="line.3655"></a>
-<span class="sourceLineNo">3656</span>   * per-instance.  They are not shared with any other FileSystem object.<a name="line.3656"></a>
-<span class="sourceLineNo">3657</span>   *<a name="line.3657"></a>
-<span class="sourceLineNo">3658</span>   * &lt;p&gt;This is a default method which is intended to be overridden by<a name="line.3658"></a>
-<span class="sourceLineNo">3659</span>   * subclasses. The default implementation returns an empty storage statistics<a name="line.3659"></a>
-<span class="sourceLineNo">3660</span>   * object.&lt;/p&gt;<a name="line.3660"></a>
-<span class="sourceLineNo">3661</span>   *<a name="line.3661"></a>
-<span class="sourceLineNo">3662</span>   * @return    The StorageStatistics for this FileSystem instance.<a name="line.3662"></a>
-<span class="sourceLineNo">3663</span>   *            Will never be null.<a name="line.3663"></a>
-<span class="sourceLineNo">3664</span>   */<a name="line.3664"></a>
-<span class="sourceLineNo">3665</span>  public StorageStatistics getStorageStatistics() {<a name="line.3665"></a>
-<span class="sourceLineNo">3666</span>    return new EmptyStorageStatistics(getUri().toString());<a name="line.3666"></a>
-<span class="sourceLineNo">3667</span>  }<a name="line.3667"></a>
-<span class="sourceLineNo">3668</span><a name="line.3668"></a>
-<span class="sourceLineNo">3669</span>  /**<a name="line.3669"></a>
-<span class="sourceLineNo">3670</span>   * Get the global storage statistics.<a name="line.3670"></a>
-<span class="sourceLineNo">3671</span>   */<a name="line.3671"></a>
-<span class="sourceLineNo">3672</span>  public static GlobalStorageStatistics getGlobalStorageStatistics() {<a name="line.3672"></a>
-<span class="sourceLineNo">3673</span>    return GlobalStorageStatistics.INSTANCE;<a name="line.3673"></a>
-<span class="sourceLineNo">3674</span>  }<a name="line.3674"></a>
-<span class="sourceLineNo">3675</span>}<a name="line.3675"></a>
+<span class="sourceLineNo">3642</span>  // Symlinks are temporarily disabled - see HADOOP-10020 and HADOOP-10052<a name="line.3642"></a>
+<span class="sourceLineNo">3643</span>  private static boolean symlinksEnabled = false;<a name="line.3643"></a>
+<span class="sourceLineNo">3644</span><a name="line.3644"></a>
+<span class="sourceLineNo">3645</span>  private static Configuration conf = null;<a name="line.3645"></a>
+<span class="sourceLineNo">3646</span><a name="line.3646"></a>
+<span class="sourceLineNo">3647</span>  @VisibleForTesting<a name="line.3647"></a>
+<span class="sourceLineNo">3648</span>  public static boolean areSymlinksEnabled() {<a name="line.3648"></a>
+<span class="sourceLineNo">3649</span>    return symlinksEnabled;<a name="line.3649"></a>
+<span class="sourceLineNo">3650</span>  }<a name="line.3650"></a>
+<span class="sourceLineNo">3651</span><a name="line.3651"></a>
+<span class="sourceLineNo">3652</span>  @VisibleForTesting<a name="line.3652"></a>
+<span class="sourceLineNo">3653</span>  public static void enableSymlinks() {<a name="line.3653"></a>
+<span class="sourceLineNo">3654</span>    symlinksEnabled = true;<a name="line.3654"></a>
+<span class="sourceLineNo">3655</span>  }<a name="line.3655"></a>
+<span class="sourceLineNo">3656</span><a name="line.3656"></a>
+<span class="sourceLineNo">3657</span>  /**<a name="line.3657"></a>
+<span class="sourceLineNo">3658</span>   * Get the StorageStatistics for this FileSystem object.  These statistics are<a name="line.3658"></a>
+<span class="sourceLineNo">3659</span>   * per-instance.  They are not shared with any other FileSystem object.<a name="line.3659"></a>
+<span class="sourceLineNo">3660</span>   *<a name="line.3660"></a>
+<span class="sourceLineNo">3661</span>   * &lt;p&gt;This is a default method which is intended to be overridden by<a name="line.3661"></a>
+<span class="sourceLineNo">3662</span>   * subclasses. The default implementation returns an empty storage statistics<a name="line.3662"></a>
+<span class="sourceLineNo">3663</span>   * object.&lt;/p&gt;<a name="line.3663"></a>
+<span class="sourceLineNo">3664</span>   *<a name="line.3664"></a>
+<span class="sourceLineNo">3665</span>   * @return    The StorageStatistics for this FileSystem instance.<a name="line.3665"></a>
+<span class="sourceLineNo">3666</span>   *            Will never be null.<a name="line.3666"></a>
+<span class="sourceLineNo">3667</span>   */<a name="line.3667"></a>
+<span class="sourceLineNo">3668</span>  public StorageStatistics getStorageStatistics() {<a name="line.3668"></a>
+<span class="sourceLineNo">3669</span>    return new EmptyStorageStatistics(getUri().toString());<a name="line.3669"></a>
+<span class="sourceLineNo">3670</span>  }<a name="line.3670"></a>
+<span class="sourceLineNo">3671</span><a name="line.3671"></a>
+<span class="sourceLineNo">3672</span>  /**<a name="line.3672"></a>
+<span class="sourceLineNo">3673</span>   * Get the global storage statistics.<a name="line.3673"></a>
+<span class="sourceLineNo">3674</span>   */<a name="line.3674"></a>
+<span class="sourceLineNo">3675</span>  public static GlobalStorageStatistics getGlobalStorageStatistics() {<a name="line.3675"></a>
+<span class="sourceLineNo">3676</span>    return GlobalStorageStatistics.INSTANCE;<a name="line.3676"></a>
+<span class="sourceLineNo">3677</span>  }<a name="line.3677"></a>
+<span class="sourceLineNo">3678</span>}<a name="line.3678"></a>
 
 
 

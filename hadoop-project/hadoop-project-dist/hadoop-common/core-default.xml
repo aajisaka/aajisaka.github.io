@@ -166,6 +166,28 @@
 </property>
 
 <property>
+  <name>hadoop.security.groups.cache.background.reload</name>
+  <value>false</value>
+  <description>
+    Whether to reload expired user->group mappings using a background thread
+    pool. If set to true, a pool of
+    hadoop.security.groups.cache.background.reload.threads is created to
+    update the cache in the background.
+  </description>
+</property>
+
+<property>
+  <name>hadoop.security.groups.cache.background.reload.threads</name>
+  <value>3</value>
+  <description>
+    Only relevant if hadoop.security.groups.cache.background.reload is true.
+    Controls the number of concurrent background user->group cache entry
+    refreshes. Pending refresh requests beyond this value are queued and
+    processed when a thread is free.
+  </description>
+</property>
+
+<property>
   <name>hadoop.security.group.mapping.ldap.connection.timeout.ms</name>
   <value>60000</value>
   <description>
@@ -312,6 +334,19 @@
   <description>
     The attribute of the group object that identifies the group name. The
     default will usually be appropriate for all LDAP systems.
+  </description>
+</property>
+
+<property>
+  <name>hadoop.security.group.mapping.ldap.search.group.hierarchy.levels</name>
+  <value>0</value>
+  <description>
+    The number of levels to go up the group hierarchy when determining
+    which groups a user is part of. 0 Will represent checking just the
+    group that the user belongs to.  Each additional level will raise the
+    time it takes to exectue a query by at most
+    hadoop.security.group.mapping.ldap.directory.search.timeout.
+    The default will usually be appropriate for all LDAP systems.
   </description>
 </property>
 
@@ -674,32 +709,16 @@
 </property>
 
 <property>
-  <name>fs.s3.awsAccessKeyId</name>
-  <description>AWS access key ID used by S3 block file system.</description>
-</property>
-
-<property>
-  <name>fs.s3.awsSecretAccessKey</name>
-  <description>AWS secret key used by S3 block file system.</description>
-</property>
-
-<property>
-  <name>fs.s3.block.size</name>
-  <value>67108864</value>
-  <description>Block size to use when writing files to S3.</description>
-</property>
-
-<property>
-  <name>fs.s3.buffer.dir</name>
-  <value>${hadoop.tmp.dir}/s3</value>
-  <description>Determines where on the local filesystem the s3:/s3n: filesystem
+  <name>fs.s3n.buffer.dir</name>
+  <value>${hadoop.tmp.dir}/s3n</value>
+  <description>Determines where on the local filesystem the s3n:// filesystem
   should store files before sending them to S3
   (or after retrieving them from S3).
   </description>
 </property>
 
 <property>
-  <name>fs.s3.maxRetries</name>
+  <name>fs.s3n.maxRetries</name>
   <value>4</value>
   <description>The maximum number of retries for reading or writing files to S3, 
   before we signal failure to the application.
@@ -707,7 +726,7 @@
 </property>
 
 <property>
-  <name>fs.s3.sleepTimeSeconds</name>
+  <name>fs.s3n.sleepTimeSeconds</name>
   <value>10</value>
   <description>The number of seconds to sleep between each S3 retry.
   </description>
@@ -832,6 +851,7 @@
 
 <property>
   <name>fs.s3a.path.style.access</name>
+  <value>false</value>
   <description>Enable S3 path style access ie disabling the default virtual hosting behaviour.
     Useful for S3A-compliant storage providers as it removes the need to set up DNS for virtual hosting.
   </description>
@@ -1338,42 +1358,6 @@
 <property>
   <name>file.replication</name>
   <value>1</value>
-  <description>Replication factor</description>
-</property>
-
-<!-- s3 File System -->
-
-<property>
-  <name>s3.stream-buffer-size</name>
-  <value>4096</value>
-  <description>The size of buffer to stream files.
-  The size of this buffer should probably be a multiple of hardware
-  page size (4096 on Intel x86), and it determines how much data is
-  buffered during read and write operations.</description>
-</property>
-
-<property>
-  <name>s3.bytes-per-checksum</name>
-  <value>512</value>
-  <description>The number of bytes per checksum.  Must not be larger than
-  s3.stream-buffer-size</description>
-</property>
-
-<property>
-  <name>s3.client-write-packet-size</name>
-  <value>65536</value>
-  <description>Packet size for clients to write</description>
-</property>
-
-<property>
-  <name>s3.blocksize</name>
-  <value>67108864</value>
-  <description>Block size</description>
-</property>
-
-<property>
-  <name>s3.replication</name>
-  <value>3</value>
   <description>Replication factor</description>
 </property>
 

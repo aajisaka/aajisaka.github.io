@@ -320,98 +320,150 @@
 <span class="sourceLineNo">312</span>  @Public<a name="line.312"></a>
 <span class="sourceLineNo">313</span>  @Evolving<a name="line.313"></a>
 <span class="sourceLineNo">314</span>  public abstract void setNodeLabelExpression(String nodelabelExpression);<a name="line.314"></a>
-<span class="sourceLineNo">315</span>  <a name="line.315"></a>
-<span class="sourceLineNo">316</span>  @Override<a name="line.316"></a>
-<span class="sourceLineNo">317</span>  public int hashCode() {<a name="line.317"></a>
-<span class="sourceLineNo">318</span>    final int prime = 2153;<a name="line.318"></a>
-<span class="sourceLineNo">319</span>    int result = 2459;<a name="line.319"></a>
-<span class="sourceLineNo">320</span>    Resource capability = getCapability();<a name="line.320"></a>
-<span class="sourceLineNo">321</span>    String hostName = getResourceName();<a name="line.321"></a>
-<span class="sourceLineNo">322</span>    Priority priority = getPriority();<a name="line.322"></a>
-<span class="sourceLineNo">323</span>    result =<a name="line.323"></a>
-<span class="sourceLineNo">324</span>        prime * result + ((capability == null) ? 0 : capability.hashCode());<a name="line.324"></a>
-<span class="sourceLineNo">325</span>    result = prime * result + ((hostName == null) ? 0 : hostName.hashCode());<a name="line.325"></a>
-<span class="sourceLineNo">326</span>    result = prime * result + getNumContainers();<a name="line.326"></a>
-<span class="sourceLineNo">327</span>    result = prime * result + ((priority == null) ? 0 : priority.hashCode());<a name="line.327"></a>
-<span class="sourceLineNo">328</span>    return result;<a name="line.328"></a>
-<span class="sourceLineNo">329</span>  }<a name="line.329"></a>
-<span class="sourceLineNo">330</span><a name="line.330"></a>
-<span class="sourceLineNo">331</span>  @Override<a name="line.331"></a>
-<span class="sourceLineNo">332</span>  public boolean equals(Object obj) {<a name="line.332"></a>
-<span class="sourceLineNo">333</span>    if (this == obj)<a name="line.333"></a>
-<span class="sourceLineNo">334</span>      return true;<a name="line.334"></a>
-<span class="sourceLineNo">335</span>    if (obj == null)<a name="line.335"></a>
-<span class="sourceLineNo">336</span>      return false;<a name="line.336"></a>
-<span class="sourceLineNo">337</span>    if (getClass() != obj.getClass())<a name="line.337"></a>
-<span class="sourceLineNo">338</span>      return false;<a name="line.338"></a>
-<span class="sourceLineNo">339</span>    ResourceRequest other = (ResourceRequest) obj;<a name="line.339"></a>
-<span class="sourceLineNo">340</span>    Resource capability = getCapability();<a name="line.340"></a>
-<span class="sourceLineNo">341</span>    if (capability == null) {<a name="line.341"></a>
-<span class="sourceLineNo">342</span>      if (other.getCapability() != null)<a name="line.342"></a>
-<span class="sourceLineNo">343</span>        return false;<a name="line.343"></a>
-<span class="sourceLineNo">344</span>    } else if (!capability.equals(other.getCapability()))<a name="line.344"></a>
-<span class="sourceLineNo">345</span>      return false;<a name="line.345"></a>
-<span class="sourceLineNo">346</span>    String hostName = getResourceName();<a name="line.346"></a>
-<span class="sourceLineNo">347</span>    if (hostName == null) {<a name="line.347"></a>
-<span class="sourceLineNo">348</span>      if (other.getResourceName() != null)<a name="line.348"></a>
-<span class="sourceLineNo">349</span>        return false;<a name="line.349"></a>
-<span class="sourceLineNo">350</span>    } else if (!hostName.equals(other.getResourceName()))<a name="line.350"></a>
-<span class="sourceLineNo">351</span>      return false;<a name="line.351"></a>
-<span class="sourceLineNo">352</span>    if (getNumContainers() != other.getNumContainers())<a name="line.352"></a>
-<span class="sourceLineNo">353</span>      return false;<a name="line.353"></a>
-<span class="sourceLineNo">354</span>    Priority priority = getPriority();<a name="line.354"></a>
-<span class="sourceLineNo">355</span>    if (priority == null) {<a name="line.355"></a>
-<span class="sourceLineNo">356</span>      if (other.getPriority() != null)<a name="line.356"></a>
-<span class="sourceLineNo">357</span>        return false;<a name="line.357"></a>
-<span class="sourceLineNo">358</span>    } else if (!priority.equals(other.getPriority()))<a name="line.358"></a>
-<span class="sourceLineNo">359</span>      return false;<a name="line.359"></a>
-<span class="sourceLineNo">360</span>    ExecutionTypeRequest execTypeRequest = getExecutionTypeRequest();<a name="line.360"></a>
-<span class="sourceLineNo">361</span>    if (execTypeRequest == null) {<a name="line.361"></a>
-<span class="sourceLineNo">362</span>      if (other.getExecutionTypeRequest() != null) {<a name="line.362"></a>
-<span class="sourceLineNo">363</span>        return false;<a name="line.363"></a>
-<span class="sourceLineNo">364</span>      }<a name="line.364"></a>
-<span class="sourceLineNo">365</span>    } else if (!execTypeRequest.equals(other.getExecutionTypeRequest())) {<a name="line.365"></a>
-<span class="sourceLineNo">366</span>      return false;<a name="line.366"></a>
-<span class="sourceLineNo">367</span>    }<a name="line.367"></a>
-<span class="sourceLineNo">368</span>    if (getNodeLabelExpression() == null) {<a name="line.368"></a>
-<span class="sourceLineNo">369</span>      if (other.getNodeLabelExpression() != null) {<a name="line.369"></a>
-<span class="sourceLineNo">370</span>        return false;<a name="line.370"></a>
-<span class="sourceLineNo">371</span>      }<a name="line.371"></a>
-<span class="sourceLineNo">372</span>    } else {<a name="line.372"></a>
-<span class="sourceLineNo">373</span>      // do normalize on label expression before compare<a name="line.373"></a>
-<span class="sourceLineNo">374</span>      String label1 = getNodeLabelExpression().replaceAll("[\\t ]", "");<a name="line.374"></a>
-<span class="sourceLineNo">375</span>      String label2 =<a name="line.375"></a>
-<span class="sourceLineNo">376</span>          other.getNodeLabelExpression() == null ? null : other<a name="line.376"></a>
-<span class="sourceLineNo">377</span>              .getNodeLabelExpression().replaceAll("[\\t ]", "");<a name="line.377"></a>
-<span class="sourceLineNo">378</span>      if (!label1.equals(label2)) {<a name="line.378"></a>
-<span class="sourceLineNo">379</span>        return false;<a name="line.379"></a>
-<span class="sourceLineNo">380</span>      }<a name="line.380"></a>
-<span class="sourceLineNo">381</span>    }<a name="line.381"></a>
-<span class="sourceLineNo">382</span>    return true;<a name="line.382"></a>
-<span class="sourceLineNo">383</span>  }<a name="line.383"></a>
-<span class="sourceLineNo">384</span><a name="line.384"></a>
-<span class="sourceLineNo">385</span>  @Override<a name="line.385"></a>
-<span class="sourceLineNo">386</span>  public int compareTo(ResourceRequest other) {<a name="line.386"></a>
-<span class="sourceLineNo">387</span>    int priorityComparison = this.getPriority().compareTo(other.getPriority());<a name="line.387"></a>
-<span class="sourceLineNo">388</span>    if (priorityComparison == 0) {<a name="line.388"></a>
-<span class="sourceLineNo">389</span>      int hostNameComparison =<a name="line.389"></a>
-<span class="sourceLineNo">390</span>          this.getResourceName().compareTo(other.getResourceName());<a name="line.390"></a>
-<span class="sourceLineNo">391</span>      if (hostNameComparison == 0) {<a name="line.391"></a>
-<span class="sourceLineNo">392</span>        int capabilityComparison =<a name="line.392"></a>
-<span class="sourceLineNo">393</span>            this.getCapability().compareTo(other.getCapability());<a name="line.393"></a>
-<span class="sourceLineNo">394</span>        if (capabilityComparison == 0) {<a name="line.394"></a>
-<span class="sourceLineNo">395</span>          return this.getNumContainers() - other.getNumContainers();<a name="line.395"></a>
-<span class="sourceLineNo">396</span>        } else {<a name="line.396"></a>
-<span class="sourceLineNo">397</span>          return capabilityComparison;<a name="line.397"></a>
-<span class="sourceLineNo">398</span>        }<a name="line.398"></a>
-<span class="sourceLineNo">399</span>      } else {<a name="line.399"></a>
-<span class="sourceLineNo">400</span>        return hostNameComparison;<a name="line.400"></a>
-<span class="sourceLineNo">401</span>      }<a name="line.401"></a>
-<span class="sourceLineNo">402</span>    } else {<a name="line.402"></a>
-<span class="sourceLineNo">403</span>      return priorityComparison;<a name="line.403"></a>
-<span class="sourceLineNo">404</span>    }<a name="line.404"></a>
-<span class="sourceLineNo">405</span>  }<a name="line.405"></a>
-<span class="sourceLineNo">406</span>}<a name="line.406"></a>
+<span class="sourceLineNo">315</span><a name="line.315"></a>
+<span class="sourceLineNo">316</span>  /**<a name="line.316"></a>
+<span class="sourceLineNo">317</span>   * Get the optional &lt;em&gt;ID&lt;/em&gt; corresponding to this allocation request. This<a name="line.317"></a>
+<span class="sourceLineNo">318</span>   * ID is an identifier for different {@code ResourceRequest}s from the &lt;b&gt;same<a name="line.318"></a>
+<span class="sourceLineNo">319</span>   * application&lt;/b&gt;. The allocated {@code Container}(s) received as part of the<a name="line.319"></a>
+<span class="sourceLineNo">320</span>   * {@code AllocateResponse} response will have the ID corresponding to the<a name="line.320"></a>
+<span class="sourceLineNo">321</span>   * original {@code ResourceRequest} for which the RM made the allocation.<a name="line.321"></a>
+<span class="sourceLineNo">322</span>   * &lt;p&gt;<a name="line.322"></a>
+<span class="sourceLineNo">323</span>   * The scheduler may return multiple {@code AllocateResponse}s corresponding<a name="line.323"></a>
+<span class="sourceLineNo">324</span>   * to the same ID as and when scheduler allocates {@code Container}(s).<a name="line.324"></a>
+<span class="sourceLineNo">325</span>   * &lt;b&gt;Applications&lt;/b&gt; can continue to completely ignore the returned ID in<a name="line.325"></a>
+<span class="sourceLineNo">326</span>   * the response and use the allocation for any of their outstanding requests.<a name="line.326"></a>
+<span class="sourceLineNo">327</span>   * &lt;p&gt;<a name="line.327"></a>
+<span class="sourceLineNo">328</span>   * If one wishes to replace an entire {@code ResourceRequest} corresponding to<a name="line.328"></a>
+<span class="sourceLineNo">329</span>   * a specific ID, they can simply cancel the corresponding {@code<a name="line.329"></a>
+<span class="sourceLineNo">330</span>   * ResourceRequest} and submit a new one afresh.<a name="line.330"></a>
+<span class="sourceLineNo">331</span>   *<a name="line.331"></a>
+<span class="sourceLineNo">332</span>   * @return the &lt;em&gt;ID&lt;/em&gt; corresponding to this allocation request.<a name="line.332"></a>
+<span class="sourceLineNo">333</span>   */<a name="line.333"></a>
+<span class="sourceLineNo">334</span>  @Public<a name="line.334"></a>
+<span class="sourceLineNo">335</span>  @Evolving<a name="line.335"></a>
+<span class="sourceLineNo">336</span>  public long getAllocationRequestId() {<a name="line.336"></a>
+<span class="sourceLineNo">337</span>    throw new UnsupportedOperationException();<a name="line.337"></a>
+<span class="sourceLineNo">338</span>  }<a name="line.338"></a>
+<span class="sourceLineNo">339</span><a name="line.339"></a>
+<span class="sourceLineNo">340</span>  /**<a name="line.340"></a>
+<span class="sourceLineNo">341</span>   * Set the optional &lt;em&gt;ID&lt;/em&gt; corresponding to this allocation request. This<a name="line.341"></a>
+<span class="sourceLineNo">342</span>   * ID is an identifier for different {@code ResourceRequest}s from the &lt;b&gt;same<a name="line.342"></a>
+<span class="sourceLineNo">343</span>   * application&lt;/b&gt;. The allocated {@code Container}(s) received as part of the<a name="line.343"></a>
+<span class="sourceLineNo">344</span>   * {@code AllocateResponse} response will have the ID corresponding to the<a name="line.344"></a>
+<span class="sourceLineNo">345</span>   * original {@code ResourceRequest} for which the RM made the allocation.<a name="line.345"></a>
+<span class="sourceLineNo">346</span>   * &lt;p&gt;<a name="line.346"></a>
+<span class="sourceLineNo">347</span>   * The scheduler may return multiple {@code AllocateResponse}s corresponding<a name="line.347"></a>
+<span class="sourceLineNo">348</span>   * to the same ID as and when scheduler allocates {@code Container}(s).<a name="line.348"></a>
+<span class="sourceLineNo">349</span>   * &lt;b&gt;Applications&lt;/b&gt; can continue to completely ignore the returned ID in<a name="line.349"></a>
+<span class="sourceLineNo">350</span>   * the response and use the allocation for any of their outstanding requests.<a name="line.350"></a>
+<span class="sourceLineNo">351</span>   * &lt;p&gt;<a name="line.351"></a>
+<span class="sourceLineNo">352</span>   * If one wishes to replace an entire {@code ResourceRequest} corresponding to<a name="line.352"></a>
+<span class="sourceLineNo">353</span>   * a specific ID, they can simply cancel the corresponding {@code<a name="line.353"></a>
+<span class="sourceLineNo">354</span>   * ResourceRequest} and submit a new one afresh.<a name="line.354"></a>
+<span class="sourceLineNo">355</span>   * &lt;p&gt;<a name="line.355"></a>
+<span class="sourceLineNo">356</span>   * If the ID is not set, scheduler will continue to work as previously and all<a name="line.356"></a>
+<span class="sourceLineNo">357</span>   * allocated {@code Container}(s) will have the default ID, -1.<a name="line.357"></a>
+<span class="sourceLineNo">358</span>   *<a name="line.358"></a>
+<span class="sourceLineNo">359</span>   * @param allocationRequestID the &lt;em&gt;ID&lt;/em&gt; corresponding to this allocation<a name="line.359"></a>
+<span class="sourceLineNo">360</span>   *                            request.<a name="line.360"></a>
+<span class="sourceLineNo">361</span>   */<a name="line.361"></a>
+<span class="sourceLineNo">362</span>  @Public<a name="line.362"></a>
+<span class="sourceLineNo">363</span>  @Evolving<a name="line.363"></a>
+<span class="sourceLineNo">364</span>  public void setAllocationRequestId(long allocationRequestID) {<a name="line.364"></a>
+<span class="sourceLineNo">365</span>    throw new UnsupportedOperationException();<a name="line.365"></a>
+<span class="sourceLineNo">366</span>  }<a name="line.366"></a>
+<span class="sourceLineNo">367</span>  <a name="line.367"></a>
+<span class="sourceLineNo">368</span>  @Override<a name="line.368"></a>
+<span class="sourceLineNo">369</span>  public int hashCode() {<a name="line.369"></a>
+<span class="sourceLineNo">370</span>    final int prime = 2153;<a name="line.370"></a>
+<span class="sourceLineNo">371</span>    int result = 2459;<a name="line.371"></a>
+<span class="sourceLineNo">372</span>    Resource capability = getCapability();<a name="line.372"></a>
+<span class="sourceLineNo">373</span>    String hostName = getResourceName();<a name="line.373"></a>
+<span class="sourceLineNo">374</span>    Priority priority = getPriority();<a name="line.374"></a>
+<span class="sourceLineNo">375</span>    result =<a name="line.375"></a>
+<span class="sourceLineNo">376</span>        prime * result + ((capability == null) ? 0 : capability.hashCode());<a name="line.376"></a>
+<span class="sourceLineNo">377</span>    result = prime * result + ((hostName == null) ? 0 : hostName.hashCode());<a name="line.377"></a>
+<span class="sourceLineNo">378</span>    result = prime * result + getNumContainers();<a name="line.378"></a>
+<span class="sourceLineNo">379</span>    result = prime * result + ((priority == null) ? 0 : priority.hashCode());<a name="line.379"></a>
+<span class="sourceLineNo">380</span>    return result;<a name="line.380"></a>
+<span class="sourceLineNo">381</span>  }<a name="line.381"></a>
+<span class="sourceLineNo">382</span><a name="line.382"></a>
+<span class="sourceLineNo">383</span>  @Override<a name="line.383"></a>
+<span class="sourceLineNo">384</span>  public boolean equals(Object obj) {<a name="line.384"></a>
+<span class="sourceLineNo">385</span>    if (this == obj)<a name="line.385"></a>
+<span class="sourceLineNo">386</span>      return true;<a name="line.386"></a>
+<span class="sourceLineNo">387</span>    if (obj == null)<a name="line.387"></a>
+<span class="sourceLineNo">388</span>      return false;<a name="line.388"></a>
+<span class="sourceLineNo">389</span>    if (getClass() != obj.getClass())<a name="line.389"></a>
+<span class="sourceLineNo">390</span>      return false;<a name="line.390"></a>
+<span class="sourceLineNo">391</span>    ResourceRequest other = (ResourceRequest) obj;<a name="line.391"></a>
+<span class="sourceLineNo">392</span>    Resource capability = getCapability();<a name="line.392"></a>
+<span class="sourceLineNo">393</span>    if (capability == null) {<a name="line.393"></a>
+<span class="sourceLineNo">394</span>      if (other.getCapability() != null)<a name="line.394"></a>
+<span class="sourceLineNo">395</span>        return false;<a name="line.395"></a>
+<span class="sourceLineNo">396</span>    } else if (!capability.equals(other.getCapability()))<a name="line.396"></a>
+<span class="sourceLineNo">397</span>      return false;<a name="line.397"></a>
+<span class="sourceLineNo">398</span>    String hostName = getResourceName();<a name="line.398"></a>
+<span class="sourceLineNo">399</span>    if (hostName == null) {<a name="line.399"></a>
+<span class="sourceLineNo">400</span>      if (other.getResourceName() != null)<a name="line.400"></a>
+<span class="sourceLineNo">401</span>        return false;<a name="line.401"></a>
+<span class="sourceLineNo">402</span>    } else if (!hostName.equals(other.getResourceName()))<a name="line.402"></a>
+<span class="sourceLineNo">403</span>      return false;<a name="line.403"></a>
+<span class="sourceLineNo">404</span>    if (getNumContainers() != other.getNumContainers())<a name="line.404"></a>
+<span class="sourceLineNo">405</span>      return false;<a name="line.405"></a>
+<span class="sourceLineNo">406</span>    Priority priority = getPriority();<a name="line.406"></a>
+<span class="sourceLineNo">407</span>    if (priority == null) {<a name="line.407"></a>
+<span class="sourceLineNo">408</span>      if (other.getPriority() != null)<a name="line.408"></a>
+<span class="sourceLineNo">409</span>        return false;<a name="line.409"></a>
+<span class="sourceLineNo">410</span>    } else if (!priority.equals(other.getPriority()))<a name="line.410"></a>
+<span class="sourceLineNo">411</span>      return false;<a name="line.411"></a>
+<span class="sourceLineNo">412</span>    ExecutionTypeRequest execTypeRequest = getExecutionTypeRequest();<a name="line.412"></a>
+<span class="sourceLineNo">413</span>    if (execTypeRequest == null) {<a name="line.413"></a>
+<span class="sourceLineNo">414</span>      if (other.getExecutionTypeRequest() != null) {<a name="line.414"></a>
+<span class="sourceLineNo">415</span>        return false;<a name="line.415"></a>
+<span class="sourceLineNo">416</span>      }<a name="line.416"></a>
+<span class="sourceLineNo">417</span>    } else if (!execTypeRequest.equals(other.getExecutionTypeRequest())) {<a name="line.417"></a>
+<span class="sourceLineNo">418</span>      return false;<a name="line.418"></a>
+<span class="sourceLineNo">419</span>    }<a name="line.419"></a>
+<span class="sourceLineNo">420</span>    if (getNodeLabelExpression() == null) {<a name="line.420"></a>
+<span class="sourceLineNo">421</span>      if (other.getNodeLabelExpression() != null) {<a name="line.421"></a>
+<span class="sourceLineNo">422</span>        return false;<a name="line.422"></a>
+<span class="sourceLineNo">423</span>      }<a name="line.423"></a>
+<span class="sourceLineNo">424</span>    } else {<a name="line.424"></a>
+<span class="sourceLineNo">425</span>      // do normalize on label expression before compare<a name="line.425"></a>
+<span class="sourceLineNo">426</span>      String label1 = getNodeLabelExpression().replaceAll("[\\t ]", "");<a name="line.426"></a>
+<span class="sourceLineNo">427</span>      String label2 =<a name="line.427"></a>
+<span class="sourceLineNo">428</span>          other.getNodeLabelExpression() == null ? null : other<a name="line.428"></a>
+<span class="sourceLineNo">429</span>              .getNodeLabelExpression().replaceAll("[\\t ]", "");<a name="line.429"></a>
+<span class="sourceLineNo">430</span>      if (!label1.equals(label2)) {<a name="line.430"></a>
+<span class="sourceLineNo">431</span>        return false;<a name="line.431"></a>
+<span class="sourceLineNo">432</span>      }<a name="line.432"></a>
+<span class="sourceLineNo">433</span>    }<a name="line.433"></a>
+<span class="sourceLineNo">434</span>    return true;<a name="line.434"></a>
+<span class="sourceLineNo">435</span>  }<a name="line.435"></a>
+<span class="sourceLineNo">436</span><a name="line.436"></a>
+<span class="sourceLineNo">437</span>  @Override<a name="line.437"></a>
+<span class="sourceLineNo">438</span>  public int compareTo(ResourceRequest other) {<a name="line.438"></a>
+<span class="sourceLineNo">439</span>    int priorityComparison = this.getPriority().compareTo(other.getPriority());<a name="line.439"></a>
+<span class="sourceLineNo">440</span>    if (priorityComparison == 0) {<a name="line.440"></a>
+<span class="sourceLineNo">441</span>      int hostNameComparison =<a name="line.441"></a>
+<span class="sourceLineNo">442</span>          this.getResourceName().compareTo(other.getResourceName());<a name="line.442"></a>
+<span class="sourceLineNo">443</span>      if (hostNameComparison == 0) {<a name="line.443"></a>
+<span class="sourceLineNo">444</span>        int capabilityComparison =<a name="line.444"></a>
+<span class="sourceLineNo">445</span>            this.getCapability().compareTo(other.getCapability());<a name="line.445"></a>
+<span class="sourceLineNo">446</span>        if (capabilityComparison == 0) {<a name="line.446"></a>
+<span class="sourceLineNo">447</span>          return this.getNumContainers() - other.getNumContainers();<a name="line.447"></a>
+<span class="sourceLineNo">448</span>        } else {<a name="line.448"></a>
+<span class="sourceLineNo">449</span>          return capabilityComparison;<a name="line.449"></a>
+<span class="sourceLineNo">450</span>        }<a name="line.450"></a>
+<span class="sourceLineNo">451</span>      } else {<a name="line.451"></a>
+<span class="sourceLineNo">452</span>        return hostNameComparison;<a name="line.452"></a>
+<span class="sourceLineNo">453</span>      }<a name="line.453"></a>
+<span class="sourceLineNo">454</span>    } else {<a name="line.454"></a>
+<span class="sourceLineNo">455</span>      return priorityComparison;<a name="line.455"></a>
+<span class="sourceLineNo">456</span>    }<a name="line.456"></a>
+<span class="sourceLineNo">457</span>  }<a name="line.457"></a>
+<span class="sourceLineNo">458</span>}<a name="line.458"></a>
 
 
 
