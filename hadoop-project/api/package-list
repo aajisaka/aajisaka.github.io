@@ -239,6 +239,7 @@ org.apache.hadoop.yarn.api
 org.apache.hadoop.yarn.api.protocolrecords
 org.apache.hadoop.yarn.api.records
 org.apache.hadoop.yarn.api.records.timeline
+org.apache.hadoop.yarn.api.records.timelineservice
 org.apache.hadoop.yarn.applications.distributedshell
 org.apache.hadoop.yarn.applications.unmanagedamlauncher
 org.apache.hadoop.yarn.client
