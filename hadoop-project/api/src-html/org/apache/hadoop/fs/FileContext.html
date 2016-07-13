@@ -236,7 +236,7 @@
 <span class="sourceLineNo">228</span>  private FileContext(final AbstractFileSystem defFs,<a name="line.228"></a>
 <span class="sourceLineNo">229</span>    final FsPermission theUmask, final Configuration aConf) {<a name="line.229"></a>
 <span class="sourceLineNo">230</span>    defaultFS = defFs;<a name="line.230"></a>
-<span class="sourceLineNo">231</span>    umask = FsPermission.getUMask(aConf);<a name="line.231"></a>
+<span class="sourceLineNo">231</span>    umask = theUmask;<a name="line.231"></a>
 <span class="sourceLineNo">232</span>    conf = aConf;<a name="line.232"></a>
 <span class="sourceLineNo">233</span>    tracer = FsTracer.get(aConf);<a name="line.233"></a>
 <span class="sourceLineNo">234</span>    try {<a name="line.234"></a>
