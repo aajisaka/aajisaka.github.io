@@ -238,56 +238,62 @@
 <span class="sourceLineNo">230</span>    LOCAL_DIRS("LOCAL_DIRS"),<a name="line.230"></a>
 <span class="sourceLineNo">231</span><a name="line.231"></a>
 <span class="sourceLineNo">232</span>    /**<a name="line.232"></a>
-<span class="sourceLineNo">233</span>     * $LOG_DIRS<a name="line.233"></a>
+<span class="sourceLineNo">233</span>     * $LOCAL_USER_DIRS<a name="line.233"></a>
 <span class="sourceLineNo">234</span>     * Final, exported by NodeManager and non-modifiable by users.<a name="line.234"></a>
-<span class="sourceLineNo">235</span>     * Comma separate list of directories that the container should use for<a name="line.235"></a>
-<span class="sourceLineNo">236</span>     * logging.<a name="line.236"></a>
-<span class="sourceLineNo">237</span>     */<a name="line.237"></a>
-<span class="sourceLineNo">238</span>    LOG_DIRS("LOG_DIRS");<a name="line.238"></a>
-<span class="sourceLineNo">239</span><a name="line.239"></a>
-<span class="sourceLineNo">240</span>    private final String variable;<a name="line.240"></a>
-<span class="sourceLineNo">241</span>    private Environment(String variable) {<a name="line.241"></a>
-<span class="sourceLineNo">242</span>      this.variable = variable;<a name="line.242"></a>
-<span class="sourceLineNo">243</span>    }<a name="line.243"></a>
-<span class="sourceLineNo">244</span><a name="line.244"></a>
-<span class="sourceLineNo">245</span>    public String key() {<a name="line.245"></a>
-<span class="sourceLineNo">246</span>      return variable;<a name="line.246"></a>
-<span class="sourceLineNo">247</span>    }<a name="line.247"></a>
-<span class="sourceLineNo">248</span><a name="line.248"></a>
-<span class="sourceLineNo">249</span>    public String toString() {<a name="line.249"></a>
-<span class="sourceLineNo">250</span>      return variable;<a name="line.250"></a>
-<span class="sourceLineNo">251</span>    }<a name="line.251"></a>
-<span class="sourceLineNo">252</span><a name="line.252"></a>
-<span class="sourceLineNo">253</span>    /**<a name="line.253"></a>
-<span class="sourceLineNo">254</span>     * Expand the environment variable based on client OS environment variable<a name="line.254"></a>
-<span class="sourceLineNo">255</span>     * expansion syntax (e.g. $VAR for Linux and %VAR% for Windows).<a name="line.255"></a>
-<span class="sourceLineNo">256</span>     * &lt;p&gt;<a name="line.256"></a>
-<span class="sourceLineNo">257</span>     * Note: Use $$() method for cross-platform practice i.e. submit an<a name="line.257"></a>
-<span class="sourceLineNo">258</span>     * application from a Windows client to a Linux/Unix server or vice versa.<a name="line.258"></a>
-<span class="sourceLineNo">259</span>     * &lt;/p&gt;<a name="line.259"></a>
-<span class="sourceLineNo">260</span>     */<a name="line.260"></a>
-<span class="sourceLineNo">261</span>    public String $() {<a name="line.261"></a>
-<span class="sourceLineNo">262</span>      if (Shell.WINDOWS) {<a name="line.262"></a>
-<span class="sourceLineNo">263</span>        return "%" + variable + "%";<a name="line.263"></a>
-<span class="sourceLineNo">264</span>      } else {<a name="line.264"></a>
-<span class="sourceLineNo">265</span>        return "$" + variable;<a name="line.265"></a>
-<span class="sourceLineNo">266</span>      }<a name="line.266"></a>
-<span class="sourceLineNo">267</span>    }<a name="line.267"></a>
-<span class="sourceLineNo">268</span><a name="line.268"></a>
-<span class="sourceLineNo">269</span>    /**<a name="line.269"></a>
-<span class="sourceLineNo">270</span>     * Expand the environment variable in platform-agnostic syntax. The<a name="line.270"></a>
-<span class="sourceLineNo">271</span>     * parameter expansion marker "{{VAR}}" will be replaced with real parameter<a name="line.271"></a>
-<span class="sourceLineNo">272</span>     * expansion marker ('%' for Windows and '$' for Linux) by NodeManager on<a name="line.272"></a>
-<span class="sourceLineNo">273</span>     * container launch. For example: {{VAR}} will be replaced as $VAR on Linux,<a name="line.273"></a>
-<span class="sourceLineNo">274</span>     * and %VAR% on Windows.<a name="line.274"></a>
-<span class="sourceLineNo">275</span>     */<a name="line.275"></a>
-<span class="sourceLineNo">276</span>    @Public<a name="line.276"></a>
-<span class="sourceLineNo">277</span>    @Unstable<a name="line.277"></a>
-<span class="sourceLineNo">278</span>    public String $$() {<a name="line.278"></a>
-<span class="sourceLineNo">279</span>      return PARAMETER_EXPANSION_LEFT + variable + PARAMETER_EXPANSION_RIGHT;<a name="line.279"></a>
-<span class="sourceLineNo">280</span>    }<a name="line.280"></a>
-<span class="sourceLineNo">281</span>  }<a name="line.281"></a>
-<span class="sourceLineNo">282</span>}<a name="line.282"></a>
+<span class="sourceLineNo">235</span>     */<a name="line.235"></a>
+<span class="sourceLineNo">236</span>    LOCAL_USER_DIRS("LOCAL_USER_DIRS"),<a name="line.236"></a>
+<span class="sourceLineNo">237</span><a name="line.237"></a>
+<span class="sourceLineNo">238</span>    /**<a name="line.238"></a>
+<span class="sourceLineNo">239</span>     * $LOG_DIRS<a name="line.239"></a>
+<span class="sourceLineNo">240</span>     * Final, exported by NodeManager and non-modifiable by users.<a name="line.240"></a>
+<span class="sourceLineNo">241</span>     * Comma separate list of directories that the container should use for<a name="line.241"></a>
+<span class="sourceLineNo">242</span>     * logging.<a name="line.242"></a>
+<span class="sourceLineNo">243</span>     */<a name="line.243"></a>
+<span class="sourceLineNo">244</span>    LOG_DIRS("LOG_DIRS");<a name="line.244"></a>
+<span class="sourceLineNo">245</span><a name="line.245"></a>
+<span class="sourceLineNo">246</span>    private final String variable;<a name="line.246"></a>
+<span class="sourceLineNo">247</span>    private Environment(String variable) {<a name="line.247"></a>
+<span class="sourceLineNo">248</span>      this.variable = variable;<a name="line.248"></a>
+<span class="sourceLineNo">249</span>    }<a name="line.249"></a>
+<span class="sourceLineNo">250</span><a name="line.250"></a>
+<span class="sourceLineNo">251</span>    public String key() {<a name="line.251"></a>
+<span class="sourceLineNo">252</span>      return variable;<a name="line.252"></a>
+<span class="sourceLineNo">253</span>    }<a name="line.253"></a>
+<span class="sourceLineNo">254</span><a name="line.254"></a>
+<span class="sourceLineNo">255</span>    public String toString() {<a name="line.255"></a>
+<span class="sourceLineNo">256</span>      return variable;<a name="line.256"></a>
+<span class="sourceLineNo">257</span>    }<a name="line.257"></a>
+<span class="sourceLineNo">258</span><a name="line.258"></a>
+<span class="sourceLineNo">259</span>    /**<a name="line.259"></a>
+<span class="sourceLineNo">260</span>     * Expand the environment variable based on client OS environment variable<a name="line.260"></a>
+<span class="sourceLineNo">261</span>     * expansion syntax (e.g. $VAR for Linux and %VAR% for Windows).<a name="line.261"></a>
+<span class="sourceLineNo">262</span>     * &lt;p&gt;<a name="line.262"></a>
+<span class="sourceLineNo">263</span>     * Note: Use $$() method for cross-platform practice i.e. submit an<a name="line.263"></a>
+<span class="sourceLineNo">264</span>     * application from a Windows client to a Linux/Unix server or vice versa.<a name="line.264"></a>
+<span class="sourceLineNo">265</span>     * &lt;/p&gt;<a name="line.265"></a>
+<span class="sourceLineNo">266</span>     */<a name="line.266"></a>
+<span class="sourceLineNo">267</span>    public String $() {<a name="line.267"></a>
+<span class="sourceLineNo">268</span>      if (Shell.WINDOWS) {<a name="line.268"></a>
+<span class="sourceLineNo">269</span>        return "%" + variable + "%";<a name="line.269"></a>
+<span class="sourceLineNo">270</span>      } else {<a name="line.270"></a>
+<span class="sourceLineNo">271</span>        return "$" + variable;<a name="line.271"></a>
+<span class="sourceLineNo">272</span>      }<a name="line.272"></a>
+<span class="sourceLineNo">273</span>    }<a name="line.273"></a>
+<span class="sourceLineNo">274</span><a name="line.274"></a>
+<span class="sourceLineNo">275</span>    /**<a name="line.275"></a>
+<span class="sourceLineNo">276</span>     * Expand the environment variable in platform-agnostic syntax. The<a name="line.276"></a>
+<span class="sourceLineNo">277</span>     * parameter expansion marker "{{VAR}}" will be replaced with real parameter<a name="line.277"></a>
+<span class="sourceLineNo">278</span>     * expansion marker ('%' for Windows and '$' for Linux) by NodeManager on<a name="line.278"></a>
+<span class="sourceLineNo">279</span>     * container launch. For example: {{VAR}} will be replaced as $VAR on Linux,<a name="line.279"></a>
+<span class="sourceLineNo">280</span>     * and %VAR% on Windows.<a name="line.280"></a>
+<span class="sourceLineNo">281</span>     */<a name="line.281"></a>
+<span class="sourceLineNo">282</span>    @Public<a name="line.282"></a>
+<span class="sourceLineNo">283</span>    @Unstable<a name="line.283"></a>
+<span class="sourceLineNo">284</span>    public String $$() {<a name="line.284"></a>
+<span class="sourceLineNo">285</span>      return PARAMETER_EXPANSION_LEFT + variable + PARAMETER_EXPANSION_RIGHT;<a name="line.285"></a>
+<span class="sourceLineNo">286</span>    }<a name="line.286"></a>
+<span class="sourceLineNo">287</span>  }<a name="line.287"></a>
+<span class="sourceLineNo">288</span>}<a name="line.288"></a>
 
 
 

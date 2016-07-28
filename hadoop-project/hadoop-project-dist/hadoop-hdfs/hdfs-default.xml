@@ -2790,6 +2790,16 @@
 </property>
 
 <property>
+  <name>dfs.ha.tail-edits.in-progress</name>
+  <value>false</value>
+  <description>
+    Whether enable standby namenode to tail in-progress edit logs.
+    Clients might want to turn it on when they want Standby NN to have
+    more up-to-date data.
+  </description>
+</property>
+
+<property>
   <name>dfs.datanode.ec.reconstruction.stripedread.timeout.millis</name>
   <value>5000</value>
   <description>Datanode striped read timeout in milliseconds.
@@ -3373,15 +3383,6 @@
   <description>
     Configure 'hedged' reads in DFSClient. This is the number of milliseconds
     to wait before starting up a 'hedged' read.
-  </description>
-</property>
-
-<property>
-  <name>dfs.client.use.legacy.blockreader</name>
-  <value>false</value>
-  <description>
-    If true, use the RemoteBlockReader class for local read short circuit.  If false, use
-    the newer RemoteBlockReader2 class.
   </description>
 </property>
 
@@ -4156,6 +4157,15 @@
     <description>
         This enables the diskbalancer feature on a cluster. By default, disk
       balancer is disabled.
+    </description>
+  </property>
+
+  <property>
+    <name>dfs.disk.balancer.plan.threshold.percent</name>
+    <value>10</value>
+    <description>
+        The percentage that disk tolerance that we are ok with in
+      a plan.
     </description>
   </property>
 </configuration>
