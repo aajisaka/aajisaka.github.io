@@ -287,89 +287,92 @@
 <span class="sourceLineNo">279</span>   * AM will receive one NMToken per NM irrespective of the number of containers<a name="line.279"></a>
 <span class="sourceLineNo">280</span>   * issued on same NM. AM is expected to store these tokens until issued a<a name="line.280"></a>
 <span class="sourceLineNo">281</span>   * new token for the same NM.<a name="line.281"></a>
-<span class="sourceLineNo">282</span>   */<a name="line.282"></a>
-<span class="sourceLineNo">283</span>  @Public<a name="line.283"></a>
-<span class="sourceLineNo">284</span>  @Stable<a name="line.284"></a>
-<span class="sourceLineNo">285</span>  public abstract List&lt;NMToken&gt; getNMTokens();<a name="line.285"></a>
-<span class="sourceLineNo">286</span><a name="line.286"></a>
-<span class="sourceLineNo">287</span>  @Private<a name="line.287"></a>
-<span class="sourceLineNo">288</span>  @Unstable<a name="line.288"></a>
-<span class="sourceLineNo">289</span>  public abstract void setNMTokens(List&lt;NMToken&gt; nmTokens);<a name="line.289"></a>
-<span class="sourceLineNo">290</span>  <a name="line.290"></a>
-<span class="sourceLineNo">291</span>  /**<a name="line.291"></a>
-<span class="sourceLineNo">292</span>   * Get the list of newly increased containers by<a name="line.292"></a>
-<span class="sourceLineNo">293</span>   * &lt;code&gt;ResourceManager&lt;/code&gt;.<a name="line.293"></a>
-<span class="sourceLineNo">294</span>   */<a name="line.294"></a>
-<span class="sourceLineNo">295</span>  @Public<a name="line.295"></a>
-<span class="sourceLineNo">296</span>  @Unstable<a name="line.296"></a>
-<span class="sourceLineNo">297</span>  public abstract List&lt;Container&gt; getIncreasedContainers();<a name="line.297"></a>
-<span class="sourceLineNo">298</span><a name="line.298"></a>
-<span class="sourceLineNo">299</span>  /**<a name="line.299"></a>
-<span class="sourceLineNo">300</span>   * Set the list of newly increased containers by<a name="line.300"></a>
-<span class="sourceLineNo">301</span>   * &lt;code&gt;ResourceManager&lt;/code&gt;.<a name="line.301"></a>
-<span class="sourceLineNo">302</span>   */<a name="line.302"></a>
-<span class="sourceLineNo">303</span>  @Private<a name="line.303"></a>
-<span class="sourceLineNo">304</span>  @Unstable<a name="line.304"></a>
-<span class="sourceLineNo">305</span>  public abstract void setIncreasedContainers(<a name="line.305"></a>
-<span class="sourceLineNo">306</span>      List&lt;Container&gt; increasedContainers);<a name="line.306"></a>
-<span class="sourceLineNo">307</span><a name="line.307"></a>
-<span class="sourceLineNo">308</span>  /**<a name="line.308"></a>
-<span class="sourceLineNo">309</span>   * Get the list of newly decreased containers by<a name="line.309"></a>
-<span class="sourceLineNo">310</span>   * &lt;code&gt;ResourceManager&lt;/code&gt;.<a name="line.310"></a>
-<span class="sourceLineNo">311</span>   */<a name="line.311"></a>
-<span class="sourceLineNo">312</span>  @Public<a name="line.312"></a>
-<span class="sourceLineNo">313</span>  @Unstable<a name="line.313"></a>
-<span class="sourceLineNo">314</span>  public abstract List&lt;Container&gt; getDecreasedContainers();<a name="line.314"></a>
-<span class="sourceLineNo">315</span><a name="line.315"></a>
-<span class="sourceLineNo">316</span>  /**<a name="line.316"></a>
-<span class="sourceLineNo">317</span>   * Set the list of newly decreased containers by<a name="line.317"></a>
-<span class="sourceLineNo">318</span>   * &lt;code&gt;ResourceManager&lt;/code&gt;.<a name="line.318"></a>
-<span class="sourceLineNo">319</span>   */<a name="line.319"></a>
-<span class="sourceLineNo">320</span>  @Private<a name="line.320"></a>
-<span class="sourceLineNo">321</span>  @Unstable<a name="line.321"></a>
-<span class="sourceLineNo">322</span>  public abstract void setDecreasedContainers(<a name="line.322"></a>
-<span class="sourceLineNo">323</span>      List&lt;Container&gt; decreasedContainers);<a name="line.323"></a>
-<span class="sourceLineNo">324</span><a name="line.324"></a>
-<span class="sourceLineNo">325</span>  /**<a name="line.325"></a>
-<span class="sourceLineNo">326</span>   * The AMRMToken that belong to this attempt<a name="line.326"></a>
-<span class="sourceLineNo">327</span>   *<a name="line.327"></a>
-<span class="sourceLineNo">328</span>   * @return The AMRMToken that belong to this attempt<a name="line.328"></a>
-<span class="sourceLineNo">329</span>   */<a name="line.329"></a>
-<span class="sourceLineNo">330</span>  @Public<a name="line.330"></a>
-<span class="sourceLineNo">331</span>  @Unstable<a name="line.331"></a>
-<span class="sourceLineNo">332</span>  public abstract Token getAMRMToken();<a name="line.332"></a>
-<span class="sourceLineNo">333</span><a name="line.333"></a>
-<span class="sourceLineNo">334</span>  @Private<a name="line.334"></a>
-<span class="sourceLineNo">335</span>  @Unstable<a name="line.335"></a>
-<span class="sourceLineNo">336</span>  public abstract void setAMRMToken(Token amRMToken);<a name="line.336"></a>
-<span class="sourceLineNo">337</span><a name="line.337"></a>
-<span class="sourceLineNo">338</span>  /**<a name="line.338"></a>
-<span class="sourceLineNo">339</span>   * Priority of the application<a name="line.339"></a>
-<span class="sourceLineNo">340</span>   *<a name="line.340"></a>
-<span class="sourceLineNo">341</span>   * @return get application priority<a name="line.341"></a>
-<span class="sourceLineNo">342</span>   */<a name="line.342"></a>
-<span class="sourceLineNo">343</span>  @Public<a name="line.343"></a>
-<span class="sourceLineNo">344</span>  @Unstable<a name="line.344"></a>
-<span class="sourceLineNo">345</span>  public abstract Priority getApplicationPriority();<a name="line.345"></a>
-<span class="sourceLineNo">346</span><a name="line.346"></a>
-<span class="sourceLineNo">347</span>  @Private<a name="line.347"></a>
-<span class="sourceLineNo">348</span>  @Unstable<a name="line.348"></a>
-<span class="sourceLineNo">349</span>  public abstract void setApplicationPriority(Priority priority);<a name="line.349"></a>
-<span class="sourceLineNo">350</span><a name="line.350"></a>
-<span class="sourceLineNo">351</span>  /**<a name="line.351"></a>
-<span class="sourceLineNo">352</span>   * The address of collector that belong to this app<a name="line.352"></a>
-<span class="sourceLineNo">353</span>   *<a name="line.353"></a>
-<span class="sourceLineNo">354</span>   * @return The address of collector that belong to this attempt<a name="line.354"></a>
-<span class="sourceLineNo">355</span>   */<a name="line.355"></a>
-<span class="sourceLineNo">356</span>  @Public<a name="line.356"></a>
-<span class="sourceLineNo">357</span>  @Unstable<a name="line.357"></a>
-<span class="sourceLineNo">358</span>  public abstract String getCollectorAddr();<a name="line.358"></a>
-<span class="sourceLineNo">359</span><a name="line.359"></a>
-<span class="sourceLineNo">360</span>  @Private<a name="line.360"></a>
-<span class="sourceLineNo">361</span>  @Unstable<a name="line.361"></a>
-<span class="sourceLineNo">362</span>  public abstract void setCollectorAddr(String collectorAddr);<a name="line.362"></a>
-<span class="sourceLineNo">363</span><a name="line.363"></a>
-<span class="sourceLineNo">364</span>}<a name="line.364"></a>
+<span class="sourceLineNo">282</span>   * @return list of NMTokens required for communicating with NM<a name="line.282"></a>
+<span class="sourceLineNo">283</span>   */<a name="line.283"></a>
+<span class="sourceLineNo">284</span>  @Public<a name="line.284"></a>
+<span class="sourceLineNo">285</span>  @Stable<a name="line.285"></a>
+<span class="sourceLineNo">286</span>  public abstract List&lt;NMToken&gt; getNMTokens();<a name="line.286"></a>
+<span class="sourceLineNo">287</span><a name="line.287"></a>
+<span class="sourceLineNo">288</span>  @Private<a name="line.288"></a>
+<span class="sourceLineNo">289</span>  @Unstable<a name="line.289"></a>
+<span class="sourceLineNo">290</span>  public abstract void setNMTokens(List&lt;NMToken&gt; nmTokens);<a name="line.290"></a>
+<span class="sourceLineNo">291</span>  <a name="line.291"></a>
+<span class="sourceLineNo">292</span>  /**<a name="line.292"></a>
+<span class="sourceLineNo">293</span>   * Get the list of newly increased containers by<a name="line.293"></a>
+<span class="sourceLineNo">294</span>   * &lt;code&gt;ResourceManager&lt;/code&gt;.<a name="line.294"></a>
+<span class="sourceLineNo">295</span>   * @return list of newly increased containers<a name="line.295"></a>
+<span class="sourceLineNo">296</span>   */<a name="line.296"></a>
+<span class="sourceLineNo">297</span>  @Public<a name="line.297"></a>
+<span class="sourceLineNo">298</span>  @Unstable<a name="line.298"></a>
+<span class="sourceLineNo">299</span>  public abstract List&lt;Container&gt; getIncreasedContainers();<a name="line.299"></a>
+<span class="sourceLineNo">300</span><a name="line.300"></a>
+<span class="sourceLineNo">301</span>  /**<a name="line.301"></a>
+<span class="sourceLineNo">302</span>   * Set the list of newly increased containers by<a name="line.302"></a>
+<span class="sourceLineNo">303</span>   * &lt;code&gt;ResourceManager&lt;/code&gt;.<a name="line.303"></a>
+<span class="sourceLineNo">304</span>   */<a name="line.304"></a>
+<span class="sourceLineNo">305</span>  @Private<a name="line.305"></a>
+<span class="sourceLineNo">306</span>  @Unstable<a name="line.306"></a>
+<span class="sourceLineNo">307</span>  public abstract void setIncreasedContainers(<a name="line.307"></a>
+<span class="sourceLineNo">308</span>      List&lt;Container&gt; increasedContainers);<a name="line.308"></a>
+<span class="sourceLineNo">309</span><a name="line.309"></a>
+<span class="sourceLineNo">310</span>  /**<a name="line.310"></a>
+<span class="sourceLineNo">311</span>   * Get the list of newly decreased containers by<a name="line.311"></a>
+<span class="sourceLineNo">312</span>   * &lt;code&gt;ResourceManager&lt;/code&gt;.<a name="line.312"></a>
+<span class="sourceLineNo">313</span>   * @return the list of newly decreased containers<a name="line.313"></a>
+<span class="sourceLineNo">314</span>   */<a name="line.314"></a>
+<span class="sourceLineNo">315</span>  @Public<a name="line.315"></a>
+<span class="sourceLineNo">316</span>  @Unstable<a name="line.316"></a>
+<span class="sourceLineNo">317</span>  public abstract List&lt;Container&gt; getDecreasedContainers();<a name="line.317"></a>
+<span class="sourceLineNo">318</span><a name="line.318"></a>
+<span class="sourceLineNo">319</span>  /**<a name="line.319"></a>
+<span class="sourceLineNo">320</span>   * Set the list of newly decreased containers by<a name="line.320"></a>
+<span class="sourceLineNo">321</span>   * &lt;code&gt;ResourceManager&lt;/code&gt;.<a name="line.321"></a>
+<span class="sourceLineNo">322</span>   */<a name="line.322"></a>
+<span class="sourceLineNo">323</span>  @Private<a name="line.323"></a>
+<span class="sourceLineNo">324</span>  @Unstable<a name="line.324"></a>
+<span class="sourceLineNo">325</span>  public abstract void setDecreasedContainers(<a name="line.325"></a>
+<span class="sourceLineNo">326</span>      List&lt;Container&gt; decreasedContainers);<a name="line.326"></a>
+<span class="sourceLineNo">327</span><a name="line.327"></a>
+<span class="sourceLineNo">328</span>  /**<a name="line.328"></a>
+<span class="sourceLineNo">329</span>   * The AMRMToken that belong to this attempt<a name="line.329"></a>
+<span class="sourceLineNo">330</span>   *<a name="line.330"></a>
+<span class="sourceLineNo">331</span>   * @return The AMRMToken that belong to this attempt<a name="line.331"></a>
+<span class="sourceLineNo">332</span>   */<a name="line.332"></a>
+<span class="sourceLineNo">333</span>  @Public<a name="line.333"></a>
+<span class="sourceLineNo">334</span>  @Unstable<a name="line.334"></a>
+<span class="sourceLineNo">335</span>  public abstract Token getAMRMToken();<a name="line.335"></a>
+<span class="sourceLineNo">336</span><a name="line.336"></a>
+<span class="sourceLineNo">337</span>  @Private<a name="line.337"></a>
+<span class="sourceLineNo">338</span>  @Unstable<a name="line.338"></a>
+<span class="sourceLineNo">339</span>  public abstract void setAMRMToken(Token amRMToken);<a name="line.339"></a>
+<span class="sourceLineNo">340</span><a name="line.340"></a>
+<span class="sourceLineNo">341</span>  /**<a name="line.341"></a>
+<span class="sourceLineNo">342</span>   * Priority of the application<a name="line.342"></a>
+<span class="sourceLineNo">343</span>   *<a name="line.343"></a>
+<span class="sourceLineNo">344</span>   * @return get application priority<a name="line.344"></a>
+<span class="sourceLineNo">345</span>   */<a name="line.345"></a>
+<span class="sourceLineNo">346</span>  @Public<a name="line.346"></a>
+<span class="sourceLineNo">347</span>  @Unstable<a name="line.347"></a>
+<span class="sourceLineNo">348</span>  public abstract Priority getApplicationPriority();<a name="line.348"></a>
+<span class="sourceLineNo">349</span><a name="line.349"></a>
+<span class="sourceLineNo">350</span>  @Private<a name="line.350"></a>
+<span class="sourceLineNo">351</span>  @Unstable<a name="line.351"></a>
+<span class="sourceLineNo">352</span>  public abstract void setApplicationPriority(Priority priority);<a name="line.352"></a>
+<span class="sourceLineNo">353</span><a name="line.353"></a>
+<span class="sourceLineNo">354</span>  /**<a name="line.354"></a>
+<span class="sourceLineNo">355</span>   * The address of collector that belong to this app<a name="line.355"></a>
+<span class="sourceLineNo">356</span>   *<a name="line.356"></a>
+<span class="sourceLineNo">357</span>   * @return The address of collector that belong to this attempt<a name="line.357"></a>
+<span class="sourceLineNo">358</span>   */<a name="line.358"></a>
+<span class="sourceLineNo">359</span>  @Public<a name="line.359"></a>
+<span class="sourceLineNo">360</span>  @Unstable<a name="line.360"></a>
+<span class="sourceLineNo">361</span>  public abstract String getCollectorAddr();<a name="line.361"></a>
+<span class="sourceLineNo">362</span><a name="line.362"></a>
+<span class="sourceLineNo">363</span>  @Private<a name="line.363"></a>
+<span class="sourceLineNo">364</span>  @Unstable<a name="line.364"></a>
+<span class="sourceLineNo">365</span>  public abstract void setCollectorAddr(String collectorAddr);<a name="line.365"></a>
+<span class="sourceLineNo">366</span><a name="line.366"></a>
+<span class="sourceLineNo">367</span>}<a name="line.367"></a>
 
 
 

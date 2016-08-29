@@ -851,14 +851,14 @@
 <span class="sourceLineNo">843</span>    public FileStatus getFileStatus(final Path f) throws IOException {<a name="line.843"></a>
 <span class="sourceLineNo">844</span>      checkPathIsSlash(f);<a name="line.844"></a>
 <span class="sourceLineNo">845</span>      return new FileStatus(0, true, 0, 0, creationTime, creationTime,<a name="line.845"></a>
-<span class="sourceLineNo">846</span>          PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.846"></a>
+<span class="sourceLineNo">846</span>          PERMISSION_555, ugi.getUserName(), ugi.getPrimaryGroupName(),<a name="line.846"></a>
 <span class="sourceLineNo">847</span>          new Path(theInternalDir.fullPath).makeQualified(<a name="line.847"></a>
 <span class="sourceLineNo">848</span>              myUri, null));<a name="line.848"></a>
 <span class="sourceLineNo">849</span>    }<a name="line.849"></a>
 <span class="sourceLineNo">850</span>    <a name="line.850"></a>
 <span class="sourceLineNo">851</span>    @Override<a name="line.851"></a>
 <span class="sourceLineNo">852</span>    public FileStatus getFileLinkStatus(final Path f)<a name="line.852"></a>
-<span class="sourceLineNo">853</span>        throws FileNotFoundException {<a name="line.853"></a>
+<span class="sourceLineNo">853</span>        throws IOException {<a name="line.853"></a>
 <span class="sourceLineNo">854</span>      // look up i internalDirs children - ignore first Slash<a name="line.854"></a>
 <span class="sourceLineNo">855</span>      INode&lt;AbstractFileSystem&gt; inode =<a name="line.855"></a>
 <span class="sourceLineNo">856</span>        theInternalDir.children.get(f.toUri().toString().substring(1)); <a name="line.856"></a>
@@ -871,13 +871,13 @@
 <span class="sourceLineNo">863</span>        INodeLink&lt;AbstractFileSystem&gt; inodelink = <a name="line.863"></a>
 <span class="sourceLineNo">864</span>          (INodeLink&lt;AbstractFileSystem&gt;) inode;<a name="line.864"></a>
 <span class="sourceLineNo">865</span>        result = new FileStatus(0, false, 0, 0, creationTime, creationTime,<a name="line.865"></a>
-<span class="sourceLineNo">866</span>            PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.866"></a>
+<span class="sourceLineNo">866</span>            PERMISSION_555, ugi.getUserName(), ugi.getPrimaryGroupName(),<a name="line.866"></a>
 <span class="sourceLineNo">867</span>            inodelink.getTargetLink(),<a name="line.867"></a>
 <span class="sourceLineNo">868</span>            new Path(inode.fullPath).makeQualified(<a name="line.868"></a>
 <span class="sourceLineNo">869</span>                myUri, null));<a name="line.869"></a>
 <span class="sourceLineNo">870</span>      } else {<a name="line.870"></a>
 <span class="sourceLineNo">871</span>        result = new FileStatus(0, true, 0, 0, creationTime, creationTime,<a name="line.871"></a>
-<span class="sourceLineNo">872</span>          PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.872"></a>
+<span class="sourceLineNo">872</span>          PERMISSION_555, ugi.getUserName(), ugi.getPrimaryGroupName(),<a name="line.872"></a>
 <span class="sourceLineNo">873</span>          new Path(inode.fullPath).makeQualified(<a name="line.873"></a>
 <span class="sourceLineNo">874</span>              myUri, null));<a name="line.874"></a>
 <span class="sourceLineNo">875</span>      }<a name="line.875"></a>
@@ -916,7 +916,7 @@
 <span class="sourceLineNo">908</span><a name="line.908"></a>
 <span class="sourceLineNo">909</span>          result[i++] = new FileStatus(0, false, 0, 0,<a name="line.909"></a>
 <span class="sourceLineNo">910</span>            creationTime, creationTime,<a name="line.910"></a>
-<span class="sourceLineNo">911</span>            PERMISSION_555, ugi.getUserName(), ugi.getGroupNames()[0],<a name="line.911"></a>
+<span class="sourceLineNo">911</span>            PERMISSION_555, ugi.getUserName(), ugi.getPrimaryGroupName(),<a name="line.911"></a>
 <span class="sourceLineNo">912</span>            link.getTargetLink(),<a name="line.912"></a>
 <span class="sourceLineNo">913</span>            new Path(inode.fullPath).makeQualified(<a name="line.913"></a>
 <span class="sourceLineNo">914</span>                myUri, null));<a name="line.914"></a>
@@ -1050,7 +1050,7 @@
 <span class="sourceLineNo">1042</span>    public AclStatus getAclStatus(Path path) throws IOException {<a name="line.1042"></a>
 <span class="sourceLineNo">1043</span>      checkPathIsSlash(path);<a name="line.1043"></a>
 <span class="sourceLineNo">1044</span>      return new AclStatus.Builder().owner(ugi.getUserName())<a name="line.1044"></a>
-<span class="sourceLineNo">1045</span>          .group(ugi.getGroupNames()[0])<a name="line.1045"></a>
+<span class="sourceLineNo">1045</span>          .group(ugi.getPrimaryGroupName())<a name="line.1045"></a>
 <span class="sourceLineNo">1046</span>          .addEntries(AclUtil.getMinimalAcl(PERMISSION_555))<a name="line.1046"></a>
 <span class="sourceLineNo">1047</span>          .stickyBit(false).build();<a name="line.1047"></a>
 <span class="sourceLineNo">1048</span>    }<a name="line.1048"></a>

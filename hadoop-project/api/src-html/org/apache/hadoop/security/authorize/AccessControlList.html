@@ -239,7 +239,7 @@
 <span class="sourceLineNo">231</span>    if (allAllowed || users.contains(ugi.getShortUserName())) {<a name="line.231"></a>
 <span class="sourceLineNo">232</span>      return true;<a name="line.232"></a>
 <span class="sourceLineNo">233</span>    } else if (!groups.isEmpty()) {<a name="line.233"></a>
-<span class="sourceLineNo">234</span>      for(String group: ugi.getGroupNames()) {<a name="line.234"></a>
+<span class="sourceLineNo">234</span>      for (String group : ugi.getGroups()) {<a name="line.234"></a>
 <span class="sourceLineNo">235</span>        if (groups.contains(group)) {<a name="line.235"></a>
 <span class="sourceLineNo">236</span>          return true;<a name="line.236"></a>
 <span class="sourceLineNo">237</span>        }<a name="line.237"></a>

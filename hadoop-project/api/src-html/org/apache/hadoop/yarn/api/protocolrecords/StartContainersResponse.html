@@ -86,57 +86,58 @@
 <span class="sourceLineNo">078</span>  /**<a name="line.78"></a>
 <span class="sourceLineNo">079</span>   * Get the containerId-to-exception map in which the exception indicates error<a name="line.79"></a>
 <span class="sourceLineNo">080</span>   * from per container for failed requests<a name="line.80"></a>
-<span class="sourceLineNo">081</span>   */<a name="line.81"></a>
-<span class="sourceLineNo">082</span>  @Public<a name="line.82"></a>
-<span class="sourceLineNo">083</span>  @Stable<a name="line.83"></a>
-<span class="sourceLineNo">084</span>  public abstract Map&lt;ContainerId, SerializedException&gt; getFailedRequests();<a name="line.84"></a>
-<span class="sourceLineNo">085</span><a name="line.85"></a>
-<span class="sourceLineNo">086</span>  /**<a name="line.86"></a>
-<span class="sourceLineNo">087</span>   * Set the containerId-to-exception map in which the exception indicates error<a name="line.87"></a>
-<span class="sourceLineNo">088</span>   * from per container for failed requests<a name="line.88"></a>
-<span class="sourceLineNo">089</span>   */<a name="line.89"></a>
-<span class="sourceLineNo">090</span>  @Private<a name="line.90"></a>
-<span class="sourceLineNo">091</span>  @Unstable<a name="line.91"></a>
-<span class="sourceLineNo">092</span>  public abstract void setFailedRequests(<a name="line.92"></a>
-<span class="sourceLineNo">093</span>      Map&lt;ContainerId, SerializedException&gt; failedContainers);<a name="line.93"></a>
-<span class="sourceLineNo">094</span><a name="line.94"></a>
-<span class="sourceLineNo">095</span>  /**<a name="line.95"></a>
-<span class="sourceLineNo">096</span>   * &lt;p&gt;<a name="line.96"></a>
-<span class="sourceLineNo">097</span>   * Get the meta-data from all auxiliary services running on the<a name="line.97"></a>
-<span class="sourceLineNo">098</span>   * &lt;code&gt;NodeManager&lt;/code&gt;.<a name="line.98"></a>
-<span class="sourceLineNo">099</span>   * &lt;/p&gt;<a name="line.99"></a>
-<span class="sourceLineNo">100</span>   * &lt;p&gt;<a name="line.100"></a>
-<span class="sourceLineNo">101</span>   * The meta-data is returned as a Map between the auxiliary service names and<a name="line.101"></a>
-<span class="sourceLineNo">102</span>   * their corresponding per service meta-data as an opaque blob<a name="line.102"></a>
-<span class="sourceLineNo">103</span>   * &lt;code&gt;ByteBuffer&lt;/code&gt;<a name="line.103"></a>
-<span class="sourceLineNo">104</span>   * &lt;/p&gt;<a name="line.104"></a>
-<span class="sourceLineNo">105</span>   * <a name="line.105"></a>
-<span class="sourceLineNo">106</span>   * &lt;p&gt;<a name="line.106"></a>
-<span class="sourceLineNo">107</span>   * To be able to interpret the per-service meta-data, you should consult the<a name="line.107"></a>
-<span class="sourceLineNo">108</span>   * documentation for the Auxiliary-service configured on the NodeManager<a name="line.108"></a>
-<span class="sourceLineNo">109</span>   * &lt;/p&gt;<a name="line.109"></a>
-<span class="sourceLineNo">110</span>   * <a name="line.110"></a>
-<span class="sourceLineNo">111</span>   * @return a Map between the names of auxiliary services and their<a name="line.111"></a>
-<span class="sourceLineNo">112</span>   *         corresponding meta-data<a name="line.112"></a>
-<span class="sourceLineNo">113</span>   */<a name="line.113"></a>
-<span class="sourceLineNo">114</span>  @Public<a name="line.114"></a>
-<span class="sourceLineNo">115</span>  @Stable<a name="line.115"></a>
-<span class="sourceLineNo">116</span>  public abstract Map&lt;String, ByteBuffer&gt; getAllServicesMetaData();<a name="line.116"></a>
-<span class="sourceLineNo">117</span><a name="line.117"></a>
-<span class="sourceLineNo">118</span>  /**<a name="line.118"></a>
-<span class="sourceLineNo">119</span>   * Set to the list of auxiliary services which have been started on the<a name="line.119"></a>
-<span class="sourceLineNo">120</span>   * &lt;code&gt;NodeManager&lt;/code&gt;. This is done only once when the<a name="line.120"></a>
-<span class="sourceLineNo">121</span>   * &lt;code&gt;NodeManager&lt;/code&gt; starts up<a name="line.121"></a>
-<span class="sourceLineNo">122</span>   * <a name="line.122"></a>
-<span class="sourceLineNo">123</span>   * @param allServicesMetaData<a name="line.123"></a>
-<span class="sourceLineNo">124</span>   *          A map from auxiliary service names to the opaque blob<a name="line.124"></a>
-<span class="sourceLineNo">125</span>   *          &lt;code&gt;ByteBuffer&lt;/code&gt; for that auxiliary service<a name="line.125"></a>
-<span class="sourceLineNo">126</span>   */<a name="line.126"></a>
-<span class="sourceLineNo">127</span>  @Private<a name="line.127"></a>
-<span class="sourceLineNo">128</span>  @Unstable<a name="line.128"></a>
-<span class="sourceLineNo">129</span>  public abstract void setAllServicesMetaData(<a name="line.129"></a>
-<span class="sourceLineNo">130</span>      Map&lt;String, ByteBuffer&gt; allServicesMetaData);<a name="line.130"></a>
-<span class="sourceLineNo">131</span>}<a name="line.131"></a>
+<span class="sourceLineNo">081</span>   * @return map of containerId-to-exception<a name="line.81"></a>
+<span class="sourceLineNo">082</span>   */<a name="line.82"></a>
+<span class="sourceLineNo">083</span>  @Public<a name="line.83"></a>
+<span class="sourceLineNo">084</span>  @Stable<a name="line.84"></a>
+<span class="sourceLineNo">085</span>  public abstract Map&lt;ContainerId, SerializedException&gt; getFailedRequests();<a name="line.85"></a>
+<span class="sourceLineNo">086</span><a name="line.86"></a>
+<span class="sourceLineNo">087</span>  /**<a name="line.87"></a>
+<span class="sourceLineNo">088</span>   * Set the containerId-to-exception map in which the exception indicates error<a name="line.88"></a>
+<span class="sourceLineNo">089</span>   * from per container for failed requests<a name="line.89"></a>
+<span class="sourceLineNo">090</span>   */<a name="line.90"></a>
+<span class="sourceLineNo">091</span>  @Private<a name="line.91"></a>
+<span class="sourceLineNo">092</span>  @Unstable<a name="line.92"></a>
+<span class="sourceLineNo">093</span>  public abstract void setFailedRequests(<a name="line.93"></a>
+<span class="sourceLineNo">094</span>      Map&lt;ContainerId, SerializedException&gt; failedContainers);<a name="line.94"></a>
+<span class="sourceLineNo">095</span><a name="line.95"></a>
+<span class="sourceLineNo">096</span>  /**<a name="line.96"></a>
+<span class="sourceLineNo">097</span>   * &lt;p&gt;<a name="line.97"></a>
+<span class="sourceLineNo">098</span>   * Get the meta-data from all auxiliary services running on the<a name="line.98"></a>
+<span class="sourceLineNo">099</span>   * &lt;code&gt;NodeManager&lt;/code&gt;.<a name="line.99"></a>
+<span class="sourceLineNo">100</span>   * &lt;/p&gt;<a name="line.100"></a>
+<span class="sourceLineNo">101</span>   * &lt;p&gt;<a name="line.101"></a>
+<span class="sourceLineNo">102</span>   * The meta-data is returned as a Map between the auxiliary service names and<a name="line.102"></a>
+<span class="sourceLineNo">103</span>   * their corresponding per service meta-data as an opaque blob<a name="line.103"></a>
+<span class="sourceLineNo">104</span>   * &lt;code&gt;ByteBuffer&lt;/code&gt;<a name="line.104"></a>
+<span class="sourceLineNo">105</span>   * &lt;/p&gt;<a name="line.105"></a>
+<span class="sourceLineNo">106</span>   * <a name="line.106"></a>
+<span class="sourceLineNo">107</span>   * &lt;p&gt;<a name="line.107"></a>
+<span class="sourceLineNo">108</span>   * To be able to interpret the per-service meta-data, you should consult the<a name="line.108"></a>
+<span class="sourceLineNo">109</span>   * documentation for the Auxiliary-service configured on the NodeManager<a name="line.109"></a>
+<span class="sourceLineNo">110</span>   * &lt;/p&gt;<a name="line.110"></a>
+<span class="sourceLineNo">111</span>   * <a name="line.111"></a>
+<span class="sourceLineNo">112</span>   * @return a Map between the names of auxiliary services and their<a name="line.112"></a>
+<span class="sourceLineNo">113</span>   *         corresponding meta-data<a name="line.113"></a>
+<span class="sourceLineNo">114</span>   */<a name="line.114"></a>
+<span class="sourceLineNo">115</span>  @Public<a name="line.115"></a>
+<span class="sourceLineNo">116</span>  @Stable<a name="line.116"></a>
+<span class="sourceLineNo">117</span>  public abstract Map&lt;String, ByteBuffer&gt; getAllServicesMetaData();<a name="line.117"></a>
+<span class="sourceLineNo">118</span><a name="line.118"></a>
+<span class="sourceLineNo">119</span>  /**<a name="line.119"></a>
+<span class="sourceLineNo">120</span>   * Set to the list of auxiliary services which have been started on the<a name="line.120"></a>
+<span class="sourceLineNo">121</span>   * &lt;code&gt;NodeManager&lt;/code&gt;. This is done only once when the<a name="line.121"></a>
+<span class="sourceLineNo">122</span>   * &lt;code&gt;NodeManager&lt;/code&gt; starts up<a name="line.122"></a>
+<span class="sourceLineNo">123</span>   * <a name="line.123"></a>
+<span class="sourceLineNo">124</span>   * @param allServicesMetaData<a name="line.124"></a>
+<span class="sourceLineNo">125</span>   *          A map from auxiliary service names to the opaque blob<a name="line.125"></a>
+<span class="sourceLineNo">126</span>   *          &lt;code&gt;ByteBuffer&lt;/code&gt; for that auxiliary service<a name="line.126"></a>
+<span class="sourceLineNo">127</span>   */<a name="line.127"></a>
+<span class="sourceLineNo">128</span>  @Private<a name="line.128"></a>
+<span class="sourceLineNo">129</span>  @Unstable<a name="line.129"></a>
+<span class="sourceLineNo">130</span>  public abstract void setAllServicesMetaData(<a name="line.130"></a>
+<span class="sourceLineNo">131</span>      Map&lt;String, ByteBuffer&gt; allServicesMetaData);<a name="line.131"></a>
+<span class="sourceLineNo">132</span>}<a name="line.132"></a>
 
 
 

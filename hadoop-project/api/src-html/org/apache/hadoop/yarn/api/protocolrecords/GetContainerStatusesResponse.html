@@ -81,20 +81,21 @@
 <span class="sourceLineNo">073</span>  /**<a name="line.73"></a>
 <span class="sourceLineNo">074</span>   * Get the containerId-to-exception map in which the exception indicates error<a name="line.74"></a>
 <span class="sourceLineNo">075</span>   * from per container for failed requests<a name="line.75"></a>
-<span class="sourceLineNo">076</span>   */<a name="line.76"></a>
-<span class="sourceLineNo">077</span>  @Public<a name="line.77"></a>
-<span class="sourceLineNo">078</span>  @Stable<a name="line.78"></a>
-<span class="sourceLineNo">079</span>  public abstract Map&lt;ContainerId, SerializedException&gt; getFailedRequests();<a name="line.79"></a>
-<span class="sourceLineNo">080</span><a name="line.80"></a>
-<span class="sourceLineNo">081</span>  /**<a name="line.81"></a>
-<span class="sourceLineNo">082</span>   * Set the containerId-to-exception map in which the exception indicates error<a name="line.82"></a>
-<span class="sourceLineNo">083</span>   * from per container for failed requests<a name="line.83"></a>
-<span class="sourceLineNo">084</span>   */<a name="line.84"></a>
-<span class="sourceLineNo">085</span>  @Private<a name="line.85"></a>
-<span class="sourceLineNo">086</span>  @Unstable<a name="line.86"></a>
-<span class="sourceLineNo">087</span>  public abstract void setFailedRequests(<a name="line.87"></a>
-<span class="sourceLineNo">088</span>      Map&lt;ContainerId, SerializedException&gt; failedContainers);<a name="line.88"></a>
-<span class="sourceLineNo">089</span>}<a name="line.89"></a>
+<span class="sourceLineNo">076</span>   * @return map of containerId-to-exception<a name="line.76"></a>
+<span class="sourceLineNo">077</span>   */<a name="line.77"></a>
+<span class="sourceLineNo">078</span>  @Public<a name="line.78"></a>
+<span class="sourceLineNo">079</span>  @Stable<a name="line.79"></a>
+<span class="sourceLineNo">080</span>  public abstract Map&lt;ContainerId, SerializedException&gt; getFailedRequests();<a name="line.80"></a>
+<span class="sourceLineNo">081</span><a name="line.81"></a>
+<span class="sourceLineNo">082</span>  /**<a name="line.82"></a>
+<span class="sourceLineNo">083</span>   * Set the containerId-to-exception map in which the exception indicates error<a name="line.83"></a>
+<span class="sourceLineNo">084</span>   * from per container for failed requests<a name="line.84"></a>
+<span class="sourceLineNo">085</span>   */<a name="line.85"></a>
+<span class="sourceLineNo">086</span>  @Private<a name="line.86"></a>
+<span class="sourceLineNo">087</span>  @Unstable<a name="line.87"></a>
+<span class="sourceLineNo">088</span>  public abstract void setFailedRequests(<a name="line.88"></a>
+<span class="sourceLineNo">089</span>      Map&lt;ContainerId, SerializedException&gt; failedContainers);<a name="line.89"></a>
+<span class="sourceLineNo">090</span>}<a name="line.90"></a>
 
 
 

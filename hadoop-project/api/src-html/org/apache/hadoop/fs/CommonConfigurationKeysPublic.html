@@ -735,8 +735,48 @@
 <span class="sourceLineNo">727</span>      "hadoop.http.logs.enabled";<a name="line.727"></a>
 <span class="sourceLineNo">728</span>  /** Defalt value for HADOOP_HTTP_LOGS_ENABLED */<a name="line.728"></a>
 <span class="sourceLineNo">729</span>  public static final boolean HADOOP_HTTP_LOGS_ENABLED_DEFAULT = true;<a name="line.729"></a>
-<span class="sourceLineNo">730</span>}<a name="line.730"></a>
-<span class="sourceLineNo">731</span><a name="line.731"></a>
+<span class="sourceLineNo">730</span><a name="line.730"></a>
+<span class="sourceLineNo">731</span>  /**<a name="line.731"></a>
+<span class="sourceLineNo">732</span>   * @see<a name="line.732"></a>
+<span class="sourceLineNo">733</span>   * &lt;a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml"&gt;<a name="line.733"></a>
+<span class="sourceLineNo">734</span>   * core-default.xml&lt;/a&gt;<a name="line.734"></a>
+<span class="sourceLineNo">735</span>   */<a name="line.735"></a>
+<span class="sourceLineNo">736</span>  public static final String HADOOP_SECURITY_CREDENTIAL_PROVIDER_PATH =<a name="line.736"></a>
+<span class="sourceLineNo">737</span>      "hadoop.security.credential.provider.path";<a name="line.737"></a>
+<span class="sourceLineNo">738</span><a name="line.738"></a>
+<span class="sourceLineNo">739</span>  /**<a name="line.739"></a>
+<span class="sourceLineNo">740</span>   * @see<a name="line.740"></a>
+<span class="sourceLineNo">741</span>   * &lt;a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml"&gt;<a name="line.741"></a>
+<span class="sourceLineNo">742</span>   * core-default.xml&lt;/a&gt;<a name="line.742"></a>
+<span class="sourceLineNo">743</span>   */<a name="line.743"></a>
+<span class="sourceLineNo">744</span>  public static final String HADOOP_SECURITY_CREDENTIAL_CLEAR_TEXT_FALLBACK =<a name="line.744"></a>
+<span class="sourceLineNo">745</span>      "hadoop.security.credential.clear-text-fallback";<a name="line.745"></a>
+<span class="sourceLineNo">746</span>  public static final boolean<a name="line.746"></a>
+<span class="sourceLineNo">747</span>      HADOOP_SECURITY_CREDENTIAL_CLEAR_TEXT_FALLBACK_DEFAULT = true;<a name="line.747"></a>
+<span class="sourceLineNo">748</span><a name="line.748"></a>
+<span class="sourceLineNo">749</span>  /**<a name="line.749"></a>
+<span class="sourceLineNo">750</span>   * @see<a name="line.750"></a>
+<span class="sourceLineNo">751</span>   * &lt;a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml"&gt;<a name="line.751"></a>
+<span class="sourceLineNo">752</span>   * core-default.xml&lt;/a&gt;<a name="line.752"></a>
+<span class="sourceLineNo">753</span>   */<a name="line.753"></a>
+<span class="sourceLineNo">754</span>  public static final String  HADOOP_SECURITY_CREDENTIAL_PASSWORD_FILE_KEY =<a name="line.754"></a>
+<span class="sourceLineNo">755</span>      "hadoop.security.credstore.java-keystore-provider.password-file";<a name="line.755"></a>
+<span class="sourceLineNo">756</span><a name="line.756"></a>
+<span class="sourceLineNo">757</span>  /**<a name="line.757"></a>
+<span class="sourceLineNo">758</span>   * @see<a name="line.758"></a>
+<span class="sourceLineNo">759</span>   * &lt;a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml"&gt;<a name="line.759"></a>
+<span class="sourceLineNo">760</span>   * core-default.xml&lt;/a&gt;<a name="line.760"></a>
+<span class="sourceLineNo">761</span>   */<a name="line.761"></a>
+<span class="sourceLineNo">762</span>  public static final String HADOOP_SECURITY_SENSITIVE_CONFIG_KEYS =<a name="line.762"></a>
+<span class="sourceLineNo">763</span>      "hadoop.security.sensitive-config-keys";<a name="line.763"></a>
+<span class="sourceLineNo">764</span>  public static final String HADOOP_SECURITY_SENSITIVE_CONFIG_KEYS_DEFAULT =<a name="line.764"></a>
+<span class="sourceLineNo">765</span>      "password$" + "," +<a name="line.765"></a>
+<span class="sourceLineNo">766</span>      "fs.s3.*[Ss]ecret.?[Kk]ey" + "," +<a name="line.766"></a>
+<span class="sourceLineNo">767</span>      "fs.azure\\.account.key.*" + "," +<a name="line.767"></a>
+<span class="sourceLineNo">768</span>      "dfs.webhdfs.oauth2.[a-z]+.token" + "," +<a name="line.768"></a>
+<span class="sourceLineNo">769</span>      HADOOP_SECURITY_SENSITIVE_CONFIG_KEYS;<a name="line.769"></a>
+<span class="sourceLineNo">770</span>}<a name="line.770"></a>
+<span class="sourceLineNo">771</span><a name="line.771"></a>
 
 
 

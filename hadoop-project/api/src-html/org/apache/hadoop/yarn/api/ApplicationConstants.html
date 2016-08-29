@@ -271,29 +271,31 @@
 <span class="sourceLineNo">263</span>     * Note: Use $$() method for cross-platform practice i.e. submit an<a name="line.263"></a>
 <span class="sourceLineNo">264</span>     * application from a Windows client to a Linux/Unix server or vice versa.<a name="line.264"></a>
 <span class="sourceLineNo">265</span>     * &lt;/p&gt;<a name="line.265"></a>
-<span class="sourceLineNo">266</span>     */<a name="line.266"></a>
-<span class="sourceLineNo">267</span>    public String $() {<a name="line.267"></a>
-<span class="sourceLineNo">268</span>      if (Shell.WINDOWS) {<a name="line.268"></a>
-<span class="sourceLineNo">269</span>        return "%" + variable + "%";<a name="line.269"></a>
-<span class="sourceLineNo">270</span>      } else {<a name="line.270"></a>
-<span class="sourceLineNo">271</span>        return "$" + variable;<a name="line.271"></a>
-<span class="sourceLineNo">272</span>      }<a name="line.272"></a>
-<span class="sourceLineNo">273</span>    }<a name="line.273"></a>
-<span class="sourceLineNo">274</span><a name="line.274"></a>
-<span class="sourceLineNo">275</span>    /**<a name="line.275"></a>
-<span class="sourceLineNo">276</span>     * Expand the environment variable in platform-agnostic syntax. The<a name="line.276"></a>
-<span class="sourceLineNo">277</span>     * parameter expansion marker "{{VAR}}" will be replaced with real parameter<a name="line.277"></a>
-<span class="sourceLineNo">278</span>     * expansion marker ('%' for Windows and '$' for Linux) by NodeManager on<a name="line.278"></a>
-<span class="sourceLineNo">279</span>     * container launch. For example: {{VAR}} will be replaced as $VAR on Linux,<a name="line.279"></a>
-<span class="sourceLineNo">280</span>     * and %VAR% on Windows.<a name="line.280"></a>
-<span class="sourceLineNo">281</span>     */<a name="line.281"></a>
-<span class="sourceLineNo">282</span>    @Public<a name="line.282"></a>
-<span class="sourceLineNo">283</span>    @Unstable<a name="line.283"></a>
-<span class="sourceLineNo">284</span>    public String $$() {<a name="line.284"></a>
-<span class="sourceLineNo">285</span>      return PARAMETER_EXPANSION_LEFT + variable + PARAMETER_EXPANSION_RIGHT;<a name="line.285"></a>
-<span class="sourceLineNo">286</span>    }<a name="line.286"></a>
-<span class="sourceLineNo">287</span>  }<a name="line.287"></a>
-<span class="sourceLineNo">288</span>}<a name="line.288"></a>
+<span class="sourceLineNo">266</span>     * @return expanded environment variable.<a name="line.266"></a>
+<span class="sourceLineNo">267</span>     */<a name="line.267"></a>
+<span class="sourceLineNo">268</span>    public String $() {<a name="line.268"></a>
+<span class="sourceLineNo">269</span>      if (Shell.WINDOWS) {<a name="line.269"></a>
+<span class="sourceLineNo">270</span>        return "%" + variable + "%";<a name="line.270"></a>
+<span class="sourceLineNo">271</span>      } else {<a name="line.271"></a>
+<span class="sourceLineNo">272</span>        return "$" + variable;<a name="line.272"></a>
+<span class="sourceLineNo">273</span>      }<a name="line.273"></a>
+<span class="sourceLineNo">274</span>    }<a name="line.274"></a>
+<span class="sourceLineNo">275</span><a name="line.275"></a>
+<span class="sourceLineNo">276</span>    /**<a name="line.276"></a>
+<span class="sourceLineNo">277</span>     * Expand the environment variable in platform-agnostic syntax. The<a name="line.277"></a>
+<span class="sourceLineNo">278</span>     * parameter expansion marker "{{VAR}}" will be replaced with real parameter<a name="line.278"></a>
+<span class="sourceLineNo">279</span>     * expansion marker ('%' for Windows and '$' for Linux) by NodeManager on<a name="line.279"></a>
+<span class="sourceLineNo">280</span>     * container launch. For example: {{VAR}} will be replaced as $VAR on Linux,<a name="line.280"></a>
+<span class="sourceLineNo">281</span>     * and %VAR% on Windows.<a name="line.281"></a>
+<span class="sourceLineNo">282</span>     * @return expanded environment variable.<a name="line.282"></a>
+<span class="sourceLineNo">283</span>     */<a name="line.283"></a>
+<span class="sourceLineNo">284</span>    @Public<a name="line.284"></a>
+<span class="sourceLineNo">285</span>    @Unstable<a name="line.285"></a>
+<span class="sourceLineNo">286</span>    public String $$() {<a name="line.286"></a>
+<span class="sourceLineNo">287</span>      return PARAMETER_EXPANSION_LEFT + variable + PARAMETER_EXPANSION_RIGHT;<a name="line.287"></a>
+<span class="sourceLineNo">288</span>    }<a name="line.288"></a>
+<span class="sourceLineNo">289</span>  }<a name="line.289"></a>
+<span class="sourceLineNo">290</span>}<a name="line.290"></a>
 
 
 

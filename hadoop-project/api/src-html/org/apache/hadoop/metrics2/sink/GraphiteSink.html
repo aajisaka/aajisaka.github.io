@@ -27,22 +27,22 @@
 <span class="sourceLineNo">019</span>package org.apache.hadoop.metrics2.sink;<a name="line.19"></a>
 <span class="sourceLineNo">020</span><a name="line.20"></a>
 <span class="sourceLineNo">021</span>import org.apache.commons.configuration.SubsetConfiguration;<a name="line.21"></a>
-<span class="sourceLineNo">022</span>import org.apache.commons.io.Charsets;<a name="line.22"></a>
-<span class="sourceLineNo">023</span>import org.apache.commons.logging.Log;<a name="line.23"></a>
-<span class="sourceLineNo">024</span>import org.apache.commons.logging.LogFactory;<a name="line.24"></a>
-<span class="sourceLineNo">025</span>import org.apache.hadoop.classification.InterfaceAudience;<a name="line.25"></a>
-<span class="sourceLineNo">026</span>import org.apache.hadoop.classification.InterfaceStability;<a name="line.26"></a>
-<span class="sourceLineNo">027</span>import org.apache.hadoop.metrics2.AbstractMetric;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import org.apache.hadoop.metrics2.MetricsException;<a name="line.28"></a>
-<span class="sourceLineNo">029</span>import org.apache.hadoop.metrics2.MetricsRecord;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import org.apache.hadoop.metrics2.MetricsSink;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import org.apache.hadoop.metrics2.MetricsTag;<a name="line.31"></a>
-<span class="sourceLineNo">032</span><a name="line.32"></a>
-<span class="sourceLineNo">033</span>import java.io.Closeable;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import java.io.IOException;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import java.io.OutputStreamWriter;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import java.io.Writer;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import java.net.Socket;<a name="line.37"></a>
+<span class="sourceLineNo">022</span>import org.apache.commons.logging.Log;<a name="line.22"></a>
+<span class="sourceLineNo">023</span>import org.apache.commons.logging.LogFactory;<a name="line.23"></a>
+<span class="sourceLineNo">024</span>import org.apache.hadoop.classification.InterfaceAudience;<a name="line.24"></a>
+<span class="sourceLineNo">025</span>import org.apache.hadoop.classification.InterfaceStability;<a name="line.25"></a>
+<span class="sourceLineNo">026</span>import org.apache.hadoop.metrics2.AbstractMetric;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import org.apache.hadoop.metrics2.MetricsException;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import org.apache.hadoop.metrics2.MetricsRecord;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import org.apache.hadoop.metrics2.MetricsSink;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import org.apache.hadoop.metrics2.MetricsTag;<a name="line.30"></a>
+<span class="sourceLineNo">031</span><a name="line.31"></a>
+<span class="sourceLineNo">032</span>import java.io.Closeable;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import java.io.IOException;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import java.io.OutputStreamWriter;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import java.io.Writer;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import java.net.Socket;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import java.nio.charset.StandardCharsets;<a name="line.37"></a>
 <span class="sourceLineNo">038</span><a name="line.38"></a>
 <span class="sourceLineNo">039</span>/**<a name="line.39"></a>
 <span class="sourceLineNo">040</span> * A metrics sink that writes to a Graphite server<a name="line.40"></a>
@@ -158,59 +158,60 @@
 <span class="sourceLineNo">150</span>        try {<a name="line.150"></a>
 <span class="sourceLineNo">151</span>          // Open a connection to Graphite server.<a name="line.151"></a>
 <span class="sourceLineNo">152</span>          socket = new Socket(serverHost, serverPort);<a name="line.152"></a>
-<span class="sourceLineNo">153</span>          writer = new OutputStreamWriter(socket.getOutputStream(), Charsets.UTF_8);<a name="line.153"></a>
-<span class="sourceLineNo">154</span>        } catch (Exception e) {<a name="line.154"></a>
-<span class="sourceLineNo">155</span>          connectionFailures++;<a name="line.155"></a>
-<span class="sourceLineNo">156</span>          if (tooManyConnectionFailures()) {<a name="line.156"></a>
-<span class="sourceLineNo">157</span>            // first time when connection limit reached, report to logs<a name="line.157"></a>
-<span class="sourceLineNo">158</span>            LOG.error("Too many connection failures, would not try to connect again.");<a name="line.158"></a>
-<span class="sourceLineNo">159</span>          }<a name="line.159"></a>
-<span class="sourceLineNo">160</span>          throw new MetricsException("Error creating connection, "<a name="line.160"></a>
-<span class="sourceLineNo">161</span>              + serverHost + ":" + serverPort, e);<a name="line.161"></a>
-<span class="sourceLineNo">162</span>        }<a name="line.162"></a>
-<span class="sourceLineNo">163</span>      }<a name="line.163"></a>
-<span class="sourceLineNo">164</span><a name="line.164"></a>
-<span class="sourceLineNo">165</span>      public void write(String msg) throws IOException {<a name="line.165"></a>
-<span class="sourceLineNo">166</span>        if (!isConnected()) {<a name="line.166"></a>
-<span class="sourceLineNo">167</span>          connect();<a name="line.167"></a>
-<span class="sourceLineNo">168</span>        }<a name="line.168"></a>
-<span class="sourceLineNo">169</span>        if (isConnected()) {<a name="line.169"></a>
-<span class="sourceLineNo">170</span>          writer.write(msg);<a name="line.170"></a>
-<span class="sourceLineNo">171</span>        }<a name="line.171"></a>
-<span class="sourceLineNo">172</span>      }<a name="line.172"></a>
-<span class="sourceLineNo">173</span><a name="line.173"></a>
-<span class="sourceLineNo">174</span>      public void flush() throws IOException {<a name="line.174"></a>
-<span class="sourceLineNo">175</span>        if (isConnected()) {<a name="line.175"></a>
-<span class="sourceLineNo">176</span>          writer.flush();<a name="line.176"></a>
-<span class="sourceLineNo">177</span>        }<a name="line.177"></a>
-<span class="sourceLineNo">178</span>      }<a name="line.178"></a>
-<span class="sourceLineNo">179</span><a name="line.179"></a>
-<span class="sourceLineNo">180</span>      public boolean isConnected() {<a name="line.180"></a>
-<span class="sourceLineNo">181</span>        return socket != null &amp;&amp; socket.isConnected() &amp;&amp; !socket.isClosed();<a name="line.181"></a>
-<span class="sourceLineNo">182</span>      }<a name="line.182"></a>
-<span class="sourceLineNo">183</span><a name="line.183"></a>
-<span class="sourceLineNo">184</span>      public void close() throws IOException {<a name="line.184"></a>
-<span class="sourceLineNo">185</span>        try {<a name="line.185"></a>
-<span class="sourceLineNo">186</span>          if (writer != null) {<a name="line.186"></a>
-<span class="sourceLineNo">187</span>            writer.close();<a name="line.187"></a>
-<span class="sourceLineNo">188</span>          }<a name="line.188"></a>
-<span class="sourceLineNo">189</span>        } catch (IOException ex) {<a name="line.189"></a>
-<span class="sourceLineNo">190</span>          if (socket != null) {<a name="line.190"></a>
-<span class="sourceLineNo">191</span>            socket.close();<a name="line.191"></a>
-<span class="sourceLineNo">192</span>          }<a name="line.192"></a>
-<span class="sourceLineNo">193</span>        } finally {<a name="line.193"></a>
-<span class="sourceLineNo">194</span>          socket = null;<a name="line.194"></a>
-<span class="sourceLineNo">195</span>          writer = null;<a name="line.195"></a>
-<span class="sourceLineNo">196</span>        }<a name="line.196"></a>
-<span class="sourceLineNo">197</span>      }<a name="line.197"></a>
-<span class="sourceLineNo">198</span><a name="line.198"></a>
-<span class="sourceLineNo">199</span>      private boolean tooManyConnectionFailures() {<a name="line.199"></a>
-<span class="sourceLineNo">200</span>        return connectionFailures &gt; MAX_CONNECTION_FAILURES;<a name="line.200"></a>
-<span class="sourceLineNo">201</span>      }<a name="line.201"></a>
-<span class="sourceLineNo">202</span><a name="line.202"></a>
-<span class="sourceLineNo">203</span>    }<a name="line.203"></a>
-<span class="sourceLineNo">204</span><a name="line.204"></a>
-<span class="sourceLineNo">205</span>}<a name="line.205"></a>
+<span class="sourceLineNo">153</span>        writer = new OutputStreamWriter(socket.getOutputStream(),<a name="line.153"></a>
+<span class="sourceLineNo">154</span>                StandardCharsets.UTF_8);<a name="line.154"></a>
+<span class="sourceLineNo">155</span>        } catch (Exception e) {<a name="line.155"></a>
+<span class="sourceLineNo">156</span>          connectionFailures++;<a name="line.156"></a>
+<span class="sourceLineNo">157</span>          if (tooManyConnectionFailures()) {<a name="line.157"></a>
+<span class="sourceLineNo">158</span>            // first time when connection limit reached, report to logs<a name="line.158"></a>
+<span class="sourceLineNo">159</span>            LOG.error("Too many connection failures, would not try to connect again.");<a name="line.159"></a>
+<span class="sourceLineNo">160</span>          }<a name="line.160"></a>
+<span class="sourceLineNo">161</span>          throw new MetricsException("Error creating connection, "<a name="line.161"></a>
+<span class="sourceLineNo">162</span>              + serverHost + ":" + serverPort, e);<a name="line.162"></a>
+<span class="sourceLineNo">163</span>        }<a name="line.163"></a>
+<span class="sourceLineNo">164</span>      }<a name="line.164"></a>
+<span class="sourceLineNo">165</span><a name="line.165"></a>
+<span class="sourceLineNo">166</span>      public void write(String msg) throws IOException {<a name="line.166"></a>
+<span class="sourceLineNo">167</span>        if (!isConnected()) {<a name="line.167"></a>
+<span class="sourceLineNo">168</span>          connect();<a name="line.168"></a>
+<span class="sourceLineNo">169</span>        }<a name="line.169"></a>
+<span class="sourceLineNo">170</span>        if (isConnected()) {<a name="line.170"></a>
+<span class="sourceLineNo">171</span>          writer.write(msg);<a name="line.171"></a>
+<span class="sourceLineNo">172</span>        }<a name="line.172"></a>
+<span class="sourceLineNo">173</span>      }<a name="line.173"></a>
+<span class="sourceLineNo">174</span><a name="line.174"></a>
+<span class="sourceLineNo">175</span>      public void flush() throws IOException {<a name="line.175"></a>
+<span class="sourceLineNo">176</span>        if (isConnected()) {<a name="line.176"></a>
+<span class="sourceLineNo">177</span>          writer.flush();<a name="line.177"></a>
+<span class="sourceLineNo">178</span>        }<a name="line.178"></a>
+<span class="sourceLineNo">179</span>      }<a name="line.179"></a>
+<span class="sourceLineNo">180</span><a name="line.180"></a>
+<span class="sourceLineNo">181</span>      public boolean isConnected() {<a name="line.181"></a>
+<span class="sourceLineNo">182</span>        return socket != null &amp;&amp; socket.isConnected() &amp;&amp; !socket.isClosed();<a name="line.182"></a>
+<span class="sourceLineNo">183</span>      }<a name="line.183"></a>
+<span class="sourceLineNo">184</span><a name="line.184"></a>
+<span class="sourceLineNo">185</span>      public void close() throws IOException {<a name="line.185"></a>
+<span class="sourceLineNo">186</span>        try {<a name="line.186"></a>
+<span class="sourceLineNo">187</span>          if (writer != null) {<a name="line.187"></a>
+<span class="sourceLineNo">188</span>            writer.close();<a name="line.188"></a>
+<span class="sourceLineNo">189</span>          }<a name="line.189"></a>
+<span class="sourceLineNo">190</span>        } catch (IOException ex) {<a name="line.190"></a>
+<span class="sourceLineNo">191</span>          if (socket != null) {<a name="line.191"></a>
+<span class="sourceLineNo">192</span>            socket.close();<a name="line.192"></a>
+<span class="sourceLineNo">193</span>          }<a name="line.193"></a>
+<span class="sourceLineNo">194</span>        } finally {<a name="line.194"></a>
+<span class="sourceLineNo">195</span>          socket = null;<a name="line.195"></a>
+<span class="sourceLineNo">196</span>          writer = null;<a name="line.196"></a>
+<span class="sourceLineNo">197</span>        }<a name="line.197"></a>
+<span class="sourceLineNo">198</span>      }<a name="line.198"></a>
+<span class="sourceLineNo">199</span><a name="line.199"></a>
+<span class="sourceLineNo">200</span>      private boolean tooManyConnectionFailures() {<a name="line.200"></a>
+<span class="sourceLineNo">201</span>        return connectionFailures &gt; MAX_CONNECTION_FAILURES;<a name="line.201"></a>
+<span class="sourceLineNo">202</span>      }<a name="line.202"></a>
+<span class="sourceLineNo">203</span><a name="line.203"></a>
+<span class="sourceLineNo">204</span>    }<a name="line.204"></a>
+<span class="sourceLineNo">205</span><a name="line.205"></a>
+<span class="sourceLineNo">206</span>}<a name="line.206"></a>
 
 
 

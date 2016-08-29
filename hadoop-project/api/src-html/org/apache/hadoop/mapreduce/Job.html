@@ -430,7 +430,7 @@
 <span class="sourceLineNo">422</span>   * The user-specified job name.<a name="line.422"></a>
 <span class="sourceLineNo">423</span>   */<a name="line.423"></a>
 <span class="sourceLineNo">424</span>  public String getJobName() {<a name="line.424"></a>
-<span class="sourceLineNo">425</span>    if (state == JobState.DEFINE) {<a name="line.425"></a>
+<span class="sourceLineNo">425</span>    if (state == JobState.DEFINE || status == null) {<a name="line.425"></a>
 <span class="sourceLineNo">426</span>      return super.getJobName();<a name="line.426"></a>
 <span class="sourceLineNo">427</span>    }<a name="line.427"></a>
 <span class="sourceLineNo">428</span>    ensureState(JobState.RUNNING);<a name="line.428"></a>

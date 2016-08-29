@@ -211,6 +211,12 @@
 </property>
 
 <property>
+  <name>mapreduce.shuffle.listen.queue.size</name>
+  <value>128</value>
+  <description>The length of the shuffle server listen queue.</description>
+</property>
+
+<property>
   <name>mapreduce.shuffle.connection-keep-alive.enable</name>
   <value>false</value>
   <description>set to true to support keep-alive connections.</description>
@@ -1916,6 +1922,36 @@
 </property>
 
 <property>
+  <name>mapreduce.job.cache.limit.max-resources</name>
+  <value>0</value>
+  <description>The maximum number of resources a map reduce job is allowed to
+    submit for localization via files, libjars, archives, and jobjar command
+    line arguments and through the distributed cache. If set to 0 the limit is
+    ignored.
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.job.cache.limit.max-resources-mb</name>
+  <value>0</value>
+  <description>The maximum size (in MB) a map reduce job is allowed to submit
+    for localization via files, libjars, archives, and jobjar command line
+    arguments and through the distributed cache. If set to 0 the limit is
+    ignored.
+  </description>
+</property>
+
+<property>
+  <name>mapreduce.job.cache.limit.max-single-resource-mb</name>
+  <value>0</value>
+  <description>The maximum size (in MB) of a single resource a map reduce job
+    is allow to submit for localization via files, libjars, archives, and
+    jobjar command line arguments and through the distributed cache. If set to
+    0 the limit is ignored.
+  </description>
+</property>
+
+<property>
   <description>
     Value of the xframe-options
   </description>
@@ -1931,5 +1967,13 @@
   </description>
   <name>mapreduce.jobhistory.loadedjob.tasks.max</name>
   <value>-1</value>
+</property>
+
+<property>
+  <description>
+    The list of job configuration properties whose value will be redacted.
+  </description>
+  <name>mapreduce.job.redacted-properties</name>
+  <value></value>
 </property>
 </configuration>

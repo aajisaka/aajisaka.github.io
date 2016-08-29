@@ -201,22 +201,25 @@
 <span class="sourceLineNo">193</span>  /**<a name="line.193"></a>
 <span class="sourceLineNo">194</span>   * NM uses it to decide whether if it is necessary to upload the resource to<a name="line.194"></a>
 <span class="sourceLineNo">195</span>   * the shared cache<a name="line.195"></a>
-<span class="sourceLineNo">196</span>   */<a name="line.196"></a>
-<span class="sourceLineNo">197</span>  @Public<a name="line.197"></a>
-<span class="sourceLineNo">198</span>  @Unstable<a name="line.198"></a>
-<span class="sourceLineNo">199</span>  public abstract boolean getShouldBeUploadedToSharedCache();<a name="line.199"></a>
-<span class="sourceLineNo">200</span><a name="line.200"></a>
-<span class="sourceLineNo">201</span>  /**<a name="line.201"></a>
-<span class="sourceLineNo">202</span>   * Inform NM whether upload to SCM is needed.<a name="line.202"></a>
-<span class="sourceLineNo">203</span>   *<a name="line.203"></a>
-<span class="sourceLineNo">204</span>   * @param shouldBeUploadedToSharedCache &lt;em&gt;shouldBeUploadedToSharedCache&lt;/em&gt;<a name="line.204"></a>
-<span class="sourceLineNo">205</span>   *          of this request<a name="line.205"></a>
-<span class="sourceLineNo">206</span>   */<a name="line.206"></a>
-<span class="sourceLineNo">207</span>  @Public<a name="line.207"></a>
-<span class="sourceLineNo">208</span>  @Unstable<a name="line.208"></a>
-<span class="sourceLineNo">209</span>  public abstract void setShouldBeUploadedToSharedCache(<a name="line.209"></a>
-<span class="sourceLineNo">210</span>      boolean shouldBeUploadedToSharedCache);<a name="line.210"></a>
-<span class="sourceLineNo">211</span>}<a name="line.211"></a>
+<span class="sourceLineNo">196</span>   * @return true if it is necessary to upload the resource<a name="line.196"></a>
+<span class="sourceLineNo">197</span>   *                 to the shared cache,<a name="line.197"></a>
+<span class="sourceLineNo">198</span>   *         false otherwise<a name="line.198"></a>
+<span class="sourceLineNo">199</span>   */<a name="line.199"></a>
+<span class="sourceLineNo">200</span>  @Public<a name="line.200"></a>
+<span class="sourceLineNo">201</span>  @Unstable<a name="line.201"></a>
+<span class="sourceLineNo">202</span>  public abstract boolean getShouldBeUploadedToSharedCache();<a name="line.202"></a>
+<span class="sourceLineNo">203</span><a name="line.203"></a>
+<span class="sourceLineNo">204</span>  /**<a name="line.204"></a>
+<span class="sourceLineNo">205</span>   * Inform NM whether upload to SCM is needed.<a name="line.205"></a>
+<span class="sourceLineNo">206</span>   *<a name="line.206"></a>
+<span class="sourceLineNo">207</span>   * @param shouldBeUploadedToSharedCache &lt;em&gt;shouldBeUploadedToSharedCache&lt;/em&gt;<a name="line.207"></a>
+<span class="sourceLineNo">208</span>   *          of this request<a name="line.208"></a>
+<span class="sourceLineNo">209</span>   */<a name="line.209"></a>
+<span class="sourceLineNo">210</span>  @Public<a name="line.210"></a>
+<span class="sourceLineNo">211</span>  @Unstable<a name="line.211"></a>
+<span class="sourceLineNo">212</span>  public abstract void setShouldBeUploadedToSharedCache(<a name="line.212"></a>
+<span class="sourceLineNo">213</span>      boolean shouldBeUploadedToSharedCache);<a name="line.213"></a>
+<span class="sourceLineNo">214</span>}<a name="line.214"></a>
 
 
 

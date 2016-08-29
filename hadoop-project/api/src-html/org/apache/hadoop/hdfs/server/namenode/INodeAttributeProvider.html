@@ -37,110 +37,120 @@
 <span class="sourceLineNo">029</span>import org.apache.hadoop.classification.InterfaceStability;<a name="line.29"></a>
 <span class="sourceLineNo">030</span>import org.apache.hadoop.fs.Path;<a name="line.30"></a>
 <span class="sourceLineNo">031</span>import org.apache.hadoop.fs.permission.FsAction;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import org.apache.hadoop.security.AccessControlException;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import org.apache.hadoop.security.UserGroupInformation;<a name="line.33"></a>
-<span class="sourceLineNo">034</span><a name="line.34"></a>
-<span class="sourceLineNo">035</span>@InterfaceAudience.Public<a name="line.35"></a>
-<span class="sourceLineNo">036</span>@InterfaceStability.Unstable<a name="line.36"></a>
-<span class="sourceLineNo">037</span>public abstract class INodeAttributeProvider {<a name="line.37"></a>
-<span class="sourceLineNo">038</span><a name="line.38"></a>
-<span class="sourceLineNo">039</span>  /**<a name="line.39"></a>
-<span class="sourceLineNo">040</span>   * The AccessControlEnforcer allows implementations to override the<a name="line.40"></a>
-<span class="sourceLineNo">041</span>   * default File System permission checking logic enforced on a file system<a name="line.41"></a>
-<span class="sourceLineNo">042</span>   * object<a name="line.42"></a>
-<span class="sourceLineNo">043</span>   */<a name="line.43"></a>
-<span class="sourceLineNo">044</span>  public interface AccessControlEnforcer {<a name="line.44"></a>
-<span class="sourceLineNo">045</span><a name="line.45"></a>
-<span class="sourceLineNo">046</span>    /**<a name="line.46"></a>
-<span class="sourceLineNo">047</span>     * Checks permission on a file system object. Has to throw an Exception<a name="line.47"></a>
-<span class="sourceLineNo">048</span>     * if the filesystem object is not accessessible by the calling Ugi.<a name="line.48"></a>
-<span class="sourceLineNo">049</span>     * @param fsOwner Filesystem owner (The Namenode user)<a name="line.49"></a>
-<span class="sourceLineNo">050</span>     * @param supergroup super user geoup<a name="line.50"></a>
-<span class="sourceLineNo">051</span>     * @param callerUgi UserGroupInformation of the caller<a name="line.51"></a>
-<span class="sourceLineNo">052</span>     * @param inodeAttrs Array of INode attributes for each path element in the<a name="line.52"></a>
-<span class="sourceLineNo">053</span>     *                   the path<a name="line.53"></a>
-<span class="sourceLineNo">054</span>     * @param inodes Array of INodes for each path element in the path<a name="line.54"></a>
-<span class="sourceLineNo">055</span>     * @param pathByNameArr Array of byte arrays of the LocalName<a name="line.55"></a>
-<span class="sourceLineNo">056</span>     * @param snapshotId the snapshotId of the requested path<a name="line.56"></a>
-<span class="sourceLineNo">057</span>     * @param path Path String<a name="line.57"></a>
-<span class="sourceLineNo">058</span>     * @param ancestorIndex Index of ancestor<a name="line.58"></a>
-<span class="sourceLineNo">059</span>     * @param doCheckOwner perform ownership check<a name="line.59"></a>
-<span class="sourceLineNo">060</span>     * @param ancestorAccess The access required by the ancestor of the path.<a name="line.60"></a>
-<span class="sourceLineNo">061</span>     * @param parentAccess The access required by the parent of the path.<a name="line.61"></a>
-<span class="sourceLineNo">062</span>     * @param access The access required by the path.<a name="line.62"></a>
-<span class="sourceLineNo">063</span>     * @param subAccess If path is a directory, It is the access required of<a name="line.63"></a>
-<span class="sourceLineNo">064</span>     *                  the path and all the sub-directories. If path is not a<a name="line.64"></a>
-<span class="sourceLineNo">065</span>     *                  directory, there should ideally be no effect.<a name="line.65"></a>
-<span class="sourceLineNo">066</span>     * @param ignoreEmptyDir Ignore permission checking for empty directory?<a name="line.66"></a>
-<span class="sourceLineNo">067</span>     * @throws AccessControlException<a name="line.67"></a>
-<span class="sourceLineNo">068</span>     */<a name="line.68"></a>
-<span class="sourceLineNo">069</span>    public abstract void checkPermission(String fsOwner, String supergroup,<a name="line.69"></a>
-<span class="sourceLineNo">070</span>        UserGroupInformation callerUgi, INodeAttributes[] inodeAttrs,<a name="line.70"></a>
-<span class="sourceLineNo">071</span>        INode[] inodes, byte[][] pathByNameArr, int snapshotId, String path,<a name="line.71"></a>
-<span class="sourceLineNo">072</span>        int ancestorIndex, boolean doCheckOwner, FsAction ancestorAccess,<a name="line.72"></a>
-<span class="sourceLineNo">073</span>        FsAction parentAccess, FsAction access, FsAction subAccess,<a name="line.73"></a>
-<span class="sourceLineNo">074</span>        boolean ignoreEmptyDir)<a name="line.74"></a>
-<span class="sourceLineNo">075</span>            throws AccessControlException;<a name="line.75"></a>
-<span class="sourceLineNo">076</span><a name="line.76"></a>
-<span class="sourceLineNo">077</span>  }<a name="line.77"></a>
-<span class="sourceLineNo">078</span>  /**<a name="line.78"></a>
-<span class="sourceLineNo">079</span>   * Initialize the provider. This method is called at NameNode startup<a name="line.79"></a>
-<span class="sourceLineNo">080</span>   * time.<a name="line.80"></a>
-<span class="sourceLineNo">081</span>   */<a name="line.81"></a>
-<span class="sourceLineNo">082</span>  public abstract void start();<a name="line.82"></a>
-<span class="sourceLineNo">083</span><a name="line.83"></a>
-<span class="sourceLineNo">084</span>  /**<a name="line.84"></a>
-<span class="sourceLineNo">085</span>   * Shutdown the provider. This method is called at NameNode shutdown time.<a name="line.85"></a>
-<span class="sourceLineNo">086</span>   */<a name="line.86"></a>
-<span class="sourceLineNo">087</span>  public abstract void stop();<a name="line.87"></a>
-<span class="sourceLineNo">088</span><a name="line.88"></a>
-<span class="sourceLineNo">089</span>  @VisibleForTesting<a name="line.89"></a>
-<span class="sourceLineNo">090</span>  String[] getPathElements(String path) {<a name="line.90"></a>
-<span class="sourceLineNo">091</span>    path = path.trim();<a name="line.91"></a>
-<span class="sourceLineNo">092</span>    if (path.charAt(0) != Path.SEPARATOR_CHAR) {<a name="line.92"></a>
-<span class="sourceLineNo">093</span>      throw new IllegalArgumentException("It must be an absolute path: " +<a name="line.93"></a>
-<span class="sourceLineNo">094</span>          path);<a name="line.94"></a>
-<span class="sourceLineNo">095</span>    }<a name="line.95"></a>
-<span class="sourceLineNo">096</span>    int numOfElements = StringUtils.countMatches(path, Path.SEPARATOR);<a name="line.96"></a>
-<span class="sourceLineNo">097</span>    if (path.length() &gt; 1 &amp;&amp; path.endsWith(Path.SEPARATOR)) {<a name="line.97"></a>
-<span class="sourceLineNo">098</span>      numOfElements--;<a name="line.98"></a>
-<span class="sourceLineNo">099</span>    }<a name="line.99"></a>
-<span class="sourceLineNo">100</span>    String[] pathElements = new String[numOfElements];<a name="line.100"></a>
-<span class="sourceLineNo">101</span>    int elementIdx = 0;<a name="line.101"></a>
-<span class="sourceLineNo">102</span>    int idx = 0;<a name="line.102"></a>
-<span class="sourceLineNo">103</span>    int found = path.indexOf(Path.SEPARATOR_CHAR, idx);<a name="line.103"></a>
-<span class="sourceLineNo">104</span>    while (found &gt; -1) {<a name="line.104"></a>
-<span class="sourceLineNo">105</span>      if (found &gt; idx) {<a name="line.105"></a>
-<span class="sourceLineNo">106</span>        pathElements[elementIdx++] = path.substring(idx, found);<a name="line.106"></a>
-<span class="sourceLineNo">107</span>      }<a name="line.107"></a>
-<span class="sourceLineNo">108</span>      idx = found + 1;<a name="line.108"></a>
-<span class="sourceLineNo">109</span>      found = path.indexOf(Path.SEPARATOR_CHAR, idx);<a name="line.109"></a>
-<span class="sourceLineNo">110</span>    }<a name="line.110"></a>
-<span class="sourceLineNo">111</span>    if (idx &lt; path.length()) {<a name="line.111"></a>
-<span class="sourceLineNo">112</span>      pathElements[elementIdx] = path.substring(idx);<a name="line.112"></a>
-<span class="sourceLineNo">113</span>    }<a name="line.113"></a>
-<span class="sourceLineNo">114</span>    return pathElements;<a name="line.114"></a>
-<span class="sourceLineNo">115</span>  }<a name="line.115"></a>
-<span class="sourceLineNo">116</span><a name="line.116"></a>
-<span class="sourceLineNo">117</span>  public INodeAttributes getAttributes(String fullPath, INodeAttributes inode) {<a name="line.117"></a>
-<span class="sourceLineNo">118</span>    return getAttributes(getPathElements(fullPath), inode);<a name="line.118"></a>
-<span class="sourceLineNo">119</span>  }<a name="line.119"></a>
-<span class="sourceLineNo">120</span><a name="line.120"></a>
-<span class="sourceLineNo">121</span>  public abstract INodeAttributes getAttributes(String[] pathElements,<a name="line.121"></a>
-<span class="sourceLineNo">122</span>      INodeAttributes inode);<a name="line.122"></a>
-<span class="sourceLineNo">123</span><a name="line.123"></a>
-<span class="sourceLineNo">124</span>  /**<a name="line.124"></a>
-<span class="sourceLineNo">125</span>   * Can be over-ridden by implementations to provide a custom Access Control<a name="line.125"></a>
-<span class="sourceLineNo">126</span>   * Enforcer that can provide an alternate implementation of the<a name="line.126"></a>
-<span class="sourceLineNo">127</span>   * default permission checking logic.<a name="line.127"></a>
-<span class="sourceLineNo">128</span>   * @param defaultEnforcer The Default AccessControlEnforcer<a name="line.128"></a>
-<span class="sourceLineNo">129</span>   * @return The AccessControlEnforcer to use<a name="line.129"></a>
-<span class="sourceLineNo">130</span>   */<a name="line.130"></a>
-<span class="sourceLineNo">131</span>  public AccessControlEnforcer getExternalAccessControlEnforcer(<a name="line.131"></a>
-<span class="sourceLineNo">132</span>      AccessControlEnforcer defaultEnforcer) {<a name="line.132"></a>
-<span class="sourceLineNo">133</span>    return defaultEnforcer;<a name="line.133"></a>
-<span class="sourceLineNo">134</span>  }<a name="line.134"></a>
-<span class="sourceLineNo">135</span>}<a name="line.135"></a>
+<span class="sourceLineNo">032</span>import org.apache.hadoop.hdfs.DFSUtil;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.apache.hadoop.security.AccessControlException;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import org.apache.hadoop.security.UserGroupInformation;<a name="line.34"></a>
+<span class="sourceLineNo">035</span><a name="line.35"></a>
+<span class="sourceLineNo">036</span>@InterfaceAudience.Public<a name="line.36"></a>
+<span class="sourceLineNo">037</span>@InterfaceStability.Unstable<a name="line.37"></a>
+<span class="sourceLineNo">038</span>public abstract class INodeAttributeProvider {<a name="line.38"></a>
+<span class="sourceLineNo">039</span><a name="line.39"></a>
+<span class="sourceLineNo">040</span>  /**<a name="line.40"></a>
+<span class="sourceLineNo">041</span>   * The AccessControlEnforcer allows implementations to override the<a name="line.41"></a>
+<span class="sourceLineNo">042</span>   * default File System permission checking logic enforced on a file system<a name="line.42"></a>
+<span class="sourceLineNo">043</span>   * object<a name="line.43"></a>
+<span class="sourceLineNo">044</span>   */<a name="line.44"></a>
+<span class="sourceLineNo">045</span>  public interface AccessControlEnforcer {<a name="line.45"></a>
+<span class="sourceLineNo">046</span><a name="line.46"></a>
+<span class="sourceLineNo">047</span>    /**<a name="line.47"></a>
+<span class="sourceLineNo">048</span>     * Checks permission on a file system object. Has to throw an Exception<a name="line.48"></a>
+<span class="sourceLineNo">049</span>     * if the filesystem object is not accessessible by the calling Ugi.<a name="line.49"></a>
+<span class="sourceLineNo">050</span>     * @param fsOwner Filesystem owner (The Namenode user)<a name="line.50"></a>
+<span class="sourceLineNo">051</span>     * @param supergroup super user geoup<a name="line.51"></a>
+<span class="sourceLineNo">052</span>     * @param callerUgi UserGroupInformation of the caller<a name="line.52"></a>
+<span class="sourceLineNo">053</span>     * @param inodeAttrs Array of INode attributes for each path element in the<a name="line.53"></a>
+<span class="sourceLineNo">054</span>     *                   the path<a name="line.54"></a>
+<span class="sourceLineNo">055</span>     * @param inodes Array of INodes for each path element in the path<a name="line.55"></a>
+<span class="sourceLineNo">056</span>     * @param pathByNameArr Array of byte arrays of the LocalName<a name="line.56"></a>
+<span class="sourceLineNo">057</span>     * @param snapshotId the snapshotId of the requested path<a name="line.57"></a>
+<span class="sourceLineNo">058</span>     * @param path Path String<a name="line.58"></a>
+<span class="sourceLineNo">059</span>     * @param ancestorIndex Index of ancestor<a name="line.59"></a>
+<span class="sourceLineNo">060</span>     * @param doCheckOwner perform ownership check<a name="line.60"></a>
+<span class="sourceLineNo">061</span>     * @param ancestorAccess The access required by the ancestor of the path.<a name="line.61"></a>
+<span class="sourceLineNo">062</span>     * @param parentAccess The access required by the parent of the path.<a name="line.62"></a>
+<span class="sourceLineNo">063</span>     * @param access The access required by the path.<a name="line.63"></a>
+<span class="sourceLineNo">064</span>     * @param subAccess If path is a directory, It is the access required of<a name="line.64"></a>
+<span class="sourceLineNo">065</span>     *                  the path and all the sub-directories. If path is not a<a name="line.65"></a>
+<span class="sourceLineNo">066</span>     *                  directory, there should ideally be no effect.<a name="line.66"></a>
+<span class="sourceLineNo">067</span>     * @param ignoreEmptyDir Ignore permission checking for empty directory?<a name="line.67"></a>
+<span class="sourceLineNo">068</span>     * @throws AccessControlException<a name="line.68"></a>
+<span class="sourceLineNo">069</span>     */<a name="line.69"></a>
+<span class="sourceLineNo">070</span>    public abstract void checkPermission(String fsOwner, String supergroup,<a name="line.70"></a>
+<span class="sourceLineNo">071</span>        UserGroupInformation callerUgi, INodeAttributes[] inodeAttrs,<a name="line.71"></a>
+<span class="sourceLineNo">072</span>        INode[] inodes, byte[][] pathByNameArr, int snapshotId, String path,<a name="line.72"></a>
+<span class="sourceLineNo">073</span>        int ancestorIndex, boolean doCheckOwner, FsAction ancestorAccess,<a name="line.73"></a>
+<span class="sourceLineNo">074</span>        FsAction parentAccess, FsAction access, FsAction subAccess,<a name="line.74"></a>
+<span class="sourceLineNo">075</span>        boolean ignoreEmptyDir)<a name="line.75"></a>
+<span class="sourceLineNo">076</span>            throws AccessControlException;<a name="line.76"></a>
+<span class="sourceLineNo">077</span><a name="line.77"></a>
+<span class="sourceLineNo">078</span>  }<a name="line.78"></a>
+<span class="sourceLineNo">079</span>  /**<a name="line.79"></a>
+<span class="sourceLineNo">080</span>   * Initialize the provider. This method is called at NameNode startup<a name="line.80"></a>
+<span class="sourceLineNo">081</span>   * time.<a name="line.81"></a>
+<span class="sourceLineNo">082</span>   */<a name="line.82"></a>
+<span class="sourceLineNo">083</span>  public abstract void start();<a name="line.83"></a>
+<span class="sourceLineNo">084</span><a name="line.84"></a>
+<span class="sourceLineNo">085</span>  /**<a name="line.85"></a>
+<span class="sourceLineNo">086</span>   * Shutdown the provider. This method is called at NameNode shutdown time.<a name="line.86"></a>
+<span class="sourceLineNo">087</span>   */<a name="line.87"></a>
+<span class="sourceLineNo">088</span>  public abstract void stop();<a name="line.88"></a>
+<span class="sourceLineNo">089</span><a name="line.89"></a>
+<span class="sourceLineNo">090</span>  @VisibleForTesting<a name="line.90"></a>
+<span class="sourceLineNo">091</span>  String[] getPathElements(String path) {<a name="line.91"></a>
+<span class="sourceLineNo">092</span>    path = path.trim();<a name="line.92"></a>
+<span class="sourceLineNo">093</span>    if (path.charAt(0) != Path.SEPARATOR_CHAR) {<a name="line.93"></a>
+<span class="sourceLineNo">094</span>      throw new IllegalArgumentException("It must be an absolute path: " +<a name="line.94"></a>
+<span class="sourceLineNo">095</span>          path);<a name="line.95"></a>
+<span class="sourceLineNo">096</span>    }<a name="line.96"></a>
+<span class="sourceLineNo">097</span>    int numOfElements = StringUtils.countMatches(path, Path.SEPARATOR);<a name="line.97"></a>
+<span class="sourceLineNo">098</span>    if (path.length() &gt; 1 &amp;&amp; path.endsWith(Path.SEPARATOR)) {<a name="line.98"></a>
+<span class="sourceLineNo">099</span>      numOfElements--;<a name="line.99"></a>
+<span class="sourceLineNo">100</span>    }<a name="line.100"></a>
+<span class="sourceLineNo">101</span>    String[] pathElements = new String[numOfElements];<a name="line.101"></a>
+<span class="sourceLineNo">102</span>    int elementIdx = 0;<a name="line.102"></a>
+<span class="sourceLineNo">103</span>    int idx = 0;<a name="line.103"></a>
+<span class="sourceLineNo">104</span>    int found = path.indexOf(Path.SEPARATOR_CHAR, idx);<a name="line.104"></a>
+<span class="sourceLineNo">105</span>    while (found &gt; -1) {<a name="line.105"></a>
+<span class="sourceLineNo">106</span>      if (found &gt; idx) {<a name="line.106"></a>
+<span class="sourceLineNo">107</span>        pathElements[elementIdx++] = path.substring(idx, found);<a name="line.107"></a>
+<span class="sourceLineNo">108</span>      }<a name="line.108"></a>
+<span class="sourceLineNo">109</span>      idx = found + 1;<a name="line.109"></a>
+<span class="sourceLineNo">110</span>      found = path.indexOf(Path.SEPARATOR_CHAR, idx);<a name="line.110"></a>
+<span class="sourceLineNo">111</span>    }<a name="line.111"></a>
+<span class="sourceLineNo">112</span>    if (idx &lt; path.length()) {<a name="line.112"></a>
+<span class="sourceLineNo">113</span>      pathElements[elementIdx] = path.substring(idx);<a name="line.113"></a>
+<span class="sourceLineNo">114</span>    }<a name="line.114"></a>
+<span class="sourceLineNo">115</span>    return pathElements;<a name="line.115"></a>
+<span class="sourceLineNo">116</span>  }<a name="line.116"></a>
+<span class="sourceLineNo">117</span><a name="line.117"></a>
+<span class="sourceLineNo">118</span>  public INodeAttributes getAttributes(String fullPath, INodeAttributes inode) {<a name="line.118"></a>
+<span class="sourceLineNo">119</span>    return getAttributes(getPathElements(fullPath), inode);<a name="line.119"></a>
+<span class="sourceLineNo">120</span>  }<a name="line.120"></a>
+<span class="sourceLineNo">121</span><a name="line.121"></a>
+<span class="sourceLineNo">122</span>  public abstract INodeAttributes getAttributes(String[] pathElements,<a name="line.122"></a>
+<span class="sourceLineNo">123</span>      INodeAttributes inode);<a name="line.123"></a>
+<span class="sourceLineNo">124</span><a name="line.124"></a>
+<span class="sourceLineNo">125</span>  public INodeAttributes getAttributes(byte[][] components,<a name="line.125"></a>
+<span class="sourceLineNo">126</span>      INodeAttributes inode) {<a name="line.126"></a>
+<span class="sourceLineNo">127</span>    String[] elements = new String[components.length];<a name="line.127"></a>
+<span class="sourceLineNo">128</span>    for (int i = 0; i &lt; elements.length; i++) {<a name="line.128"></a>
+<span class="sourceLineNo">129</span>      elements[i] = DFSUtil.bytes2String(components[i]);<a name="line.129"></a>
+<span class="sourceLineNo">130</span>    }<a name="line.130"></a>
+<span class="sourceLineNo">131</span>    return getAttributes(elements, inode);<a name="line.131"></a>
+<span class="sourceLineNo">132</span>  }<a name="line.132"></a>
+<span class="sourceLineNo">133</span><a name="line.133"></a>
+<span class="sourceLineNo">134</span>  /**<a name="line.134"></a>
+<span class="sourceLineNo">135</span>   * Can be over-ridden by implementations to provide a custom Access Control<a name="line.135"></a>
+<span class="sourceLineNo">136</span>   * Enforcer that can provide an alternate implementation of the<a name="line.136"></a>
+<span class="sourceLineNo">137</span>   * default permission checking logic.<a name="line.137"></a>
+<span class="sourceLineNo">138</span>   * @param defaultEnforcer The Default AccessControlEnforcer<a name="line.138"></a>
+<span class="sourceLineNo">139</span>   * @return The AccessControlEnforcer to use<a name="line.139"></a>
+<span class="sourceLineNo">140</span>   */<a name="line.140"></a>
+<span class="sourceLineNo">141</span>  public AccessControlEnforcer getExternalAccessControlEnforcer(<a name="line.141"></a>
+<span class="sourceLineNo">142</span>      AccessControlEnforcer defaultEnforcer) {<a name="line.142"></a>
+<span class="sourceLineNo">143</span>    return defaultEnforcer;<a name="line.143"></a>
+<span class="sourceLineNo">144</span>  }<a name="line.144"></a>
+<span class="sourceLineNo">145</span>}<a name="line.145"></a>
 
 
 
