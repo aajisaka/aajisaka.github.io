@@ -417,7 +417,7 @@
     the applications remembered in RM memory.
     Any values larger than ${yarn.resourcemanager.max-completed-applications} will
     be reset to ${yarn.resourcemanager.max-completed-applications}.
-    Note that this value impacts the RM recovery performance.Typically,
+    Note that this value impacts the RM recovery performance. Typically,
     a smaller value indicates better performance on RM recovery.
     </description>
     <name>yarn.resourcemanager.state-store.max-completed-applications</name>
@@ -687,7 +687,7 @@
   <property>
     <description>The maximum number of completed applications RM keeps. </description>
     <name>yarn.resourcemanager.max-completed-applications</name>
-    <value>10000</value>
+    <value>1000</value>
   </property>
 
   <property>
@@ -1349,6 +1349,12 @@
   <property>
     <description>Class that calculates current resource utilization.</description>
     <name>yarn.nodemanager.resource-calculator.class</name>
+  </property>
+
+  <property>
+    <description>Enable container monitor</description>
+    <name>yarn.nodemanager.container-monitor.enabled</name>
+    <value>true</value>
   </property>
 
   <property>
@@ -3069,4 +3075,13 @@
     <name>yarn.resourcemanager.node-removal-untracked.timeout-ms</name>
     <value>60000</value>
   </property>
+
+  <property>
+    <description>
+    The RMAppLifetimeMonitor Service uses this value as lifetime monitor interval
+    </description>
+    <name>yarn.resourcemanager.application-timeouts.lifetime-monitor.interval-ms</name>
+    <value>60000</value>
+  </property>
+
 </configuration>

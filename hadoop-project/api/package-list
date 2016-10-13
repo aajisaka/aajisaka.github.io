@@ -1,7 +1,6 @@
 org.apache.hadoop
 org.apache.hadoop.classification
 org.apache.hadoop.conf
-org.apache.hadoop.contrib.bkjournal
 org.apache.hadoop.contrib.utils.join
 org.apache.hadoop.crypto
 org.apache.hadoop.crypto.key
@@ -17,13 +16,13 @@ org.apache.hadoop.filecache
 org.apache.hadoop.fs
 org.apache.hadoop.fs.adl
 org.apache.hadoop.fs.adl.oauth2
+org.apache.hadoop.fs.aliyun.oss
 org.apache.hadoop.fs.azure
 org.apache.hadoop.fs.azure.metrics
 org.apache.hadoop.fs.crypto
 org.apache.hadoop.fs.ftp
 org.apache.hadoop.fs.http.client
 org.apache.hadoop.fs.http.server
-org.apache.hadoop.fs.permission
 org.apache.hadoop.fs.s3native
 org.apache.hadoop.fs.sftp
 org.apache.hadoop.fs.shell.find

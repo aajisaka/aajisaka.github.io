@@ -93,7 +93,7 @@
   <description>
     The name of the Network Interface from which the service should determine
     its host name for Kerberos login. e.g. eth2. In a multi-homed environment,
-    the setting can be used to affect the _HOST subsitution in the service
+    the setting can be used to affect the _HOST substitution in the service
     Kerberos principal. If this configuration value is not set, the service
     will use its default hostname as returned by
     InetAddress.getLocalHost().getCanonicalHostName().
@@ -400,7 +400,7 @@
     The number of levels to go up the group hierarchy when determining
     which groups a user is part of. 0 Will represent checking just the
     group that the user belongs to.  Each additional level will raise the
-    time it takes to exectue a query by at most
+    time it takes to execute a query by at most
     hadoop.security.group.mapping.ldap.directory.search.timeout.
     The default will usually be appropriate for all LDAP systems.
   </description>
@@ -796,12 +796,6 @@
   <value>10</value>
   <description>The number of seconds to sleep between each S3 retry.
   </description>
-</property>
-
-<property>
-  <name>fs.swift.impl</name>
-  <value>org.apache.hadoop.fs.swift.snative.SwiftNativeFileSystem</value>
-  <description>The implementation class of the OpenStack Swift Filesystem</description>
 </property>
 
 <property>
@@ -1313,10 +1307,19 @@
   <name>ipc.maximum.data.length</name>
   <value>67108864</value>
   <description>This indicates the maximum IPC message length (bytes) that can be
-    accepted by the server. Messages larger than this value are rejected by
-    server immediately. This setting should rarely need to be changed. It merits
-    investigating whether the cause of long RPC messages can be fixed instead,
-    e.g. by splitting into smaller messages.
+    accepted by the server. Messages larger than this value are rejected by the
+    immediately to avoid possible OOMs. This setting should rarely need to be
+    changed.
+  </description>
+</property>
+
+<property>
+  <name>ipc.maximum.response.length</name>
+  <value>134217728</value>
+  <description>This indicates the maximum IPC message length (bytes) that can be
+    accepted by the client. Messages larger than this value are rejected
+    immediately to avoid possible OOMs. This setting should rarely need to be
+    changed.  Set to 0 to disable.
   </description>
 </property>
 
@@ -1936,7 +1939,7 @@
   <value>dr.who=;</value>
   <description>
     Static mapping of user to groups. This will override the groups if
-    available in the system for the specified user. In otherwords, groups
+    available in the system for the specified user. In other words, groups
     look-up will not happen for these users, instead groups mapped in this
     configuration will be used.
     Mapping should be in this format.
@@ -2031,6 +2034,14 @@
   <value>/dev/urandom</value>
   <description>
     OS security random device file path.
+  </description>
+</property>
+
+<property>
+  <name>hadoop.security.key.provider.path</name>
+  <description>
+    The KeyProvider to use when managing zone keys, and interacting with
+    encryption keys when reading and writing to an encryption zone.
   </description>
 </property>
 
