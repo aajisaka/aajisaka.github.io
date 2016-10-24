@@ -95,8 +95,6 @@ org.apache.hadoop.http.lib
 org.apache.hadoop.io
 org.apache.hadoop.io.compress
 org.apache.hadoop.io.erasurecode
-org.apache.hadoop.io.erasurecode.codec
-org.apache.hadoop.io.erasurecode.coder
 org.apache.hadoop.io.erasurecode.coder.util
 org.apache.hadoop.io.erasurecode.grouper
 org.apache.hadoop.io.file.tfile
@@ -202,7 +200,6 @@ org.apache.hadoop.security
 org.apache.hadoop.security.alias
 org.apache.hadoop.security.authentication.client
 org.apache.hadoop.security.authentication.examples
-org.apache.hadoop.security.authentication.server
 org.apache.hadoop.security.authentication.util
 org.apache.hadoop.security.authorize
 org.apache.hadoop.security.http
