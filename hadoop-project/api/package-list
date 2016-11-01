@@ -163,6 +163,7 @@ org.apache.hadoop.mapreduce.v2.hs.webapp.dao
 org.apache.hadoop.mapreduce.v2.security
 org.apache.hadoop.maven.plugin.cmakebuilder
 org.apache.hadoop.maven.plugin.protoc
+org.apache.hadoop.maven.plugin.resourcegz
 org.apache.hadoop.maven.plugin.util
 org.apache.hadoop.maven.plugin.versioninfo
 org.apache.hadoop.metrics2
