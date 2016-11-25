@@ -1000,10 +1000,10 @@
   </property>
 
   <property>
-    <description>Enable Queuing of OPPORTUNISTIC containers on the
+    <description>Max number of OPPORTUNISTIC containers to queue at the
       nodemanager.</description>
-    <name>yarn.nodemanager.container-queuing-enabled</name>
-    <value>false</value>
+    <name>yarn.nodemanager.opportunistic-containers-max-queue-length</name>
+    <value>0</value>
   </property>
 
   <property>
@@ -1344,7 +1344,8 @@
   </property>
 
   <property>
-    <description>How often to monitor the node and the containers.</description>
+    <description>How often to monitor the node and the containers.
+    If 0 or negative, monitoring is disabled.</description>
     <name>yarn.nodemanager.resource-monitor.interval-ms</name>
     <value>3000</value>
   </property>
@@ -1362,7 +1363,8 @@
 
   <property>
     <description>How often to monitor containers. If not set, the value for
-    yarn.nodemanager.resource-monitor.interval-ms will be used.</description>
+    yarn.nodemanager.resource-monitor.interval-ms will be used.
+    If 0 or negative, container monitoring is disabled.</description>
     <name>yarn.nodemanager.container-monitor.interval-ms</name>
   </property>
 
