@@ -63,7 +63,6 @@ org.apache.hadoop.hdfs.server.datanode.fsdataset
 org.apache.hadoop.hdfs.server.datanode.fsdataset.impl
 org.apache.hadoop.hdfs.server.datanode.metrics
 org.apache.hadoop.hdfs.server.datanode.web
-org.apache.hadoop.hdfs.server.datanode.web.dtp
 org.apache.hadoop.hdfs.server.datanode.web.webhdfs
 org.apache.hadoop.hdfs.server.diskbalancer
 org.apache.hadoop.hdfs.server.diskbalancer.command
