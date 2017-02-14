@@ -1,0 +1,1832 @@
+file: errorAX.txt
+date: Fri, 03 Feb 2017 10:34:50 (local)
+Linklint version: 2.3.5
+
+#------------------------------------------------------------
+# ERROR 425 missing named anchors (cross referenced)
+#------------------------------------------------------------
+/api/org/apache/hadoop/conf/#VariableExpansion
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/conf/Configuration.html#Final
+    used in 1 file:
+    /api/org/apache/hadoop/conf/Configuration.html
+
+/api/org/apache/hadoop/conf/Configuration.html#FinalParams
+    used in 2 files:
+    /api/org/apache/hadoop/mapred/JobConf.html
+    /hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
+
+/api/org/apache/hadoop/conf/Configuration.html#VariableExpansion
+    used in 1 file:
+    /api/org/apache/hadoop/conf/Configuration.html
+
+/api/org/apache/hadoop/fs/AbstractFileSystem.html#access-org.apache.hadoop.fs.Path-org.apache.hadoop.fs.permission.FsAction-
+    used in 1 file:
+    /api/org/apache/hadoop/fs/viewfs/ViewFs.html
+
+/api/org/apache/hadoop/fs/AbstractFileSystem.html#getDelegationTokens-java.lang.String-
+    used in 1 file:
+    /api/org/apache/hadoop/fs/viewfs/ViewFs.html
+
+/api/org/apache/hadoop/fs/FileContext.html#access-org.apache.hadoop.fs.Path-org.apache.hadoop.fs.permission.FsAction-
+    used in 1 file:
+    /api/org/apache/hadoop/fs/viewfs/ViewFs.html
+
+/api/org/apache/hadoop/fs/FileContext.html#fixRelativePart-org.apache.hadoop.fs.Path-
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/fs/FileSystem.html
+    /api/org/apache/hadoop/fs/class-use/Path.html
+
+/api/org/apache/hadoop/fs/FileContext.html#getFileBlockLocations-org.apache.hadoop.fs.Path-long-long-
+    used in 6 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/fs/AbstractFileSystem.html
+    /api/org/apache/hadoop/fs/class-use/BlockLocation.html
+    /api/org/apache/hadoop/fs/class-use/Path.html
+    /api/org/apache/hadoop/fs/viewfs/ViewFs.html
+    /api/org/apache/hadoop/security/class-use/AccessControlException.html
+
+/api/org/apache/hadoop/fs/FileSystem.html#LOG
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/FileSystem.html#access-org.apache.hadoop.fs.Path-org.apache.hadoop.fs.permission.FsAction-
+    used in 2 files:
+    /api/org/apache/hadoop/fs/FilterFileSystem.html
+    /api/org/apache/hadoop/fs/viewfs/ViewFileSystem.html
+
+/api/org/apache/hadoop/fs/FileSystem.html#createFileSystem-java.net.URI-org.apache.hadoop.conf.Configuration-
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/fs/FileSystem.html
+    /api/org/apache/hadoop/fs/viewfs/ViewFileSystem.html
+
+/api/org/apache/hadoop/fs/FileSystem.html#getChildFileSystems--
+    used in 2 files:
+    /api/org/apache/hadoop/fs/FilterFileSystem.html
+    /api/org/apache/hadoop/fs/viewfs/ViewFileSystem.html
+
+/api/org/apache/hadoop/fs/Path.html#makeQualified-java.net.URI-org.apache.hadoop.fs.Path-
+    used in 7 files:
+    /api/deprecated-list.html
+    /api/index-all.html
+    /api/org/apache/hadoop/fs/FileSystem.html
+    /api/org/apache/hadoop/fs/FilterFileSystem.html
+    /api/org/apache/hadoop/fs/Path.html
+    /api/org/apache/hadoop/fs/class-use/FileSystem.html
+    /api/org/apache/hadoop/fs/class-use/Path.html
+
+/api/org/apache/hadoop/fs/permission/AclEntry.html#aclSpecToString-java.util.List-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntry.html#equals-java.lang.Object-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntry.html#getName--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntry.html#getPermission--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntry.html#getScope--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntry.html#getType--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntry.html#hashCode--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntry.html#parseAclEntry-java.lang.String-boolean-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntry.html#parseAclSpec-java.lang.String-boolean-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntry.html#toString--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntry.html#toStringStable--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntryScope.html#valueOf-java.lang.String-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntryScope.html#values--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntryType.html#toString--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntryType.html#toStringStable--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntryType.html#valueOf-java.lang.String-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclEntryType.html#values--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclStatus.html#equals-java.lang.Object-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclStatus.html#getEffectivePermission-org.apache.hadoop.fs.permission.AclEntry-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclStatus.html#getEffectivePermission-org.apache.hadoop.fs.permission.AclEntry-org.apache.hadoop.fs.permission.FsPermission-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclStatus.html#getEntries--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclStatus.html#getGroup--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclStatus.html#getOwner--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclStatus.html#getPermission--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclStatus.html#hashCode--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclStatus.html#isStickyBit--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/AclStatus.html#toString--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsAction.html#SYMBOL
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsAction.html#and-org.apache.hadoop.fs.permission.FsAction-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsAction.html#getFsAction-java.lang.String-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsAction.html#implies-org.apache.hadoop.fs.permission.FsAction-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsAction.html#not--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsAction.html#or-org.apache.hadoop.fs.permission.FsAction-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsAction.html#valueOf-java.lang.String-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsAction.html#values--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsCreateModes.html#applyUMask-org.apache.hadoop.fs.permission.FsPermission-org.apache.hadoop.fs.permission.FsPermission-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsCreateModes.html#create-org.apache.hadoop.fs.permission.FsPermission-org.apache.hadoop.fs.permission.FsPermission-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsCreateModes.html#equals-java.lang.Object-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsCreateModes.html#getMasked--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsCreateModes.html#getUnmasked--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsCreateModes.html#hashCode--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsCreateModes.html#toString--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#DEFAULT_UMASK
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#FsPermission-java.lang.String-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#FsPermission-org.apache.hadoop.fs.permission.FsAction-org.apache.hadoop.fs.permission.FsAction-org.apache.hadoop.fs.permission.FsAction-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#FsPermission-org.apache.hadoop.fs.permission.FsAction-org.apache.hadoop.fs.permission.FsAction-org.apache.hadoop.fs.permission.FsAction-boolean-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#FsPermission-org.apache.hadoop.fs.permission.FsPermission-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#FsPermission-short-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#MAX_PERMISSION_LENGTH
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#UMASK_LABEL
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#applyUMask-org.apache.hadoop.fs.permission.FsPermission-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#createImmutable-short-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#equals-java.lang.Object-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#fromShort-short-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#getAclBit--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#getCachePoolDefault--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#getDefault--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#getDirDefault--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#getEncryptedBit--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#getFileDefault--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#getGroupAction--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#getMasked--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#getOtherAction--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#getStickyBit--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#getUMask-org.apache.hadoop.conf.Configuration-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#getUnmasked--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#getUserAction--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#hashCode--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#read-java.io.DataInput-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#readFields-java.io.DataInput-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#setUMask-org.apache.hadoop.conf.Configuration-org.apache.hadoop.fs.permission.FsPermission-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#toExtendedShort--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#toOctal--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#toShort--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#toString--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#validateObject--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#valueOf-java.lang.String-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/permission/FsPermission.html#write-java.io.DataOutput-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/AWSS3IOException.html#AWSS3IOException-java.lang.String-com.amazonaws.services.s3.model.AmazonS3Exception-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/AWSS3IOException.html#getAdditionalDetails--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/AWSS3IOException.html#getCause--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/AWSS3IOException.html#getErrorResponseXml--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/AWSS3IOException.html#getExtendedRequestId--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/AWSServiceIOException.html#AWSServiceIOException-java.lang.String-com.amazonaws.AmazonServiceException-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/AWSServiceIOException.html#getCause--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/AWSServiceIOException.html#getErrorCode--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/AWSServiceIOException.html#getRawResponseContent--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/AWSServiceIOException.html#getRequestId--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/AWSServiceIOException.html#getServiceName--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/AWSServiceIOException.html#getStatusCode--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/AWSServiceIOException.html#isRetryable--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#ACCESS_KEY
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#AWS_CREDENTIALS_PROVIDER
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#BUFFER_DIR
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#CANNED_ACL
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_CANNED_ACL
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_ESTABLISH_TIMEOUT
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_FAST_BUFFER_SIZE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_FAST_UPLOAD
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_FAST_UPLOAD_ACTIVE_BLOCKS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_FAST_UPLOAD_BUFFER
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_KEEPALIVE_TIME
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_MAXIMUM_CONNECTIONS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_MAX_ERROR_RETRIES
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_MAX_PAGING_KEYS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_MAX_THREADS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_MAX_TOTAL_TASKS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_MIN_MULTIPART_THRESHOLD
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_MULTIPART_SIZE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_PURGE_EXISTING_MULTIPART
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_PURGE_EXISTING_MULTIPART_AGE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_READAHEAD_RANGE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_S3_CLIENT_FACTORY_IMPL
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_SECURE_CONNECTIONS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_SOCKET_RECV_BUFFER
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_SOCKET_SEND_BUFFER
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#DEFAULT_SOCKET_TIMEOUT
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#ENABLE_MULTI_DELETE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#ENDPOINT
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#ESTABLISH_TIMEOUT
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#FAST_BUFFER_SIZE
+    used in 2 files:
+    /api/deprecated-list.html
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#FAST_UPLOAD
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#FAST_UPLOAD_ACTIVE_BLOCKS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#FAST_UPLOAD_BUFFER
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#FAST_UPLOAD_BUFFER_ARRAY
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#FAST_UPLOAD_BUFFER_DISK
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#FAST_UPLOAD_BYTEBUFFER
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#FS_S3A
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#FS_S3A_BLOCK_SIZE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#FS_S3A_BUCKET_PREFIX
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#FS_S3A_PREFIX
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#INPUT_FADVISE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#INPUT_FADV_NORMAL
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#INPUT_FADV_RANDOM
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#INPUT_FADV_SEQUENTIAL
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#KEEPALIVE_TIME
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#MAXIMUM_CONNECTIONS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#MAX_ERROR_RETRIES
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#MAX_MULTIPART_COUNT
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#MAX_PAGING_KEYS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#MAX_THREADS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#MAX_TOTAL_TASKS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#MIN_MULTIPART_THRESHOLD
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#MULTIPART_MIN_SIZE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#MULTIPART_SIZE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#PATH_STYLE_ACCESS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#PROXY_DOMAIN
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#PROXY_HOST
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#PROXY_PASSWORD
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#PROXY_PORT
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#PROXY_USERNAME
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#PROXY_WORKSTATION
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#PURGE_EXISTING_MULTIPART
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#PURGE_EXISTING_MULTIPART_AGE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#READAHEAD_RANGE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#S3A_DEFAULT_PORT
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#S3A_SECURITY_CREDENTIAL_PROVIDER_PATH
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#S3N_FOLDER_SUFFIX
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#S3_CLIENT_FACTORY_IMPL
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#SECRET_KEY
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#SECURE_CONNECTIONS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#SERVER_SIDE_ENCRYPTION_AES256
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#SERVER_SIDE_ENCRYPTION_ALGORITHM
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#SESSION_TOKEN
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#SIGNING_ALGORITHM
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#SOCKET_RECV_BUFFER
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#SOCKET_SEND_BUFFER
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#SOCKET_TIMEOUT
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/Constants.html#USER_AGENT_PREFIX
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/S3A.html#S3A-java.net.URI-org.apache.hadoop.conf.Configuration-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+
+/api/org/apache/hadoop/fs/s3a/S3A.html#getUriDefaultPort--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/SimpleAWSCredentialsProvider.html#NAME
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/SimpleAWSCredentialsProvider.html#SimpleAWSCredentialsProvider-java.net.URI-org.apache.hadoop.conf.Configuration-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+
+/api/org/apache/hadoop/fs/s3a/SimpleAWSCredentialsProvider.html#getCredentials--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/SimpleAWSCredentialsProvider.html#refresh--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/SimpleAWSCredentialsProvider.html#toString--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/TemporaryAWSCredentialsProvider.html#NAME
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/TemporaryAWSCredentialsProvider.html#TemporaryAWSCredentialsProvider-java.net.URI-org.apache.hadoop.conf.Configuration-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+
+/api/org/apache/hadoop/fs/s3a/TemporaryAWSCredentialsProvider.html#getCredentials--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/TemporaryAWSCredentialsProvider.html#refresh--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/fs/s3a/TemporaryAWSCredentialsProvider.html#toString--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/http/JettyUtils.html#HEADER_SIZE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/http/JettyUtils.html#UTF_8
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/io/SequenceFile.html#Header
+    used in 1 file:
+    /api/org/apache/hadoop/io/SequenceFile.html
+
+/api/org/apache/hadoop/io/serializer/avro/AvroReflectSerialization.html#AVRO_REFLECT_PACKAGES
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/io/serializer/avro/package-summary.html
+
+/api/org/apache/hadoop/io/serializer/avro/AvroSerialization.html#AVRO_SCHEMA_KEY
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Client.html#Client-java.lang.Class-org.apache.hadoop.conf.Configuration-
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+    /api/org/apache/hadoop/io/class-use/Writable.html
+
+/api/org/apache/hadoop/ipc/Client.html#Client-java.lang.Class-org.apache.hadoop.conf.Configuration-javax.net.SocketFactory-
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+    /api/org/apache/hadoop/io/class-use/Writable.html
+
+/api/org/apache/hadoop/ipc/Client.html#LOG
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Client.html#call-org.apache.hadoop.ipc.RPC.RpcKind-org.apache.hadoop.io.Writable-org.apache.hadoop.ipc.Client.ConnectionId-java.util.concurrent.atomic.AtomicBoolean-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/io/class-use/Writable.html
+
+/api/org/apache/hadoop/ipc/Client.html#close--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Client.html#getAsyncRpcResponse--
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/io/class-use/Writable.html
+
+/api/org/apache/hadoop/ipc/Client.html#getClientExecutor--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Client.html#getRpcTimeout-org.apache.hadoop.conf.Configuration-
+    used in 3 files:
+    /api/deprecated-list.html
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+
+/api/org/apache/hadoop/ipc/Client.html#getTimeout-org.apache.hadoop.conf.Configuration-
+    used in 3 files:
+    /api/deprecated-list.html
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+
+/api/org/apache/hadoop/ipc/Client.html#isAsynchronousMode--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Client.html#nextCallId--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Client.html#setAsynchronousMode-boolean-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Client.html#setCallIdAndRetryCount-int-int-java.lang.Object-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Client.html#setConnectTimeout-org.apache.hadoop.conf.Configuration-int-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+
+/api/org/apache/hadoop/ipc/Client.html#stop--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#AUDITLOG
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#LOG
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#Server-java.lang.String-int-java.lang.Class-int-int-int-org.apache.hadoop.conf.Configuration-java.lang.String-org.apache.hadoop.security.token.SecretManager-
+    used in 5 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+    /api/org/apache/hadoop/io/class-use/Writable.html
+    /api/org/apache/hadoop/security/token/class-use/SecretManager.html
+    /api/org/apache/hadoop/security/token/class-use/TokenIdentifier.html
+
+/api/org/apache/hadoop/ipc/Server.html#Server-java.lang.String-int-java.lang.Class-int-int-int-org.apache.hadoop.conf.Configuration-java.lang.String-org.apache.hadoop.security.token.SecretManager-java.lang.String-
+    used in 5 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+    /api/org/apache/hadoop/io/class-use/Writable.html
+    /api/org/apache/hadoop/security/token/class-use/SecretManager.html
+    /api/org/apache/hadoop/security/token/class-use/TokenIdentifier.html
+
+/api/org/apache/hadoop/ipc/Server.html#Server-java.lang.String-int-java.lang.Class-int-org.apache.hadoop.conf.Configuration-
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+    /api/org/apache/hadoop/io/class-use/Writable.html
+
+/api/org/apache/hadoop/ipc/Server.html#addSuppressedLoggingExceptions-java.lang.Class...-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#addTerseExceptions-java.lang.Class...-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#bind-java.net.ServerSocket-java.net.InetSocketAddress-int-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#bind-java.net.ServerSocket-java.net.InetSocketAddress-int-org.apache.hadoop.conf.Configuration-java.lang.String-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+
+/api/org/apache/hadoop/ipc/Server.html#call-org.apache.hadoop.io.Writable-long-
+    used in 3 files:
+    /api/deprecated-list.html
+    /api/index-all.html
+    /api/org/apache/hadoop/io/class-use/Writable.html
+
+/api/org/apache/hadoop/ipc/Server.html#call-org.apache.hadoop.ipc.RPC.RpcKind-java.lang.String-org.apache.hadoop.io.Writable-long-
+    used in 3 files:
+    /api/deprecated-list.html
+    /api/index-all.html
+    /api/org/apache/hadoop/io/class-use/Writable.html
+
+/api/org/apache/hadoop/ipc/Server.html#get--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getCallId--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getCallQueueLen--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getCallRetryCount--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getClientId--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getCurCall--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getListenerAddress--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getMaxQueueSize--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getNumOpenConnections--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getNumOpenConnectionsPerUser--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getNumReaders--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getPort--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getPriorityLevel--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getProtocol--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getRemoteAddress--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getRemoteIp--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getRemoteUser--
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/security/class-use/UserGroupInformation.html
+
+/api/org/apache/hadoop/ipc/Server.html#getRpcDetailedMetrics--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getRpcInvoker-org.apache.hadoop.ipc.RPC.RpcKind-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getRpcMetrics--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#getRpcRequestWrapper-org.apache.hadoop.ipc.protobuf.RpcHeaderProtos.RpcKindProto-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/io/class-use/Writable.html
+
+/api/org/apache/hadoop/ipc/Server.html#isClientBackoffEnabled--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#isLogSlowRPC--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#isRpcInvocation--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#join--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#queueCall-org.apache.hadoop.ipc.Server.Call-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#refreshCallQueue-org.apache.hadoop.conf.Configuration-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+
+/api/org/apache/hadoop/ipc/Server.html#refreshServiceAcl-org.apache.hadoop.conf.Configuration-org.apache.hadoop.security.authorize.PolicyProvider-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/conf/class-use/Configuration.html
+
+/api/org/apache/hadoop/ipc/Server.html#registerProtocolEngine-org.apache.hadoop.ipc.RPC.RpcKind-java.lang.Class-org.apache.hadoop.ipc.RPC.RpcInvoker-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/io/class-use/Writable.html
+
+/api/org/apache/hadoop/ipc/Server.html#rpcDetailedMetrics
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#rpcMetrics
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#setClientBackoffEnabled-boolean-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#setLogSlowRPC-boolean-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#setSocketSendBufSize-int-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#setTracer-org.apache.htrace.core.Tracer-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#start--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/ipc/Server.html#stop--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/mapred/JobClient.html#MAPREDUCE_CLIENT_RETRY_POLICY_ENABLED_DEFAULT
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/mapred/JobClient.html#MAPREDUCE_CLIENT_RETRY_POLICY_ENABLED_KEY
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/mapred/JobClient.html#MAPREDUCE_CLIENT_RETRY_POLICY_SPEC_DEFAULT
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/mapred/JobClient.html#MAPREDUCE_CLIENT_RETRY_POLICY_SPEC_KEY
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/mapred/JobConf.html#MAPREDUCE_JOB_MAP_MEMORY_MB_PROPERTY
+    used in 3 files:
+    /api/deprecated-list.html
+    /api/index-all.html
+    /api/org/apache/hadoop/mapred/JobConf.html
+
+/api/org/apache/hadoop/mapred/JobConf.html#MAPREDUCE_JOB_REDUCE_MEMORY_MB_PROPERTY
+    used in 3 files:
+    /api/deprecated-list.html
+    /api/index-all.html
+    /api/org/apache/hadoop/mapred/JobConf.html
+
+/api/org/apache/hadoop/mapred/JobConf.html#ReducerNone
+    used in 1 file:
+    /api/org/apache/hadoop/mapred/Mapper.html
+
+/api/org/apache/hadoop/mapreduce/lib/join/ComposableRecordReader.html#createValue--
+    used in 3 files:
+    /api/org/apache/hadoop/mapreduce/lib/join/JoinRecordReader.html
+    /api/org/apache/hadoop/mapreduce/lib/join/OverrideRecordReader.html
+    /api/org/apache/hadoop/mapreduce/lib/join/WrappedRecordReader.html
+
+/api/org/apache/hadoop/mapreduce/security/TokenCache.html#JOB_TOKENS_FILENAME
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/mapreduce/security/TokenCache.html#JOB_TOKEN_HDFS_FILE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/mapreduce/tools/CLI.html#dataPattern
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/mapreduce/tools/CLI.html#headerPattern
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/metrics2/lib/DefaultMetricsSystem.html#init-java.lang.String-
+    used in 1 file:
+    /api/org/apache/hadoop/metrics2/lib/DefaultMetricsSystem.html
+
+/api/org/apache/hadoop/registry/client/types/ServiceRecord.html#attributes
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/registry/client/types/ServiceRecord.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#AbstractDelegationTokenIdentifier--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#AbstractDelegationTokenIdentifier-org.apache.hadoop.io.Text-org.apache.hadoop.io.Text-org.apache.hadoop.io.Text-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/io/class-use/Text.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#equals-java.lang.Object-
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#getIssueDate--
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#getKind--
+    used in 4 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/io/class-use/Text.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#getMasterKeyId--
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#getMaxDate--
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#getOwner--
+    used in 4 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/io/class-use/Text.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#getRealUser--
+    used in 4 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/io/class-use/Text.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#getRenewer--
+    used in 4 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/io/class-use/Text.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#getSequenceNumber--
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#getUser--
+    used in 4 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/security/class-use/UserGroupInformation.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#hashCode--
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#isEqual-java.lang.Object-java.lang.Object-
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#readFields-java.io.DataInput-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#setIssueDate-long-
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#setMasterKeyId-int-
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#setMaxDate-long-
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#setOwner-org.apache.hadoop.io.Text-
+    used in 4 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/io/class-use/Text.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#setRealUser-org.apache.hadoop.io.Text-
+    used in 4 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/io/class-use/Text.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#setRenewer-org.apache.hadoop.io.Text-
+    used in 4 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/io/class-use/Text.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#setSequenceNumber-int-
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#toString--
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#toStringStable--
+    used in 3 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/yarn/security/client/RMDelegationTokenIdentifier.html
+    /api/org/apache/hadoop/yarn/security/client/TimelineDelegationTokenIdentifier.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html#write-java.io.DataOutput-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#AbstractDelegationTokenSecretManager-long-long-long-long-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#addKey-org.apache.hadoop.security.token.delegation.DelegationKey-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#addPersistedDelegationToken-TokenIdent-long-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#allKeys
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#cancelToken-org.apache.hadoop.security.token.Token-java.lang.String-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/security/token/class-use/Token.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#checkToken-TokenIdent-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#createPassword-TokenIdent-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#createSecretKey-byte:A-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#currentId
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#currentTokens
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#decodeTokenIdentifier-org.apache.hadoop.security.token.Token-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/security/token/class-use/Token.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#delegationTokenSequenceNumber
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#getAllKeys--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#getCurrentKeyId--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#getDelegationKey-int-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#getDelegationTokenSeqNum--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#getTokenInfo-TokenIdent-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#getTokenTrackingId-TokenIdent-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#getTrackingIdIfEnabled-TokenIdent-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#incrementCurrentKeyId--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#incrementDelegationTokenSeqNum--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#isRunning--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#logExpireToken-TokenIdent-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#logUpdateMasterKey-org.apache.hadoop.security.token.delegation.DelegationKey-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#noInterruptsLock
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#removeStoredMasterKey-org.apache.hadoop.security.token.delegation.DelegationKey-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#removeStoredToken-TokenIdent-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#renewToken-org.apache.hadoop.security.token.Token-java.lang.String-
+    used in 2 files:
+    /api/index-all.html
+    /api/org/apache/hadoop/security/token/class-use/Token.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#reset--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#retrievePassword-TokenIdent-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#running
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#setCurrentKeyId-int-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#setDelegationTokenSeqNum-int-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#startThreads--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#stopThreads--
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#storeDelegationKey-org.apache.hadoop.security.token.delegation.DelegationKey-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#storeNewMasterKey-org.apache.hadoop.security.token.delegation.DelegationKey-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#storeNewToken-TokenIdent-long-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#storeToken-TokenIdent-org.apache.hadoop.security.token.delegation.AbstractDelegationTokenSecretManager.DelegationTokenInformation-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#storeTokenTrackingId
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#updateDelegationKey-org.apache.hadoop.security.token.delegation.DelegationKey-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#updateStoredToken-TokenIdent-long-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#updateToken-TokenIdent-org.apache.hadoop.security.token.delegation.AbstractDelegationTokenSecretManager.DelegationTokenInformation-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html#verifyToken-TokenIdent-byte:A-
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/util/Shell.html#WINUTILS_EXE
+    used in 1 file:
+    /api/org/apache/hadoop/util/Shell.html
+
+/api/org/apache/hadoop/yarn/api/records/ApplicationAttemptId.html#appAttemptIdStrPrefix
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/api/records/ApplicationId.html#appIdStrPrefix
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/api/records/NodeLabel.html#DEFAULT_NODE_LABEL_EXCLUSIVITY
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/api/records/NodeLabel.html#DEFAULT_NODE_LABEL_PARTITION
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/api/records/NodeLabel.html#NODE_LABEL_EXPRESSION_NOT_SET
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/api/records/ReservationId.html#reserveIdStrPrefix
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/api/records/timeline/TimelineEntityGroupId.html#TIMELINE_ENTITY_GROUPID_STR_PREFIX
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#AM_SCHEDULING_NODE_BLACKLISTING_DISABLE_THRESHOLD
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#AM_SCHEDULING_NODE_BLACKLISTING_ENABLED
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#APPLICATION_HISTORY_ENABLED
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#APPLICATION_HISTORY_PREFIX
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#APPLICATION_HISTORY_SAVE_NON_AM_CONTAINER_META_INFO
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#APPLICATION_HISTORY_STORE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#CORE_SITE_CONFIGURATION_FILE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#CS_CONFIGURATION_FILE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_AM_SCHEDULING_NODE_BLACKLISTING_DISABLE_THRESHOLD
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_AM_SCHEDULING_NODE_BLACKLISTING_ENABLED
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_APPLICATION_HISTORY_ENABLED
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_APPLICATION_HISTORY_SAVE_NON_AM_CONTAINER_META_INFO
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_CURATOR_LEADER_ELECTOR_ENABLED
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_FS_APPLICATION_HISTORY_STORE_COMPRESSION_TYPE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_NM_CONTAINER_METRICS_ENABLE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_NM_CONTAINER_METRICS_PERIOD_MS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_NM_CONTAINER_METRICS_UNREGISTER_DELAY_MS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_NM_CPU_RESOURCE_ENABLED
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_NM_DISK_RESOURCE_ENABLED
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_NM_MEMORY_RESOURCE_CGROUPS_SOFT_LIMIT_PERCENTAGE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_NM_MEMORY_RESOURCE_CGROUPS_SWAPPINESS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_NM_MEMORY_RESOURCE_ENABLED
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_NM_NETWORK_RESOURCE_ENABLED
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_NM_NETWORK_RESOURCE_INTERFACE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_MBIT
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_RM_WORK_PRESERVING_RECOVERY_ENABLED
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DEFAULT_YARN_INTERMEDIATE_DATA_ENCRYPTION
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#DR_CONFIGURATION_FILE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#FS_APPLICATION_HISTORY_STORE_COMPRESSION_TYPE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#FS_APPLICATION_HISTORY_STORE_URI
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#HADOOP_POLICY_CONFIGURATION_FILE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#NM_CONTAINER_METRICS_ENABLE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#NM_CONTAINER_METRICS_PERIOD_MS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#NM_CONTAINER_METRICS_UNREGISTER_DELAY_MS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#NM_CPU_RESOURCE_ENABLED
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#NM_CPU_RESOURCE_PREFIX
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#NM_DISK_RESOURCE_ENABLED
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#NM_DISK_RESOURCE_PREFIX
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#NM_MEMORY_RESOURCE_CGROUPS_SOFT_LIMIT_PERCENTAGE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#NM_MEMORY_RESOURCE_CGROUPS_SWAPPINESS
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#NM_MEMORY_RESOURCE_ENABLED
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#NM_MEMORY_RESOURCE_PREFIX
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#NM_NETWORK_RESOURCE_ENABLED
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#NM_NETWORK_RESOURCE_INTERFACE
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_MBIT
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#NM_NETWORK_RESOURCE_OUTBOUND_BANDWIDTH_YARN_MBIT
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#RM_CONFIGURATION_FILES
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#RM_WORK_PRESERVING_RECOVERY_ENABLED
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#YARN_INTERMEDIATE_DATA_ENCRYPTION
+    used in 1 file:
+    /api/index-all.html
+
+/api/org/apache/hadoop/yarn/conf/YarnConfiguration.html#YARN_SITE_CONFIGURATION_FILE
+    used in 1 file:
+    /api/index-all.html
+
+/hadoop-hdfs-httpfs/ServerSetup.html#HTTPFS_SSL_ENABLED
+    used in 1 file:
+    /hadoop-hdfs-httpfs/ServerSetup.html
+
+/hadoop-hdfs-httpfs/ServerSetup.html#httpfs-env.sh
+    used in 1 file:
+    /hadoop-hdfs-httpfs/ServerSetup.html
+
+/hadoop-hdfs-httpfs/ServerSetup.html#true
+    used in 1 file:
+    /hadoop-hdfs-httpfs/ServerSetup.html
+
+/hadoop-mapreduce-client/hadoop-mapreduce-client-core/mapred-default.xml#mapreduce.input.fileinputformat.split.minsize
+    used in 3 files:
+    /api/org/apache/hadoop/mapred/InputFormat.html
+    /api/org/apache/hadoop/mapred/JobConf.html
+    /api/org/apache/hadoop/mapreduce/InputFormat.html
+
+/hadoop-mapreduce-client/hadoop-mapreduce-client-core/mapred-default.xml#mapreduce.reduce.memory.mb
+    used in 1 file:
+    /api/org/apache/hadoop/mapred/JobConf.html
+
+/hadoop-mapreduce-client/hadoop-mapreduce-client-core/mapred-default.xml#mapreduce.task.timeout
+    used in 7 files:
+    /api/org/apache/hadoop/mapred/Mapper.html
+    /api/org/apache/hadoop/mapred/Reducer.html
+    /api/org/apache/hadoop/mapred/lib/FieldSelectionMapReduce.html
+    /api/org/apache/hadoop/mapred/lib/LongSumReducer.html
+    /api/org/apache/hadoop/mapred/lib/RegexMapper.html
+    /api/org/apache/hadoop/mapred/lib/TokenCountMapper.html
+    /api/org/apache/hadoop/mapred/lib/aggregate/ValueAggregatorReducer.html
+
+/hadoop-openstack/index.html#Hadoop_OpenStack_Support:_Swift_Object_Store
+    used in 1 file:
+    /hadoop-openstack/index.html
+
+/hadoop-project-dist/hadoop-common/SingleCluster.html#YARN_on_Single_Node
+    used in 1 file:
+    /hadoop-project-dist/hadoop-common/SingleCluster.html
+
+/hadoop-project-dist/hadoop-hdfs/WebHDFS.html#Block_Locations_JSON_Schema
+    used in 1 file:
+    /hadoop-project-dist/hadoop-hdfs/WebHDFS.html
+
+/hadoop-rumen/Rumen.html#Dependencies
+    used in 1 file:
+    /hadoop-rumen/Rumen.html
+
+/hadoop-sls/SchedulerLoadSimulator.html#Yarn_Scheduler_Load_Simulator_SLS
+    used in 1 file:
+    /hadoop-sls/SchedulerLoadSimulator.html
+
+/hadoop-streaming/HadoopStreaming.html#What_do_I_do_if_I_get_a_error_Argument_list_too_long
+    used in 1 file:
+    /hadoop-streaming/HadoopStreaming.html
+
+/hadoop-yarn/hadoop-yarn-site/NodeManager.html#Health_checker_service
+    used in 1 file:
+    /hadoop-yarn/hadoop-yarn-site/NodeManager.html
+
+/hadoop-yarn/hadoop-yarn-site/NodeManagerCgroups.html#CGroups_configuration
+    used in 1 file:
+    /hadoop-yarn/hadoop-yarn-site/NodeManagerCgroups.html
+
+/hadoop-yarn/hadoop-yarn-site/ResourceManagerRest.html#Application_API
+    used in 1 file:
+    /hadoop-yarn/hadoop-yarn-site/ResourceManagerRest.html
+
+/hadoop-yarn/hadoop-yarn-site/ResourceManagerRest.html#Node_API
+    used in 1 file:
+    /hadoop-yarn/hadoop-yarn-site/ResourceManagerRest.html
+
+/hadoop-yarn/hadoop-yarn-site/WebApplicationProxy.html#Running_Web_Proxy
+    used in 1 file:
+    /hadoop-yarn/hadoop-yarn-site/WebApplicationProxy.html
+
+/hadoop-yarn/hadoop-yarn-site/YarnCommands.html#a.hadooprc
+    used in 1 file:
+    /hadoop-yarn/hadoop-yarn-site/YarnCommands.html
+
+/hadoop-yarn/hadoop-yarn-site/YarnCommands.html#etchadoophadoop-env.sh
+    used in 1 file:
+    /hadoop-yarn/hadoop-yarn-site/YarnCommands.html
+
+/hadoop-yarn/hadoop-yarn-site/YarnCommands.html#etchadoophadoop-user-functions.sh
+    used in 1 file:
+    /hadoop-yarn/hadoop-yarn-site/YarnCommands.html
+
+/hadoop-yarn/hadoop-yarn-site/YarnCommands.html#etchadoopyarn-env.sh
+    used in 1 file:
+    /hadoop-yarn/hadoop-yarn-site/YarnCommands.html
+

@@ -1,0 +1,22 @@
+file: index.txt
+date: Fri, 03 Feb 2017 10:34:50 (local)
+Linklint version: 2.3.5
+
+ summary.txt: summary of results
+     log.txt: log of progress
+      dir.txt: found 423 directories with files
+     file.txt: found 3064 files
+    fileX.txt: found 3064 files (cross referenced)
+    fileF.txt: found 3017 files with forward links
+   remote.txt: found 572 other links
+  remoteX.txt: found 572 other links (cross referenced)
+   anchor.txt: found 34723 named anchors
+  anchorX.txt: found 34723 named anchors (cross referenced)
+     warn.txt: warn   12 warnings
+    warnX.txt: warn   12 warnings (cross referenced)
+    warnF.txt: warn   11 files with warnings
+    error.txt: ERROR  40 missing files
+   errorX.txt: ERROR  40 missing files (cross referenced)
+   errorF.txt: ERROR 165 files had broken links
+   errorA.txt: ERROR 425 missing named anchors
+  errorAX.txt: ERROR 425 missing named anchors (cross referenced)

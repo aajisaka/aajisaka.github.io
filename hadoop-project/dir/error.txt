@@ -1,0 +1,52 @@
+file: error.txt
+date: Fri, 03 Feb 2017 10:34:50 (local)
+Linklint version: 2.3.5
+
+#------------------------------------------------------------
+# ERROR  39 missing html files
+#------------------------------------------------------------
+/api/org/apache/hadoop/fs/permission/AclEntry.html
+/api/org/apache/hadoop/fs/permission/AclEntryScope.html
+/api/org/apache/hadoop/fs/permission/AclEntryType.html
+/api/org/apache/hadoop/fs/permission/AclStatus.html
+/api/org/apache/hadoop/fs/permission/FsAction.html
+/api/org/apache/hadoop/fs/permission/FsCreateModes.html
+/api/org/apache/hadoop/fs/permission/FsPermission.html
+/api/org/apache/hadoop/fs/s3a/AWSS3IOException.html
+/api/org/apache/hadoop/fs/s3a/AWSServiceIOException.html
+/api/org/apache/hadoop/fs/s3a/Constants.html
+/api/org/apache/hadoop/fs/s3a/S3A.html
+/api/org/apache/hadoop/fs/s3a/SimpleAWSCredentialsProvider.html
+/api/org/apache/hadoop/fs/s3a/TemporaryAWSCredentialsProvider.html
+/api/org/apache/hadoop/http/JettyUtils.html
+/api/org/apache/hadoop/ipc/Client.html
+/api/org/apache/hadoop/ipc/Server.html
+/api/org/apache/hadoop/mapreduce/lib/input/FileOutputFormat.html
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenIdentifier.html
+/api/org/apache/hadoop/security/token/delegation/AbstractDelegationTokenSecretManager.html
+/hadoop-aliyun/index.html
+/hadoop-aliyun/tools/api/org/apache/hadoop/fs/FileSystem.html
+/hadoop-archive-logs/index.html
+/hadoop-archives/index.html
+/hadoop-aws/index.html
+/hadoop-distcp/index.html
+/hadoop-gridmix/index.html
+/hadoop-mapreduce-client/hadoop-mapreduce-client-core/index.html
+/hadoop-mapreduce-client/hadoop-mapreduce-client-hs/index.html
+/hadoop-mapreduce-client/index.html
+/hadoop-project-dist/hadoop-common/index.html
+/hadoop-project-dist/hadoop-common/release/index.html
+/hadoop-project-dist/hadoop-hdfs/index.html
+/hadoop-project-dist/index.html
+/hadoop-rumen/index.html
+/hadoop-sls/index.html
+/hadoop-streaming/index.html
+/hadoop-yarn/hadoop-yarn-site/GracefulDecommission.html
+/hadoop-yarn/hadoop-yarn-site/index.html
+/hadoop-yarn/index.html
+
+#------------------------------------------------------------
+# ERROR   1 missing other file
+#------------------------------------------------------------
+/hadoop-kms/Rollover_Key
+

@@ -16,6 +16,17 @@
     </td>
 </tr>
 <tr>
+<td><a name="hadoop.kms.http.administrators">hadoop.kms.http.administrators</a></td><td></td><td>ACL for the admins, this configuration is used to control
+      who can access the default KMS servlets. The value should be a comma
+      separated list of users and groups. The user list comes first and is
+      separated by a space followed by the group list,
+      e.g. "user1,user2 group1,group2". Both users and groups are optional,
+      so "user1", " group1", "", "user1 group1", "user1,user2 group1,group2"
+      are all valid (note the leading space in " group1"). '*' grants access
+      to all users and groups, e.g. '*', '* ' and ' *' are all valid.
+    </td>
+</tr>
+<tr>
 <td><a name="hadoop.kms.ssl.enabled">hadoop.kms.ssl.enabled</a></td><td>false</td><td>
       Whether SSL is enabled. Default is false, i.e. disabled.
     </td>

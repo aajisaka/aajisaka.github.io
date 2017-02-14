@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<rss version="0.91">
+  <channel>
+    <title>Apache Hadoop YARN Server Tests - Checkstyle report</title>
+    <link>${project.url}</link>
+    <description>Apache Hadoop YARN Server Tests - Checkstyle report</description>
+    <language>en-us</language>
+    <copyright>&#169;2008 - 2017 Apache Software Foundation</copyright>
+    <item>
+      <title>File: 12,
+             Errors: 107,
+             Warnings: 0,
+             Infos: 0
+      </title>
+            <link>${project.url}/checkstyle.html</link>
+      <description>
+        <p>Click <a href="${project.url}/checkstyle.html">here</a> for the full Checkstyle report.</p>
+
+        <table summary="Files" boder="1">
+          <thead>
+            <tr>
+              <th>Files</th>
+              <th style="width:30px;"><abbr title="Info">I</abbr></th>
+              <th style="width:30px;"><abbr title="Warning">W</abbr></th>
+              <th style="width:30px;"><abbr title="Error">E</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.yarn.server.ContainerTokenIdentifierForTest.java">org/apache/hadoop/yarn/server/ContainerTokenIdentifierForTest.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  7
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.yarn.server.timeline.TimelineVersion.java">org/apache/hadoop/yarn/server/timeline/TimelineVersion.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.yarn.server.TestMiniYarnClusterNodeUtilization.java">org/apache/hadoop/yarn/server/TestMiniYarnClusterNodeUtilization.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  5
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.yarn.server.TestRMNMSecretKeys.java">org/apache/hadoop/yarn/server/TestRMNMSecretKeys.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.yarn.server.TestMiniYARNClusterForHA.java">org/apache/hadoop/yarn/server/TestMiniYARNClusterForHA.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.yarn.server.TestDiskFailures.java">org/apache/hadoop/yarn/server/TestDiskFailures.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  7
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.yarn.server.TestContainerManagerSecurity.java">org/apache/hadoop/yarn/server/TestContainerManagerSecurity.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  38
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.yarn.server.NMTokenIdentifierNewForTest.java">org/apache/hadoop/yarn/server/NMTokenIdentifierNewForTest.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  5
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.yarn.server.MiniYARNCluster.java">org/apache/hadoop/yarn/server/MiniYARNCluster.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  28
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.yarn.server.timeline.TimelineVersionWatcher.java">org/apache/hadoop/yarn/server/timeline/TimelineVersionWatcher.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.yarn.server.TestMiniYarnCluster.java">org/apache/hadoop/yarn/server/TestMiniYarnCluster.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  6
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.yarn.server.timelineservice.TestTimelineServiceClientIntegration.java">org/apache/hadoop/yarn/server/timelineservice/TestTimelineServiceClientIntegration.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                      </tbody>
+        </table>
+        
+      </description>
+    </item>
+  </channel>
+</rss>
+

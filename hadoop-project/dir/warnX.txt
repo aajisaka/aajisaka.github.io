@@ -1,0 +1,68 @@
+file: warnX.txt
+date: Fri, 03 Feb 2017 10:34:50 (local)
+Linklint version: 2.3.5
+
+#------------------------------------------------------------
+# warn   12 warnings (cross referenced)
+#------------------------------------------------------------
+\ converted to / in http://host.domain.com:8088/proxy/application\_1326821518301\_0010
+    occurred in
+    /hadoop-yarn/hadoop-yarn-site/WebServicesIntro.html
+
+\ converted to / in http://rmhost.domain:8088/ws/v1/cluster/apps/application\_1324057493980\_0001
+    occurred in
+    /hadoop-yarn/hadoop-yarn-site/WebServicesIntro.html
+
+\ converted to / in http://rmhost.domain:8088/ws/v1/cluster/apps/application\_1324057493980\_9999
+    occurred in
+    /hadoop-yarn/hadoop-yarn-site/WebServicesIntro.html
+
+index file not found
+    occurred in
+    /api/org/apache/hadoop/conf/
+    /api/org/apache/hadoop/conf/class-use/
+
+unquoted "<" in <16 +
+ (NB[1]&0xff)<16 
+    occurred in
+    /api/org/apache/hadoop/io/file/tfile/Utils.html
+
+unquoted "<" in <16 + (NB[0]&0xff)<16 +
+    occurred in
+    /api/org/apache/hadoop/io/file/tfile/Utils.html
+
+unquoted "<" in <24 + (NB[0]&0xff)<24 +
+    occurred in
+    /api/org/apache/hadoop/io/file/tfile/Utils.html
+
+unquoted "<" in <8 +
+ NB[1]&0xff;
+ <8 
+    occurred in
+    /api/org/apache/hadoop/io/file/tfile/Utils.html
+
+unquoted "<" in <8 + NB[0]&0xff;
+ <8 +
+    occurred in
+    /api/org/apache/hadoop/io/file/tfile/Utils.html
+
+unquoted "<" in <8 + NB[2]&0xff;
+ <8 +
+    occurred in
+    /api/org/apache/hadoop/io/file/tfile/Utils.html
+
+unquoted "<" in <li <li
+ <
+    occurred in
+    /api/org/apache/hadoop/fs/FileContext.html
+
+unquoted "<" in <li Fails if src is a 
+    occurred in
+    /api/index-all.html
+    /api/org/apache/hadoop/fs/FileContext.html
+    /api/org/apache/hadoop/fs/class-use/FileAlreadyExistsException.html
+    /api/org/apache/hadoop/fs/class-use/ParentNotDirectoryException.html
+    /api/org/apache/hadoop/fs/class-use/Path.html
+    /api/org/apache/hadoop/fs/class-use/UnsupportedFileSystemException.html
+    /api/org/apache/hadoop/security/class-use/AccessControlException.html
+

@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<rss version="0.91">
+  <channel>
+    <title>Apache Hadoop Azure Data Lake support - Checkstyle report</title>
+    <link>${project.url}</link>
+    <description>Apache Hadoop Azure Data Lake support - Checkstyle report</description>
+    <language>en-us</language>
+    <copyright>&#169;2008 - 2017 Apache Software Foundation</copyright>
+    <item>
+      <title>File: 47,
+             Errors: 2,
+             Warnings: 0,
+             Infos: 0
+      </title>
+            <link>${project.url}/checkstyle.html</link>
+      <description>
+        <p>Click <a href="${project.url}/checkstyle.html">here</a> for the full Checkstyle report.</p>
+
+        <table summary="Files" boder="1">
+          <thead>
+            <tr>
+              <th>Files</th>
+              <th style="width:30px;"><abbr title="Info">I</abbr></th>
+              <th style="width:30px;"><abbr title="Warning">W</abbr></th>
+              <th style="width:30px;"><abbr title="Error">E</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.Adl.java">org/apache/hadoop/fs/adl/Adl.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlFileContextMainOperationsLive.java">org/apache/hadoop/fs/adl/live/TestAdlFileContextMainOperationsLive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlFileSystemContractLive.java">org/apache/hadoop/fs/adl/live/TestAdlFileSystemContractLive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.TestRelativePathFormation.java">org/apache/hadoop/fs/adl/TestRelativePathFormation.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.package-info.java">org/apache/hadoop/fs/adl/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.AdlStorageContract.java">org/apache/hadoop/fs/adl/live/AdlStorageContract.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.AdlStorageConfiguration.java">org/apache/hadoop/fs/adl/live/AdlStorageConfiguration.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.common.ExpectedResponse.java">org/apache/hadoop/fs/adl/common/ExpectedResponse.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.TestGetFileStatus.java">org/apache/hadoop/fs/adl/TestGetFileStatus.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlContractSeekLive.java">org/apache/hadoop/fs/adl/live/TestAdlContractSeekLive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlContractMkdirLive.java">org/apache/hadoop/fs/adl/live/TestAdlContractMkdirLive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.common.Parallelized.java">org/apache/hadoop/fs/adl/common/Parallelized.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlContractRenameLive.java">org/apache/hadoop/fs/adl/live/TestAdlContractRenameLive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlContractOpenLive.java">org/apache/hadoop/fs/adl/live/TestAdlContractOpenLive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlContractAppendLive.java">org/apache/hadoop/fs/adl/live/TestAdlContractAppendLive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.TestACLFeatures.java">org/apache/hadoop/fs/adl/TestACLFeatures.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.TestAdlRead.java">org/apache/hadoop/fs/adl/TestAdlRead.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.AdlFsInputStream.java">org/apache/hadoop/fs/adl/AdlFsInputStream.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlSupportedCharsetInPath.java">org/apache/hadoop/fs/adl/live/TestAdlSupportedCharsetInPath.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlContractGetFileStatusLive.java">org/apache/hadoop/fs/adl/live/TestAdlContractGetFileStatusLive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.TestValidateConfiguration.java">org/apache/hadoop/fs/adl/TestValidateConfiguration.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.TestConcurrentDataReadOperations.java">org/apache/hadoop/fs/adl/TestConcurrentDataReadOperations.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlContractRootDirLive.java">org/apache/hadoop/fs/adl/live/TestAdlContractRootDirLive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.AdlFsOutputStream.java">org/apache/hadoop/fs/adl/AdlFsOutputStream.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlInternalCreateNonRecursive.java">org/apache/hadoop/fs/adl/live/TestAdlInternalCreateNonRecursive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlContractCreateLive.java">org/apache/hadoop/fs/adl/live/TestAdlContractCreateLive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlPermissionLive.java">org/apache/hadoop/fs/adl/live/TestAdlPermissionLive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.AdlPermission.java">org/apache/hadoop/fs/adl/AdlPermission.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.TestListStatus.java">org/apache/hadoop/fs/adl/TestListStatus.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.oauth2.package-info.java">org/apache/hadoop/fs/adl/oauth2/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.SdkTokenProviderAdapter.java">org/apache/hadoop/fs/adl/SdkTokenProviderAdapter.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.TokenProviderType.java">org/apache/hadoop/fs/adl/TokenProviderType.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.AdlConfKeys.java">org/apache/hadoop/fs/adl/AdlConfKeys.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.TestCustomTokenProvider.java">org/apache/hadoop/fs/adl/TestCustomTokenProvider.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.common.CustomMockTokenProvider.java">org/apache/hadoop/fs/adl/common/CustomMockTokenProvider.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestMetadata.java">org/apache/hadoop/fs/adl/live/TestMetadata.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlDifferentSizeWritesLive.java">org/apache/hadoop/fs/adl/live/TestAdlDifferentSizeWritesLive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.AdlFileSystem.java">org/apache/hadoop/fs/adl/AdlFileSystem.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.TestableAdlFileSystem.java">org/apache/hadoop/fs/adl/TestableAdlFileSystem.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.TestADLResponseData.java">org/apache/hadoop/fs/adl/TestADLResponseData.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.AdlMockWebServer.java">org/apache/hadoop/fs/adl/AdlMockWebServer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.TestAzureADTokenProvider.java">org/apache/hadoop/fs/adl/TestAzureADTokenProvider.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlContractDeleteLive.java">org/apache/hadoop/fs/adl/live/TestAdlContractDeleteLive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.common.TestDataForRead.java">org/apache/hadoop/fs/adl/common/TestDataForRead.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlContractConcatLive.java">org/apache/hadoop/fs/adl/live/TestAdlContractConcatLive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.oauth2.AzureADTokenProvider.java">org/apache/hadoop/fs/adl/oauth2/AzureADTokenProvider.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="${project.url}/checkstyle.html#org.apache.hadoop.fs.adl.live.TestAdlFileContextCreateMkdirLive.java">org/apache/hadoop/fs/adl/live/TestAdlFileContextCreateMkdirLive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                      </tbody>
+        </table>
+        
+      </description>
+    </item>
+  </channel>
+</rss>
+

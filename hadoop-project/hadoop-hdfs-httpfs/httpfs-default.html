@@ -6,6 +6,52 @@
 <th>name</th><th>value</th><th>description</th>
 </tr>
 <tr>
+<td><a name="hadoop.httpfs.http.port">hadoop.httpfs.http.port</a></td><td>14000</td><td>
+      The HTTP port for HttpFS REST API.
+    </td>
+</tr>
+<tr>
+<td><a name="hadoop.httpfs.http.host">hadoop.httpfs.http.host</a></td><td>0.0.0.0</td><td>
+      The bind host for HttpFS REST API.
+    </td>
+</tr>
+<tr>
+<td><a name="hadoop.httpfs.http.administrators">hadoop.httpfs.http.administrators</a></td><td></td><td>ACL for the admins, this configuration is used to control
+      who can access the default servlets for HttpFS server. The value
+      should be a comma separated list of users and groups. The user list
+      comes first and is separated by a space followed by the group list,
+      e.g. "user1,user2 group1,group2". Both users and groups are optional,
+      so "user1", " group1", "", "user1 group1", "user1,user2 group1,group2"
+      are all valid (note the leading space in " group1"). '*' grants access
+      to all users and groups, e.g. '*', '* ' and ' *' are all valid.
+    </td>
+</tr>
+<tr>
+<td><a name="hadoop.httpfs.ssl.enabled">hadoop.httpfs.ssl.enabled</a></td><td>false</td><td>
+      Whether SSL is enabled. Default is false, i.e. disabled.
+    </td>
+</tr>
+<tr>
+<td><a name="hadoop.http.max.threads">hadoop.http.max.threads</a></td><td>1000</td><td>
+      The maxmimum number of threads.
+    </td>
+</tr>
+<tr>
+<td><a name="hadoop.http.max.request.header.size">hadoop.http.max.request.header.size</a></td><td>65536</td><td>
+      The maxmimum HTTP request header size.
+    </td>
+</tr>
+<tr>
+<td><a name="hadoop.http.max.response.header.size">hadoop.http.max.response.header.size</a></td><td>65536</td><td>
+      The maxmimum HTTP response header size.
+    </td>
+</tr>
+<tr>
+<td><a name="hadoop.http.temp.dir">hadoop.http.temp.dir</a></td><td>${hadoop.tmp.dir}/httpfs</td><td>
+      HttpFS temp directory.
+    </td>
+</tr>
+<tr>
 <td><a name="httpfs.buffer.size">httpfs.buffer.size</a></td><td>4096</td><td>
       The buffer size used by a read/write request when streaming data from/to
       HDFS.
