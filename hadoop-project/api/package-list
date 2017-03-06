@@ -19,6 +19,7 @@ org.apache.hadoop.fs.adl.oauth2
 org.apache.hadoop.fs.aliyun.oss
 org.apache.hadoop.fs.azure
 org.apache.hadoop.fs.azure.metrics
+org.apache.hadoop.fs.azure.security
 org.apache.hadoop.fs.crypto
 org.apache.hadoop.fs.ftp
 org.apache.hadoop.fs.http.client
@@ -82,7 +83,6 @@ org.apache.hadoop.hdfs.server.namenode.web.resources
 org.apache.hadoop.hdfs.server.protocol
 org.apache.hadoop.hdfs.shortcircuit
 org.apache.hadoop.hdfs.tools
-org.apache.hadoop.hdfs.tools.erasurecode
 org.apache.hadoop.hdfs.tools.offlineEditsViewer
 org.apache.hadoop.hdfs.tools.offlineImageViewer
 org.apache.hadoop.hdfs.tools.snapshot
@@ -260,6 +260,7 @@ org.apache.hadoop.yarn.sls
 org.apache.hadoop.yarn.sls.appmaster
 org.apache.hadoop.yarn.sls.conf
 org.apache.hadoop.yarn.sls.nodemanager
+org.apache.hadoop.yarn.sls.resourcemanager
 org.apache.hadoop.yarn.sls.scheduler
 org.apache.hadoop.yarn.sls.utils
 org.apache.hadoop.yarn.sls.web
