@@ -19,7 +19,6 @@ org.apache.hadoop.fs.adl.oauth2
 org.apache.hadoop.fs.aliyun.oss
 org.apache.hadoop.fs.azure
 org.apache.hadoop.fs.azure.metrics
-org.apache.hadoop.fs.azure.security
 org.apache.hadoop.fs.crypto
 org.apache.hadoop.fs.ftp
 org.apache.hadoop.fs.http.client
